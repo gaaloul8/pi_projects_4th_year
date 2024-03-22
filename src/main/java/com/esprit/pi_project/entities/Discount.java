@@ -21,7 +21,7 @@ public class Discount implements Serializable {
     private Date endDiscount;
     private String discountValue;
     
-    //@OneToOne(mappedBy = "discount")
-    //private Reward reward;
+    @OneToOne
+    private Reward reward;
 
 }
