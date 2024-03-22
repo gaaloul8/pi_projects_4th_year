@@ -11,5 +11,6 @@ public interface DiscountService {
     void  deleteDiscount(Discount discount);
     Discount findById(Integer id);
     Discount updateDiscount (Discount discount);
+    public void calculcostafterdiscount(Discount discount);
 
 }
