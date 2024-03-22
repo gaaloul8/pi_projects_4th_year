@@ -1,5 +1,6 @@
 package com.esprit.pi_project.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -17,5 +18,6 @@ public class Comment implements Serializable {
     private String content;
 
     @ManyToOne
+    @JsonIgnore
     private Post post;
 }

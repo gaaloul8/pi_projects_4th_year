@@ -11,6 +11,7 @@ import java.util.Deque;
 import java.util.List;
 
 @RestController
+@RequestMapping("/discount")
 public class DiscountController {
     @Autowired
     private DiscountService discountService;
