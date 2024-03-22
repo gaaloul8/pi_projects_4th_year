@@ -2,7 +2,6 @@ package com.esprit.pi_project.controller;
 
 import com.esprit.pi_project.entities.Club;
 import com.esprit.pi_project.entities.Tag;
-import com.esprit.pi_project.response.HttpResponse;
 import com.esprit.pi_project.service.ClubService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
