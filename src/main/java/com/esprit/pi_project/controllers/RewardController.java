@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@RequestMapping("/reward")
 public class RewardController {
     @Autowired
     private RewardDao rewardDao;

@@ -13,7 +13,6 @@ public class Club implements Serializable {
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long clubId;
     private String clubName;
-    private String clubCategory;
     //private User manager;
     private String description;
     private Integer membershipCount;

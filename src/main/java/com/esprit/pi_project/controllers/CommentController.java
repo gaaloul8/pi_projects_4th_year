@@ -1,4 +1,4 @@
-package com.esprit.pi_project.controller;
+package com.esprit.pi_project.controllers;
 
 import com.esprit.pi_project.entities.Comment;
 import com.esprit.pi_project.entities.Post;
