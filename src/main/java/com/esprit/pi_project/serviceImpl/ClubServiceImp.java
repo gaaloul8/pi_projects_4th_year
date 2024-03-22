@@ -1,4 +1,4 @@
-package com.esprit.pi_project.serviceimp;
+package com.esprit.pi_project.serviceImpl;
 
 import com.esprit.pi_project.dao.ClubDao;
 import com.esprit.pi_project.entities.Club;
