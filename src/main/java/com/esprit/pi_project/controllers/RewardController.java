@@ -2,6 +2,7 @@ package com.esprit.pi_project.controllers;
 
 import com.esprit.pi_project.dao.RewardDao;
 import com.esprit.pi_project.entities.Reward;
+import com.esprit.pi_project.entities.User;
 import com.esprit.pi_project.services.RewardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -40,6 +41,11 @@ public class RewardController {
         return this.rewardService.updateReward(reward);
     }
 
+
+    @PostMapping("/buyreward/{id}")
+    public void purchaseReward(@PathVariable Integer id ,@RequestBody User user){
+        this.rewardService.purchaseReward(id,user);
+    }
 
 
 }

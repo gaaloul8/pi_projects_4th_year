@@ -1,6 +1,8 @@
 package com.esprit.pi_project.controllers;
 
 import com.esprit.pi_project.entities.Discount;
+import com.esprit.pi_project.entities.Reward;
+import com.esprit.pi_project.entities.User;
 import com.esprit.pi_project.services.DiscountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -38,4 +40,13 @@ public class DiscountController {
     public void deleteDisocunt(@RequestBody Discount discount){
         this.discountService.deleteDiscount(discount);
     }
+
+
+    @PutMapping("/calculnewcost")
+    public void calculnewcost(@RequestBody Discount discount){
+        this.discountService.calculcostafterdiscount(discount);
+    }
+
+
+
 }
