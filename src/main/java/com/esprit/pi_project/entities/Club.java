@@ -1,5 +1,6 @@
 package com.esprit.pi_project.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -19,6 +20,7 @@ public class Club implements Serializable {
     @Enumerated(EnumType.STRING)
     private Tag tag;
     @OneToMany(cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<Post> posts;
 
 
