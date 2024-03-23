@@ -43,12 +43,12 @@ public class DiscountController {
     }
 
 
-   /*
+
     @PutMapping("/calculnewcost")
     public void calculnewcost(@RequestBody Discount discount){
         this.discountService.calculcostafterdiscount(discount);
     }
 
-*/
+
 
 }

@@ -54,4 +54,15 @@ public class RewardController {
     }
 
 
+    @GetMapping("/withdisoucnt")
+    public List<Reward>rewardwithdiscount(){
+        return this.rewardService.findrewardWithDiscount();
+    }
+
+    @GetMapping("/withnodisoucnt")
+    public List<Reward>rewardwithnodiscount(){
+        return this.rewardService.findrewardWithNoDiscount();
+    }
+
+
 }
