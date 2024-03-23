@@ -1,6 +1,7 @@
 package com.esprit.pi_project.serviceImpl;
 
 import com.esprit.pi_project.dao.RewardDao;
+import com.esprit.pi_project.dao.UserDao;
 import com.esprit.pi_project.dao.transactionHistoryDao;
 import com.esprit.pi_project.entities.Reward;
 import com.esprit.pi_project.entities.TransactionHistory;
@@ -10,9 +11,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class RewardServiceIpml implements RewardService {
@@ -20,6 +19,9 @@ public class RewardServiceIpml implements RewardService {
     private RewardDao rewardDao;
     @Autowired
     private transactionHistoryDao transactionHistoryDao;
+
+    @Autowired
+    private UserDao userDao;
 
     @Override
     public Reward newReward(Reward reward) {
@@ -92,6 +94,7 @@ public class RewardServiceIpml implements RewardService {
     }
 
         */
+
        @Transactional
        public Reward purchaseReward(Integer rewardId, User user) {
            Reward reward = rewardDao.findById(rewardId).orElse(null);
@@ -113,6 +116,25 @@ public class RewardServiceIpml implements RewardService {
                throw new RuntimeException("Reward not available or does not exist!");
            }
        }
+
+
+
+
+    @Override
+    public Map<String, Object> calculateUserStatistics() {
+        Map<String, Object> statistics = new HashMap<>();
+
+        long totalUsers = userDao.count();
+        long usersWithRewards = transactionHistoryDao.nbactiveusers();
+        double averageRewardsPerUser = usersWithRewards / (double) totalUsers;
+
+        statistics.put("totalUsers", totalUsers);
+        statistics.put("usersWithRewards", usersWithRewards);
+        statistics.put("averageRewardsPerUser", averageRewardsPerUser);
+
+        return statistics;
+    }
+
 
 
 }

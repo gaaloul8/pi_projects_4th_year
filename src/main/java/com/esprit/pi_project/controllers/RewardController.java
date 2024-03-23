@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/reward")
@@ -46,6 +47,10 @@ public class RewardController {
     @PostMapping("/buyreward/{id}")
     public void purchaseReward(@PathVariable Integer id ,@RequestBody User user){
         this.rewardService.purchaseReward(id,user);
+    }
+    @GetMapping("/statstics")
+    public Map<String,Object> getstatistics(){
+        return this.rewardService.calculateUserStatistics();
     }
 
 
