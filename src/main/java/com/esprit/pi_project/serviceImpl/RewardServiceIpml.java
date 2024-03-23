@@ -151,4 +151,14 @@ public class RewardServiceIpml implements RewardService {
 
 
 
+    @Override
+    public List<Reward> findrewardWithDiscount(){
+           return rewardDao.findRewardsWithDiscount();
+    }
+    @Override
+    public List<Reward> findrewardWithNoDiscount(){
+        return rewardDao.findRewardsWithNoDiscount();
+    }
+
+
 }

@@ -16,5 +16,8 @@ public interface RewardService {
     Reward purchaseReward(Integer rewardId) ;
     public Map<String, Object> calculateUserStatistics();
 
+    public List<Reward> findrewardWithDiscount();
+    public List<Reward> findrewardWithNoDiscount();
+
 
 }
