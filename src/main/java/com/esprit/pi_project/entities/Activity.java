@@ -1,5 +1,6 @@
 package com.esprit.pi_project.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -15,7 +16,7 @@ public class Activity implements Serializable {
     private String title;
     private String content;
     private String type;
-
+    @JsonIgnore
     @ManyToOne
     private  Quiz quiz;
 
