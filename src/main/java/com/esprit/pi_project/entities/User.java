@@ -1,15 +1,13 @@
 package com.esprit.pi_project.entities;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
+import lombok.*;
 
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
-import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -19,6 +17,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 @AllArgsConstructor
 @Entity
 @Table(name="user")
+
 public class User implements UserDetails, Serializable {
 
     @Id
@@ -41,7 +40,12 @@ public class User implements UserDetails, Serializable {
     @Column(name = "last_login")
     private Date lastLogin;
 
-    private int token;
+    @OneToMany(mappedBy = "user")
+    @ToString.Exclude
+    @JsonManagedReference
+
+
+    private List<Token> tokens;
 
     @Enumerated(EnumType.STRING)
     private Role role;

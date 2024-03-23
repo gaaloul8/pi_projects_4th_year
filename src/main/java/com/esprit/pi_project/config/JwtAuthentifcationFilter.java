@@ -1,5 +1,6 @@
 package com.esprit.pi_project.config;
 
+import com.esprit.pi_project.dao.TokenDao;
 import com.esprit.pi_project.services.jwtService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -26,6 +27,9 @@ public class JwtAuthentifcationFilter extends OncePerRequestFilter {
 
     private UserDetailsService userDetailsService;
 
+    @Autowired
+    private TokenDao tokenDao;
+
 
 
     @Override
@@ -42,7 +46,13 @@ public class JwtAuthentifcationFilter extends OncePerRequestFilter {
             email= jwtservice.extractemail(jwt);
             if (email != null && SecurityContextHolder.getContext().getAuthentication()== null){
                 UserDetails userDetails= this.userDetailsService.loadUserByUsername(email);
-                if(jwtservice.isTokenValid(jwt,userDetails)){
+                var isTokenValid = tokenDao.findByToken(jwt)
+                        .map(t -> !t.isExpired() && !t.isRevoked())
+                        .orElse(false);
+                System.out.print(isTokenValid +"now" );
+                System.out.print(jwtservice.isTokenValid(jwt,userDetails));
+                //System.out.print("now");
+                if (jwtservice.isTokenValid(jwt, userDetails) && isTokenValid) {
                     UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
                             userDetails,
                             null,
@@ -52,9 +62,13 @@ public class JwtAuthentifcationFilter extends OncePerRequestFilter {
                             new WebAuthenticationDetailsSource().buildDetails(request)
                     );
                     SecurityContextHolder.getContext().setAuthentication(authToken);
-
+                    filterChain.doFilter(request,response);
+                } else {
+                    // Return unauthorized response
+                    response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                 }
-                filterChain.doFilter(request,response);
+
+
             }
             }
 
