@@ -13,7 +13,7 @@ public interface RewardService {
     void  deleteReward(Reward reward);
     Reward updateReward(Reward reward);
 
-    Reward purchaseReward(Integer rewardId, User user) ;
+    Reward purchaseReward(Integer rewardId) ;
     public Map<String, Object> calculateUserStatistics();
 
 

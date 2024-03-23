@@ -10,4 +10,5 @@ public interface UserService {
     void  deleteUser(User user);
     User findById(Integer id);
     User updateProfile (User user);
+    User findByEmail(String email);
 }

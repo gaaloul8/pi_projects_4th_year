@@ -1,5 +1,6 @@
 package com.esprit.pi_project.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -22,6 +23,7 @@ public class Discount implements Serializable {
     private String discountValue;
     
     @OneToOne
+    @JsonBackReference
     private Reward reward;
 
 }

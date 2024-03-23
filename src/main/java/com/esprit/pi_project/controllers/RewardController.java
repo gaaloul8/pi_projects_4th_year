@@ -45,8 +45,8 @@ public class RewardController {
 
 
     @PostMapping("/buyreward/{id}")
-    public void purchaseReward(@PathVariable Integer id ,@RequestBody User user){
-        this.rewardService.purchaseReward(id,user);
+    public void purchaseReward(@PathVariable Integer id ){
+        this.rewardService.purchaseReward(id);
     }
     @GetMapping("/statstics")
     public Map<String,Object> getstatistics(){

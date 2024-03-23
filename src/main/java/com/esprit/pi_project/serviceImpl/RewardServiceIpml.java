@@ -7,8 +7,11 @@ import com.esprit.pi_project.entities.Reward;
 import com.esprit.pi_project.entities.TransactionHistory;
 import com.esprit.pi_project.entities.User;
 import com.esprit.pi_project.services.RewardService;
+import com.esprit.pi_project.services.UserService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -22,6 +25,8 @@ public class RewardServiceIpml implements RewardService {
 
     @Autowired
     private UserDao userDao;
+    @Autowired
+    UserService userService;
 
     @Override
     public Reward newReward(Reward reward) {
@@ -96,19 +101,28 @@ public class RewardServiceIpml implements RewardService {
         */
 
        @Transactional
-       public Reward purchaseReward(Integer rewardId, User user) {
+       public Reward purchaseReward(Integer rewardId) {
+           Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+           String userEmail = authentication.getName(); // Get the email of the authenticated user
+           User authenticatedUser = userService.findByEmail(userEmail);
+           System.out.println("********************************");
+           System.out.println(authenticatedUser);
+
+
            Reward reward = rewardDao.findById(rewardId).orElse(null);
            if (reward != null && reward.getNbDispo() > 0) {
                // Reduce the available count of the reward
                reward.setNbDispo(reward.getNbDispo() - 1);
                rewardDao.save(reward);
 
+
                // Create transaction history
+
                TransactionHistory transactionHistory = new TransactionHistory();
                transactionHistory.setReward(reward);
                transactionHistory.setPurchaseDate(new Date());
                transactionHistory.setPrice(reward.getCost());
-               transactionHistory.setUser(user);
+               transactionHistory.setUser(authenticatedUser);
                transactionHistoryDao.save(transactionHistory);
 
                return reward;
