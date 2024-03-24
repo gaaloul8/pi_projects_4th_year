@@ -1,6 +1,7 @@
 package com.esprit.pi_project.entities;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -16,6 +17,7 @@ public class QuizOption implements Serializable {
     private String content;
     private Boolean correct;
 
+    @JsonIgnore
     @ManyToOne
     QuizQuestion question;
 }

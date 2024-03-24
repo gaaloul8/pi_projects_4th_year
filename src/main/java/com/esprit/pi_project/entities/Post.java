@@ -1,4 +1,5 @@
 package com.esprit.pi_project.entities;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -19,6 +20,7 @@ public class Post implements Serializable {
 
 
     @OneToMany(mappedBy = "post" ,cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<Comment> comments;
 
 }
