@@ -1,5 +1,6 @@
 package com.esprit.pi_project.entities;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -19,6 +20,7 @@ public class Reward implements Serializable {
     private Integer nbDispo;
     @ManyToOne
     @JoinColumn(name = "id_user")
+    //@JsonManagedReference
     private User User;
 
 

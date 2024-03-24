@@ -14,4 +14,13 @@ public interface ForumService {
     Forum getForumById(Integer forumId);
 
     List<Forum> getAllForums();
+
+    List<Forum> searchForums(String keyword);
+
+    Forum closeForum(Integer forumId);
+
+    Forum likeForum(Integer forumId);
+
+    Forum dislikeForum(Integer forumId);
+
 }

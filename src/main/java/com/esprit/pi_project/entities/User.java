@@ -1,4 +1,5 @@
 package com.esprit.pi_project.entities;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
@@ -52,6 +53,7 @@ public class User implements UserDetails, Serializable {
     private Role role;
 
     @OneToMany(cascade = CascadeType.ALL,mappedBy = "User")
+    //@JsonBackReference
     private List<Reward> rewardList;
 
     @OneToMany(cascade = CascadeType.ALL,mappedBy = "QuizOwner")
@@ -61,6 +63,7 @@ public class User implements UserDetails, Serializable {
     private List<QuizUser> quizUserList;
 
     @OneToMany(cascade = CascadeType.ALL,mappedBy = "ForumOwner")
+    @JsonManagedReference
     private List<Forum> forumlist;
 
     @OneToMany(cascade = CascadeType.ALL,mappedBy = "createdBy")

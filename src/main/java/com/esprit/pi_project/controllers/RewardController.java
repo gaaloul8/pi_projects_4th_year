@@ -45,12 +45,23 @@ public class RewardController {
 
 
     @PostMapping("/buyreward/{id}")
-    public void purchaseReward(@PathVariable Integer id ,@RequestBody User user){
-        this.rewardService.purchaseReward(id,user);
+    public void purchaseReward(@PathVariable Integer id ){
+        this.rewardService.purchaseReward(id);
     }
     @GetMapping("/statstics")
     public Map<String,Object> getstatistics(){
         return this.rewardService.calculateUserStatistics();
+    }
+
+
+    @GetMapping("/withdisoucnt")
+    public List<Reward>rewardwithdiscount(){
+        return this.rewardService.findrewardWithDiscount();
+    }
+
+    @GetMapping("/withnodisoucnt")
+    public List<Reward>rewardwithnodiscount(){
+        return this.rewardService.findrewardWithNoDiscount();
     }
 
 

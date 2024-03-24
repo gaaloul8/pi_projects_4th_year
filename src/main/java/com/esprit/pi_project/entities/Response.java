@@ -3,6 +3,7 @@ package com.esprit.pi_project.entities;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import jakarta.validation.constraints.NotBlank;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -22,6 +23,7 @@ public class Response implements Serializable {
     @Temporal(TemporalType.DATE)
     private Date createdAt;
 
+    @NotBlank(message = "Content is required")
     private String content;
 
     private Boolean accepted;

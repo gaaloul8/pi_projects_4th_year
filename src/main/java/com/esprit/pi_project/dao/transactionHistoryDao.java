@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface transactionHistoryDao extends JpaRepository<TransactionHistory,Integer> {
-    @Query(value = "SELECT COUNT(DISTINCT id_user) FROM transaction_history", nativeQuery = true)
+    @Query(value = "SELECT COUNT(DISTINCT user_id) FROM transaction_history", nativeQuery = true)
     Integer nbactiveusers();
 
 }

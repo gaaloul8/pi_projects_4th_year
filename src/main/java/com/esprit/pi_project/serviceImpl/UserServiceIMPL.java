@@ -58,4 +58,16 @@ public class UserServiceIMPL implements UserService {
         }
 
     }
+
+
+    @Override
+    public User findByEmail(String email) {
+        if (email != null) {
+            final Optional<User> User = userDao.findByEmail(email);
+            if (User.isPresent()) {
+                return User.get();
+            }
+        }
+        return null;
+    }
 }
