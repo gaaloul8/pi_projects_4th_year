@@ -2,6 +2,7 @@ package com.esprit.pi_project.controllers;
 
 import com.esprit.pi_project.entities.Response;
 import com.esprit.pi_project.services.ResponseService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,7 +11,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-@RestController("/responses")
+@RestController()
+@RequestMapping("/responses")
+@RequiredArgsConstructor
 public class ResponseController {
 
     @Autowired

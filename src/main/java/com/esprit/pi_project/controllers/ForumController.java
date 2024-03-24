@@ -10,7 +10,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController("/forums")
+@RestController()
+@RequestMapping("/forums")
 @RequiredArgsConstructor
 public class ForumController {
 

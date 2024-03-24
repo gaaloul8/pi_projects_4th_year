@@ -14,4 +14,13 @@ public interface QuestionService {
     Question getQuestionById(Integer questionId);
 
     List<Question> getAllQuestions();
+
+    List<Question> searchQuestions(String keyword);
+
+    Question upvoteQuestion(Integer questionId);
+
+    Question downvoteQuestion(Integer questionId);
+
+    Question closeQuestion(Integer questionId);
 }
+
