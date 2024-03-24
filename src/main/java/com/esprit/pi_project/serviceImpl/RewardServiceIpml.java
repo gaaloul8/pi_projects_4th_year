@@ -1,18 +1,20 @@
-package com.esprit.pi_project.serviceIpml;
+package com.esprit.pi_project.serviceImpl;
 
 import com.esprit.pi_project.dao.RewardDao;
+import com.esprit.pi_project.dao.UserDao;
 import com.esprit.pi_project.dao.transactionHistoryDao;
 import com.esprit.pi_project.entities.Reward;
 import com.esprit.pi_project.entities.TransactionHistory;
 import com.esprit.pi_project.entities.User;
 import com.esprit.pi_project.services.RewardService;
+import com.esprit.pi_project.services.UserService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class RewardServiceIpml implements RewardService {
@@ -20,6 +22,11 @@ public class RewardServiceIpml implements RewardService {
     private RewardDao rewardDao;
     @Autowired
     private transactionHistoryDao transactionHistoryDao;
+
+    @Autowired
+    private UserDao userDao;
+    @Autowired
+    UserService userService;
 
     @Override
     public Reward newReward(Reward reward) {
@@ -92,20 +99,30 @@ public class RewardServiceIpml implements RewardService {
     }
 
         */
+
        @Transactional
-       public Reward purchaseReward(Integer rewardId, User user) {
+       public Reward purchaseReward(Integer rewardId) {
+           Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+           String userEmail = authentication.getName(); // Get the email of the authenticated user
+           User authenticatedUser = userService.findByEmail(userEmail);
+           System.out.println("********************************");
+           System.out.println(authenticatedUser);
+
+
            Reward reward = rewardDao.findById(rewardId).orElse(null);
            if (reward != null && reward.getNbDispo() > 0) {
                // Reduce the available count of the reward
                reward.setNbDispo(reward.getNbDispo() - 1);
                rewardDao.save(reward);
 
+
                // Create transaction history
+
                TransactionHistory transactionHistory = new TransactionHistory();
                transactionHistory.setReward(reward);
                transactionHistory.setPurchaseDate(new Date());
                transactionHistory.setPrice(reward.getCost());
-               transactionHistory.setUser(user);
+               transactionHistory.setUser(authenticatedUser);
                transactionHistoryDao.save(transactionHistory);
 
                return reward;
@@ -113,6 +130,35 @@ public class RewardServiceIpml implements RewardService {
                throw new RuntimeException("Reward not available or does not exist!");
            }
        }
+
+
+
+
+    @Override
+    public Map<String, Object> calculateUserStatistics() {
+        Map<String, Object> statistics = new HashMap<>();
+
+        long totalUsers = userDao.count();
+        long usersWithRewards = transactionHistoryDao.nbactiveusers();
+        double averageRewardsPerUser = usersWithRewards / (double) totalUsers;
+
+        statistics.put("totalUsers", totalUsers);
+        statistics.put("usersWithRewards", usersWithRewards);
+        statistics.put("averageRewardsPerUser", averageRewardsPerUser);
+
+        return statistics;
+    }
+
+
+
+    @Override
+    public List<Reward> findrewardWithDiscount(){
+           return rewardDao.findRewardsWithDiscount();
+    }
+    @Override
+    public List<Reward> findrewardWithNoDiscount(){
+        return rewardDao.findRewardsWithNoDiscount();
+    }
 
 
 }

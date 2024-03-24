@@ -1,5 +1,6 @@
 package com.esprit.pi_project.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -13,7 +14,7 @@ import java.io.Serializable;
 public class FeedBack implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long idFeedback;
+    private Integer idFeedback;
 
     private String content;
     @Enumerated(EnumType.STRING)
@@ -22,6 +23,7 @@ public class FeedBack implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "idEvent")
+    @JsonIgnore
     Evenement evenement;
 
     @ManyToOne

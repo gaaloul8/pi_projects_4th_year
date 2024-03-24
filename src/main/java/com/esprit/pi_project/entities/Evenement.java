@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.antlr.v4.runtime.misc.NotNull;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -17,16 +18,18 @@ public class Evenement implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long idEvent;
+    private Integer idEvent;
     private String eventName;
-    private String  eventType;
-    @JsonFormat(pattern = "yyyy-MM-dd")
+    @Enumerated(EnumType.STRING)
+    @Column(name = "eventType")
+    private TypeEvenement  eventType;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date datetime;
     private String location;
     private String description;
     private String image;
     private int nbplacesMax;
-    private String Eventstatus;
+    private int nbPlacesReservees;
     private int tokenvalue;
 
     @Enumerated(EnumType.STRING)
