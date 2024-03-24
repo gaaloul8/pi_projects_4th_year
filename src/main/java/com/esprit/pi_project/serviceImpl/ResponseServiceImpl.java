@@ -6,6 +6,7 @@ import com.esprit.pi_project.services.ResponseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -37,5 +38,61 @@ public class ResponseServiceImpl implements ResponseService {
     @Override
     public List<Response> getAllResponses() {
         return responseDao.findAll();
+    }
+
+    @Override
+    public void reportResponse(Integer responseId) {
+        Response response = getResponseById(responseId);
+        if (response != null) {
+            response.setReported(true);
+            responseDao.save(response);
+        }
+    }
+
+    @Override
+    public void upvoteResponse(Integer responseId) {
+        Response response = getResponseById(responseId);
+        if (response != null) {
+            response.setUpvotes(response.getUpvotes() + 1);
+            responseDao.save(response);
+        }
+    }
+
+    @Override
+    public void downvoteResponse(Integer responseId) {
+        Response response = getResponseById(responseId);
+        if (response != null) {
+            response.setUpvotes(response.getUpvotes() - 1);
+            responseDao.save(response);
+        }
+    }
+
+    @Override
+    public List<Response> getResponsesByQuestionId(Integer questionId) {
+        return responseDao.findByQuestionQuestionId(questionId);
+    }
+
+    @Override
+    public void updateResponseContent(Integer responseId, String newContent) {
+        Response response = getResponseById(responseId);
+        if (response != null) {
+            response.setContent(newContent);
+            responseDao.save(response);
+        }
+    }
+
+    @Override
+    public List<Response> getMostUpvotedResponses() {
+        return responseDao.findTop10ByOrderByUpvotesDesc();
+    }
+
+    @Override
+    public List<Response> getResponsesSinceLastVisit(Date lastVisitDate) {
+        return responseDao.findByCreatedAtAfter(lastVisitDate);
+    }
+
+    @Override
+    public List<Response> getResponsesByDateRange(Date startDate, Date endDate) {
+        return responseDao.findByCreatedAtBetween(startDate, endDate);
     }
 }

@@ -39,4 +39,38 @@ public class QuestionServiceImpl implements QuestionService {
     public List<Question> getAllQuestions() {
         return questionDao.findAll();
     }
+
+    @Override
+    public List<Question> searchQuestions(String keyword) {
+        return questionDao.findByTitleContainingOrContentContaining(keyword);
+    }
+
+    @Override
+    public Question upvoteQuestion(Integer questionId) {
+        Question question = questionDao.findById(questionId).orElse(null);
+        if (question != null) {
+            question.setUpvotes(question.getUpvotes() + 1);
+            return questionDao.save(question);
+        }
+        return null;
+    }
+
+    @Override
+    public Question downvoteQuestion(Integer questionId) {
+        Question question = questionDao.findById(questionId).orElse(null);
+        if (question != null) {
+            question.setUpvotes(question.getUpvotes() - 1);
+            return questionDao.save(question);
+        }
+        return null;    }
+
+    @Override
+    public Question closeQuestion(Integer questionId) {
+        Question question = questionDao.findById(questionId).orElse(null);
+        if (question != null) {
+            question.setClosed(true);
+            return questionDao.save(question);
+        }
+        return null;
+        }
 }

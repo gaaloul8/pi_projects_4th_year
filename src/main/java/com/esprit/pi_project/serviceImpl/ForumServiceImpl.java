@@ -38,4 +38,39 @@ public class ForumServiceImpl implements ForumService {
     public List<Forum> getAllForums() {
         return forumDao.findAll();
     }
+
+    @Override
+    public List<Forum> searchForums(String keyword) {
+        return forumDao.findByTopicContainingOrContentContaining(keyword);
+    }
+
+    @Override
+    public Forum closeForum(Integer forumId) {
+        Forum forum = forumDao.findById(forumId).orElse(null);
+        if (forum != null) {
+            forum.setClosed(true);
+            return forumDao.save(forum);
+        }
+        return null;
+    }
+
+    @Override
+    public Forum likeForum(Integer forumId) {
+        Forum forum = forumDao.findById(forumId).orElse(null);
+        if (forum != null) {
+            forum.setLikes(forum.getLikes() + 1);
+            return forumDao.save(forum);
+        }
+        return null;
+    }
+
+    @Override
+    public Forum dislikeForum(Integer forumId) {
+        Forum forum = forumDao.findById(forumId).orElse(null);
+        if (forum != null) {
+            forum.setLikes(forum.getLikes() - 1);
+            return forumDao.save(forum);
+        }
+        return null;
+    }
 }
