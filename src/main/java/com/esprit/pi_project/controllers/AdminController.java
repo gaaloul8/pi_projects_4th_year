@@ -9,14 +9,13 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/auth")
 @RequiredArgsConstructor
 
 public class AdminController {
     @Autowired
     private UserService userService;
 
-    @GetMapping("/admin")
+    @GetMapping("/admin2")
     public List<User> getUser(){
         return  this.userService.getAll();
     }

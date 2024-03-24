@@ -31,6 +31,7 @@ public class User implements UserDetails, Serializable {
     private String lastName;
 
     private String password;
+    private String resetToken;
 
     private String email;
 
