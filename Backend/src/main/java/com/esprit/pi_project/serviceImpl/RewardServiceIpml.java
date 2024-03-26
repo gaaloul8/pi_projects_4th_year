@@ -50,8 +50,8 @@ public class RewardServiceIpml implements RewardService {
     }
 
     @Override
-    public void deleteReward(Reward reward) {
-        rewardDao.delete(reward);
+    public void deleteReward(Integer id) {
+        rewardDao.deleteById(id);
 
     }
 
