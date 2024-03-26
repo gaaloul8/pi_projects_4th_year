@@ -2,7 +2,7 @@ package com.esprit.pi_project.controllers;
 
 import com.esprit.pi_project.entities.FeedBack;
 import com.esprit.pi_project.entities.Reservation;
-import com.esprit.pi_project.service.ReservationService;
+import com.esprit.pi_project.services.ReservationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

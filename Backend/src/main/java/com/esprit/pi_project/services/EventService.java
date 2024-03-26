@@ -1,4 +1,4 @@
-package com.esprit.pi_project.service;
+package com.esprit.pi_project.services;
 
 import com.esprit.pi_project.entities.Evenement;
 import com.esprit.pi_project.entities.TypeEvenement;

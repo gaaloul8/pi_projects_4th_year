@@ -1,9 +1,9 @@
-package com.esprit.pi_project.serviceImp;
+package com.esprit.pi_project.serviceImpl;
 
 import com.esprit.pi_project.dao.EventDao;
 import com.esprit.pi_project.entities.Evenement;
 import com.esprit.pi_project.entities.TypeEvenement;
-import com.esprit.pi_project.service.EventService;
+import com.esprit.pi_project.services.EventService;
 import io.micrometer.common.util.StringUtils;
 import jakarta.annotation.Resource;
 import jakarta.persistence.EntityNotFoundException;
