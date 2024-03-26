@@ -29,9 +29,9 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .authorizeRequests(authorizeRequests ->
                         authorizeRequests
-                                .requestMatchers("/auth/**","/profile/").permitAll()
-                                .requestMatchers("/auth/admin").hasAnyRole(Admin.name())
-                                .requestMatchers(HttpMethod.GET,"/auth/admin").hasAnyAuthority(ADMIN_READ.name())
+                                .requestMatchers("/auth/**","/profile/","/auth/reset-password/").permitAll()
+                             //   .requestMatchers("/auth/admin").hasAnyRole(Admin.name())
+                               // .requestMatchers(HttpMethod.GET,"/auth/admin").hasAnyAuthority(ADMIN_READ.name())
                                 .anyRequest().authenticated()
                 )
                 .sessionManagement(sessionManagement ->

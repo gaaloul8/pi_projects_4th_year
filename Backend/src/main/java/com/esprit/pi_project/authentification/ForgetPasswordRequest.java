@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class AuthResponse {
-    private String jwtaccestoken;
-    private String jwtRefreshtoken;
+public class ForgetPasswordRequest {
+    private String email;
+
 }

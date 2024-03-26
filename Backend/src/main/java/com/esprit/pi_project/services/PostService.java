@@ -1,8 +1,10 @@
-package com.esprit.pi_project.service;
+package com.esprit.pi_project.services;
 
 import com.esprit.pi_project.entities.Comment;
 import com.esprit.pi_project.entities.Post;
+import org.springframework.http.ResponseEntity;
 
+import java.util.Date;
 import java.util.List;
 
 public interface PostService {
@@ -12,4 +14,5 @@ public interface PostService {
     void deletePost(Long idPost);
     Post findPostById(Long idPost);
     List<Post> findAllPost();
+    List<Post> findByPostDate(Date postDate);
 }

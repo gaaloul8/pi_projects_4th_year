@@ -32,6 +32,7 @@ public class User implements UserDetails, Serializable {
     private String lastName;
 
     private String password;
+    private String resetToken;
 
     private String email;
 
@@ -62,6 +63,7 @@ public class User implements UserDetails, Serializable {
     private List<QuizUser> quizUserList;
 
     @OneToMany(cascade = CascadeType.ALL,mappedBy = "ForumOwner")
+    @JsonManagedReference
     private List<Forum> forumlist;
 
     @OneToMany(cascade = CascadeType.ALL,mappedBy = "createdBy")

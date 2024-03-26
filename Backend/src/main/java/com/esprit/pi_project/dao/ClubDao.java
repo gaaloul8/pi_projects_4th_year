@@ -13,5 +13,6 @@ import java.util.List;
 
 public interface ClubDao extends JpaRepository<Club,Long> {
     List<Club> findAllByTag(Tag tag);
+    List<Club> findAllByClubName(String clubName);
 
 }
