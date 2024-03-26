@@ -5,6 +5,8 @@ import com.esprit.pi_project.entities.Reward;
 import com.esprit.pi_project.entities.User;
 import com.esprit.pi_project.services.DiscountService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Deque;
@@ -17,29 +19,49 @@ public class DiscountController {
     private DiscountService discountService;
 
     @GetMapping("/getalldiscounts")
-    public List<Discount> getalldiscounts(){
-        return this.discountService.getAll();
+    public ResponseEntity<List<Discount>> getalldiscounts(){
+    List<Discount> discounts= this.discountService.getAll();
+        return new ResponseEntity<>(discounts, HttpStatus.OK);
+
     }
 
     @GetMapping("/getDiscountbyid/{id}")
     public Discount getdiscountbyid(@PathVariable Integer id){
         return this.discountService.findById(id);
-
     }
 
     @PostMapping("/addDiscount")
-    public Discount addDiscount(@RequestBody Discount discount){
-        return this.discountService.newDiscount(discount);
+    public ResponseEntity<Discount> addDiscount(@RequestBody Discount discount) {
+        if (!discount.getDiscountValue().endsWith("%")) {
+            return ResponseEntity.badRequest().body(null);
+        }
+
+        double discountPercentage;
+        try {
+            discountPercentage = Double.parseDouble(discount.getDiscountValue().replace("%", ""));
+        } catch (NumberFormatException e) {
+            return ResponseEntity.badRequest().body(null);
+        }
+
+        if (discountPercentage <= 0 || discountPercentage > 100) {
+            return ResponseEntity.badRequest().body(null);
+        }
+
+        if (discount.getCreatedDiscount().after(discount.getEndDiscount())) {
+            return ResponseEntity.badRequest().body(null);
+        }
+
+        Discount savedDiscount = discountService.newDiscount(discount);
+        return ResponseEntity.ok(savedDiscount);
     }
 
-    @PutMapping("/updateDiscount")
-    public Discount updateDiscount(@RequestBody Discount discount){
-        return this.discountService.updateDiscount(discount);
-    }
 
-    @DeleteMapping("/deleteDiscount")
-    public void deleteDisocunt(@RequestBody Discount discount){
-        this.discountService.deleteDiscount(discount);
+    @DeleteMapping("/deleteDiscount/{id}")
+    public ResponseEntity<Void> deleteDisocunt(@PathVariable Integer id)
+    {
+        discountService.deleteDiscount(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+
     }
 
 
