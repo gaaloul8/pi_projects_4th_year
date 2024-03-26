@@ -3,7 +3,7 @@ package com.esprit.pi_project.controllers;
 import com.esprit.pi_project.entities.Evenement;
 import com.esprit.pi_project.entities.FeedBack;
 import com.esprit.pi_project.entities.StatusFeedback;
-import com.esprit.pi_project.service.FeedBackService;
+import com.esprit.pi_project.services.FeedBackService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

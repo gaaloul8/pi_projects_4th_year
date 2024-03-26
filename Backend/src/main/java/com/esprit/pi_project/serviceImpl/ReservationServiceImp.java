@@ -1,10 +1,10 @@
-package com.esprit.pi_project.serviceImp;
+package com.esprit.pi_project.serviceImpl;
 
 import com.esprit.pi_project.dao.ReservationDao;
 import com.esprit.pi_project.entities.Evenement;
 import com.esprit.pi_project.entities.Reservation;
-import com.esprit.pi_project.service.EventService;
-import com.esprit.pi_project.service.ReservationService;
+import com.esprit.pi_project.services.EventService;
+import com.esprit.pi_project.services.ReservationService;
 import jakarta.annotation.Resource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

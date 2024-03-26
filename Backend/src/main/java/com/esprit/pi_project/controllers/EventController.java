@@ -2,7 +2,7 @@ package com.esprit.pi_project.controllers;
 
 import com.esprit.pi_project.entities.Evenement;
 import com.esprit.pi_project.entities.TypeEvenement;
-import com.esprit.pi_project.service.EventService;
+import com.esprit.pi_project.services.EventService;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
