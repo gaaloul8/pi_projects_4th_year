@@ -1,7 +1,6 @@
 package com.esprit.pi_project.controllers;
 
 import com.esprit.pi_project.authentification.AuthResponse;
-<<<<<<< HEAD
 import com.esprit.pi_project.authentification.ForgetPasswordRequest;
 import com.esprit.pi_project.authentification.SignInRequest;
 import com.esprit.pi_project.authentification.SignupRequest;
@@ -18,7 +17,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.mail.MessagingException;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-=======
 import com.esprit.pi_project.authentification.SignInRequest;
 import com.esprit.pi_project.authentification.SignupRequest;
 import com.esprit.pi_project.services.AuthService;
@@ -29,7 +27,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
->>>>>>> Med_Ferjani
 
 @RestController
 @RequestMapping("/auth")
@@ -52,7 +49,7 @@ public class AuthController {
         return ResponseEntity.ok(Service.login(request));
 
     }
-<<<<<<< HEAD
+
     @PostMapping("/refersh")
     public void refresh(
             HttpServletRequest request,
@@ -76,6 +73,5 @@ public class AuthController {
             return ResponseEntity.badRequest().body("Failed to reset password. Error: " + e.getMessage());
         }
     }
-=======
->>>>>>> Med_Ferjani
+
 }
