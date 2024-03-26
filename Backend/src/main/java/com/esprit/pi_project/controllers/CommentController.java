@@ -1,11 +1,12 @@
 package com.esprit.pi_project.controllers;
 
 import com.esprit.pi_project.entities.Comment;
-import com.esprit.pi_project.entities.Post;
-import com.esprit.pi_project.service.CommentService;
+import com.esprit.pi_project.serviceImpl.BadWordService;
+import com.esprit.pi_project.services.CommentService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,24 +18,34 @@ import java.util.List;
 public class CommentController {
 
     private CommentService commentService;
+    private BadWordService badWordService;
     @PostMapping("/add")
-    public Comment addComment(@RequestBody Comment comment){
-        return commentService.addComment(comment);
+    public ResponseEntity<String> addComment(@RequestBody Comment comment){
+        if (badWordService.containsBadWords(comment.getContent())){
+            return new  ResponseEntity<>("Hate speech alert. Please modify your comment before posting.",
+                    HttpStatus.CREATED);
+        }
+         commentService.addComment(comment);
+        return new ResponseEntity<>("Comment added successfully",
+                HttpStatus.CREATED);
     }
     @PutMapping("/update")
-    public Comment updateComment(@RequestBody Comment comment){
-        return commentService.updateComment(comment);
+    public ResponseEntity<String> updateComment(@RequestBody Comment comment){
+         commentService.updateComment(comment);
+        return new ResponseEntity<>("Comment updated successfully"
+                ,HttpStatus.OK);
     }
-    @GetMapping("/")
-    public List<Comment> getAllcomments(){
-        return  commentService.findAllComment();
+    @GetMapping("/getall")
+    public ResponseEntity<List<Comment>> getAllcomments(){
+        return new ResponseEntity<>(commentService.findAllComments(),HttpStatus.OK) ;
     }
     @GetMapping("/{id}")
-    public Comment getCommentById(@PathVariable Long id){
-        return commentService.findClubById(id) ; }
+    public ResponseEntity<Comment> getCommentById(@PathVariable Long id){
+        return new ResponseEntity<>(commentService.findCommentById(id),HttpStatus.OK) ; }
     @DeleteMapping("/{id}")
-    public void deleteComment(@PathVariable Long id){
-        commentService.deleteComment(id);
+    public ResponseEntity<String> deleteComment(@PathVariable Long id){
+         commentService.deleteComment(id);
+        return new ResponseEntity<>("Comment with Id " + id +" deleted successfully",HttpStatus.OK);
     }
 
 }
