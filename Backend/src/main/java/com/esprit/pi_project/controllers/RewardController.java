@@ -5,6 +5,8 @@ import com.esprit.pi_project.entities.Reward;
 import com.esprit.pi_project.entities.User;
 import com.esprit.pi_project.services.RewardService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,8 +21,9 @@ public class RewardController {
     private RewardService rewardService;
 
     @GetMapping("/getallrewards")
-    public List<Reward> getallrewards(){
-        return this.rewardService.findAll();
+    public ResponseEntity<List<Reward>> getallrewards(){
+        List<Reward> rewards= this.rewardService.findAll();
+        return new ResponseEntity<>(rewards, HttpStatus.OK);
     }
 
     @GetMapping("/findrewardbyid/{id}")
@@ -29,13 +32,19 @@ public class RewardController {
     }
 
     @PostMapping("/addreward")
-    public Reward addreward(@RequestBody Reward reward){
-        return this.rewardService.newReward(reward);
+    public ResponseEntity<Reward> addreward(@RequestBody Reward reward){
+
+        Reward reward1= this.rewardService.newReward(reward);
+            return new ResponseEntity<>(reward1, HttpStatus.CREATED);
+
+
     }
 
-    @DeleteMapping("/deletreward")
-    public void deletereward(@RequestBody Reward reward){
-         this.rewardService.deleteReward(reward);
+    @DeleteMapping("/deletreward/{id}")
+    public ResponseEntity <Void> deletereward(@PathVariable Integer id){
+         rewardService.deleteReward(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+
     }
 
     @PutMapping("/updatereward")

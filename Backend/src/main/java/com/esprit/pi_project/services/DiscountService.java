@@ -8,7 +8,7 @@ import java.util.List;
 public interface DiscountService {
     List<Discount> getAll();
     Discount newDiscount(Discount discount);
-    void  deleteDiscount(Discount discount);
+    void  deleteDiscount(Integer id);
     Discount findById(Integer id);
     Discount updateDiscount (Discount discount);
     public void calculcostafterdiscount(Discount discount);

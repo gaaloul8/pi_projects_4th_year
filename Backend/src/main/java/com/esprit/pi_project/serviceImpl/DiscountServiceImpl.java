@@ -54,8 +54,8 @@ public class DiscountServiceImpl implements DiscountService {
 
 
     @Override
-    public void deleteDiscount(Discount discount) {
-         discountDao.delete(discount);
+    public void deleteDiscount(Integer id) {
+         discountDao.deleteById(id);
     }
 
     @Override
