@@ -8,7 +8,7 @@ import com.esprit.pi_project.entities.Quiz;
 import com.esprit.pi_project.entities.QuizQuestion;
 import com.esprit.pi_project.entities.QuizUser;
 import com.esprit.pi_project.services.QuizUserService;
-//import com.esprit.pi_project.utilities.OpenAiServiceImpl;
+import com.esprit.pi_project.utilities.OpenAiServiceImpl;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-//import static com.esprit.pi_project.utilities.OpenAiServiceImpl.chatGPT;
+import static com.esprit.pi_project.utilities.OpenAiServiceImpl.chatGPT;
 @Service
 @AllArgsConstructor
 public class QuizUserServiceImpl implements QuizUserService {
@@ -46,11 +46,11 @@ public class QuizUserServiceImpl implements QuizUserService {
         reponses.add("Oui, j'ai du mal à entretenir des relations avec ma famille.");
         reponses.add("Oui, je lutte souvent avec des pensées négatives à propos de moi-même.");
 
-         //String msg = chatGPT("je vais te fournir une liste de question "+questions.toString()+"et de reponse "+reponses.toString()+
-            //    " je veux que tu fais l'interpretation de l'etat psychologique et repns comme si tu repdons à la personne qui a passe le questionnaire  ");
+        String msg = chatGPT("je vais te fournir une liste de question "+questions.toString()+"et de reponse "+reponses.toString()+
+                " je veux que tu fais l'interpretation de l'etat psychologique et repns comme si tu repdons à la personne qui a passe le questionnaire  ");
 
-      //  quizUser.setDescription(msg);
-//System.out.println(msg);
+        quizUser.setDescription(msg);
+        System.out.println(msg);
         QuizUser savedQuizUser= quizUserDao.save(quizUser);
         quiz.getQuizUsers().add(savedQuizUser);
         quizDao.save(quiz);
