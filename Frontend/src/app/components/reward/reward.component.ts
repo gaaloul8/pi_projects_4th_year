@@ -1,137 +1,85 @@
-import { Component, OnInit } from '@angular/core';
-import { RewardService } from "../../services/reward.service";
+import {Component, OnInit} from '@angular/core';
+import {RewardService} from "../../services/reward.service";
+import {FormBuilder, FormGroup, FormsModule} from "@angular/forms";
+import { CommonModule } from '@angular/common';import { ReactiveFormsModule } from '@angular/forms';
+import { map } from 'rxjs/operators';
 
 @Component({
-    selector: 'app-reward',
-    templateUrl: './reward.component.html',
-    styleUrls: ['./reward.component.scss']
+  selector: 'app-reward',
+  standalone: true,
+  imports: [CommonModule ,ReactiveFormsModule,FormsModule  ],
+  templateUrl: './reward.component.html',
+  styleUrl: './reward.component.scss'
 })
-export class RewardComponent implements OnInit {
-    rewards: any[];
+export class RewardComponent implements OnInit{
+    rewards: any[] = [];
+    rewardForm: FormGroup; // If you have a form for adding rewards
 
-    constructor(private rewardService: RewardService) { }
+    constructor(
+        private rewardService: RewardService,
+        private formBuilder: FormBuilder, // Inject FormBuilder if needed
+    ) { }
 
-    ngOnInit() {
-        this.findAll();
+    ngOnInit(): void {
+        this.loadRewards();
+        // Initialize rewardForm if you have a form for adding rewards
+        this.rewardForm = this.formBuilder.group({
+            name: [''],
+            description: [''],
+            cost: [''],
+            nbDispo: ['']
+        });
     }
 
-    findAll(): void {
+    loadRewards(): void {
         this.rewardService.getAllRewards().subscribe(
             data => {
                 this.rewards = data;
-                console.log(data);
             },
             error => {
-                console.error('Error fetching rewards:', error);
+                console.log(error);
+                // Handle error or log it
             }
         );
     }
-    addReward(event: any): void {
-        event.preventDefault();
-        const formData = new FormData(event.target);
-        const name = formData.get('name') as string;
-        const description = formData.get('description') as string;
-        const cost = parseFloat(formData.get('cost') as string);
-        const nbDispo = parseInt(formData.get('nbDispo') as string);
-        const userId = formData.get('userId') as string;
-        // Call your addReward method with the extracted data
-    }
 
-    updateReward(event: any): void {
-        event.preventDefault();
-        const formData = new FormData(event.target);
-        const id = parseInt(formData.get('updateId') as string);
-        const name = formData.get('updateName') as string;
-        const description = formData.get('updateDescription') as string;
-        const cost = parseFloat(formData.get('updateCost') as string);
-        const nbDispo = parseInt(formData.get('updateNbDispo') as string);
-        const userId = formData.get('updateUserId') as string;
-        // Call your updateReward method with the extracted data
-    }
-
-   /* addReward(name: string, description: string, cost: number, nbDispo: number, User: any): void {
-        this.rewardService.addReward(name, description, cost, nbDispo, User).subscribe(
-            reward => {
-                console.log('Reward added successfully:', reward);
-                // Optionally, you can update the rewards list here or trigger a reload
-                // this.findAll();
+    addReward(): void {
+        this.rewardService.addReward(this.rewardForm.value).subscribe(
+            data => {
+                console.log('Reward added successfully:', data);
+                this.loadRewards(); // Refresh the list of rewards
             },
             error => {
-                console.error('Error adding reward:', error);
+                console.log('Error adding reward:', error);
+                // Handle error or log it
             }
         );
     }
-*/
+
+    updateReward(id: number, reward: any): void {
+        this.rewardService.updateReward(id, reward).subscribe(
+            data => {
+                console.log('Reward updated successfully:', data);
+                this.loadRewards(); // Refresh the list of rewards
+            },
+            error => {
+                console.log('Error updating reward:', error);
+                // Handle error or log it
+            }
+        );
+    }
+
     deleteReward(id: number): void {
-        this.rewardService.deleteReward(id).subscribe(
-            () => {
-                console.log('Reward deleted successfully');
-                // Optionally, you can update the rewards list here or trigger a reload
-                // this.findAll();
-            },
-            error => {
-                console.error('Error deleting reward:', error);
-            }
-        );
+        this.rewardService.deleteReward(id)
+            .subscribe(
+                () => {
+                    console.log('Reward deleted successfully');
+                    // You can perform additional actions after successful deletion if needed
+                },
+                error => {
+                    console.error('Error deleting reward:', error);
+                    // Handle error as per your requirement, e.g., show error message to the user
+                }
+            );
     }
-/*
-    updateReward(id: number, name: string, description: string, cost: number, nbDispo: number, User: any): void {
-        this.rewardService.updateReward(id, name, description, cost, nbDispo, User).subscribe(
-            reward => {
-                console.log('Reward updated successfully:', reward);
-                // Optionally, you can update the rewards list here or trigger a reload
-                // this.findAll();
-            },
-            error => {
-                console.error('Error updating reward:', error);
-            }
-        );
-    }
-
- */
-    purchaseReward(id: number): void {
-        this.rewardService.purchaseReward(id).subscribe(
-            () => {
-                console.log('Reward purchased successfully');
-                // Optionally, you can update the rewards list here or trigger a reload
-                // this.findAll();
-            },
-            error => {
-                console.error('Error purchasing reward:', error);
-            }
-        );
-    }
-
-    getStatistics(): void {
-        this.rewardService.getStatistics().subscribe(
-            statistics => {
-                console.log('User statistics:', statistics);
-            },
-            error => {
-                console.error('Error fetching statistics:', error);
-            }
-        );
-    }
-
-    getRewardsWithDiscount(): void {
-        this.rewardService.getRewardsWithDiscount().subscribe(
-            rewards => {
-                console.log('Rewards with discount:', rewards);
-            },
-            error => {
-                console.error('Error fetching rewards with discount:', error);
-            }
-        );
-    }
-
-    getRewardsWithoutDiscount(): void {
-        this.rewardService.getRewardsWithoutDiscount().subscribe(
-            rewards => {
-                console.log('Rewards without discount:', rewards);
-            },
-            error => {
-                console.error('Error fetching rewards without discount:', error);
-            }
-        );
-    }
-}
+    // You can implement other methods similarly

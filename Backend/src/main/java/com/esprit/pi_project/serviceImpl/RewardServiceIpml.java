@@ -140,7 +140,8 @@ public class RewardServiceIpml implements RewardService {
 
         long totalUsers = userDao.count();
         long usersWithRewards = transactionHistoryDao.nbactiveusers();
-        long usersWithNoRewards = usersWithRewards - totalUsers;
+        long usersWithNoRewards =totalUsers - usersWithRewards ;
+ 
 
         statistics.put("totalUsers", totalUsers);
         statistics.put("usersWithRewards", usersWithRewards);
