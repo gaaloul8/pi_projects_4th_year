@@ -2,6 +2,11 @@ import { RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
 import { NotfoundComponent } from './demo/components/notfound/notfound.component';
 import { AppLayoutComponent } from "./layout/app.layout.component";
+import {RewardComponent} from "./components/reward/reward.component";
+import {DiscountsComponent} from "./components/discounts/discounts.component";
+import {TransactionhistoryComponent} from "./components/transactionhistory/transactionhistory.component";
+import {RewardusersComponent} from "./components/rewardusers/rewardusers.component";
+import {StatisticsComponent} from "./components/statistics/statistics.component";
 
 @NgModule({
     imports: [
@@ -20,6 +25,13 @@ import { AppLayoutComponent } from "./layout/app.layout.component";
             { path: 'auth', loadChildren: () => import('./demo/components/auth/auth.module').then(m => m.AuthModule) },
             { path: 'landing', loadChildren: () => import('./demo/components/landing/landing.module').then(m => m.LandingModule) },
             { path: 'notfound', component: NotfoundComponent },
+            { path: 'reward', component: RewardComponent },
+            { path: 'statistics', component: StatisticsComponent },
+
+            { path: 'discounts', component: DiscountsComponent },
+            { path: 'transactions', component: TransactionhistoryComponent },
+            { path: 'rewardusers', component: RewardusersComponent },
+
             { path: '**', redirectTo: '/notfound' },
         ], { scrollPositionRestoration: 'enabled', anchorScrolling: 'enabled', onSameUrlNavigation: 'reload' })
     ],

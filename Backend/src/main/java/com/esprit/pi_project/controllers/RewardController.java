@@ -14,6 +14,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/reward")
+@CrossOrigin(origins = "http://localhost:4200", maxAge = 3600, allowCredentials = "true")
 public class RewardController {
     @Autowired
     private RewardDao rewardDao;
