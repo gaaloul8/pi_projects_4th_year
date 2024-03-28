@@ -2,6 +2,7 @@ package com.esprit.pi_project.controllers;
 
 import com.esprit.pi_project.dao.RewardDao;
 import com.esprit.pi_project.entities.Reward;
+import com.esprit.pi_project.entities.TransactionHistory;
 import com.esprit.pi_project.entities.User;
 import com.esprit.pi_project.services.RewardService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -72,6 +73,10 @@ public class RewardController {
     @GetMapping("/withnodisoucnt")
     public List<Reward>rewardwithnodiscount(){
         return this.rewardService.findrewardWithNoDiscount();
+    }
+    @GetMapping("/getalltransactions")
+    public List<TransactionHistory>getalltransactions(){
+        return this.rewardService.getalltransactions();
     }
 
 

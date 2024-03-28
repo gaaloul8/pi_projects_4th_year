@@ -3,6 +3,8 @@ import { NgModule } from '@angular/core';
 import { NotfoundComponent } from './demo/components/notfound/notfound.component';
 import { AppLayoutComponent } from "./layout/app.layout.component";
 import {RewardComponent} from "./components/reward/reward.component";
+
+import { BrowserModule } from '@angular/platform-browser';
 import {DiscountsComponent} from "./components/discounts/discounts.component";
 import {TransactionhistoryComponent} from "./components/transactionhistory/transactionhistory.component";
 import {RewardusersComponent} from "./components/rewardusers/rewardusers.component";
@@ -10,6 +12,7 @@ import {StatisticsComponent} from "./components/statistics/statistics.component"
 
 @NgModule({
     imports: [
+        BrowserModule ,
         RouterModule.forRoot([
             {
                 path: '', component: AppLayoutComponent,
@@ -32,7 +35,15 @@ import {StatisticsComponent} from "./components/statistics/statistics.component"
             { path: 'transactions', component: TransactionhistoryComponent },
             { path: 'rewardusers', component: RewardusersComponent },
 
+            { path: 'discounts', component: DiscountsComponent },
+            { path: 'transactions', component: TransactionhistoryComponent },
+            { path: 'statistics', component: StatisticsComponent },
+            { path: 'rewardusers', component: RewardusersComponent },
+
+
+
             { path: '**', redirectTo: '/notfound' },
+
         ], { scrollPositionRestoration: 'enabled', anchorScrolling: 'enabled', onSameUrlNavigation: 'reload' })
     ],
     exports: [RouterModule]
