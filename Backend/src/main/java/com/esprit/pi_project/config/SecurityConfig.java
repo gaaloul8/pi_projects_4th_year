@@ -30,6 +30,7 @@ public class SecurityConfig {
                 .authorizeRequests(authorizeRequests ->
                         authorizeRequests
                                 .requestMatchers("/auth/**","/profile/","/auth/reset-password/").permitAll()
+                                .requestMatchers("/discount/**","reward/**").permitAll()
                              //   .requestMatchers("/auth/admin").hasAnyRole(Admin.name())
                                // .requestMatchers(HttpMethod.GET,"/auth/admin").hasAnyAuthority(ADMIN_READ.name())
                                 .anyRequest().authenticated()

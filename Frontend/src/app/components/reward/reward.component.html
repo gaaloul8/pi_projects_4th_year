@@ -1,1 +1,87 @@
-<p>reward works!</p>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reward Component Test</title>
+</head>
+<body>
+
+<h1>Reward Component Test</h1>
+
+<button (click)="findAll()">Find All Rewards</button>
+<br><br>
+
+<<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reward Component Test</title>
+</head>
+<body>
+
+<h1>Reward Component Test</h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reward Component Test</title>
+</head>
+<body>
+
+<h1>Reward Component Test</h1>
+<form (submit)="addReward($event)">
+    <label for="name">Name:</label><br>
+    <input type="text" id="name" name="name"><br>
+    <label for="description">Description:</label><br>
+    <input type="text" id="description" name="description"><br>
+    <label for="cost">Cost:</label><br>
+    <input type="number" id="cost" name="cost"><br>
+    <label for="nbDispo">Number Available:</label><br>
+    <input type="number" id="nbDispo" name="nbDispo"><br>
+    <label for="userId">User ID:</label><br>
+    <input type="text" id="userId" name="userId"><br><br>
+    <button type="submit">Add Reward</button>
+</form>
+<br><br>
+
+<!-- Form to update a reward -->
+<form (submit)="updateReward($event)">
+    <label for="updateId">Reward ID to Update:</label><br>
+    <input type="number" id="updateId" name="updateId"><br>
+    <label for="updateName">New Name:</label><br>
+    <input type="text" id="updateName" name="updateName"><br>
+    <label for="updateDescription">New Description:</label><br>
+    <input type="text" id="updateDescription" name="updateDescription"><br>
+    <label for="updateCost">New Cost:</label><br>
+    <input type="number" id="updateCost" name="updateCost"><br>
+    <label for="updateNbDispo">New Number Available:</label><br>
+    <input type="number" id="updateNbDispo" name="updateNbDispo"><br>
+    <label for="updateUserId">New User ID:</label><br>
+    <input type="text" id="updateUserId" name="updateUserId"><br><br>
+    <button type="submit">Update Reward</button>
+</form>
+<br><br>
+<script>
+    // Prevent default form submission behavior
+    document.querySelectorAll('form').forEach(form => {
+        form.addEventListener('submit', function(event) {
+            event.preventDefault();
+        });
+    });
+</script>
+
+
+<button (click)="getStatistics()">Get Statistics</button>
+<br><br>
+
+<button (click)="getRewardsWithDiscount()">Get Rewards With Discount</button>
+<br><br>
+
+<button (click)="getRewardsWithoutDiscount()">Get Rewards Without Discount</button>
+<br><br>
+
+</body>
+</html>
