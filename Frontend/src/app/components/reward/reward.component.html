@@ -1,0 +1,27 @@
+<div>
+    <h2>Rewards List</h2>
+    <button (click)="addReward()">Add Reward</button>
+    <table>
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Cost</th>
+            <th>Number Available</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let reward of rewards">
+            <td>{{ reward.name }}</td>
+            <td>{{ reward.description }}</td>
+            <td>{{ reward.cost }}</td>
+            <td>{{ reward.nbDispo }}</td>
+            <td>
+                <button (click)="updateReward(7,reward)">Update</button>
+                <button (click)="deleteReward(9)">Delete</button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
