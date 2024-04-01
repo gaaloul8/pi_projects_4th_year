@@ -141,6 +141,7 @@ public class RewardServiceIpml implements RewardService {
         long totalUsers = userDao.count();
         long usersWithRewards = transactionHistoryDao.nbactiveusers();
         long usersWithNoRewards =totalUsers - usersWithRewards ;
+ 
 
         statistics.put("totalUsers", totalUsers);
         statistics.put("usersWithRewards", usersWithRewards);
@@ -160,5 +161,8 @@ public class RewardServiceIpml implements RewardService {
         return rewardDao.findRewardsWithNoDiscount();
     }
 
-
+    @Override
+    public List<TransactionHistory>getalltransactions(){
+           return transactionHistoryDao.findAll();
+    }
 }
