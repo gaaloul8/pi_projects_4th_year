@@ -11,14 +11,15 @@ import { map } from 'rxjs/operators';
   templateUrl: './reward.component.html',
   styleUrl: './reward.component.scss'
 })
-export class RewardComponent implements OnInit{
+export class RewardComponent implements OnInit {
     rewards: any[] = [];
     rewardForm: FormGroup; // If you have a form for adding rewards
 
     constructor(
         private rewardService: RewardService,
         private formBuilder: FormBuilder, // Inject FormBuilder if needed
-    ) { }
+    ) {
+    }
 
     ngOnInit(): void {
         this.loadRewards();
@@ -82,4 +83,5 @@ export class RewardComponent implements OnInit{
                 }
             );
     }
+}
     // You can implement other methods similarly
