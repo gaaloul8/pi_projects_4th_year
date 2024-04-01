@@ -86,3 +86,11 @@ export class RewardComponent implements OnInit{
 }
 
 
+
+
+
+
+
+
+
+
