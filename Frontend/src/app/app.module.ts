@@ -11,24 +11,11 @@ import { EventService } from './demo/service/event.service';
 import { IconService } from './demo/service/icon.service';
 import { NodeService } from './demo/service/node.service';
 import { PhotoService } from './demo/service/photo.service';
-import { ReactiveFormsModule } from '@angular/forms';
-import {RewardService} from "./services/reward.service";
-import {RewardusersComponent} from "./components/rewardusers/rewardusers.component";
-import {DiscountService} from "./services/discounts/discounts.module";
-import {RewardComponent} from "./components/reward/reward.component";
-import { BrowserModule } from '@angular/platform-browser';
-@NgModule({
-    declarations: [AppComponent, NotfoundComponent,],
-    imports: [AppRoutingModule, AppLayoutModule,ReactiveFormsModule,BrowserModule],
-    providers: [
-        { provide: LocationStrategy, useClass: PathLocationStrategy },
-        CountryService, CustomerService, EventService, IconService, NodeService,
-        PhotoService, ProductService,RewardService,DiscountService
 import { BrowserModule } from '@angular/platform-browser';
 import { CommonModule } from '@angular/common';
 import {HttpClient, HttpClientModule} from "@angular/common/http";
 import {RewardComponent} from "./components/reward/reward.component";
-import {FormsModule} from "@angular/forms";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {TableModule} from "primeng/table";
 import {CrudRoutingModule} from "./demo/components/pages/crud/crud-routing.module";
 import {FileUploadModule} from "primeng/fileupload";
@@ -47,10 +34,14 @@ import {DiscountsComponent} from "./components/discounts/discounts.component";
 import {TransactionhistoryComponent} from "./components/transactionhistory/transactionhistory.component";
 import {RewardusersComponent} from "./components/rewardusers/rewardusers.component";
 import {StatisticsComponent} from "./components/statistics/statistics.component";
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {MatTableModule} from "@angular/material/table";
+import {MatSnackBarModule} from "@angular/material/snack-bar";
+import {OverlayModule} from "@angular/cdk/overlay";
 
 
 @NgModule({
-    declarations: [AppComponent, NotfoundComponent,RewardComponent],
+    declarations: [AppComponent, NotfoundComponent,RewardComponent, ],
     imports: [AppRoutingModule, AppLayoutModule, BrowserModule, CommonModule, HttpClientModule, FormsModule, TableModule, CommonModule,
         CrudRoutingModule,
         TableModule,
@@ -66,7 +57,13 @@ import {StatisticsComponent} from "./components/statistics/statistics.component"
         DropdownModule,
         RadioButtonModule,
         InputNumberModule,
-        DialogModule],
+        DialogModule,
+        BrowserAnimationsModule,
+        MatTableModule,
+        MatSnackBarModule,
+        OverlayModule,
+        ReactiveFormsModule],
+
     providers: [
         { provide: LocationStrategy, useClass: PathLocationStrategy },
         CountryService, CustomerService, EventService, IconService, NodeService,

@@ -1,0 +1,15 @@
+<div class="form-container">
+    <form [formGroup]="reclamationForm" (ngSubmit)="onSubmit()">
+        <div class="field">
+            <label for="title">Title</label>
+            <input pInputText id="title" formControlName="title" type="text" placeholder="Enter title">
+            <small *ngIf="reclamationForm.get('title').errors && reclamationForm.get('title').touched" class="p-error">Title is required.</small>
+        </div>
+        <div class="field">
+            <label for="description">Description</label>
+            <input pInputText id="description" formControlName="description" type="text" placeholder="Enter description">
+            <small *ngIf="reclamationForm.get('description').errors && reclamationForm.get('description').touched" class="p-error">Description is required.</small>
+        </div>
+        <button type="submit" pButton label="Submit" [disabled]="!reclamationForm.valid"></button>
+    </form>
+</div>
