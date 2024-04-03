@@ -83,3 +83,14 @@ export class RewardComponent implements OnInit{
             );
     }
     // You can implement other methods similarly
+}
+
+
+
+
+
+
+
+
+
+
