@@ -1,0 +1,51 @@
+<div class="col-md-12">
+    <div class="card">
+        <div class="card-header card-header-rose card-header-icon">
+            <div class="card-icon">
+                <i class="material-icons">assignment</i>
+            </div>
+            <h4 class="card-title">Reclamation Demands</h4>
+            <app-custom-notification #customNotification></app-custom-notification>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Title</th>
+            <th>Description</th>
+            <th>Status</th>
+            <th>Status</th>
+            <th>Created At</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let reclamation of reclamations" >
+            <td>{{ reclamation.reclamationId }}</td>
+            <td>{{ reclamation.title }}</td>
+            <td>{{ reclamation.description }}</td>
+            <td >{{ reclamation.status }}</td>
+            <td>
+                <select [ngModel]="reclamation.status" (ngModelChange)="updateReclamationStatus(reclamation.reclamationId, $event)" class="custom-select">
+                    <option *ngFor="let status of reclamationStatuses" [ngValue]="status">
+                        {{ status }}
+                    </option>
+                </select>
+            </td>
+
+            <td>{{ reclamation.createdAt | date: 'short' }}</td>
+
+            <td class="td-actions text-right" style="position: relative;">
+                <button (click)="archiveReclamation(reclamation.reclamationId)" mat-icon-button>
+                    <mat-icon>archive</mat-icon>
+                </button>
+            </td>
+        </tr>
+        </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
