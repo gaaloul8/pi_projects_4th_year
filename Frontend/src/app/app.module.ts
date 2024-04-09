@@ -28,6 +28,11 @@ import { InputNumberModule } from 'primeng/inputnumber';
 import { DialogModule } from 'primeng/dialog';
 import { FormsModule } from '@angular/forms'; 
 import { ReactiveFormsModule } from '@angular/forms';
+import {RewardService} from "./services/reward.service";
+import {RewardusersComponent} from "./components/rewardusers/rewardusers.component";
+import {DiscountService} from "./services/discounts/discounts.module";
+import {RewardComponent} from "./components/reward/reward.component";
+import { BrowserModule } from '@angular/platform-browser';
 
 
 @NgModule({
@@ -50,13 +55,14 @@ import { ReactiveFormsModule } from '@angular/forms';
         InputNumberModule,
         FormsModule,
         ReactiveFormsModule,
-        ]
-        ,
-    providers: [
-        { provide: LocationStrategy, useClass: PathLocationStrategy },
-        CountryService, CustomerService, EventService, IconService, NodeService,
-        PhotoService, ProductService
-    ],
-    bootstrap: [AppComponent],
-})
+        ReactiveFormsModule,
+        BrowserModule
+        ],
+        providers: [
+            { provide: LocationStrategy, useClass: PathLocationStrategy },
+            CountryService, CustomerService, EventService, IconService, NodeService,
+            PhotoService, ProductService,RewardService,DiscountService
+        ],
+        bootstrap: [AppComponent]
+    })
 export class AppModule {}

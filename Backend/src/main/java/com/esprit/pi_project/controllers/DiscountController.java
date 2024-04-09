@@ -14,6 +14,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/discount")
+@CrossOrigin(origins = "http://localhost:4200", maxAge = 3600, allowCredentials = "true")
 public class DiscountController {
     @Autowired
     private DiscountService discountService;
