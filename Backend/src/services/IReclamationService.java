@@ -13,6 +13,9 @@ public interface IReclamationService {
     void deleteReclamation(int id);
     Reclamation updateReclamationStatus(int id, ReclamationStatus newStatus);
     void archiveReclamation(int id);
+     List<Reclamation> searchReclamationsByTitle(String title);
+    List<Reclamation> getNewestReclamations();
+    List<Reclamation> getOldestReclamations();
 
 
 }
