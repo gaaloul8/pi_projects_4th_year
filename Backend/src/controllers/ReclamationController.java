@@ -71,5 +71,20 @@ public class ReclamationController {
          reclamationService.archiveReclamation(id);
     }
 
+    @GetMapping("/oldest")
+    public List<Reclamation> getOldestReclamations() {
+        return reclamationService.getOldestReclamations();
+    }
+
+    @GetMapping("/newest")
+    public List<Reclamation> getNewestReclamations() {
+        return reclamationService.getNewestReclamations();
+    }
+
+    @GetMapping("/search")
+    public List<Reclamation> searchReclamationsByTitle(@RequestParam String title) {
+        return reclamationService.searchReclamationsByTitle(title);
+    }
+
 
 }
