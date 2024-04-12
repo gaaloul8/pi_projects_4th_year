@@ -83,5 +83,26 @@ public class ReclamationService implements IReclamationService{
         }
     }
 
+    @Override
+    public List<Reclamation> getOldestReclamations() {
+        return reclamationRepository.findAll()
+                .stream()
+                .sorted(Comparator.comparing(Reclamation::getCreatedAt))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Reclamation> getNewestReclamations() {
+        return reclamationRepository.findAll()
+                .stream()
+                .sorted(Comparator.comparing(Reclamation::getCreatedAt).reversed())
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Reclamation> searchReclamationsByTitle(String title) {
+        return reclamationRepository.findByTitleContainingIgnoreCase(title);
+    }
+
 
 }
