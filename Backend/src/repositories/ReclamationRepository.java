@@ -10,4 +10,5 @@ public interface ReclamationRepository extends JpaRepository<Reclamation, Intege
 
     List<Reclamation> findByIsArchivedTrue();
 
+     List<Reclamation> findByTitleContainingIgnoreCase(String title);
 }
