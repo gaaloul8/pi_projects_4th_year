@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 export class ForumService {
 
   private baseUrl = 'http://localhost:8081/forums';
-  private token = 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtZWQxQGVzcHJpdC50biIsImlhdCI6MTcxMjIyMzUwNiwiZXhwIjoxNzEyMzA5OTA2fQ.gAG5R0mk418d2GohgbyQvYOXkrBWrexsuJpe1gjiK_M';
+  private token = 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ5YXMub2JiYUBlc3ByaXQudG4iLCJpYXQiOjE3MTI4NTA5MjcsImV4cCI6MTcxMjkzNzMyN30.9g17kC7eHN1E9U0uhqd4IWQ4VsA44q9yXQ0t1JU4ZB0';
 
 
   constructor(private http: HttpClient) { }
