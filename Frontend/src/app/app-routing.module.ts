@@ -9,6 +9,9 @@ import {DiscountsComponent} from "./components/discounts/discounts.component";
 import {TransactionhistoryComponent} from "./components/transactionhistory/transactionhistory.component";
 import {RewardusersComponent} from "./components/rewardusers/rewardusers.component";
 import {StatisticsComponent} from "./components/statistics/statistics.component";
+import { EventBackComponent } from './components/event-back/event-back.component';
+import { EventfrontComponent } from './components/eventfront/eventfront.component';
+
 
 @NgModule({
     imports: [
@@ -41,7 +44,8 @@ import {StatisticsComponent} from "./components/statistics/statistics.component"
             { path: 'statistics', component: StatisticsComponent },
             { path: 'rewardusers', component: RewardusersComponent },
 
-
+            {path:'eventBack',component : EventBackComponent },
+            {path:'eventFront',component : EventfrontComponent},
 
             { path: '**', redirectTo: '/notfound' },
 

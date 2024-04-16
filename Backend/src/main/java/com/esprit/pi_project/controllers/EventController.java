@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:4200", maxAge = 3600, allowCredentials = "true")
 public class EventController {
 
     @Autowired
@@ -43,20 +44,16 @@ public class EventController {
 
     }
 
-    @DeleteMapping("/events/{idEvent}")
-    public ResponseEntity<String>  deleteEvent(@PathVariable Integer  idEvent) {
-        try {
-            eventService.deleteEvenementByidEvent(idEvent);
-            return ResponseEntity.ok().build();
-            // Renvoyer une réponse 200 OK si la suppression réussit
-        } catch (EntityNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-            // Renvoyer un message d'erreur
-        }
+    @DeleteMapping("/{idEvent}")
+    public ResponseEntity<Void>  deleteEvent(@PathVariable Integer  idEvent) {
+        eventService.deleteEvenementByidEvent(idEvent);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+
+
     }
 
     @GetMapping("/searchByDate/{date}")
-    public List<Evenement> searchEventByDate (@PathVariable @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")Date date){
+    public List<Evenement> searchEventByDate (@PathVariable @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX")Date date){
         return eventService.searchEventByDate(date);
     }
 
