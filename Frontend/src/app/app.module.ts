@@ -7,6 +7,7 @@ import { NotfoundComponent } from './demo/components/notfound/notfound.component
 import { ProductService } from './demo/service/product.service';
 import { CountryService } from './demo/service/country.service';
 import { CustomerService } from './demo/service/customer.service';
+import { EventService } from './demo/service/event.service';
 import { IconService } from './demo/service/icon.service';
 import { NodeService } from './demo/service/node.service';
 import { PhotoService } from './demo/service/photo.service';
@@ -25,27 +26,23 @@ import { DropdownModule } from 'primeng/dropdown';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { DialogModule } from 'primeng/dialog';
-import { FormsModule } from '@angular/forms'; 
+import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import {RewardService} from "./services/reward.service";
 import {RewardusersComponent} from "./components/rewardusers/rewardusers.component";
 import {DiscountService} from "./services/discounts/discounts.module";
 import {RewardComponent} from "./components/reward/reward.component";
-import { HttpClientModule } from '@angular/common/http';
-import { EventBackComponent } from '../app/components/event-back/event-back.component';
-import { BrowserModule } from '@angular/platform-browser'
-import { EventService } from './services/event.service';
-import { MessageService } from 'primeng/api';
-import { CalendarModule } from 'primeng/calendar';
-import { DataViewModule } from 'primeng/dataview';
-
+import { BrowserModule } from '@angular/platform-browser';
+import {MessageService} from "primeng/api";
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
 
 
 @NgModule({
-    declarations: [AppComponent, NotfoundComponent,ForumComponent,EventBackComponent],
-    imports: [AppRoutingModule, 
-        AppLayoutModule , 
+    declarations: [AppComponent, NotfoundComponent , ForumComponent],
+    imports: [AppRoutingModule,
+        AppLayoutModule ,
         DialogModule ,
+        CommonModule ,
         TableModule,
         FileUploadModule,
         ButtonModule,
@@ -61,21 +58,12 @@ import { DataViewModule } from 'primeng/dataview';
         FormsModule,
         ReactiveFormsModule,
         ReactiveFormsModule,
-        BrowserModule,
-        DialogModule,
-        ToolbarModule,
-        TableModule,
-        HttpClientModule,
-        CommonModule,
-        BrowserModule,
-        CalendarModule,
-        ReactiveFormsModule,
-        DataViewModule
+        BrowserModule,ConfirmDialogModule
         ],
         providers: [
             { provide: LocationStrategy, useClass: PathLocationStrategy },
-            CountryService, CustomerService, IconService, NodeService,
-            PhotoService, ProductService,RewardService,DiscountService,EventService, MessageService,
+            CountryService, CustomerService, EventService, IconService, NodeService,
+            PhotoService, ProductService,RewardService,DiscountService,MessageService
         ],
         bootstrap: [AppComponent]
     })

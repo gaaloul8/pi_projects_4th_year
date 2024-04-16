@@ -70,19 +70,28 @@ export class RewardService {
         return this.http.get<any[]>(`${this.baseUrl}/withnodiscount`);
     }
 
-    deleteReward(id: number): Observable<void> {
-        const url = `${this.baseUrl}/deletreward/${id}`;
-        return this.http.delete<void>(url, { observe: 'response' }).pipe(
-            map(response => {
-                if (response.status === 204) {
-                    return response.body; // If successful, return the response body
-                } else {
-                    throw new Error('Failed to delete reward'); // Handle error as per your requirement
-                }
-            })
-        );
+    deleteReward(Rewardid: number): Observable<void> {
+        const url = `${this.baseUrl}/deletreward/${Rewardid}`;
+        return this.http.delete<void>(url)
     }
 
 
 
+}
+export interface Reward {
+    idReward?: number;
+    name?: string;
+    User?: User;
+    cost?: number;
+    description?: string;
+    nbDispo?: number;
+}
+export interface User {
+    id_user?: number;
+    firstName?: string;
+    lastName?: string;
+    password?: string;
+    resetToken?: string;
+    email?: string;
+    role?: string;
 }
