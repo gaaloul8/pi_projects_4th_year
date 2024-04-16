@@ -1,27 +1,61 @@
-<div>
-    <h2>Rewards List</h2>
-    <button (click)="addReward()">Add Reward</button>
-    <table>
-        <thead>
-        <tr>
-            <th>Name</th>
-            <th>Description</th>
-            <th>Cost</th>
-            <th>Number Available</th>
-            <th>Actions</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr *ngFor="let reward of rewards">
-            <td>{{ reward.name }}</td>
-            <td>{{ reward.description }}</td>
-            <td>{{ reward.cost }}</td>
-            <td>{{ reward.nbDispo }}</td>
-            <td>
-                <button (click)="updateReward(7,reward)">Update</button>
-                <button (click)="deleteReward(9)">Delete</button>
-            </td>
-        </tr>
-        </tbody>
-    </table>
-</div>
+<!-- reward.component.html -->
+
+<!-- Button to add new reward -->
+<button type="button" class="btn btn-primary mb-3" (click)="showDialogToAdd()">
+    <i class="pi pi-plus"></i> Add Reward
+</button>
+
+<!-- Table to display rewards -->
+<table class="table">
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>Description</th>
+        <th>Cost</th>
+        <th>Available Quantity</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let reward of rewards">
+        <td>{{ reward.name }}</td>
+        <td>{{ reward.description }}</td>
+        <td>{{ reward.cost }}</td>
+        <td>{{ reward.nbDispo }}</td>
+        <td>
+            <!-- Button to update reward -->
+            <button type="button" class="btn btn-sm btn-info mr-2" (click)="showDialogToUpdate(reward)">
+                <i class="pi pi-pencil"></i> Update
+            </button>
+            <!-- Button to delete reward -->
+            <button type="button" class="btn btn-sm btn-danger" (click)="deleteReward(reward.idReward)">
+                <i class="pi pi-trash"></i> Delete
+            </button>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<!-- Dialog for adding/updating reward -->
+<p-dialog header="Add/Edit Reward" [(visible)]="rewardDialog" [modal]="true" [responsive]="true" [style]="{width: '500px'}">
+    <form [formGroup]="rewardForm" (ngSubmit)="submitted ? updateReward() : addReward()">
+        <div class="form-group">
+            <label for="name">Name:</label>
+            <input type="text" class="form-control" id="name" formControlName="name" required>
+        </div>
+        <div class="form-group">
+            <label for="description">Description:</label>
+            <input type="text" class="form-control" id="description" formControlName="description" required>
+        </div>
+        <div class="form-group">
+            <label for="cost">Cost:</label>
+            <input type="number" class="form-control" id="cost" formControlName="cost" required>
+        </div>
+        <div class="form-group">
+            <label for="nbDispo">Available Quantity:</label>
+            <input type="number" class="form-control" id="nbDispo" formControlName="nbDispo" required>
+        </div>
+        <button type="submit" class="btn btn-primary">{{ submitted ? 'Update' : 'Add' }}</button>
+        <button type="button" class="btn btn-secondary" (click)="hideDialog()">Cancel</button>
+    </form>
+</p-dialog>

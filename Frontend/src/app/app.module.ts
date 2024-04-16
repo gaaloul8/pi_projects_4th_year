@@ -26,19 +26,21 @@ import { DropdownModule } from 'primeng/dropdown';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { DialogModule } from 'primeng/dialog';
-import { FormsModule } from '@angular/forms'; 
+import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import {RewardService} from "./services/reward.service";
 import {RewardusersComponent} from "./components/rewardusers/rewardusers.component";
 import {DiscountService} from "./services/discounts/discounts.module";
 import {RewardComponent} from "./components/reward/reward.component";
 import { BrowserModule } from '@angular/platform-browser';
+import {MessageService} from "primeng/api";
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
 
 
 @NgModule({
     declarations: [AppComponent, NotfoundComponent , ForumComponent],
-    imports: [AppRoutingModule, 
-        AppLayoutModule , 
+    imports: [AppRoutingModule,
+        AppLayoutModule ,
         DialogModule ,
         CommonModule ,
         TableModule,
@@ -56,12 +58,12 @@ import { BrowserModule } from '@angular/platform-browser';
         FormsModule,
         ReactiveFormsModule,
         ReactiveFormsModule,
-        BrowserModule
+        BrowserModule,ConfirmDialogModule
         ],
         providers: [
             { provide: LocationStrategy, useClass: PathLocationStrategy },
             CountryService, CustomerService, EventService, IconService, NodeService,
-            PhotoService, ProductService,RewardService,DiscountService
+            PhotoService, ProductService,RewardService,DiscountService,MessageService
         ],
         bootstrap: [AppComponent]
     })
