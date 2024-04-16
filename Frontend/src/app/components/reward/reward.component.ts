@@ -11,11 +11,17 @@ import {InputTextModule} from "primeng/inputtext";
 import {InputTextareaModule} from "primeng/inputtextarea";
 import {RippleModule} from "primeng/ripple";
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import {Event} from "../../interfaces/event";
+import {CalendarModule} from "primeng/calendar";
+import {InputNumberModule} from "primeng/inputnumber";
+import {TableModule} from "primeng/table";
+import {ToolbarModule} from "primeng/toolbar";
+//import { reward } from "../../interfaces/reward";
 
 @Component({
   selector: 'app-reward',
   standalone: true,
-    imports: [CommonModule, ReactiveFormsModule, FormsModule, ButtonModule, DialogModule, DropdownModule, InputTextModule, InputTextareaModule, RippleModule, SharedModule],
+    imports: [CommonModule, ReactiveFormsModule, FormsModule, ButtonModule, DialogModule, DropdownModule, InputTextModule, InputTextareaModule, RippleModule, SharedModule, CalendarModule, InputNumberModule, TableModule, ToolbarModule],
   templateUrl: './reward.component.html',
   styleUrl: './reward.component.scss'
 })
@@ -23,79 +29,101 @@ export class RewardComponent implements OnInit{
     rewards: Reward[] = [];
     rewardForm: FormGroup;
     rewardDialog: boolean = false;
-    selectedReward: Reward;
     submitted: boolean = false;
+    reward:Reward={};
+    messageService: MessageService
+    deleteRewardDialog: boolean = false;
+    selectedRewardId: number;
 
     constructor(
         private rewardService: RewardService,
         private formBuilder: FormBuilder,
-        private messageService: MessageService
     ) { }
 
     ngOnInit(): void {
         this.loadRewards();
-        this.rewardForm = this.formBuilder.group({
-            idReward: [''],
-            name: [''],
-            description: [''],
-            cost: [''],
-            nbDispo: ['']
-        });
     }
 
     loadRewards(): void {
         this.rewardService.getAllRewards().subscribe(
-            data => {
-                this.rewards = data;
+            (rewards:Reward[]) => {
+                this.rewards = rewards;
+                console.log('Events:', this.rewards);
+
             },
             error => {
-                console.log(error);
+                console.log("error fetching rewards",error);
             }
         );
     }
 
     addReward(): void {
-        this.rewardService.addReward(this.rewardForm.value).subscribe(
-            data => {
-                this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Reward added successfully' });
-                this.loadRewards(); // Refresh rewards after adding
-                this.hideDialog();
-            },
-            error => {
-                console.log('Error adding reward:', error);
-            }
-        );
+        this.submitted = true;
+        try {
+            this.rewardService.addReward(this.reward).toPromise();
+            console.log("reward created");
+            this.rewardDialog = false;
+            window.location.reload();
+        } catch (error) {
+            console.error(error);
+
+        }
     }
 
-    updateReward(): void {
-        this.rewardService.updateReward(this.selectedReward.idReward, this.rewardForm.value).subscribe(
-            data => {
-                this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Reward updated successfully' });
-                this.loadRewards(); // Refresh rewards after updating
-                this.hideDialog();
-            },
-            error => {
-                console.log('Error updating reward:', error);
-            }
-        );
+    openNew() {
+        this.reward = {};
+        this.submitted = false;
+        this.rewardDialog = true;
     }
 
-    deleteReward(id: number): void {
-        this.rewardService.deleteReward(id).subscribe(
+    hideDialog() {
+        this.rewardDialog = false;
+        this.submitted = false;
+    }
+
+
+    deleteReward(Rewardid: number): void {
+        this.rewardService.deleteReward(Rewardid).subscribe(
             () => {
-                this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Reward deleted successfully' });
+                if (this.messageService) {
+                    this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Event Deleted Successfully', life: 3000 });
+                }
                 this.loadRewards(); // Refresh rewards after deletion
+                this.deleteRewardDialog = false; // Move it here
             },
             error => {
                 console.error('Error deleting reward:', error);
+                if (this.messageService) {
+                    this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Failed to delete event', life: 3000 });
+                }
+                this.deleteRewardDialog = false; // Move it here too, to handle error case
             }
         );
     }
 
-    confirmDelete(id: number): void {
-        this.selectedReward = this.rewards.find(reward => reward.idReward === id);
-        this.messageService.clear();
-        this.messageService.add({ severity: 'warn', summary: 'Confirm', detail: 'Are you sure you want to delete this reward?' });
+
+    confirmDelete(Rewardid: number){
+        this.selectedRewardId = Rewardid;
+        this.deleteRewardDialog = true;
+    }
+
+
+    updateEvent(reward1 : Reward) {
+        this.rewardService.updatereward(reward1).subscribe(
+            updatedReward => {
+                console.log('Event updated:', updatedReward);
+                // Réussite : Gérer la réponse mise à jour si nécessaire
+            },
+            error => {
+                console.error('Error updating event:', error);
+                // Erreur : Gérer les erreurs si nécessaire
+            }
+        );
+    }
+
+    editReward(rewardEdit : Reward) {
+        this.reward = { ...rewardEdit };
+        this.rewardDialog = true;
     }
 
     showDialogToAdd(): void {
@@ -103,15 +131,8 @@ export class RewardComponent implements OnInit{
         this.rewardDialog = true;
     }
 
-    showDialogToUpdate(reward: Reward): void {
-        this.selectedReward = reward;
-        this.rewardForm.patchValue(reward);
-        this.rewardDialog = true;
-    }
 
-    hideDialog(): void {
-        this.rewardDialog = false;
-        this.submitted = false;
-        this.selectedReward = null;
-    }
+
+
+
 }
