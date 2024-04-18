@@ -31,14 +31,19 @@ import {RewardService} from "./services/reward.service";
 import {RewardusersComponent} from "./components/rewardusers/rewardusers.component";
 import {DiscountService} from "./services/discounts/discounts.module";
 import {RewardComponent} from "./components/reward/reward.component";
+
+import { BrowserModule } from '@angular/platform-browser';
+import { QuizService } from "./services/quiz/quiz.service";
+
 import { HttpClientModule } from '@angular/common/http';
 import { EventBackComponent } from '../app/components/event-back/event-back.component';
-import { BrowserModule } from '@angular/platform-browser'
+
 import { EventService } from './services/event.service';
 import { MessageService } from 'primeng/api';
 import { CalendarModule } from 'primeng/calendar';
 import { DataViewModule } from 'primeng/dataview';
 import { EventfrontComponent } from './components/eventfront/eventfront.component';
+
 
 
 
@@ -75,8 +80,11 @@ import { EventfrontComponent } from './components/eventfront/eventfront.componen
     ],
     providers: [
         { provide: LocationStrategy, useClass: PathLocationStrategy },
-        CountryService, CustomerService, IconService, NodeService,
-        PhotoService, ProductService,RewardService,DiscountService,EventService, MessageService,
+
+        CountryService, CustomerService, EventService, IconService, NodeService,
+        PhotoService, ProductService,RewardService,DiscountService,QuizService,
+        MessageService,
+
     ],
     bootstrap: [AppComponent]
 })

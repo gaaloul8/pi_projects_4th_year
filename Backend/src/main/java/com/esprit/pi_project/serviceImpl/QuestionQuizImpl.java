@@ -27,6 +27,11 @@ public class QuestionQuizImpl implements QuestionQuizService {
     }
 
     @Override
+    public List<QuizQuestion> getAllQuestionByQuizId(Integer idQuiz) {
+        return questionDao.findByQuiz_IdQuiz(idQuiz);
+    }
+
+    @Override
     public QuizQuestion addQuestion(QuizQuestion question) {
         return null;
     }
@@ -88,7 +93,8 @@ public class QuestionQuizImpl implements QuestionQuizService {
 
     @Override
     public void removeQuestion(QuizQuestion quiz) {
-     questionDao.delete(quiz);
+
+        questionDao.delete(quiz);
     }
 
     @Override
