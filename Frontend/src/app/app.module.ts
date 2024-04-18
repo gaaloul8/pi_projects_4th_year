@@ -17,13 +17,15 @@ import {RewardusersComponent} from "./components/rewardusers/rewardusers.compone
 import {DiscountService} from "./services/discounts/discounts.module";
 import {RewardComponent} from "./components/reward/reward.component";
 import { BrowserModule } from '@angular/platform-browser';
+import { QuizService } from "./services/quiz/quiz.service";
+
 @NgModule({
     declarations: [AppComponent, NotfoundComponent,],
     imports: [AppRoutingModule, AppLayoutModule,ReactiveFormsModule,BrowserModule],
     providers: [
         { provide: LocationStrategy, useClass: PathLocationStrategy },
         CountryService, CustomerService, EventService, IconService, NodeService,
-        PhotoService, ProductService,RewardService,DiscountService
+        PhotoService, ProductService,RewardService,DiscountService,QuizService
     ],
     bootstrap: [AppComponent],
 })
