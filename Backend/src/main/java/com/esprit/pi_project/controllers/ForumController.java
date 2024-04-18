@@ -18,12 +18,14 @@ public class ForumController {
     @Autowired
     private ForumService forumService;
 
+    @CrossOrigin(origins = "*")
     @PostMapping("/addForum")
     public ResponseEntity<Forum> createForum(@RequestBody Forum forum) {
         Forum createdForum = forumService.saveForum(forum);
         return new ResponseEntity<>(createdForum, HttpStatus.CREATED);
     }
 
+    @CrossOrigin(origins = "*")
     @GetMapping("/{forumId}")
     public ResponseEntity<Forum> getForumById(@PathVariable Integer forumId) {
         Forum forum = forumService.getForumById(forumId);
@@ -34,12 +36,13 @@ public class ForumController {
         }
     }
 
+    @CrossOrigin(origins = "*")
     @GetMapping("/getAllForums")
     public ResponseEntity<List<Forum>> getAllForums() {
         List<Forum> forums = forumService.getAllForums();
         return new ResponseEntity<>(forums, HttpStatus.OK);
     }
-
+    @CrossOrigin(origins = "*")
     @PutMapping("/{forumId}")
     public ResponseEntity<Forum> updateForum(@PathVariable Integer forumId, @RequestBody Forum forumDetails) {
         Forum forum = forumService.getForumById(forumId);
@@ -55,9 +58,31 @@ public class ForumController {
         }
     }
 
+    @CrossOrigin(origins = "*")
     @DeleteMapping("/{forumId}")
     public ResponseEntity<Void> deleteForum(@PathVariable Integer forumId) {
         forumService.deleteForum(forumId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+    @CrossOrigin(origins = "*")
+    @PutMapping("/like/{forumId}")
+    public ResponseEntity<Forum> likeForum(@PathVariable Integer forumId) {
+        Forum likedForum = forumService.likeForum(forumId);
+        if (likedForum != null) {
+            return new ResponseEntity<>(likedForum, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @CrossOrigin(origins = "*")
+    @PutMapping("/dislike/{forumId}")
+    public ResponseEntity<Forum> dislikeForum(@PathVariable Integer forumId) {
+        Forum dislikedForum = forumService.dislikeForum(forumId);
+        if (dislikedForum != null) {
+            return new ResponseEntity<>(dislikedForum, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 }

@@ -63,7 +63,7 @@ public class User implements UserDetails, Serializable {
     private List<QuizUser> quizUserList;
 
     @OneToMany(cascade = CascadeType.ALL,mappedBy = "ForumOwner")
-    @JsonManagedReference
+    @JsonBackReference
     private List<Forum> forumlist;
 
     @OneToMany(cascade = CascadeType.ALL,mappedBy = "createdBy")
@@ -78,7 +78,7 @@ public class User implements UserDetails, Serializable {
     @OneToMany(cascade = CascadeType.ALL,mappedBy = "User")
     private List<Reservation> reservations;
 
-    @OneToMany(cascade = CascadeType.ALL,mappedBy = "User")
+    @OneToMany(cascade = CascadeType.ALL,mappedBy = "eventOwner")
     private List<Evenement> evenements;
 
 

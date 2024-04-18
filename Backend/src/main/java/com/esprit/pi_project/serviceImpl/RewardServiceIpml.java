@@ -67,6 +67,7 @@ public class RewardServiceIpml implements RewardService {
             existingR.setUser(reward.getUser());
             existingR.setDescription(reward.getDescription());
             existingR.setNbDispo(reward.getNbDispo());
+            existingR.setImage((reward.getImage()));
             //existingR.setDiscount(reward.getDiscount());
 
             return rewardDao.save(existingR);
@@ -122,6 +123,7 @@ public class RewardServiceIpml implements RewardService {
                transactionHistory.setReward(reward);
                transactionHistory.setPurchaseDate(new Date());
                transactionHistory.setPrice(reward.getCost());
+               transactionHistory.setImage(reward.getImage());
                transactionHistory.setUser(authenticatedUser);
                transactionHistoryDao.save(transactionHistory);
 

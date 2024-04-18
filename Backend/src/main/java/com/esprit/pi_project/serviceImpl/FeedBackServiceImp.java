@@ -27,7 +27,6 @@ public class FeedBackServiceImp implements FeedBackService {
     @Override
     public FeedBack addFeedBack(Integer idEvent,FeedBack feedBack) {
         Evenement evenement = eventService.findByEvenementidEvent(idEvent);
-
         // Initialiser le statut du feedback à "non traité"
         feedBack.setStatus(StatusFeedback.Unprocessed);
 

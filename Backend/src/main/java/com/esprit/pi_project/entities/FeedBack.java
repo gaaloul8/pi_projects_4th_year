@@ -28,5 +28,6 @@ public class FeedBack implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "id_user")
+    @JsonIgnore
     private User User;
 }
