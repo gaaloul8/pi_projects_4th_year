@@ -45,12 +45,18 @@ import { DataViewModule } from 'primeng/dataview';
 import { EventfrontComponent } from './components/eventfront/eventfront.component';
 
 
+import { ForumDetailComponent } from './components/forum-detail/forum-detail.component';
+import { FooterComponent } from './components/footer/footer.component';
+import { LandingHomeComponent } from './components/landing-home/landing-home.component';
+import { HeaderComponent } from './components/header/header.component';
+import { HomeComponent } from './components/home/home.component';
 
 
 @NgModule({
-    declarations: [AppComponent, NotfoundComponent,ForumComponent,EventBackComponent , EventfrontComponent],
-    imports: [AppRoutingModule,
-        AppLayoutModule ,
+    declarations: [AppComponent, NotfoundComponent , ForumComponent,ForumDetailComponent , 
+    LandingHomeComponent , FooterComponent,HeaderComponent, HomeComponent ,EventBackComponent , EventfrontComponent],
+    imports: [AppRoutingModule, 
+        AppLayoutModule , 
         DialogModule ,
         TableModule,
         FileUploadModule,
