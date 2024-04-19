@@ -14,6 +14,16 @@ import { QuestionDetailComponent } from './components/question-detail/question-d
 import { HomeComponent } from './components/home/home.component';
 import { LandingHomeComponent } from './components/landing-home/landing-home.component';
 
+import {QuizComponent} from "./components/quiz/quiz.component";
+import {QuestionQuizComponent} from "./components/question-quiz/question-quiz.component";
+import {QuizFrontendComponent} from "./components/quiz-frontend/quiz-frontend.component";
+import {GooglemapComponent} from "./components/googlemap/googlemap.component";
+
+import { EventBackComponent } from './components/event-back/event-back.component';
+import { EventfrontComponent } from './components/eventfront/eventfront.component';
+
+
+
 @NgModule({
     imports: [
         BrowserModule ,
@@ -47,11 +57,19 @@ import { LandingHomeComponent } from './components/landing-home/landing-home.com
             { path: 'transactions', component: TransactionhistoryComponent },
             { path: 'rewardusers', component: RewardusersComponent },
 
+            { path: 'quiz', component: QuizComponent},
+            { path: 'question-quiz', component: QuestionQuizComponent},
+            { path: 'quiz-frontend', component: QuizFrontendComponent},
+            { path: 'googlemap', component: GooglemapComponent},
+            { path: 'question-quiz/:idQuiz', component: QuestionQuizComponent },
+
             { path: 'discounts', component: DiscountsComponent },
             { path: 'transactions', component: TransactionhistoryComponent },
             { path: 'statistics', component: StatisticsComponent },
             { path: 'rewardusers', component: RewardusersComponent },
 
+            {path:'eventBack',component : EventBackComponent },
+            {path:'eventFront',component : EventfrontComponent},
 
 
             { path: '**', redirectTo: '/notfound' },

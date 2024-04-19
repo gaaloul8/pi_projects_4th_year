@@ -83,7 +83,7 @@ editForum(forum: Forum) {
 ];
 }
 onOptionClick(event: Event) {
-  event.stopPropagation(); // Prevent event propagation to keep the dropdown open
+  event.stopPropagation(); 
 }
 
   fetchForums(): void {
@@ -92,10 +92,10 @@ onOptionClick(event: Event) {
         this.forums = forums;
         console.log('Forums:', this.forums);
         this.forums.forEach(forum => {
-          const forumId = forum.forumId.toString(); // Assuming forumId is unique and can be converted to string
+          const forumId = forum.forumId.toString(); 
           const isLikedString = localStorage.getItem(`forumLiked_${forumId}`);
-          forum.isLiked = isLikedString ? JSON.parse(isLikedString) : false; // Retrieve the liked state from Local Storage and store it in the isLiked property
-          console.log(`Forum ID: ${forumId}, isLiked: ${forum.isLiked}`); // Log the forum ID and its liked state for debugging
+          forum.isLiked = isLikedString ? JSON.parse(isLikedString) : false; 
+          console.log(`Forum ID: ${forumId}, isLiked: ${forum.isLiked}`); 
         });
       },
       (error) => {
@@ -118,7 +118,7 @@ async saveForum() {
 
   console.log("topic : " + this.forum.topic + " content : " + this.forum.content);
 
-  this.forum.forumOwner = { id_user: 1, role: "User" }; 
+  this.forum.forumOwner = { id_user: 3, role: "ClubManager" }; 
   if(this.showDropdown = false){
   this.forum.createdAt = new Date(); 
   this.forum.closed = false;
@@ -161,9 +161,9 @@ async saveForum() {
     this.renderer.appendChild(document.body, script);
   }
   toggleLike(forum: Forum): void {
-    forum.isLiked = !forum.isLiked; // Update the isLiked property of the forum
+    forum.isLiked = !forum.isLiked; 
 
-     const forumId = forum.forumId.toString(); // Assuming forumId is unique and can be converted to string
+     const forumId = forum.forumId.toString(); 
     const isLikedString = localStorage.getItem(`forumLiked_${forumId}`);
     let isLiked = isLikedString ? JSON.parse(isLikedString) : false;
     
@@ -174,14 +174,12 @@ async saveForum() {
       this.dislikeForum(forum);
       console.log("disliked");
     }
-    // Update the DOM element's class list based on the isLiked property
     
   
     
-    localStorage.setItem(`forumLiked_${forumId}`, JSON.stringify(forum.isLiked)); // Store the updated liked state in Local Storage
+    localStorage.setItem(`forumLiked_${forumId}`, JSON.stringify(forum.isLiked)); 
   }
   setActiveClassOnInit(): void {
-    // Loop through the forums and set the is-active class based on the isLiked property
     this.forums.forEach(forum => {
       const likeButton = document.getElementById(`like-button-${forum.forumId}`);
       if (likeButton) {
@@ -205,11 +203,11 @@ async saveForum() {
   // }
   loadLikedStates(): void {
     this.forums.forEach(forum => {
-      const forumId = forum.forumId.toString(); // Assuming forumId is unique and can be converted to string
+      const forumId = forum.forumId.toString();
       console.log(forumId);
       const isLikedString = localStorage.getItem(`forumLiked_${forumId}`);
-      forum.isLiked = isLikedString ? JSON.parse(isLikedString) : false; // Retrieve the liked state from Local Storage and store it in the isLiked property
-      console.log(`Forum ID: ${forumId}, isLiked: ${forum.isLiked}`); // Log the forum ID and its liked state for debugging
+      forum.isLiked = isLikedString ? JSON.parse(isLikedString) : false; 
+      console.log(`Forum ID: ${forumId}, isLiked: ${forum.isLiked}`); 
     });
 
   }

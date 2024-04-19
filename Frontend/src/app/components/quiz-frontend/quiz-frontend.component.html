@@ -1,0 +1,141 @@
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+
+
+<div class="container" id="main-container">
+    <div class="row">
+
+        <div *ngFor="let quiz of quizzes" (click)="selectQuiz(quiz)" class="col-md-6 col-xl-3">
+            <div class="card m-b-30">
+                <div class="card-body row">
+                    <div class="col-6">
+                        <a href=""><img src="https://resize.elle.fr/original/var/plain_site/storage/images/societe/news/sante-mentale-dans-le-monde-la-souffrance-est-enorme-alerte-l-oms-4028858/96897868-1-fre-FR/Sante-mentale-dans-le-monde-la-souffrance-est-enorme-alerte-l-OMS.jpg" alt="" class="img-fluid rounded-circle w-60"></a>
+                    </div>
+
+                    <div class="col-6 card-title align-self-center mb-0">
+                        <h5>{{quiz.title}}</h5>
+
+
+                    </div>
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item"><i class="fa fa-envelope float-right"></i>Description : <a href="#">{{quiz.description}}</a></li>
+                    <li class="list-group-item"><i class="fa fa-phone float-right"></i>Type: {{quiz.type}}</li>
+                </ul>
+                <div class="card-body">
+                    <div class="float-right btn-group btn-group-sm">
+
+                        <a class="btn btn-primary tooltips" data-bs-toggle="modal" data-bs-target="#quizModal" (click)="openQuizModal(quiz)">Start Quiz <span class="sr-only">(current)</span></a>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<!-- Button trigger modal -->
+<!--<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+    Launch demo modal
+</button>-->
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                ...
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--<div class="modal fade" id="quizModal" tabindex="-1" role="dialog" aria-labelledby="quizModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="quizModalLabel">Quiz Questions</h5>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <ul>
+                    <li *ngFor="let question of questions">
+                        <h6>{{ question.content }}</h6>
+                        <ul>
+                            <li *ngFor="let option of question.options">
+                                {{ option.content}}
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>-->
+
+<div class="modal fade" id="quizModal" tabindex="-1" role="dialog" aria-labelledby="quizModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="quizModalLabel">Quiz Questions</h5>
+                <button type="button" class="close" data-bs-dismiss="modal" (click)="resetQuiz()" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div *ngIf="!questions || questions.length === 0">
+                    <p>This quiz is not yet available because it has no questions.</p>
+                </div>
+                <div *ngIf="questions && questions.length > 0 && currentQuestionIndex < questions.length">
+                    <h6>{{ questions[currentQuestionIndex].content }} ?</h6>
+                    <ul>
+                        <li *ngFor="let option of questions[currentQuestionIndex].options">
+                            <label>
+                                <input type="radio" name="optionSelection_{{questions[currentQuestionIndex].idQuestion}}" [(ngModel)]="selectedOptions[questions[currentQuestionIndex].idQuestion]" [value]="option.idOption" (change)="updateSelectedOptionContent(questions[currentQuestionIndex].idQuestion, option.content)"> {{ option.content }}
+                            </label>
+                        </li>
+                    </ul>
+                    <button class="btn btn-primary" (click)="nextQuestion()">Suivant</button>
+                </div>
+                <div *ngIf="questions && questions.length > 0 && currentQuestionIndex >= questions.length">
+                    <p>Vous avez répondu à toutes les questions.</p>
+                    <button class="btn btn-primary" (click)="submitQuiz()">Terminer le quiz</button>
+                </div>
+                <div *ngIf="questions && questions.length > 0 && currentQuestionIndex >= questions.length">
+                    <p>{{ description }}</p>
+                </div>
+            </div>
+
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="resetQuiz()">Fermer</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -18,6 +18,8 @@ public class Reward implements Serializable {
     private String description;
     private float cost;
     private Integer nbDispo;
+    private String image;
+
     @ManyToOne
     @JoinColumn(name = "id_user")
     //@JsonManagedReference
