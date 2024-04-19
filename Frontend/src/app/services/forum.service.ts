@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 export class ForumService {
 
   private baseUrl = 'http://localhost:8081/forums';
-  private token = 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtZWQxQGVzcHJpdC50biIsImlhdCI6MTcxMjIyMzUwNiwiZXhwIjoxNzEyMzA5OTA2fQ.gAG5R0mk418d2GohgbyQvYOXkrBWrexsuJpe1gjiK_M';
+  private token = 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtZWQxQGVzcHJpdC50biIsImlhdCI6MTcxMzI5MzcwMywiZXhwIjoxNzEzMzgwMTAzfQ.Bp0NYDMZI4ZFFQFvjx1f2dhW7yhV1sozPYpN7-HEFIE';
 
 
   constructor(private http: HttpClient) { }
@@ -44,6 +44,13 @@ export class ForumService {
     });
     return this.http.put<Forum>(`${this.baseUrl}/dislike/${forumId}`, null, { headers: headers });
   }
+
+  getForumById(forumId: number): Observable<Forum> {
+    const headers = new HttpHeaders({
+      'Authorization': 'Bearer ' + this.token
+    });
+    return this.http.get<Forum>(`${this.baseUrl}/${forumId}`, { headers: headers });
+  }
 }
 
 
@@ -70,4 +77,11 @@ export interface User {
 export interface Question {
   questionId?: number;
   title?: string;
+  content?: string;
+  createdAt?: Date;
+  closed?: boolean;
+  author?: User;
+  upvotes?:number;
+  forum?:Forum;
+
 }

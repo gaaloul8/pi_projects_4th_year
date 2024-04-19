@@ -8,11 +8,11 @@ import { MessageService } from 'primeng/api';
 @Component({
   selector: 'app-forum',
   templateUrl: './forum.component.html',
-  styleUrls: ['../../../assets/scss/core.scss'
+  styleUrls: ['./forum.component.scss','../../../assets/scss/core.scss'
   ],
   // providers: [MessageService]
 })
-export class ForumComponent implements AfterViewInit {
+export class ForumComponent implements AfterViewInit , OnInit {
   forums: Forum[] = [];
   forumDialog: boolean = false;
   forum: Forum = {};
@@ -28,12 +28,16 @@ export class ForumComponent implements AfterViewInit {
 
   constructor(private renderer: Renderer2, private forumService: ForumService) { 
  }
+ ngOnInit(): void {
+  this.fetchForums();
+  // this.loadLikedStates();
+}
  ngAfterViewInit(): void {
   setTimeout(() => {
     this.loadJsFiles();
+    this.setActiveClassOnInit();
   }, 100);
-  this.fetchForums();
-  this.loadLikedStates();
+
 }
 
 loadJsFiles(): void {
@@ -87,6 +91,12 @@ onOptionClick(event: Event) {
       (forums: Forum[]) => {
         this.forums = forums;
         console.log('Forums:', this.forums);
+        this.forums.forEach(forum => {
+          const forumId = forum.forumId.toString(); // Assuming forumId is unique and can be converted to string
+          const isLikedString = localStorage.getItem(`forumLiked_${forumId}`);
+          forum.isLiked = isLikedString ? JSON.parse(isLikedString) : false; // Retrieve the liked state from Local Storage and store it in the isLiked property
+          console.log(`Forum ID: ${forumId}, isLiked: ${forum.isLiked}`); // Log the forum ID and its liked state for debugging
+        });
       },
       (error) => {
         console.log('Error fetching forums:', error);
@@ -151,7 +161,9 @@ async saveForum() {
     this.renderer.appendChild(document.body, script);
   }
   toggleLike(forum: Forum): void {
-    const forumId = forum.forumId.toString(); // Assuming forumId is unique and can be converted to string
+    forum.isLiked = !forum.isLiked; // Update the isLiked property of the forum
+
+     const forumId = forum.forumId.toString(); // Assuming forumId is unique and can be converted to string
     const isLikedString = localStorage.getItem(`forumLiked_${forumId}`);
     let isLiked = isLikedString ? JSON.parse(isLikedString) : false;
     
@@ -162,19 +174,60 @@ async saveForum() {
       this.dislikeForum(forum);
       console.log("disliked");
     }
+    // Update the DOM element's class list based on the isLiked property
+    
   
-    forum.isLiked = !isLiked; // Update the isLiked property of the forum
+    
     localStorage.setItem(`forumLiked_${forumId}`, JSON.stringify(forum.isLiked)); // Store the updated liked state in Local Storage
   }
+  setActiveClassOnInit(): void {
+    // Loop through the forums and set the is-active class based on the isLiked property
+    this.forums.forEach(forum => {
+      const likeButton = document.getElementById(`like-button-${forum.forumId}`);
+      if (likeButton) {
+        if (forum.isLiked) {
+          this.renderer.addClass(likeButton, 'is-active');
+        } else {
+          this.renderer.removeClass(likeButton, 'is-active');
+        }
+      }
+    });
+  }
+ 
   
+  
+  // loadLikedStates(): void {
+  //   this.forums.forEach(forum => {
+  //     const forumId = forum.forumId.toString(); // Assuming forumId is unique and can be converted to string
+  //     const isLikedString = localStorage.getItem(`forumLiked_${forumId}`);
+  //     forum.isLiked = isLikedString ? JSON.parse(isLikedString) : false; // Retrieve the liked state from Local Storage and store it in the isLiked property
+  //   });
+  // }
   loadLikedStates(): void {
     this.forums.forEach(forum => {
       const forumId = forum.forumId.toString(); // Assuming forumId is unique and can be converted to string
+      console.log(forumId);
       const isLikedString = localStorage.getItem(`forumLiked_${forumId}`);
       forum.isLiked = isLikedString ? JSON.parse(isLikedString) : false; // Retrieve the liked state from Local Storage and store it in the isLiked property
+      console.log(`Forum ID: ${forumId}, isLiked: ${forum.isLiked}`); // Log the forum ID and its liked state for debugging
     });
+
   }
   
+  // Assuming you have a function to retrieve forum data from local storage
+// loadForumsFromLocalStorage() {
+//   const forumsFromLocalStorage = JSON.parse(localStorage.getItem('forums'));
+//   if (forumsFromLocalStorage) {
+//     this.forums = forumsFromLocalStorage;
+//     // Set the isLiked property based on the data retrieved from local storage
+//     this.forums.forEach(forum => {
+//       const forumId = forum.forumId.toString();
+//       const isLikedString = localStorage.getItem(`forumLiked_${forumId}`);
+//       forum.isLiked = isLikedString ? JSON.parse(isLikedString) : false;
+//     });
+//   }
+// }
+
   
 
 

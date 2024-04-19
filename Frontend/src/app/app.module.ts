@@ -33,10 +33,15 @@ import {RewardusersComponent} from "./components/rewardusers/rewardusers.compone
 import {DiscountService} from "./services/discounts/discounts.module";
 import {RewardComponent} from "./components/reward/reward.component";
 import { BrowserModule } from '@angular/platform-browser';
+import { ForumDetailComponent } from './components/forum-detail/forum-detail.component';
+import { FooterComponent } from './components/footer/footer.component';
+import { LandingHomeComponent } from './components/landing-home/landing-home.component';
+import { HeaderComponent } from './components/header/header.component';
+import { HomeComponent } from './components/home/home.component';
 
 
 @NgModule({
-    declarations: [AppComponent, NotfoundComponent , ForumComponent],
+    declarations: [AppComponent, NotfoundComponent , ForumComponent , ForumDetailComponent , LandingHomeComponent , FooterComponent,HeaderComponent, HomeComponent] ,
     imports: [AppRoutingModule, 
         AppLayoutModule , 
         DialogModule ,
