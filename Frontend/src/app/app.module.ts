@@ -29,7 +29,6 @@ import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import {RewardService} from "./services/reward.service";
 import {RewardusersComponent} from "./components/rewardusers/rewardusers.component";
-import {DiscountService} from "./services/discounts/discounts.module";
 import {RewardComponent} from "./components/reward/reward.component";
 
 import { BrowserModule } from '@angular/platform-browser';
@@ -43,6 +42,7 @@ import { MessageService } from 'primeng/api';
 import { CalendarModule } from 'primeng/calendar';
 import { DataViewModule } from 'primeng/dataview';
 import { EventfrontComponent } from './components/eventfront/eventfront.component';
+import {DiscountService} from "./services/discount.service";
 
 
 import { ForumDetailComponent } from './components/forum-detail/forum-detail.component';

@@ -21,6 +21,7 @@ import {GooglemapComponent} from "./components/googlemap/googlemap.component";
 
 import { EventBackComponent } from './components/event-back/event-back.component';
 import { EventfrontComponent } from './components/eventfront/eventfront.component';
+import {TransactionstatComponent} from "./components/transactionstat/transactionstat.component";
 
 
 
@@ -70,6 +71,7 @@ import { EventfrontComponent } from './components/eventfront/eventfront.componen
 
             {path:'eventBack',component : EventBackComponent },
             {path:'eventFront',component : EventfrontComponent},
+            {path:'stattransaction',component : TransactionstatComponent},
 
 
             { path: '**', redirectTo: '/notfound' },

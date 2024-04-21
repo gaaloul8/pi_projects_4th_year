@@ -167,4 +167,23 @@ public class RewardServiceIpml implements RewardService {
     public List<TransactionHistory>getalltransactions(){
            return transactionHistoryDao.findAll();
     }
+
+    public Map<Integer, Long> countTransactionsByMonth() {
+        List<Object[]> counts = transactionHistoryDao.countTransactionsByMonth();
+        Map<Integer, Long> monthlyCounts = new HashMap<>();
+
+        // Initialize all months with count 0
+        for (int month = 1; month <= 12; month++) {
+            monthlyCounts.put(month, 0L);
+        }
+
+        // Update counts for months with transactions
+        for (Object[] row : counts) {
+            int month = (int) row[0];
+            long count = (long) row[1];
+            monthlyCounts.put(month, count);
+        }
+
+        return monthlyCounts;
+    }
 }
