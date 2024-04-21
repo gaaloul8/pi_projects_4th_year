@@ -42,4 +42,16 @@ public class Reclamation implements Serializable {
     @Column(name = "is_archived", nullable = false)
     private boolean isArchived = false;
 
+    @Column(name = "image_url")
+    private String imageUrl;
+
+    @Column(name = "club_name")
+    private String clubName; // This field holds the name of the club associated with the reclamation.
+
+    @ManyToOne
+    @JoinColumn(name = "submitted_to_id")
+    private User submittedTo; // This field references the manager to whom the reclamation is assigned.
+
+
+
 }
