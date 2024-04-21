@@ -2,6 +2,8 @@ import { RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
 import { NotfoundComponent } from './demo/components/notfound/notfound.component';
 import { AppLayoutComponent } from "./layout/app.layout.component";
+import { ClubsComponent } from './components/clubs/clubs.component';
+import { PostComponent } from './components/post/post.component';
 import {RewardComponent} from "./components/reward/reward.component";
 import { ForumComponent } from './components/forum/forum.component';
 import { BrowserModule } from '@angular/platform-browser';
@@ -39,6 +41,8 @@ import {TransactionstatComponent} from "./components/transactionstat/transaction
                     { path: 'documentation', loadChildren: () => import('./demo/components/documentation/documentation.module').then(m => m.DocumentationModule) },
                     { path: 'blocks', loadChildren: () => import('./demo/components/primeblocks/primeblocks.module').then(m => m.PrimeBlocksModule) },
                     { path: 'pages', loadChildren: () => import('./demo/components/pages/pages.module').then(m => m.PagesModule) },
+                    {path:'club',component:ClubsComponent},
+                    {path:'post',component:PostComponent}
                     
 
                 ]

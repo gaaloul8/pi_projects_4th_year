@@ -8,6 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;
+import java.util.Map;
 
 public interface ClubService {
      Club addClub(Club club);
@@ -18,5 +19,6 @@ public interface ClubService {
     List<Club> findByTag(Tag tag);
     List<Club> findAllByClubName(String clubName);
     void generateClubsPDF(HttpServletResponse response);
+    Map<String, Long> countClubsByTag();
 
 }
