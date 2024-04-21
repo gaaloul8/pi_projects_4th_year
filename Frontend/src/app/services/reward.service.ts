@@ -9,7 +9,7 @@ import {Transaction_history} from "../interfaces/Transaction_history";
 })
 export class RewardService {
     private baseUrl = 'http://localhost:8081/reward'; // Base URL of your Spring backend
-    private token = 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzYWRvay5zYXNzaUBlc3ByaXQudG4iLCJpYXQiOjE3MTM2MDU0MzYsImV4cCI6MTcxMzY5MTgzNn0.2Wd5Zk0tUcVppIRr6HBbS86CuUurGwAj-v546k-6lzo'
+    private token = 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzYWRvay5zYXNzaUBlc3ByaXQudG4iLCJpYXQiOjE3MTM2OTk2NDEsImV4cCI6MTcxMzc4NjA0MX0.MI582kUnXRIJAfQAtvhm4IS2WRHff6Na7KMLP3-WP8A'
 
     constructor(private http: HttpClient) { }
 

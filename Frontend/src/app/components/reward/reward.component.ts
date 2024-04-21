@@ -19,11 +19,11 @@ import {ToolbarModule} from "primeng/toolbar";
 //import { reward } from "../../interfaces/reward";
 
 @Component({
-  selector: 'app-reward',
-  standalone: true,
+    selector: 'app-reward',
+    standalone: true,
     imports: [CommonModule, ReactiveFormsModule, FormsModule, ButtonModule, DialogModule, DropdownModule, InputTextModule, InputTextareaModule, RippleModule, SharedModule, CalendarModule, InputNumberModule, TableModule, ToolbarModule],
-  templateUrl: './reward.component.html',
-  styleUrl: './reward.component.scss'
+    templateUrl: './reward.component.html',
+    styleUrl: './reward.component.scss'
 })
 export class RewardComponent implements OnInit{
     rewards: Reward[] = [];
