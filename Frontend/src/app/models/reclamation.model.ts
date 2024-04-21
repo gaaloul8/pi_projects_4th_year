@@ -1,4 +1,8 @@
+import {User} from "./user.model";
+
 export interface Reclamation {
+    clubName: string;
+    submittedTo: User;
     reclamationId: number;
     title: string;
     description: string;
@@ -6,6 +10,7 @@ export interface Reclamation {
     createdBy: number;
     createdAt: Date;
     isArchived: boolean;
+    imageUrl: string;
 }
 
 export enum ReclamationStatus {

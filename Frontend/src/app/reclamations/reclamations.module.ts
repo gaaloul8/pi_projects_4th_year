@@ -7,7 +7,6 @@ import {MatSnackBarModule} from "@angular/material/snack-bar";
 import {OverlayModule} from "@angular/cdk/overlay";
 import {ReactiveFormsModule} from "@angular/forms";
 
-
 @NgModule({
   declarations: [],
   imports: [
@@ -16,7 +15,7 @@ import {ReactiveFormsModule} from "@angular/forms";
       MatTableModule,
       MatSnackBarModule,
       OverlayModule,
-      ReactiveFormsModule
+      ReactiveFormsModule,
   ]
 })
 export class ReclamationsModule { }

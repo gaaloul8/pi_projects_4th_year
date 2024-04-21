@@ -9,6 +9,9 @@ import {CustomNotificationComponent} from "../custom-notification/custom-notific
 import {MatInputModule} from "@angular/material/input";
 import {MatSelectModule} from "@angular/material/select";
 import {FormsModule} from "@angular/forms";
+import {ButtonModule} from "primeng/button";
+import {Router} from "@angular/router";
+import {interval, switchMap} from "rxjs";
 
 @Component({
   selector: 'app-reclamation-list',
@@ -23,7 +26,8 @@ import {FormsModule} from "@angular/forms";
         CustomNotificationComponent,
         MatInputModule,
         MatSelectModule,
-        FormsModule
+        FormsModule,
+        ButtonModule
     ],
   templateUrl: './reclamation-list.component.html',
   styleUrl: './reclamation-list.component.scss'
@@ -33,10 +37,25 @@ export class ReclamationListComponent {
     @ViewChild('customNotification') customNotification!: CustomNotificationComponent;
     reclamationStatuses = Object.values(ReclamationStatus);
 
-    constructor(private reclamationService: ReclamationService) { }
+
+    weeklyReclamationsCount: number;
+
+
+    constructor(private reclamationService: ReclamationService, private router: Router) { }
 
     ngOnInit(): void {
         this.loadReclamations();
+        interval(10000)  // Polling every 10 seconds
+            .pipe(
+                switchMap(() => this.reclamationService.getWeeklyReclamationsCount())
+            )
+            .subscribe({
+                next: (count) => {
+                    this.weeklyReclamationsCount = count;
+                    this.customNotification.display(`Weekly Reclamations Count: ${count}`);
+                },
+                error: (error) => console.error(error)
+            });
     }
 
 
@@ -74,5 +93,21 @@ export class ReclamationListComponent {
             }
         });
     }
+
+    applyFilter(filterType: string, title?: string): void {
+        if (filterType === 'oldest') {
+            this.reclamationService.getOldestReclamations().subscribe(data => this.reclamations = data);
+        } else if (filterType === 'newest') {
+            this.reclamationService.getNewestReclamations().subscribe(data => this.reclamations = data);
+        } else if (filterType === 'search') {
+            this.reclamationService.searchReclamationsByTitle(title).subscribe(data => this.reclamations = data);
+        }
+    }
+
+
+    navigateToAssignment(reclamationId: number): void {
+        this.router.navigate(['/reclamation/reclamation-assign', reclamationId]);
+    }
+
 
 }

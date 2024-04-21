@@ -45,3 +45,12 @@ button[pButton] {
         background-color: #cccccc;
     }
 }
+
+.image-preview {
+    max-width: 100%; // To ensure the image is not larger than its container
+    max-height: 200px; // Set a max height for the preview
+    margin-top: 10px; // Some space between the image input and preview
+    border: 1px solid #ccc; // Optional: add a border around the preview
+    border-radius: 4px; // Optional: round the corners of the preview
+}
+

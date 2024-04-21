@@ -18,6 +18,9 @@ import {NgIf} from "@angular/common";
 })
 export class AddReclamationComponent {
     reclamationForm: FormGroup;
+    imageToUpload: File | null = null;
+    imageUrl: string | ArrayBuffer | null = null;
+
 
     constructor(private fb: FormBuilder, private reclamationService: ReclamationService) {
         this.reclamationForm = this.fb.group({
@@ -26,15 +29,35 @@ export class AddReclamationComponent {
             }),
             title: ['', Validators.required],
             description: ['', Validators.required],
-            status: ['IN_PROGRESS'],
             createdAt: [new Date()],
         });
     }
 
+    private previewImage(file: File): void {
+        const reader = new FileReader();
+        reader.onload = () => {
+            this.imageUrl = reader.result;
+        };
+        reader.readAsDataURL(file);
+    }
+
+    onFileSelected(event: Event): void {
+        const element = event.currentTarget as HTMLInputElement;
+        let fileList: FileList | null = element.files;
+        if (fileList) {
+            this.imageToUpload = fileList[0];
+            this.previewImage(this.imageToUpload); // Call the previewImage method
+        }
+    }
+
+
     onSubmit(): void {
-        if (this.reclamationForm.valid) {
-            this.reclamationService.createReclamation(this.reclamationForm.value).subscribe({
-                next: (resp) => {
+        if (this.reclamationForm.valid && this.imageToUpload) {
+            const formData = new FormData();
+            formData.append('reclamation', JSON.stringify(this.reclamationForm.value));
+            formData.append('image', this.imageToUpload);
+
+            this.reclamationService.createReclamation(this.reclamationForm.value, this.imageToUpload).subscribe({                next: (resp) => {
                     // Handle response
                     console.log('Reclamation added', resp);
                     // Optionally reset form or give user feedback

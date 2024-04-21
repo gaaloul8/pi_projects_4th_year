@@ -1,6 +1,13 @@
 <div class="col-md-12">
     <div class="card">
         <div class="card-header card-header-rose card-header-icon">
+            <div class="filter-container">
+                    <button pButton label="Oldest" (click)="applyFilter('oldest')"></button>
+                    <button pButton label="Newest" (click)="applyFilter('newest')"></button>
+                    <input type="text" pInputText placeholder="Search by title" #searchTitle>
+                    <button pButton label="Search" (click)="applyFilter('search', searchTitle.value)"></button>
+                </div>
+
             <div class="card-icon">
                 <i class="material-icons">assignment</i>
             </div>
@@ -41,6 +48,7 @@
                 <button (click)="archiveReclamation(reclamation.reclamationId)" mat-icon-button>
                     <mat-icon>archive</mat-icon>
                 </button>
+                <button (click)="navigateToAssignment(reclamation.reclamationId)" pButton label="Assign Manager"></button>
             </td>
         </tr>
         </tbody>

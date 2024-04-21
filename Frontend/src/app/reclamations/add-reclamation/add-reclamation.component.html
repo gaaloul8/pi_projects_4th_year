@@ -10,6 +10,11 @@
             <input pInputText id="description" formControlName="description" type="text" placeholder="Enter description">
             <small *ngIf="reclamationForm.get('description').errors && reclamationForm.get('description').touched" class="p-error">Description is required.</small>
         </div>
+        <div class="field">
+            <label >Image</label>
+            <input type="file" (change)="onFileSelected($event)">
+            <img *ngIf="imageUrl" [src]="imageUrl" class="image-preview" />
+        </div>
         <button type="submit" pButton label="Submit" [disabled]="!reclamationForm.valid"></button>
     </form>
 </div>
