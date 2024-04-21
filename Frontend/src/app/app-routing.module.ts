@@ -11,6 +11,7 @@ import {RewardusersComponent} from "./components/rewardusers/rewardusers.compone
 import {StatisticsComponent} from "./components/statistics/statistics.component";
 import { EventBackComponent } from './components/event-back/event-back.component';
 import { EventfrontComponent } from './components/eventfront/eventfront.component';
+import {TransactionstatComponent} from "./components/transactionstat/transactionstat.component";
 
 
 @NgModule({
@@ -46,6 +47,7 @@ import { EventfrontComponent } from './components/eventfront/eventfront.componen
 
             {path:'eventBack',component : EventBackComponent },
             {path:'eventFront',component : EventfrontComponent},
+            {path:'stattransaction',component : TransactionstatComponent},
 
             { path: '**', redirectTo: '/notfound' },
 
