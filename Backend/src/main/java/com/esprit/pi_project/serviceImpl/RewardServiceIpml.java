@@ -67,6 +67,7 @@ public class RewardServiceIpml implements RewardService {
             existingR.setUser(reward.getUser());
             existingR.setDescription(reward.getDescription());
             existingR.setNbDispo(reward.getNbDispo());
+            existingR.setImage((reward.getImage()));
             //existingR.setDiscount(reward.getDiscount());
 
             return rewardDao.save(existingR);
@@ -122,6 +123,7 @@ public class RewardServiceIpml implements RewardService {
                transactionHistory.setReward(reward);
                transactionHistory.setPurchaseDate(new Date());
                transactionHistory.setPrice(reward.getCost());
+               transactionHistory.setImage(reward.getImage());
                transactionHistory.setUser(authenticatedUser);
                transactionHistoryDao.save(transactionHistory);
 
@@ -140,11 +142,12 @@ public class RewardServiceIpml implements RewardService {
 
         long totalUsers = userDao.count();
         long usersWithRewards = transactionHistoryDao.nbactiveusers();
-        double averageRewardsPerUser = usersWithRewards / (double) totalUsers;
+        long usersWithNoRewards =totalUsers - usersWithRewards ;
+ 
 
         statistics.put("totalUsers", totalUsers);
         statistics.put("usersWithRewards", usersWithRewards);
-        statistics.put("averageRewardsPerUser", averageRewardsPerUser);
+        statistics.put("usersWithNoRewards", usersWithNoRewards);
 
         return statistics;
     }
@@ -160,5 +163,27 @@ public class RewardServiceIpml implements RewardService {
         return rewardDao.findRewardsWithNoDiscount();
     }
 
+    @Override
+    public List<TransactionHistory>getalltransactions(){
+           return transactionHistoryDao.findAll();
+    }
 
+    public Map<Integer, Long> countTransactionsByMonth() {
+        List<Object[]> counts = transactionHistoryDao.countTransactionsByMonth();
+        Map<Integer, Long> monthlyCounts = new HashMap<>();
+
+        // Initialize all months with count 0
+        for (int month = 1; month <= 12; month++) {
+            monthlyCounts.put(month, 0L);
+        }
+
+        // Update counts for months with transactions
+        for (Object[] row : counts) {
+            int month = (int) row[0];
+            long count = (long) row[1];
+            monthlyCounts.put(month, count);
+        }
+
+        return monthlyCounts;
+    }
 }

@@ -6,6 +6,7 @@ import lombok.Data;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 @Data
 @Entity
@@ -18,6 +19,8 @@ public class QuizUser implements Serializable {
     private String score;
     @Column(length = 1000)
     private String description;
+    @Transient
+    private List<String> reponses;
 
     @Temporal(TemporalType.DATE)
     private Date participationDate;

@@ -1,6 +1,7 @@
 package com.esprit.pi_project.services;
 
 import com.esprit.pi_project.entities.Reward;
+import com.esprit.pi_project.entities.TransactionHistory;
 import com.esprit.pi_project.entities.User;
 
 import java.util.List;
@@ -19,5 +20,6 @@ public interface RewardService {
     public List<Reward> findrewardWithDiscount();
     public List<Reward> findrewardWithNoDiscount();
 
-
+    List<TransactionHistory>getalltransactions();
+    Map<Integer, Long> countTransactionsByMonth();
 }

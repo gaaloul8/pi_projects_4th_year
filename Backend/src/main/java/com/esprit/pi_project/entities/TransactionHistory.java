@@ -21,6 +21,8 @@ public class TransactionHistory implements Serializable {
     @JoinColumn(name = "reward_id")
     private Reward reward;
 
+    private String image;
+
     @Temporal(TemporalType.TIMESTAMP)
     private Date purchaseDate;
 

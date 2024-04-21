@@ -46,9 +46,10 @@ public class OpenAiServiceImpl {
 
             public static String chatGPT(String message) {
                 String url = "https://api.openai.com/v1/chat/completions";
-                String apiKey = "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"; // API key goes here
+
                 String model = "gpt-3.5-turbo"; // current model of chatgpt api
 
+                String apiKey="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"; // API key goes here
                 try {
                     // Create the HTTP POST request
                     URL obj = new URL(url);

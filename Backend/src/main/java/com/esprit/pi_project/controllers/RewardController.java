@@ -2,6 +2,7 @@ package com.esprit.pi_project.controllers;
 
 import com.esprit.pi_project.dao.RewardDao;
 import com.esprit.pi_project.entities.Reward;
+import com.esprit.pi_project.entities.TransactionHistory;
 import com.esprit.pi_project.entities.User;
 import com.esprit.pi_project.services.RewardService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,11 +10,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 @RestController
 @RequestMapping("/reward")
+@CrossOrigin(origins = "*")
 public class RewardController {
     @Autowired
     private RewardDao rewardDao;
@@ -72,6 +75,13 @@ public class RewardController {
     public List<Reward>rewardwithnodiscount(){
         return this.rewardService.findrewardWithNoDiscount();
     }
+    @GetMapping("/getalltransactions")
+    public List<TransactionHistory>getalltransactions(){
+        return this.rewardService.getalltransactions();
+    }
 
-
-}
+        @GetMapping("/monthly-count")
+        public Map<Integer, Long> getMonthlyTransactionCounts() {
+            return rewardService.countTransactionsByMonth();
+        }
+    }
