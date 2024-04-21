@@ -30,9 +30,13 @@ import { ReactiveFormsModule } from '@angular/forms';
 import {RewardService} from "./services/reward.service";
 import {RewardusersComponent} from "./components/rewardusers/rewardusers.component";
 import {RewardComponent} from "./components/reward/reward.component";
+
+import { BrowserModule } from '@angular/platform-browser';
+import { QuizService } from "./services/quiz/quiz.service";
+
 import { HttpClientModule } from '@angular/common/http';
 import { EventBackComponent } from '../app/components/event-back/event-back.component';
-import { BrowserModule } from '@angular/platform-browser'
+
 import { EventService } from './services/event.service';
 import { MessageService } from 'primeng/api';
 import { CalendarModule } from 'primeng/calendar';
@@ -41,11 +45,18 @@ import { EventfrontComponent } from './components/eventfront/eventfront.componen
 import {DiscountService} from "./services/discount.service";
 
 
+import { ForumDetailComponent } from './components/forum-detail/forum-detail.component';
+import { FooterComponent } from './components/footer/footer.component';
+import { LandingHomeComponent } from './components/landing-home/landing-home.component';
+import { HeaderComponent } from './components/header/header.component';
+import { HomeComponent } from './components/home/home.component';
+
 
 @NgModule({
-    declarations: [AppComponent, NotfoundComponent,ForumComponent,EventBackComponent , EventfrontComponent],
-    imports: [AppRoutingModule,
-        AppLayoutModule ,
+    declarations: [AppComponent, NotfoundComponent , ForumComponent,ForumDetailComponent , 
+    LandingHomeComponent , FooterComponent,HeaderComponent, HomeComponent ,EventBackComponent , EventfrontComponent],
+    imports: [AppRoutingModule, 
+        AppLayoutModule , 
         DialogModule ,
         TableModule,
         FileUploadModule,
@@ -75,8 +86,11 @@ import {DiscountService} from "./services/discount.service";
     ],
     providers: [
         { provide: LocationStrategy, useClass: PathLocationStrategy },
-        CountryService, CustomerService, IconService, NodeService,
-        PhotoService, ProductService,RewardService,EventService, MessageService,DiscountService
+
+        CountryService, CustomerService, EventService, IconService, NodeService,
+        PhotoService, ProductService,RewardService,DiscountService,QuizService,
+        MessageService,
+
     ],
     bootstrap: [AppComponent]
 })

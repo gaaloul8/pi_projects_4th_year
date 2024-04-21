@@ -44,6 +44,13 @@ export class ForumService {
     });
     return this.http.put<Forum>(`${this.baseUrl}/dislike/${forumId}`, null, { headers: headers });
   }
+
+  getForumById(forumId: number): Observable<Forum> {
+    const headers = new HttpHeaders({
+      'Authorization': 'Bearer ' + this.token
+    });
+    return this.http.get<Forum>(`${this.baseUrl}/${forumId}`, { headers: headers });
+  }
 }
 
 
@@ -70,4 +77,10 @@ export interface User {
 export interface Question {
   questionId?: number;
   title?: string;
+  content?: string;
+  createdAt?: Date;
+  closed?: boolean;
+  author?: User;
+  upvotes?:number;
+  forum?:Forum;
 }

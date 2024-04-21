@@ -62,9 +62,9 @@ public class User implements UserDetails, Serializable {
     @OneToMany(cascade = CascadeType.ALL,mappedBy = "QuizUser")
     private List<QuizUser> quizUserList;
 
-    @OneToMany(cascade = CascadeType.ALL,mappedBy = "ForumOwner")
-    @JsonBackReference
-    private List<Forum> forumlist;
+//    @OneToMany(cascade = CascadeType.ALL,mappedBy = "ForumOwner")
+//    @JsonBackReference
+//    private List<Forum> forumlist;
 
     @OneToMany(cascade = CascadeType.ALL,mappedBy = "createdBy")
     private List<Reclamation> reclamationList;

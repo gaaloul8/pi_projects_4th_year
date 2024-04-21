@@ -93,6 +93,8 @@ $(function () {
   //Emojis
    initEmojiPicker()
 
+   EmojiPicker()
+
   initLightboxEmojis()
 
   //Video Embed
@@ -118,4 +120,11 @@ $(function () {
 
   //Init Tipuedrop
   initSuggestionSearch()
+
+  $('.nested-replies .header').on('click', function () {
+    $(this).toggleClass('is-active')
+    $(this).siblings('.nested-comments').slideToggle('fast')
+  })
 })
+
+

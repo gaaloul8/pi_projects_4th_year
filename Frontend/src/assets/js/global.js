@@ -241,15 +241,15 @@ function initEmojiPicker() {
   $('.post-comment.has-emojis').each(function () {
     id = id + 1
     var $this = $(this)
-    var wrapper = $this.find('.card-footer')
+    // var wrapper = $this.find('.card-footer')
     var textarea = $this.find('textarea')
     var action = $this.find('.is-emoji')
 
-    wrapper.attr('id', 'post-comment-wrapper-' + id)
+    // wrapper.attr('id', 'post-comment-wrapper-' + id)
     textarea.attr('id', 'post-comment-textarea-' + id)
     action.attr('id', 'post-comment-button-' + id)
 
-    const container = document.getElementById('post-comment-wrapper-' + id)
+    // const container = document.getElementById('post-comment-wrapper-' + id)
     const messageInput = document.getElementById('post-comment-textarea-' + id)
     const button = document.getElementById('post-comment-button-' + id)
 
@@ -269,6 +269,28 @@ function initEmojiPicker() {
     })
   })
 }
+function EmojiPicker() {
+  const postCompose = document.querySelector('.post-compose');
+  if (postCompose) {
+    const textarea = postCompose.querySelector('textarea');
+    const emojiButton = postCompose.querySelector('.is-emoji');
+
+    const picker = new EmojiButton({
+      position: 'top-end',
+      autoHide: false,
+    });
+
+    picker.on('emoji', (emoji) => {
+      textarea.value += emoji;
+      textarea.dispatchEvent(new Event('input')); // Dispatch input event for Angular's [(ngModel)] to update
+    });
+
+    emojiButton.addEventListener('click', () => {
+      picker.pickerVisible ? picker.hidePicker() : picker.showPicker(emojiButton);
+    });
+  }
+}
+
 
 function initLightboxEmojis() {
   var id = 0
