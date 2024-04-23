@@ -64,4 +64,9 @@ public class QuizUserServiceImpl implements QuizUserService {
     public List<QuizUser> getAll() {
         return  quizUserDao.findAll();
     }
+
+
+    public List<Object[]> getQuizUserParticipationDatesAndCounts() {
+        return quizUserDao.getQuizUserParticipationDatesAndCounts();
+    }
 }

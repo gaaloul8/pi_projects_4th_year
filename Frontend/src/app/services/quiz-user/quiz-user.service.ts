@@ -18,4 +18,7 @@ export class QuizUserService {
     getAllQuizUsers(): Observable<any[]> {
         return this.http.get<any[]>(`${this.baseUrl}/all`);
     }
+    getQuizUserParticipationDatesAndCounts(): Observable<any[]> {
+        return this.http.get<any[]>(`${this.baseUrl}/getQuizUserParticipationDatesAndCounts`);
+    }
 }
