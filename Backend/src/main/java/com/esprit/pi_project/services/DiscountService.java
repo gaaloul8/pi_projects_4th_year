@@ -1,8 +1,10 @@
 package com.esprit.pi_project.services;
 
+import com.esprit.pi_project.dto.DiscountDTO;
 import com.esprit.pi_project.entities.Discount;
-import jakarta.persistence.criteria.CriteriaBuilder;
+import com.esprit.pi_project.entities.Evenement;
 
+import java.util.Date;
 import java.util.List;
 
 public interface DiscountService {

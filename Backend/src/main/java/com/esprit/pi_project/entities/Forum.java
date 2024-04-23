@@ -37,7 +37,7 @@ public class Forum implements Serializable {
 
     private Boolean closed;
 
-    @OneToMany(mappedBy = "forum")
-    private List<Question> questions = new ArrayList<>();
+//    @OneToMany(mappedBy = "forum")
+//    private List<Question> questions = new ArrayList<>();
 
 }

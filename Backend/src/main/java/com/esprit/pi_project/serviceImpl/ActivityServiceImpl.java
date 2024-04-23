@@ -70,4 +70,9 @@ public class ActivityServiceImpl implements ActivityService {
         }
         return  null;
     }
+
+    @Override
+    public List<Activity> getAllActivitiesByQuizId(Integer idQuiz) {
+        return activityDao.findByQuiz_IdQuiz(idQuiz);
+    }
 }

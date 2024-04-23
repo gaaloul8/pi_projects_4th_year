@@ -1,0 +1,66 @@
+// .like-wrapperr {
+//     .like-button {
+//       position: relative;
+//       width: 54px;
+//       height: 54px;
+//       border-radius: 50%;
+//       background: #ffffff; /* Use the white color */
+//       box-shadow: 0px 5px 43px rgba(0, 0, 0, 0.18);
+//       display: flex;
+//       justify-content: center;
+//       align-items: center;
+//       margin: 0 auto;
+//       text-decoration: none;
+//       opacity: 1 !important;
+//       overflow: hidden;
+  
+//       .like-overlay {
+//         display: block;
+//         position: absolute;
+//         top: 0;
+//         left: 0;
+//         width: 54px;
+//         height: 54px;
+//         border-radius: 50%;
+//         background: rgba(255, 0, 0, 0.9); /* Use a darkened red color */
+//         transform: scale(0);
+//         transition: all 0.4s;
+//         z-index: 0;
+//       }
+  
+//       i {
+//         &.not-liked {
+//           display: block;
+//           color: rgba(255, 0, 0, 0.9); /* Use a darkened red color */
+//           position: relative;
+//           z-index: 1;
+//         }
+  
+//         &.is-liked {
+//           display: none;
+//           color: #ffffff; /* Use the white color */
+//           position: relative;
+//           z-index: 1;
+//         }
+//       }
+  
+//       &.is-active {
+//         box-shadow: 0px 5px 43px rgba(255, 0, 0, 0.18); /* Use a slightly transparent red shadow */
+  
+//         .like-overlay {
+//           transform: scale(1);
+//         }
+  
+//         i {
+//           &.not-liked {
+//             display: none;
+//           }
+  
+//           &.is-liked {
+//             display: block;
+//           }
+//         }
+//       }
+//     }
+//   }
+  

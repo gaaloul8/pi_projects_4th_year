@@ -1,8 +1,11 @@
 package com.esprit.pi_project.entities;
+import com.esprit.pi_project.serviceImpl.CustomAuthorityDeserializer;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -37,6 +40,9 @@ public class User implements UserDetails, Serializable {
     private String resetToken;
 
     private String email;
+    private String niveau;
+    private String Identifiant;
+    private boolean FirstLogin;
 
     @Column(name = "registration_date")
     private Date registrationDate;
@@ -44,11 +50,9 @@ public class User implements UserDetails, Serializable {
     @Column(name = "last_login")
     private Date lastLogin;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     @ToString.Exclude
     @JsonManagedReference
-
-
     private List<Token> tokens;
 
     @Enumerated(EnumType.STRING)
@@ -64,9 +68,9 @@ public class User implements UserDetails, Serializable {
     @OneToMany(cascade = CascadeType.ALL,mappedBy = "QuizUser")
     private List<QuizUser> quizUserList;
 
-    @OneToMany(cascade = CascadeType.ALL,mappedBy = "ForumOwner")
-    @JsonBackReference
-    private List<Forum> forumlist;
+//    @OneToMany(cascade = CascadeType.ALL,mappedBy = "ForumOwner")
+//    @JsonBackReference
+//    private List<Forum> forumlist;
 
     @OneToMany(cascade = CascadeType.ALL,mappedBy = "createdBy")
     private List<Reclamation> reclamationList;
@@ -86,6 +90,18 @@ public class User implements UserDetails, Serializable {
     @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class , property = "idEvent")
     private List<Evenement> evenements;
 
+
+    @Column(length = 2000000000)
+    private String profilePicture;
+    @ElementCollection(targetClass = Tag.class)
+    @CollectionTable(name = "user_tags", joinColumns = @JoinColumn(name = "id_user"))
+    @Column(name = "tag", nullable = false)
+    @Enumerated(EnumType.STRING)
+    private List<Tag> tags;
+
+
+
+    @JsonDeserialize(using = CustomAuthorityDeserializer.class)
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
