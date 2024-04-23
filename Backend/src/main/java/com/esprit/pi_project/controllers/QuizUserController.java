@@ -1,7 +1,6 @@
 package com.esprit.pi_project.controllers;
 
 
-import com.esprit.pi_project.entities.Quiz;
 import com.esprit.pi_project.entities.QuizUser;
 import com.esprit.pi_project.services.QuizUserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,5 +28,11 @@ public class QuizUserController {
     public List<QuizUser> retrieveAllQuizUser() {
 
         return quizUserService.getAll();
+    }
+
+    @GetMapping("getQuizUserParticipationDatesAndCounts")
+    public List<Object[]> getQuizUserParticipationDatesAndCounts() {
+
+        return quizUserService.getQuizUserParticipationDatesAndCounts();
     }
 }

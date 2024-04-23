@@ -23,6 +23,10 @@ import {GooglemapComponent} from "./components/googlemap/googlemap.component";
 
 import { EventBackComponent } from './components/event-back/event-back.component';
 import { EventfrontComponent } from './components/eventfront/eventfront.component';
+
+import {ActivitiesComponent} from "./components/activities-back/activities.component";
+import {QuizChartComponent} from "./components/quiz-chart/quiz-chart.component";
+
 import {TransactionstatComponent} from "./components/transactionstat/transactionstat.component";
 import { LoginComponent } from "./components/login/login.component";
 import { RegisterComponent } from "./components/register/register.component";
@@ -33,6 +37,7 @@ import {CompleteprofileComponent} from "./components/completeprofile/completepro
 import {TakeimageComponent} from "./components/takeimage/takeimage.component";
 import {RegisterWithCardComponent} from "./components/register-with-card/register-with-card.component";
 import {UserBackComponent} from "./components/user-back/user-back.component";
+
 
 
 
@@ -86,10 +91,13 @@ import {UserBackComponent} from "./components/user-back/user-back.component";
             { path: 'rewardusers', component: RewardusersComponent },
 
             { path: 'quiz', component: QuizComponent},
+            { path: 'quiz-chart', component: QuizChartComponent},
+            { path: 'activities-back', component: ActivitiesComponent},
             { path: 'question-quiz', component: QuestionQuizComponent},
             { path: 'quiz-frontend', component: QuizFrontendComponent},
             { path: 'googlemap', component: GooglemapComponent},
             { path: 'question-quiz/:idQuiz', component: QuestionQuizComponent },
+            { path: 'activities-back/:idQuiz', component: ActivitiesComponent },
 
             { path: 'discounts', component: DiscountsComponent },
             { path: 'transactions', component: TransactionhistoryComponent },

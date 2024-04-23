@@ -22,6 +22,10 @@ export class QuizService {
     getAllQuizzes(): Observable<any[]> {
         return this.http.get<any[]>(`${this.baseUrl}/all`);
     }
+
+    getAllQuizzesAllowedToPublish(): Observable<any[]> {
+        return this.http.get<any[]>(`${this.baseUrl}/allowedToPublish`);
+    }
 /*
     getAllQuizzes(): Observable<any[]> {
         return this.http.get<any[]>(`${this.baseUrl}/all`, { headers: this.createHeaders() });
@@ -29,6 +33,13 @@ export class QuizService {
 
     updateQuiz(quiz: any): Observable<any> {
         return this.http.put<any>(`${this.baseUrl}/update`, quiz);
+    }
+    publishQuiz(quiz:any):Observable<any> {
+        return this.http.put<any>(`${this.baseUrl}/publish`, quiz);
+    }
+
+    unpublishQuiz(quiz:any):Observable<any> {
+        return this.http.put<any>(`${this.baseUrl}/unpublish`, quiz);
     }
 
     getQuizById(id: number): Observable<any> {
@@ -39,4 +50,6 @@ export class QuizService {
     deleteQuiz(quiz: any): Observable<any> {
         return this.http.delete(`${this.baseUrl}/delete `, { body: quiz });
     }
+
+
 }

@@ -3,6 +3,7 @@ package com.esprit.pi_project.services;
 
 
 import com.esprit.pi_project.entities.Activity;
+import com.esprit.pi_project.entities.QuizQuestion;
 
 import java.util.List;
 
@@ -16,4 +17,6 @@ public interface ActivityService {
     void removeActivity (Activity activity);
 
     Activity findById(Integer idActivity);
+    List<Activity> getAllActivitiesByQuizId(Integer idQuiz);
+
 }
