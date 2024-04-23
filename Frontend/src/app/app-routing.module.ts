@@ -23,6 +23,10 @@ import {GooglemapComponent} from "./components/googlemap/googlemap.component";
 
 import { EventBackComponent } from './components/event-back/event-back.component';
 import { EventfrontComponent } from './components/eventfront/eventfront.component';
+import { ListReservationEventComponent } from './components/list-reservation-event/list-reservation-event.component';
+import { FeedbackComponent } from './components/feedback/feedback.component';
+import { ChartEventComponent } from './components/chart-event/chart-event.component';
+import { ListfeedbackClubManagerComponent } from './components/listfeedback-club-manager/listfeedback-club-manager.component';
 
 import {ActivitiesComponent} from "./components/activities-back/activities.component";
 import {QuizChartComponent} from "./components/quiz-chart/quiz-chart.component";
@@ -48,16 +52,22 @@ import {UserBackComponent} from "./components/user-back/user-back.component";
             {
                 path: '', component: AppLayoutComponent,
                 children: [
-                    //{ path: '', redirectTo: '/home', pathMatch: 'full' },
                     { path: '', loadChildren: () => import('./demo/components/dashboard/dashboard.module').then(m => m.DashboardModule) },
                     { path: 'uikit', loadChildren: () => import('./demo/components/uikit/uikit.module').then(m => m.UIkitModule) },
                     { path: 'utilities', loadChildren: () => import('./demo/components/utilities/utilities.module').then(m => m.UtilitiesModule) },
                     { path: 'documentation', loadChildren: () => import('./demo/components/documentation/documentation.module').then(m => m.DocumentationModule) },
                     { path: 'blocks', loadChildren: () => import('./demo/components/primeblocks/primeblocks.module').then(m => m.PrimeBlocksModule) },
                     { path: 'pages', loadChildren: () => import('./demo/components/pages/pages.module').then(m => m.PagesModule) },
+
+                    {path:'eventBack',component : EventBackComponent },
+                    {path:'listReservationEvent',component : ListReservationEventComponent},
+                    {path: 'listFeedBack', component: FeedbackComponent},
+                    {path: 'staticEventByFeedback' , component:ChartEventComponent},
+                    {path: 'listFeedBackClubManager' , component:ListfeedbackClubManagerComponent},
                     {path:'club',component:ClubsComponent},
                     {path:'post',component:PostComponent},
                     {path:'users',component:UserBackComponent},
+
 
 
                 ]
@@ -104,9 +114,10 @@ import {UserBackComponent} from "./components/user-back/user-back.component";
             { path: 'statistics', component: StatisticsComponent },
             { path: 'rewardusers', component: RewardusersComponent },
 
-            {path:'eventBack',component : EventBackComponent },
+
             {path:'eventFront',component : EventfrontComponent},
-            {path:'stattransaction',component : TransactionstatComponent},
+         
+
 
 
             { path: '**', redirectTo: '/notfound' },
