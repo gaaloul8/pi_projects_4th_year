@@ -21,4 +21,5 @@ public interface RewardService {
     public List<Reward> findrewardWithNoDiscount();
 
     List<TransactionHistory>getalltransactions();
+    Map<Integer, Long> countTransactionsByMonth();
 }

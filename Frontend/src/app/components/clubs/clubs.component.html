@@ -1,0 +1,131 @@
+
+   <div class="grid">
+    <div class="col-12">
+        <div class="card px-6 py-6">
+            <p-toolbar styleClass="mb-4">
+                <ng-template pTemplate="left">
+                    <div class="my-2">
+                        <button pButton pRipple label="Add new Club" icon="pi pi-plus" class="p-button-success mr-2" (click)="openNew()"></button>
+                        <button pButton pRipple icon="pi pi-file-pdf" class="p-button-warning" (click)="generatePDF()"></button>
+                    </div>
+                </ng-template>
+
+
+            </p-toolbar>
+
+            <p-table [value]="clubs">
+
+
+
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th style="width: 3rem">
+                            <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                        </th>
+                        <th>Club Name</th>
+                        <th>Club Description</th>
+                        <th>Membership Number</th>
+                        <th>Tag</th>
+
+                        <th></th>
+                    </tr>
+                </ng-template>
+
+                <ng-template pTemplate="body" let-club>
+                    <tr>
+                        <td>
+                            <p-tableCheckbox [value]="club"></p-tableCheckbox>
+                        </td>
+                        <td>{{ club.clubName }}</td>
+                        <td>{{ club.description }}</td>
+                        <td>{{ club.membershipCount }}</td>
+                        <td>{{ club.tag }}</td>
+
+                        <td>
+                            <div class="flex">
+                                <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" (click)="editClub(club,club.clubId)"></button>
+                                <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning" (click)="confirmDelete(club.clubId)"></button>                        </div>
+                        </td>
+                    </tr>
+                </ng-template>
+            </p-table>
+            <p-dialog [(visible)]="clubDialog" [style]="{width: '450px'}" header="club Details" [modal]="true" class="p-fluid">
+              <ng-template pTemplate="content">
+                  <img [src]="club.image"
+                       [alt]="club.image" width="150" class="mt-0 mx-auto mb-5 block shadow-2" *ngIf="club.image">
+                       <div class="field">
+                        <label for="name">Club Name</label>
+                        <input type="text" pInputText id="name" [(ngModel)]="club.clubName" required autofocus [ngClass]="{'ng-invalid ng-dirty' : submitted && !club.clubName}"/>
+                        <small class="ng-dirty ng-invalid" *ngIf="submitted && !club.clubName">Name is required.</small>
+                    </div>
+                    
+  
+  
+  
+  
+  
+                  <div class="field">
+                      <label for="description">Description</label>
+                      <textarea id="description" pInputTextarea [(ngModel)]="club.description" required rows="3" cols="20"></textarea>
+                  </div>
+                  <div class="field">
+                      <label for="name">MembershiP NUMBER</label>
+                      <input type="number" pInputText id="name" [(ngModel)]="club.membershipCount" required autofocus [ngClass]="{'ng-invalid ng-dirty' : submitted && !club.membershipCount}"/>
+                      <small class="ng-dirty ng-invalid" *ngIf="submitted && !club.membershipCount">Location is required.</small>
+                  </div>
+  
+  
+                  <div class="formgrid grid">
+                      <div class="field col">
+                          
+                          <label for="tag">Tag</label>
+                          <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" [(ngModel)]="club.tag">
+                            
+                            <option *ngFor="let tag of tagValues" [value]="tag">{{ tag }}</option>
+                          </select>
+
+                      </div>
+  
+  
+  
+  
+                  </div>
+  
+  
+  
+  
+  
+  
+              </ng-template>
+              <ng-template pTemplate="footer">
+                  <button pButton pRipple label="Cancel" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
+                  <!-- Afficher le bouton "Add" lorsque vous ajoutez un nouvel événement -->
+                  <!---->  <button *ngIf="!club.clubId" pButton pRipple label="Add" icon="pi pi-plus" class="p-button-text" (click)="addClub()"></button>
+                  <!-- Afficher le bouton "Update" lorsque vous éditez un événement existant -->
+                  <button *ngIf="club.clubId" pButton pRipple label="Update" icon="pi pi-check" class="p-button-text" (click)="updateClub(club)"></button>
+              </ng-template>
+  
+          </p-dialog>
+  
+          <p-dialog [(visible)]="deleteClubDialog" header="Confirm" [modal]="true" [style]="{width:'450px'}">
+              <div class="flex align-items-center justify-content-center">
+                  <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
+                  <span>Are you sure you want to delete this forum?</span>
+              </div>
+              <ng-template pTemplate="footer">
+                  <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No" (click)="deleteClubDialog = false"></button>
+                  <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Yes" (click)="deleteClub(selectedClubId)"></button>
+              </ng-template>
+          </p-dialog>
+          <p-dialog header="Confirmation" [(visible)]="showConfirmation" [modal]="true" [style]="{width:'450px'}" >
+            <p>Do you want to modify this club?</p>
+            <p-footer>
+              
+              <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No" (click)="cancelUpdate()"></button>
+              <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Yes" (click)="confirmUpdate()"></button>
+              
+            </p-footer>
+          </p-dialog>
+          
+      </div>
+  </div>

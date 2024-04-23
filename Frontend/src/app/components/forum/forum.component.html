@@ -28,15 +28,14 @@
                                      <article class="group-box">
                                     
                                       <div class="box-info-hover">
-                                        <div class="like-wrapper">
-                                            <a href="javascript:void(0);" class="like-button" (click)="toggleLike(forum)">
-                                                <i class="mdi mdi-heart" [class.is-liked]="forum.isLiked" [class.not-liked]="!forum.isLiked" [class.bouncy]="forum.isLiked"></i>
-                                                <span class="like-overlay"></span>
+                                        <div class="like-wrapper"  *ngIf="!forum.closed">
+                                            <a href="javascript:void(0);" class="like-button" id="like-button-{{forum.forumId}}" (click)="toggleLike(forum)">
+                                              <i class="mdi mdi-heart not-liked bouncy" [class.is-hidden]="forum.isLiked"></i>
+                                              <i class="mdi mdi-heart is-liked bouncy" [class.is-hidden]="!forum.isLiked"></i>
+                                              <span class="like-overlay"></span>
                                             </a>
-                                        </div>
-                                        
-                                        
-                                        
+                                          </div>
+                         
                                         <div class="box-clock-info">
                                             <i *ngIf="!forum.closed" data-feather="message-circle" class="box-clock"></i>
                                             <span class="box-time" [style.color]="forum.closed === true ? 'red' : 'initial'" [style.fontWeight]="forum.closed === true ? 'bold' : 'normal'">
@@ -47,7 +46,7 @@
                                     
                                     
                             <div  class="box-img has-background-image" data-background="https://via.placeholder.com/940x650" data-demo-background="assets/forum1.jpg"></div>
-                            <a href="#" class="box-link">
+                            <a [routerLink]="['/forumdetail', forum.forumId]" class="box-link">
                                 <div class="box-img--hover has-background-image" data-background="https://via.placeholder.com/940x650" data-demo-background="assets/forum1.jpg"></div>
                             </a>
                            

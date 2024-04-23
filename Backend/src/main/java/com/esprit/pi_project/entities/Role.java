@@ -1,5 +1,7 @@
 package com.esprit.pi_project.entities;
 
+import com.esprit.pi_project.serviceImpl.CustomAuthorityDeserializer;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -36,6 +38,8 @@ public enum Role {
     );
     @Getter
     private final Set<Permission> permissions;
+
+
 
     public List<SimpleGrantedAuthority> getAuthorites(){
        var authorities= getPermissions()

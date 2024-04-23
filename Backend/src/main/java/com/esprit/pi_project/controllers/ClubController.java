@@ -16,12 +16,14 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 
 @RestController
 @RequestMapping("/clubs")
 @AllArgsConstructor
 @Slf4j
+@CrossOrigin("*")
 
 public class ClubController {
 
@@ -48,7 +50,7 @@ public class ClubController {
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteClub(@PathVariable Long id){
         clubService.deleteClub(id);
-        return new ResponseEntity<>("Club deleted Successfully",HttpStatus.OK);
+        return  ResponseEntity.ok("Club deleted successfully");
     }
     @GetMapping("/getByTag/{tag}")
     public List<Club> getClubByTag(@PathVariable Tag tag){
@@ -67,5 +69,9 @@ public class ClubController {
         String currentDateTime=dateFormat.format((new Date()));
 
         clubService.generateClubsPDF(response);}
+    @GetMapping("/tag-statistics")
+    public Map<String, Long> getClubTagStatistics() {
+        return clubService.countClubsByTag();
+    }
 
 }

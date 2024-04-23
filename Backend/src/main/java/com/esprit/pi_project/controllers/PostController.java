@@ -5,9 +5,11 @@ import com.esprit.pi_project.serviceImpl.BadWordService;
 import com.esprit.pi_project.services.PostService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Date;
 import java.util.List;
@@ -16,20 +18,27 @@ import java.util.List;
 @RequestMapping("/posts")
 @AllArgsConstructor
 @Slf4j
+@CrossOrigin("*")
 public class PostController {
-
+    @Autowired
     private PostService postService;
+    @Autowired
     private BadWordService badWordService;
     @PostMapping("/add")
-    public ResponseEntity<String> addPost(@RequestBody Post post){
-        if (badWordService.containsBadWords(post.getContent())){
-
-                return ResponseEntity.badRequest().body("Hate speech alert. Please modify your description before posting.");
-
+    public ResponseEntity<String> addPost(@ModelAttribute Post post, @RequestParam("image") MultipartFile imageFile) {
+        if (badWordService.containsBadWords(post.getContent())) {
+            return ResponseEntity.badRequest().body("Hate speech alert. Please modify your description before posting.");
         }
-        postService.addPost(post);
 
-         return new ResponseEntity<>("Post added successfully", HttpStatus.CREATED);
+        try {
+            // Add the image file to the post and save it
+            postService.addPost(post, imageFile);
+
+            return new ResponseEntity<>("Post added successfully", HttpStatus.CREATED);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to add post");
+        }
     }
     @PutMapping("/update")
     public ResponseEntity<String> updatePost(@RequestBody Post post){

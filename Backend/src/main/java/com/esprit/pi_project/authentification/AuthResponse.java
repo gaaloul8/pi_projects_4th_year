@@ -12,4 +12,5 @@ import lombok.NoArgsConstructor;
 public class AuthResponse {
     private String jwtaccestoken;
     private String jwtRefreshtoken;
+    private Boolean FirstLogin;
 }

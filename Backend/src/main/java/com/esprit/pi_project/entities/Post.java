@@ -21,7 +21,7 @@ public class Post implements Serializable {
 
 
     @OneToMany(mappedBy = "post" ,cascade = CascadeType.ALL)
-    @JsonIgnore
+
     private List<Comment> comments;
 
 }

@@ -12,6 +12,11 @@ import java.util.List;
 public interface transactionHistoryDao extends JpaRepository<TransactionHistory,Integer> {
     @Query(value = "SELECT COUNT(DISTINCT user_id) FROM transaction_history", nativeQuery = true)
     Integer nbactiveusers();
+    @Query(value = "SELECT MONTH(purchaseDate) AS month, COUNT(*) AS transactionCount " +
+            "FROM TransactionHistory " +
+            "GROUP BY MONTH(purchaseDate)")
+    List<Object[]> countTransactionsByMonth();
+
 
 
 

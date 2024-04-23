@@ -19,11 +19,11 @@ import {ToolbarModule} from "primeng/toolbar";
 //import { reward } from "../../interfaces/reward";
 
 @Component({
-  selector: 'app-reward',
-  standalone: true,
+    selector: 'app-reward',
+    standalone: true,
     imports: [CommonModule, ReactiveFormsModule, FormsModule, ButtonModule, DialogModule, DropdownModule, InputTextModule, InputTextareaModule, RippleModule, SharedModule, CalendarModule, InputNumberModule, TableModule, ToolbarModule],
-  templateUrl: './reward.component.html',
-  styleUrl: './reward.component.scss'
+    templateUrl: './reward.component.html',
+    styleUrl: './reward.component.scss'
 })
 export class RewardComponent implements OnInit{
     rewards: Reward[] = [];
@@ -49,7 +49,6 @@ export class RewardComponent implements OnInit{
             (rewards:Reward[]) => {
                 this.rewards = rewards;
                 console.log('Events:', this.rewards);
-
             },
             error => {
                 console.log("error fetching rewards",error);
@@ -57,16 +56,21 @@ export class RewardComponent implements OnInit{
         );
     }
 
+    // Inside your TypeScript component
     addReward(): void {
         this.submitted = true;
         try {
-            this.rewardService.addReward(this.reward).toPromise();
-            console.log("reward created");
-            this.rewardDialog = false;
-            window.location.reload();
+            this.reward.image = '/assets/reward3.jpg';
+
+            this.rewardService.addReward(this.reward).toPromise().then(() => {
+                console.log("Reward created with static image path");
+                this.rewardDialog = false;
+                window.location.reload(); // Reloading the page might not be the best approach, consider alternatives
+            }).catch(error => {
+                console.error("Error creating reward with static image path:", error);
+            });
         } catch (error) {
             console.error(error);
-
         }
     }
 
@@ -108,10 +112,12 @@ export class RewardComponent implements OnInit{
     }
 
 
-    updateEvent(reward1 : Reward) {
+    updateReward(reward1 : Reward) {
         this.rewardService.updatereward(reward1).subscribe(
             updatedReward => {
                 console.log('Event updated:', updatedReward);
+                window.location.reload();
+
                 // Réussite : Gérer la réponse mise à jour si nécessaire
             },
             error => {

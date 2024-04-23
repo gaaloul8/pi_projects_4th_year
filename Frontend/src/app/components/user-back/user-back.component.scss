@@ -1,0 +1,55 @@
+.grid {
+    .row.mb-4 {
+        display: flex;
+        justify-content: space-between; // Add space between cards
+        align-items: center; // Align cards vertically
+        margin-top: 30px; // Add space from the top
+
+        .col-md-6 {
+            flex: 0 0 auto;
+            max-width: 45%; // Reduce max-width to accommodate space between cards
+            padding: 0 40px; // Adjust padding for equal space
+
+            .card {
+                height: 350px; // Increase the height of the card
+                width: 270px;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+
+                .card-title {
+                    margin-bottom: 10px;
+                    font-size: 1.5rem; // Adjust font size for card title
+                }
+
+                .card-text {
+                    font-size: 3.5rem; // Increase the font size of total users count
+                }
+            }
+        }
+    }
+
+    .col-md-6:last-child {
+        text-align: right; // Align the "Users by Level" card to the right
+    }
+
+    .form-control {
+        height: 50px; /* Increase the height of the input */
+        width: 100%; /* Adjust width */
+        font-size: 1.2rem; /* Adjust font size of the input */
+        border-radius: 25px; /* Add border radius for a rounded look */
+        border-color: #ced4da; /* Define border color */
+        padding-left: 20px; /* Add padding for text alignment */
+    }
+
+    .btn-outline-secondary {
+        height: 50px; // Match height with the input
+        border-radius: 25px; // Match input's border radius
+    }
+
+
+}
+.custom-search {
+    width: 900px; /* Set the desired width */
+}

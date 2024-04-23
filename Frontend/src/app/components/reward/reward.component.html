@@ -4,7 +4,7 @@
             <p-toolbar styleClass="mb-4">
                 <ng-template pTemplate="left">
                     <div class="my-2">
-                        <button pButton pRipple label="Add new Event" icon="pi pi-plus" class="p-button-success mr-2" (click)="openNew()"></button>
+                        <button pButton pRipple label="Add new Reward" icon="pi pi-plus" class="p-button-success mr-2" (click)="openNew()"></button>
                     </div>
                 </ng-template>
 
@@ -21,9 +21,11 @@
                             <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
                         </th>
                         <th>Reward Name</th>
-                        <th>Reward Desc</th>
                         <th>Cost</th>
+                        <th>Reward Desc</th>
                         <th>quantite</th>
+                        <th>image</th>
+
 
                         <th></th>
                     </tr>
@@ -38,50 +40,59 @@
                         <td>{{ reward.cost }}</td>
                         <td>{{ reward.description }}</td>
                         <td>{{ reward.nbDispo }}</td>
+                        <td>
+                            <img [src]="reward.image" alt="Reward Image" style="width: 100px; height: 100px;">
+                        </td>
+
 
                         <td>
                             <div class="flex">
-                                <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" (click)="editReward(reward,reward.idReward)"></button>
+                                <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" (click)="editReward(reward)"></button>
                                 <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning" (click)="confirmDelete(reward.idReward)"></button>                        </div>
                         </td>
                     </tr>
                 </ng-template>
             </p-table>
         </div>
-        <p-dialog [(visible)]="rewardDialog" [style]="{width: '450px'}" header="Event Details" [modal]="true" class="p-fluid">
+        <p-dialog [(visible)]="rewardDialog" [style]="{width: '450px'}" header="Reward Details" [modal]="true" class="p-fluid">
             <ng-template pTemplate="content">
                 <img [src]="reward.image"
-                     [alt]="reward.image" width="150" class="mt-0 mx-auto mb-5 block shadow-2" *ngIf="reward.image">
+                     [alt]="reward.image" width="200" class="mt-0 mx-auto mb-5 block shadow-2" *ngIf="reward.image">
+
                 <div class="field">
-                    <label for="name">Event Name</label>
+                    <label for="name">Reward Name</label>
                     <input type="text" pInputText id="name" [(ngModel)]="reward.name" required autofocus [ngClass]="{'ng-invalid ng-dirty' : submitted && !reward.name}"/>
-                    <small class="ng-dirty ng-invalid" *ngIf="submitted && !reward.name">Name is required.</small>
+                    <small class="ng-dirty ng-invalid" *ngIf="submitted && !reward.name">Image is required.</small>
                 </div>
 
 
 
 
 
+
                 <div class="field">
-                    <label for="description">Description</label>
-                    <textarea id="description" pInputTextarea [(ngModel)]="reward.description" required rows="3" cols="20"></textarea>
-                </div>
-                <div class="field">
-                    <label for="name">Location</label>
+                    <label for="name">Description</label>
                     <input type="text" pInputText id="name" [(ngModel)]="reward.description" required autofocus [ngClass]="{'ng-invalid ng-dirty' : submitted && !reward.description}"/>
-                    <small class="ng-dirty ng-invalid" *ngIf="submitted && !reward.description">Location is required.</small>
+                    <small class="ng-dirty ng-invalid" *ngIf="submitted && !reward.description">Description is required.</small>
                 </div>
+
+                <div class="field">
+                    <label for="image">Image</label>
+                    <input type="file" id="image" [(ngModel)]="reward.image" required autofocus [ngClass]="{'ng-invalid ng-dirty' : submitted && !reward.image}">
+                    <!-- <img *ngIf="reward.image" [src]="reward.image" alt="Selected Image">-->
+                </div>
+
 
 
                 <div class="formgrid grid">
                     <div class="field col">
                         <!--bel get hedha lezem njibou-->
-                        <label for="nbPlacesReservees">Number of reserved places</label>
-                        <p-inputNumber id="nbPlacesReservees" [(ngModel)]="reward.cost" ></p-inputNumber>
+                        <label for="cost">Cost</label>
+                        <p-inputNumber id="cost" [(ngModel)]="reward.cost" ></p-inputNumber>
                     </div>
 
                     <div class="field col">
-                        <label for="nbplacesMax">Maximum number of places</label>
+                        <label for="nbplacesMax">Nombre dispo</label>
                         <p-inputNumber id="nbplacesMax" [(ngModel)]="reward.nbDispo"></p-inputNumber>
                     </div>
 
@@ -100,7 +111,7 @@
                 <!-- Afficher le bouton "Add" lorsque vous ajoutez un nouvel événement -->
                 <!---->  <button *ngIf="!reward.idReward" pButton pRipple label="Add" icon="pi pi-plus" class="p-button-text" (click)="addReward()"></button>
                 <!-- Afficher le bouton "Update" lorsque vous éditez un événement existant -->
-                <button *ngIf="reward.idReward" pButton pRipple label="Update" icon="pi pi-check" class="p-button-text" (click)="updateEvent()"></button>
+                <button *ngIf="reward.idReward" pButton pRipple label="Update" icon="pi pi-check" class="p-button-text" (click)="updateReward(reward)"></button>
             </ng-template>
 
         </p-dialog>
