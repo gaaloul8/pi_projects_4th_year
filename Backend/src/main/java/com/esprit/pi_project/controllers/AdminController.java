@@ -20,7 +20,6 @@ public class AdminController {
 
     @GetMapping("/getUsers")
     public List<User> getUser(){
-        System.out.println(this.userService.getAll());
         return  this.userService.getAll();
     }
     @GetMapping("/getuser/{id}")

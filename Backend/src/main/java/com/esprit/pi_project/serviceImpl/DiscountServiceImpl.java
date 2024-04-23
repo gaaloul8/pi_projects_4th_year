@@ -3,12 +3,15 @@ package com.esprit.pi_project.serviceImpl;
 import com.esprit.pi_project.dao.DiscountDao;
 import com.esprit.pi_project.dao.RewardDao;
 import com.esprit.pi_project.entities.Discount;
+import com.esprit.pi_project.entities.Evenement;
 import com.esprit.pi_project.entities.Reward;
 import com.esprit.pi_project.services.DiscountService;
 import com.esprit.pi_project.services.RewardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,30 +30,22 @@ public class DiscountServiceImpl implements DiscountService {
 
     @Override
     public Discount newDiscount(Discount discount) {
-            if (! discount.getDiscountValue().endsWith("%")){
-                System.out.println("saisir une pourcentage");
-                return null;
-            }
+        if (!discount.getDiscountValue().endsWith("%")) {
+            throw new IllegalArgumentException("Discount value must end with '%' symbol");
+        }
 
-            double discountPercentage = Double.parseDouble(discount.getDiscountValue().replace("%", ""));
-            if (discountPercentage <= 0 || discountPercentage > 100) {
-                System.out.println("Saisir un pourcentage valide entre 0 et 100");
-                return null;
-            }
+        double discountPercentage = Double.parseDouble(discount.getDiscountValue().replace("%", ""));
+        if (discountPercentage <= 0 || discountPercentage > 100) {
+            throw new IllegalArgumentException("Discount percentage must be between 0 and 100");
+        }
 
         if (discount.getCreatedDiscount().after(discount.getEndDiscount())) {
-            System.out.println("Saisir deux dates valides");
-            return null;
+            throw new IllegalArgumentException("End date must be after start date");
         }
-        //if (discount.getReward()==null){
-          //  System.out.println("saisir le reward pour faire le discount");
-           // return null;
 
-        //}
-        else {
-            return discountDao.save(discount);
-        }
+        return discountDao.save(discount);
     }
+
 
 
     @Override
@@ -90,19 +85,26 @@ public class DiscountServiceImpl implements DiscountService {
 
 
     public void calculcostafterdiscount(Discount discount){
-            if (discount.getReward().getIdReward() != null){
-                Reward reward=rewardService.findById(discount.getReward().getIdReward());
-                if (reward!=null) {
-                    String discountValueString = discount.getDiscountValue().replace("%", "");
+        Reward reward = discount.getReward(); // Retrieve the reward from the discount
+        System.out.println("///////////////////////////////"+reward);
+        if (reward != null && reward.getIdReward() != null){
+            Reward existingReward = rewardService.findById(reward.getIdReward());
+            if (existingReward != null) {
+                String discountValueString = discount.getDiscountValue().replace("%", "");
+                float discountValue = Float.parseFloat(discountValueString);
+                System.out.println(discountValue);
+                float discountAmount = (existingReward.getCost() * discountValue) / 100;
+                float newCost = existingReward.getCost() - discountAmount;
 
-                    float discountvalue = Float.parseFloat(discountValueString);
-                    float newcost = (reward.getCost() * discountvalue) / 100;
-                    reward.setCost(newcost);
-                    rewardDao.save(reward);
-                }
+                System.out.println(newCost);
+
+                existingReward.setCost(newCost);
+                rewardDao.save(existingReward);
             }
-
+        }
     }
+
+
 
 
 

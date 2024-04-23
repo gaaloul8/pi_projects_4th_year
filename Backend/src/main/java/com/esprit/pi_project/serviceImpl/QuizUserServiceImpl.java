@@ -8,7 +8,7 @@ import com.esprit.pi_project.entities.Quiz;
 import com.esprit.pi_project.entities.QuizQuestion;
 import com.esprit.pi_project.entities.QuizUser;
 import com.esprit.pi_project.services.QuizUserService;
-//import com.esprit.pi_project.utilities.OpenAiServiceImpl;
+import com.esprit.pi_project.utilities.OpenAiServiceImpl;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-//import static com.esprit.pi_project.utilities.OpenAiServiceImpl.chatGPT;
+import static com.esprit.pi_project.utilities.OpenAiServiceImpl.chatGPT;
 @Service
 @AllArgsConstructor
 public class QuizUserServiceImpl implements QuizUserService {
@@ -33,24 +33,26 @@ public class QuizUserServiceImpl implements QuizUserService {
         //List<QuizQuestion> questions =quiz.getQuestions();
 
         List<String> questions = new ArrayList<>();
-
+        for(QuizQuestion question:quiz.getQuestions())
+            questions.add(question.getContent());
         // Ajout des questions à la liste
-        questions.add("Comment vous sentez-vous généralement sur une échelle de 1 à 10, où 1 est très mal et 10 est très bien ?");
-        questions.add("Avez-vous récemment ressenti une tristesse, une nervosité ou une anxiété persistante ?");
-        questions.add("Avez-vous des difficultés à entretenir des relations avec votre famille, vos amis ou vos collègues ?");
-        questions.add("Avez-vous des pensées négatives ou des sentiments d'insécurité à propos de vous-même ou de votre avenir ?");
+       // questions.add("Comment vous sentez-vous généralement sur une échelle de 1 à 10, où 1 est très mal et 10 est très bien ?");
+       // questions.add("Avez-vous récemment ressenti une tristesse, une nervosité ou une anxiété persistante ?");
+        //questions.add("Avez-vous des difficultés à entretenir des relations avec votre famille, vos amis ou vos collègues ?");
+      //  questions.add("Avez-vous des pensées négatives ou des sentiments d'insécurité à propos de vous-même ou de votre avenir ?");
 
         List<String> reponses = new ArrayList<>();
-        reponses.add("Je me sens à 7 aujourd'hui.");
-        reponses.add("Oui, je me sens souvent anxieux ces derniers temps.");
-        reponses.add("Oui, j'ai du mal à entretenir des relations avec ma famille.");
-        reponses.add("Oui, je lutte souvent avec des pensées négatives à propos de moi-même.");
+        reponses=quizUser.getReponses();
+        //reponses.add("Je me sens à 7 aujourd'hui.");
+       // reponses.add("Oui, je me sens souvent anxieux ces derniers temps.");
+      //  reponses.add("Oui, j'ai du mal à entretenir des relations avec ma famille.");
+       // reponses.add("Oui, je lutte souvent avec des pensées négatives à propos de moi-même.");
 
-         //String msg = chatGPT("je vais te fournir une liste de question "+questions.toString()+"et de reponse "+reponses.toString()+
-            //    " je veux que tu fais l'interpretation de l'etat psychologique et repns comme si tu repdons à la personne qui a passe le questionnaire  ");
+        String msg = chatGPT("je vais te fournir une liste de question "+questions.toString()+"et de reponse "+reponses.toString()+
+                " je veux que tu fais l'interpretation de l'etat psychologique et repns comme si tu repdons à la personne qui a passe le questionnaire en 2 phrases  ");
 
-      //  quizUser.setDescription(msg);
-//System.out.println(msg);
+        quizUser.setDescription(msg);
+        System.out.println(msg);
         QuizUser savedQuizUser= quizUserDao.save(quizUser);
         quiz.getQuizUsers().add(savedQuizUser);
         quizDao.save(quiz);

@@ -1,0 +1,129 @@
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" style="color:white;">Quiz Manager</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor02" aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarColor02">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+                <a class="btn btn-primary tooltips"  data-bs-toggle="modal" data-bs-target="#addQuestionModal" >Add Question <span class="sr-only">(current)</span></a>
+            </li>
+        </ul>
+        <form class="form-inline my-2 my-lg-0">
+            <input type="search"  #key="ngModel" ngModel
+                   name="key" id="searchName" class="form-control mr-sm-2" placeholder="Search employees..." required>
+        </form>
+    </div>
+</nav>
+<div class="container" id="main-container">
+
+    <div class="row">
+
+        <div *ngFor="let question of questions ; let i = index" (click)="selectQuiz(question)" class="col-md-6 col-xl-4">
+            <div class="card m-b-30">
+                <div class="card-body row">
+                    <div class="col-6">
+                        <a href=""><img src="https://media.istockphoto.com/id/1386740242/vector/vector-bubbles-with-question-mark-question-icons-isolated-on-white.jpg?s=612x612&w=0&k=20&c=evjrckVKb_RVRcN5qV1Tz1pkSu3FvHKCGtynu8btxhA=" alt="" class="img-fluid rounded-circle w-60"></a>
+                    </div>
+
+                    <div class="col-6 card-title align-self-center mb-1">
+                        <span><h5>Question {{ i + 1 }}: <h6>{{ question.content }} ? </h6></h5></span>
+                        <ul>
+                            <li *ngFor="let option of question.options">
+                                {{ option.content}}
+
+                            </li>
+                        </ul>
+
+                    </div>
+                </div>
+
+                <div class="card-body">
+                    <div class="float-right btn-group btn-group-sm">
+                        <a  class="btn btn-primary tooltips" data-placement="top" data-toggle="tooltip" data-original-title="Edit"><i class="fa fa-pencil"></i> </a>
+                        <a  data-bs-toggle="modal" data-bs-target="#deleteQuestionModal" class="btn btn-secondary tooltips" data-placement="top" data-toggle="tooltip" data-original-title="Delete"><i class="fa fa-times"></i></a>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- Add Question Modal -->
+<div class="modal fade" id="addQuestionModal" tabindex="-1" role="dialog" aria-labelledby="addQuestionModal" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addQuestionModalLabel">Add Question</h5>
+
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form #addForm="ngForm" (ngSubmit)="saveQuestion()">
+                    <div class="form-group">
+                        <label for="content">Question</label>
+                        <input type="text" ngModel name="content" class="form-control" id="content" placeholder="Question" required>
+                    </div>
+                    <div class="form-group">
+                        <div class="form-group" *ngFor="let option of options; let i = index">
+                            <label for="option{{ i }}">Option {{ i + 1 }}</label>
+
+                            <input type="text" [(ngModel)]="options[i].content" name="option{{ i }}" class="form-control" [id]="'option' + i" [placeholder]="'Option ' + (i + 1)" required>
+                            <div class="form-check mt-2">
+                                <input class="form-check-input" type="checkbox" [(ngModel)]="options[i].correct" name="correct{{ i }}" [id]="'correct' + i">
+                                <label class="form-check-label" for="correct{{ i }}">Correct</label>
+                            </div>
+                        </div>
+                        <button type="button" class="btn btn-secondary" (click)="addOption()">Add Option</button>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button [disabled]="addForm.invalid" type="submit" class="btn btn-primary">Save Question</button>
+                    </div>
+
+
+
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- DELETE Question Modal -->
+<div class="modal fade" id="deleteQuestionModal" tabindex="-1" role="dialog" aria-labelledby="deleteQuestionModal" aria-hidden="true">
+
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteQuestionModalLabel">Delete Quiz</h5>
+
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form  (ngSubmit)="deleteQuestion()">
+                    <div class="form-group">
+                        Are you sure to delete this Question ?
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button  type="submit" (click)="deleteQuestion()" class="btn btn-primary" >yes</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+

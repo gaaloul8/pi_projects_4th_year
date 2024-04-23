@@ -75,7 +75,6 @@ public class AuthController {
     public ResponseEntity<String> resetPassword(@PathVariable("resetToken") String resetToken, @RequestBody ResetRequest resetRequest) {
         try {
             String password = resetRequest.getPassword();
-            System.out.println(password);
             Service.ResetPw(password, resetToken);
             return ResponseEntity.ok("Password reset successfully.");
         } catch (Exception e) {

@@ -6,6 +6,7 @@ import java.util.List;
 
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
@@ -23,7 +24,7 @@ public class Forum implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "id_user")
-    @JsonBackReference
+   // @JsonManagedReference
     private User ForumOwner;
 
     @Temporal(TemporalType.DATE)
@@ -36,7 +37,7 @@ public class Forum implements Serializable {
 
     private Boolean closed;
 
-    @OneToMany(mappedBy = "forum")
-    private List<Question> questions = new ArrayList<>();
+//    @OneToMany(mappedBy = "forum")
+//    private List<Question> questions = new ArrayList<>();
 
 }

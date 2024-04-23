@@ -113,7 +113,6 @@ public class UserServiceIMPL implements UserService {
             byte[] imageData = profilePicture.getBytes(); // Read image data
 
             String base64Image = Base64.getEncoder().encodeToString(imageData);
-            System.out.println(base64Image);
             user.setProfilePicture(base64Image);
 
 

@@ -1,6 +1,7 @@
 package com.esprit.pi_project.entities;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -23,7 +24,7 @@ public class Evenement implements Serializable {
     @Enumerated(EnumType.STRING)
     @Column(name = "eventType")
     private TypeEvenement  eventType;
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX")
     private Date datetime;
     private String location;
     private String description;
@@ -37,14 +38,17 @@ public class Evenement implements Serializable {
     private StatusEvent status;
 
     @OneToMany(cascade = CascadeType.ALL,mappedBy = "evenement")
+    @JsonIgnore
     private List<FeedBack> feedBacks;
 
     @OneToMany(cascade = CascadeType.ALL,mappedBy = "evenementR")
+    @JsonIgnore
     private List<Reservation> reservations;
 
     @ManyToOne
     @JoinColumn(name = "id_user")
-    private User User;
+    @JsonIgnore
+    private User eventOwner;
 
 
 }

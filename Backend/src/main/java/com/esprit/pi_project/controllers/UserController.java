@@ -52,7 +52,6 @@ public class UserController {
 
 
         Optional<User> optionalUser = userService.getUserFromJwt(request);
-            System.out.println(tags +"ttttttttttttttttttttttttttttttttttttttttttt");
         if (optionalUser.isPresent()) {
             User user = optionalUser.get();
 
@@ -79,14 +78,11 @@ public class UserController {
         String extractedText = tesseractOCRService.recognizeText(file.getInputStream());
 
         TesseractOCRService.ExtractedData extractedData = tesseractOCRService.extractData(extractedText);
-        System.out.println(extractedData.getIdentifiant());
-        System.out.println(extractedData.getNom());
-        System.out.println(extractedData.getPrenom());
+
         User user = optionalUser.get();
             System.out.println(user.getIdentifiant());
 
         boolean isEqual = user.getIdentifiant().equals(extractedData.getIdentifiant());
-        System.out.println(isEqual);
 
         return isEqual;
     }

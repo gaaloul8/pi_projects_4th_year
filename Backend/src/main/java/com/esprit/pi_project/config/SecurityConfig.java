@@ -29,7 +29,15 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .authorizeRequests(authorizeRequests ->
                         authorizeRequests
-                                .requestMatchers("/auth/**","/auth/reset-password/").permitAll()
+                                .requestMatchers("/auth/**","/profile/","/auth/reset-password/").permitAll()
+                                .requestMatchers("/clubs/**","/comments/**","/posts/**").permitAll()
+
+
+                                .requestMatchers("/quiz/**","/passerQuiz/**","/questionq/**","/activity/**").permitAll()
+
+                                .requestMatchers("/reward/**","/discount/**","/forums/**").permitAll()
+
+
                              //   .requestMatchers("/auth/admin").hasAnyRole(Admin.name())
                                // .requestMatchers(HttpMethod.GET,"/auth/admin").hasAnyAuthority(ADMIN_READ.name())
                                 .anyRequest().authenticated()
