@@ -1,9 +1,7 @@
 package com.esprit.pi_project.controllers;
 
-import com.esprit.pi_project.authentification.AuthResponse;
-import com.esprit.pi_project.authentification.ForgetPasswordRequest;
-import com.esprit.pi_project.authentification.SignInRequest;
-import com.esprit.pi_project.authentification.SignupRequest;
+import com.esprit.pi_project.authentification.*;
+import com.esprit.pi_project.dao.UserDao;
 import com.esprit.pi_project.services.AuthService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -26,14 +24,17 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/auth")
 @RequiredArgsConstructor
+@CrossOrigin("*")
 public class AuthController {
     @Autowired
 
     private final  AuthService Service;
+
 
     @PostMapping("/register")
     public ResponseEntity<AuthResponse> Register(
@@ -48,6 +49,11 @@ public class AuthController {
         return ResponseEntity.ok(Service.login(request));
 
     }
+    @PostMapping("/carte")
+    public AuthResponse register(@RequestParam("carte") MultipartFile file) throws IOException {
+        // Register the user based on the signature image
+        return Service.register(file);
+    }
 
     @PostMapping("/refersh")
     public void refresh(
@@ -59,14 +65,18 @@ public class AuthController {
 
     @PostMapping("/forget-password")
     public ResponseEntity<String> forgetPassword(@RequestBody ForgetPasswordRequest request) {
+
         Service.forgetPw(request.getEmail());
         return ResponseEntity.ok("Password reset email sent successfully.");
+
+
     }
     @PostMapping("/reset-password/{resetToken}")
-    public ResponseEntity<String> resetPassword(@PathParam("resetToken") String resetToken, @RequestBody String newPassword) {
+    public ResponseEntity<String> resetPassword(@PathVariable("resetToken") String resetToken, @RequestBody ResetRequest resetRequest) {
         try {
-            System.out.println(resetToken);
-            Service.ResetPw(newPassword, resetToken);
+            String password = resetRequest.getPassword();
+            System.out.println(password);
+            Service.ResetPw(password, resetToken);
             return ResponseEntity.ok("Password reset successfully.");
         } catch (Exception e) {
             return ResponseEntity.badRequest().body("Failed to reset password. Error: " + e.getMessage());

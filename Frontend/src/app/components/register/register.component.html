@@ -1,0 +1,47 @@
+User
+<div class="background-image">
+    <div class="form-container">
+        <div class="p-fluid p-grid p-justify-center">
+            <div class="p-col-8">
+                <div class="card">
+                    <h1>Registration</h1>
+                    <form (ngSubmit)="registerUser()" #registerForm="ngForm">
+                        <div class="p-field">
+                            <div class="input-with-icon">
+                                <i class="pi pi-user"></i>
+                                <input id="firstname" type="text" pInputText [(ngModel)]="registerRequest.firstName" name="firstname" placeholder="Nom" required>
+                            </div>
+                            <div *ngIf="formSubmitted && registerForm.controls['firstname'].errors?.required" class="error-message">First Name is required</div>
+                        </div>
+                        <div class="p-field">
+                            <div class="input-with-icon">
+                                <i class="pi pi-user"></i>
+                                <input id="lastname" type="text" pInputText [(ngModel)]="registerRequest.lastName" name="lastname" placeholder="Prenom" required>
+                            </div>
+                            <div *ngIf="formSubmitted && registerForm.controls['lastname'].errors?.required" class="error-message">Last Name is required</div>
+                        </div>
+                        <div class="p-field">
+                            <div class="input-with-icon">
+                                <i class="pi pi-envelope"></i>
+                                <input id="email" type="email" pInputText [(ngModel)]="registerRequest.email" name="email" placeholder="Email" required>
+                            </div>
+                            <div *ngIf="formSubmitted && registerForm.controls['email'].errors?.required" class="error-message">Email is required</div>
+                        </div>
+                        <div class="p-field">
+                            <div class="input-with-icon">
+                                <i class="pi pi-lock"></i>
+                                <input id="password" type="password" pPassword [(ngModel)]="registerRequest.password" name="password" placeholder="Password" required>
+                            </div>
+                            <div *ngIf="formSubmitted && registerForm.controls['password'].errors?.required" class="error-message">Password is required</div>
+                        </div>
+                        <div class="error-message" *ngIf="errorMessage">{{ errorMessage }}</div>
+                        <div class="button-container">
+                            <button type="submit" pButton label="Register" class="register-button"></button>
+                            <span class="not-member-text">Already a member?<a routerLink="/login" class="login-link">Login</a></span>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
