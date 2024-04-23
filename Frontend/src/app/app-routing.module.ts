@@ -11,6 +11,10 @@ import {RewardusersComponent} from "./components/rewardusers/rewardusers.compone
 import {StatisticsComponent} from "./components/statistics/statistics.component";
 import { EventBackComponent } from './components/event-back/event-back.component';
 import { EventfrontComponent } from './components/eventfront/eventfront.component';
+import { ListReservationEventComponent } from './components/list-reservation-event/list-reservation-event.component';
+import { FeedbackComponent } from './components/feedback/feedback.component';
+import { ChartEventComponent } from './components/chart-event/chart-event.component';
+import { ListfeedbackClubManagerComponent } from './components/listfeedback-club-manager/listfeedback-club-manager.component';
 
 
 @NgModule({
@@ -20,12 +24,19 @@ import { EventfrontComponent } from './components/eventfront/eventfront.componen
             {
                 path: '', component: AppLayoutComponent,
                 children: [
+                    
                     { path: '', loadChildren: () => import('./demo/components/dashboard/dashboard.module').then(m => m.DashboardModule) },
                     { path: 'uikit', loadChildren: () => import('./demo/components/uikit/uikit.module').then(m => m.UIkitModule) },
                     { path: 'utilities', loadChildren: () => import('./demo/components/utilities/utilities.module').then(m => m.UtilitiesModule) },
                     { path: 'documentation', loadChildren: () => import('./demo/components/documentation/documentation.module').then(m => m.DocumentationModule) },
                     { path: 'blocks', loadChildren: () => import('./demo/components/primeblocks/primeblocks.module').then(m => m.PrimeBlocksModule) },
-                    { path: 'pages', loadChildren: () => import('./demo/components/pages/pages.module').then(m => m.PagesModule) }
+                    { path: 'pages', loadChildren: () => import('./demo/components/pages/pages.module').then(m => m.PagesModule) },
+                    {path:'eventBack',component : EventBackComponent },
+                    {path:'eventFront',component : EventfrontComponent},
+                    {path:'listReservationEvent',component : ListReservationEventComponent},
+                    {path: 'listFeedBack', component: FeedbackComponent},
+                    {path: 'staticEventByFeedback' , component:ChartEventComponent},
+                    {path: 'listFeedBackClubManager' , component:ListfeedbackClubManagerComponent},
                 ]
             },
             { path: 'auth', loadChildren: () => import('./demo/components/auth/auth.module').then(m => m.AuthModule) },
@@ -44,8 +55,7 @@ import { EventfrontComponent } from './components/eventfront/eventfront.componen
             { path: 'statistics', component: StatisticsComponent },
             { path: 'rewardusers', component: RewardusersComponent },
 
-            {path:'eventBack',component : EventBackComponent },
-            {path:'eventFront',component : EventfrontComponent},
+         
 
             { path: '**', redirectTo: '/notfound' },
 

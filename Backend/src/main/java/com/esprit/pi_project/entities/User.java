@@ -1,6 +1,8 @@
 package com.esprit.pi_project.entities;
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -73,12 +75,15 @@ public class User implements UserDetails, Serializable {
     private Club club;
 
     @OneToMany(cascade = CascadeType.ALL,mappedBy = "User")
+    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class , property = "idFeedback")
     private List<FeedBack> feedBacks;
 
     @OneToMany(cascade = CascadeType.ALL,mappedBy = "User")
+    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class , property = "idR")
     private List<Reservation> reservations;
 
     @OneToMany(cascade = CascadeType.ALL,mappedBy = "eventOwner")
+    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class , property = "idEvent")
     private List<Evenement> evenements;
 
 

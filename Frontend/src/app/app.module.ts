@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { HashLocationStrategy, LocationStrategy, PathLocationStrategy } from '@angular/common';
+import { DatePipe, HashLocationStrategy, LocationStrategy, PathLocationStrategy } from '@angular/common';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { AppLayoutModule } from './layout/app.layout.module';
@@ -38,12 +38,32 @@ import { EventService } from './services/event.service';
 import { MessageService } from 'primeng/api';
 import { CalendarModule } from 'primeng/calendar';
 import { DataViewModule } from 'primeng/dataview';
-
+import { EventfrontComponent } from './components/eventfront/eventfront.component';
+import { CarouselModule } from 'primeng/carousel';
+import { GalleriaModule } from 'primeng/galleria';
+import { ImageModule } from 'primeng/image';
+import { MediaDemoRoutingModule } from './demo/components/uikit/media/mediademo-routing.module';
+import { PickList } from 'primeng/picklist';
+import { ListReservationEventComponent } from './components/list-reservation-event/list-reservation-event.component';
+import { FeedbackComponent } from './components/feedback/feedback.component';
+import { StarRatingModule } from 'angular-star-rating';
+import { FilterPipe } from './filter.pipe';
+import { MultiSelectModule } from 'primeng/multiselect';
+import { ChartModule } from 'primeng/chart';
+import { ChartEventComponent } from './components/chart-event/chart-event.component';
+import { ListfeedbackClubManagerComponent } from './components/listfeedback-club-manager/listfeedback-club-manager.component';
+import { SidebarComponent } from './components/sidebar/sidebar.component';
 
 
 @NgModule({
-    declarations: [AppComponent, NotfoundComponent,ForumComponent,EventBackComponent],
-    imports: [AppRoutingModule, 
+    declarations: [AppComponent, NotfoundComponent,ForumComponent,EventBackComponent , 
+        EventfrontComponent,ListReservationEventComponent,ChartEventComponent,ListfeedbackClubManagerComponent,SidebarComponent,
+        FeedbackComponent],
+    imports: [AppRoutingModule,
+        ChartModule,
+        MultiSelectModule,
+        FilterPipe,
+        StarRatingModule,
         AppLayoutModule , 
         DialogModule ,
         TableModule,
@@ -70,12 +90,18 @@ import { DataViewModule } from 'primeng/dataview';
         BrowserModule,
         CalendarModule,
         ReactiveFormsModule,
-        DataViewModule
+        DataViewModule,
+        CarouselModule,
+        CommonModule,
+		MediaDemoRoutingModule,
+		ButtonModule,
+		ImageModule,
+		GalleriaModule
         ],
         providers: [
             { provide: LocationStrategy, useClass: PathLocationStrategy },
             CountryService, CustomerService, IconService, NodeService,
-            PhotoService, ProductService,RewardService,DiscountService,EventService, MessageService,
+            PhotoService, ProductService,RewardService,DiscountService,EventService, MessageService,DatePipe
         ],
         bootstrap: [AppComponent]
     })
