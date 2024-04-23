@@ -1,4 +1,5 @@
 import { NgModule } from '@angular/core';
+
 import { CommonModule, HashLocationStrategy, LocationStrategy, PathLocationStrategy } from '@angular/common';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
@@ -10,16 +11,18 @@ import { CustomerService } from './demo/service/customer.service';
 import { IconService } from './demo/service/icon.service';
 import { NodeService } from './demo/service/node.service';
 import { PhotoService } from './demo/service/photo.service';
+import {HttpClient} from "@angular/common/http";
+import {WebcamModule} from "ngx-webcam";
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { ClubsComponent } from './components/clubs/clubs.component';
-import { TableModule } from 'primeng/table'; 
-import { ToolbarModule } from 'primeng/toolbar'; 
+import { TableModule } from 'primeng/table';
+import { ToolbarModule } from 'primeng/toolbar';
 import { ButtonModule } from 'primeng/button';
-import { DialogModule } from 'primeng/dialog'; 
-import { InputTextModule } from 'primeng/inputtext'; 
+import { DialogModule } from 'primeng/dialog';
+import { InputTextModule } from 'primeng/inputtext';
 import { InputTextareaModule } from 'primeng/inputtextarea';
-import { InputNumberModule } from 'primeng/inputnumber'; 
+import { InputNumberModule } from 'primeng/inputnumber';
 import { PostComponent } from './components/post/post.component';
 import { ForumComponent } from '../app/components/forum/forum.component';
 import { FileUploadModule } from 'primeng/fileupload';
@@ -45,10 +48,13 @@ import { FooterComponent } from './components/footer/footer.component';
 import { LandingHomeComponent } from './components/landing-home/landing-home.component';
 import { HeaderComponent } from './components/header/header.component';
 import { HomeComponent } from './components/home/home.component';
+import {RegisterComponent} from "./components/register/register.component";
+import {CompleteprofileComponent} from "./components/completeprofile/completeprofile.component";
+import {TakeimageComponent} from "./components/takeimage/takeimage.component";
 
 
 @NgModule({
-    declarations: [AppComponent, NotfoundComponent , ForumComponent,ForumDetailComponent , 
+    declarations: [AppComponent, NotfoundComponent , ForumComponent,ForumDetailComponent ,
     LandingHomeComponent , FooterComponent,HeaderComponent, HomeComponent ,EventBackComponent , EventfrontComponent,
     ClubsComponent,PostComponent],
     imports: [AppRoutingModule, AppLayoutModule, ReactiveFormsModule, FormsModule, BrowserModule,CommonModule,TableModule,ToolbarModule,
@@ -57,7 +63,7 @@ import { HomeComponent } from './components/home/home.component';
         InputTextModule,
         InputTextareaModule,
         InputNumberModule,
-        AppLayoutModule , 
+        AppLayoutModule ,
         DialogModule ,
         TableModule,
         FileUploadModule,
@@ -73,7 +79,6 @@ import { HomeComponent } from './components/home/home.component';
         InputNumberModule,
         FormsModule,
         ReactiveFormsModule,
-        ReactiveFormsModule,
         BrowserModule,
         DialogModule,
         ToolbarModule,
@@ -82,17 +87,20 @@ import { HomeComponent } from './components/home/home.component';
         CommonModule,
         BrowserModule,
         CalendarModule,
-        ReactiveFormsModule,
-        DataViewModule
+        DataViewModule,
+        WebcamModule,
+        DialogModule,
+        RegisterComponent,
+        CompleteprofileComponent,
+        TakeimageComponent,
     ],
     providers: [
         { provide: LocationStrategy, useClass: PathLocationStrategy },
 
         CountryService, CustomerService, EventService, IconService, NodeService,
-        PhotoService, ProductService,RewardService,DiscountService,QuizService,
-        MessageService,
-
-    ],
+        PhotoService, ProductService,HttpClient
+        , ProductService,RewardService,DiscountService,QuizService,
+        MessageService,],
     bootstrap: [AppComponent]
 })
 export class AppModule {}

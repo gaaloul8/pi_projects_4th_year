@@ -1,0 +1,48 @@
+<div class="background-image">
+    <div class="form-container">
+        <div class="p-fluid p-grid p-justify-center">
+            <div class="p-col-8">
+                <div class="card">
+                    <h1>One More Step </h1>
+                    <form (ngSubmit)="CompleteProfiles()" style="max-width: 400px;">
+                        <div style="text-align: center;">
+                            <label for="profilePicture">
+                                <img src="assets/palceholder.png" alt="Profile Picture" style="width: 150px; height: 150px; border-radius: 50%; border: 2px solid #ccc; cursor: pointer;">
+                            </label>
+                            <input type="file" id="profilePicture" name="profilePicture" (change)="onFileSelected($event)" style="display: none;">
+                        </div>
+                        <div style="margin-top: 20px;">
+                            <label for="Identifiant">Identifiant:</label>
+                            <input type="text" id="Identifiant" name="Identifiant" [(ngModel)]="completeProfile.Identifiant" style="width: 100%; padding: 8px; margin-top: 5px;">
+                        </div>
+                        <div style="margin-top: 10px;">
+                            <label for="niveau">Niveau:</label>
+                            <select id="niveau" name="niveau" [(ngModel)]="completeProfile.niveau" style="width: 100%; padding: 8px; margin-top: 5px;">
+                                <option value="1ère année">1ère année</option>
+                                <option value="2ème année">2ème année</option>
+                                <option value="3ème année">3ème année</option>
+                                <option value="4ème année">4ème année</option>
+                                <option value="5ème année">5ème année</option>
+                            </select>
+                        </div>
+                        <div style="margin-top: 10px;">
+                            <label>Tags:</label>
+                            <div style="display: flex; flex-wrap: wrap;">
+                                <input type="checkbox" id="sports" name="tags" value="SPORTS" (change)="updateTags($event)" style="margin-right: 10px;"> SPORTS
+                                <input type="checkbox" id="technology" name="tags" value="TECHNOLOGY" (change)="updateTags($event)" style="margin-right: 10px;"> TECHNOLOGY
+                                <input type="checkbox" id="music" name="tags" value="MUSIC" (change)="updateTags($event)" style="margin-right: 10px;"> MUSIC
+                                <input type="checkbox" id="robotics" name="tags" value="ROBOTICS" (change)="updateTags($event)" style="margin-right: 10px;"> ROBOTICS
+                                <input type="checkbox" id="art" name="tags" value="ART" (change)="updateTags($event)" style="margin-right: 10px;"> ART
+                                <input type="checkbox" id="science" name="tags" value="SCIENCE" (change)="updateTags($event)" style="margin-right: 10px;"> SCIENCE
+                                <input type="checkbox" id="gaming" name="tags" value="GAMING" (change)="updateTags($event)" style="margin-right: 10px;"> GAMING
+                            </div>
+                        </div>
+                        <div style="margin-top: 20px;">
+                            <button type="submit" style="width: 100%; padding: 10px; background-color: #007bff; color: #fff; border: none; border-radius: 5px; cursor: pointer;">Submit</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
