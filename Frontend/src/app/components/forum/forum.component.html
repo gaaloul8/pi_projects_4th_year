@@ -20,13 +20,13 @@
                         </div>
                     </div>
                 </div>
-                
+
 
                 <div class="columns is-multiline">
                     <!--Forum-->
                     <div class="column is-3" *ngFor="let forum of forums" (click)="forum.closed ? openClosedForumDialog() : null">
                                      <article class="group-box">
-                                    
+
                                       <div class="box-info-hover">
                                         <div class="like-wrapper"  *ngIf="!forum.closed">
                                             <a href="javascript:void(0);" class="like-button" id="like-button-{{forum.forumId}}" (click)="toggleLike(forum)">
@@ -35,7 +35,7 @@
                                               <span class="like-overlay"></span>
                                             </a>
                                           </div>
-                         
+
                                         <div class="box-clock-info">
                                             <i *ngIf="!forum.closed" data-feather="message-circle" class="box-clock"></i>
                                             <span class="box-time" [style.color]="forum.closed === true ? 'red' : 'initial'" [style.fontWeight]="forum.closed === true ? 'bold' : 'normal'">
@@ -43,13 +43,13 @@
                                             </span>
                                         </div>
                                     </div>
-                                    
-                                    
+
+
                             <div  class="box-img has-background-image" data-background="https://via.placeholder.com/940x650" data-demo-background="assets/forum1.jpg"></div>
                             <a [routerLink]="['/forumdetail', forum.forumId]" class="box-link">
                                 <div class="box-img--hover has-background-image" data-background="https://via.placeholder.com/940x650" data-demo-background="assets/forum1.jpg"></div>
                             </a>
-                           
+
                             <div class="box-info">
                                 <span class="box-category">{{forum.topic}}</span>
                                 <h3 class="box-title">{{forum.content}}</h3>
@@ -69,11 +69,11 @@
               <div class="clickable-icon" (click)="confirmDelete(forum.forumId)">
                 <i data-feather="trash-2" style="cursor: pointer;color: red;"></i>
               </div>
-              
-              
-                           
-              
-              
+
+
+
+
+
             </span>
                             </div>
                         </article>
@@ -89,7 +89,7 @@
                       <div class="field">
                           <label for="description">Content</label>
                           <textarea id="description" pInputTextarea [(ngModel)]="forum.content"></textarea>
-                      </div> 
+                      </div>
                       <div *ngIf="showDropdown" class="field" style="margin-bottom: 80px;">
                         <label for="status">Forum Status</label>
                         <p-dropdown [(ngModel)]="forum.closed" inputId="forumStatus" optionValue="value" [options]="statuses" placeholder="Select">
@@ -101,11 +101,11 @@
                           </ng-template>
                         </p-dropdown>
                       </div>
-                                         
-                    
-                                                             
+
+
+
                   </ng-template>
-      
+
                   <ng-template pTemplate="footer">
                       <button pButton pRipple label="Cancel" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
                       <button pButton pRipple label="Save" icon="pi pi-check" class="p-button-text" (click)="saveForum()"></button>

@@ -39,7 +39,11 @@ import {TransactionstatComponent} from "./components/transactionstat/transaction
                     { path: 'documentation', loadChildren: () => import('./demo/components/documentation/documentation.module').then(m => m.DocumentationModule) },
                     { path: 'blocks', loadChildren: () => import('./demo/components/primeblocks/primeblocks.module').then(m => m.PrimeBlocksModule) },
                     { path: 'pages', loadChildren: () => import('./demo/components/pages/pages.module').then(m => m.PagesModule) },
-                    
+                    {path:'stattransaction',component : TransactionstatComponent},
+                    { path: 'statistics', component: StatisticsComponent },
+                    { path: 'reward', component: RewardComponent },
+                    { path: 'discounts', component: DiscountsComponent },
+
 
                 ]
             },
@@ -51,10 +55,8 @@ import {TransactionstatComponent} from "./components/transactionstat/transaction
             { path: 'question/:id', component: QuestionDetailComponent },
 
             { path: 'notfound', component: NotfoundComponent },
-            { path: 'reward', component: RewardComponent },
             { path: 'statistics', component: StatisticsComponent },
 
-            { path: 'discounts', component: DiscountsComponent },
             { path: 'transactions', component: TransactionhistoryComponent },
             { path: 'rewardusers', component: RewardusersComponent },
 
@@ -66,12 +68,10 @@ import {TransactionstatComponent} from "./components/transactionstat/transaction
 
             { path: 'discounts', component: DiscountsComponent },
             { path: 'transactions', component: TransactionhistoryComponent },
-            { path: 'statistics', component: StatisticsComponent },
             { path: 'rewardusers', component: RewardusersComponent },
 
             {path:'eventBack',component : EventBackComponent },
             {path:'eventFront',component : EventfrontComponent},
-            {path:'stattransaction',component : TransactionstatComponent},
 
 
             { path: '**', redirectTo: '/notfound' },
