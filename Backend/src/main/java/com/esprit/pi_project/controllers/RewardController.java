@@ -5,14 +5,19 @@ import com.esprit.pi_project.entities.Reward;
 import com.esprit.pi_project.entities.TransactionHistory;
 import com.esprit.pi_project.entities.User;
 import com.esprit.pi_project.services.RewardService;
+import com.esprit.pi_project.services.UserService;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/reward")
@@ -22,11 +27,12 @@ public class RewardController {
     private RewardDao rewardDao;
     @Autowired
     private RewardService rewardService;
+    @Autowired
+    UserService userService;
 
     @GetMapping("/getallrewards")
-    public ResponseEntity<List<Reward>> getallrewards(){
-        List<Reward> rewards= this.rewardService.findAll();
-        return new ResponseEntity<>(rewards, HttpStatus.OK);
+    public List<Reward> getallrewards(){
+        return  this.rewardService.findAll();
     }
 
     @GetMapping("/findrewardbyid/{id}")
@@ -35,13 +41,28 @@ public class RewardController {
     }
 
     @PostMapping("/addreward")
-    public ResponseEntity<Reward> addreward(@RequestBody Reward reward){
+    public ResponseEntity<String> addreward(
+        @RequestParam("image") MultipartFile image,
+        @RequestParam("cost") float Cost ,
+        @RequestParam("name")String name  ,
+        @RequestParam("nbDispo")int nbDispo  ,
+        @RequestParam("description")String description
+            ,
+        HttpServletRequest request
+                )throws IOException {
+        // Optional<User> optionalUser = userService.getUserFromJwt(request);
+        // User user = optionalUser.get();
+        try {
+            rewardService.newReward(image, Cost, name, nbDispo, description);
+            return new ResponseEntity<>("Reward addes with success", HttpStatus.CREATED);
 
-        Reward reward1= this.rewardService.newReward(reward);
-            return new ResponseEntity<>(reward1, HttpStatus.CREATED);
-
-
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("not succesfull ");
+        }
     }
+
+
 
     @DeleteMapping("/deletreward/{id}")
     public ResponseEntity <Void> deletereward(@PathVariable Integer id){
@@ -84,4 +105,9 @@ public class RewardController {
         public Map<Integer, Long> getMonthlyTransactionCounts() {
             return rewardService.countTransactionsByMonth();
         }
+    @GetMapping("/findrewardbyname/{name}")
+    public Reward findrewardbyname(@PathVariable String name){
+        return this.rewardService.findRewardByName(name);
     }
+
+}

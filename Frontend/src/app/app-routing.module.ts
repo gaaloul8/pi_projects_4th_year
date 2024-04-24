@@ -58,6 +58,12 @@ import {UserBackComponent} from "./components/user-back/user-back.component";
                     { path: 'documentation', loadChildren: () => import('./demo/components/documentation/documentation.module').then(m => m.DocumentationModule) },
                     { path: 'blocks', loadChildren: () => import('./demo/components/primeblocks/primeblocks.module').then(m => m.PrimeBlocksModule) },
                     { path: 'pages', loadChildren: () => import('./demo/components/pages/pages.module').then(m => m.PagesModule) },
+                    {path:'stattransaction',component : TransactionstatComponent},
+                    { path: 'statistics', component: StatisticsComponent },
+                    { path: 'reward', component: RewardComponent },
+                    { path: 'discounts', component: DiscountsComponent },
+                    { path: 'transactions', component: TransactionhistoryComponent },
+
 
                     {path:'eventBack',component : EventBackComponent },
                     {path:'listReservationEvent',component : ListReservationEventComponent},
@@ -93,11 +99,7 @@ import {UserBackComponent} from "./components/user-back/user-back.component";
             { path: 'question/:id', component: QuestionDetailComponent },
 
             { path: 'notfound', component: NotfoundComponent },
-            { path: 'reward', component: RewardComponent },
-            { path: 'statistics', component: StatisticsComponent },
 
-            { path: 'discounts', component: DiscountsComponent },
-            { path: 'transactions', component: TransactionhistoryComponent },
             { path: 'rewardusers', component: RewardusersComponent },
 
             { path: 'quiz', component: QuizComponent},
@@ -109,14 +111,9 @@ import {UserBackComponent} from "./components/user-back/user-back.component";
             { path: 'question-quiz/:idQuiz', component: QuestionQuizComponent },
             { path: 'activities-back/:idQuiz', component: ActivitiesComponent },
 
-            { path: 'discounts', component: DiscountsComponent },
-            { path: 'transactions', component: TransactionhistoryComponent },
-            { path: 'statistics', component: StatisticsComponent },
-            { path: 'rewardusers', component: RewardusersComponent },
 
 
             {path:'eventFront',component : EventfrontComponent},
-         
 
 
 
