@@ -1,7 +1,6 @@
 package com.esprit.pi_project.entities;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.*;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -36,18 +35,21 @@ public class Evenement implements Serializable {
     @Enumerated(EnumType.STRING)
     @Column(name = "status")
     private StatusEvent status;
+    @PrePersist
+    public void initializeStatus() {
+        this.status = StatusEvent.Available;
+    }
 
     @OneToMany(cascade = CascadeType.ALL,mappedBy = "evenement")
-    @JsonIgnore
+    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class , property = "idFeedback")
     private List<FeedBack> feedBacks;
 
     @OneToMany(cascade = CascadeType.ALL,mappedBy = "evenementR")
-    @JsonIgnore
+    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class , property = "idR")
     private List<Reservation> reservations;
 
     @ManyToOne
     @JoinColumn(name = "id_user")
-    @JsonIgnore
     private User eventOwner;
 
 

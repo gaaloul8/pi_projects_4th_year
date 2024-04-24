@@ -7,7 +7,7 @@ import org.springframework.http.ResponseEntity;
 import java.util.List;
 
 public interface CommentService {
-    Comment addComment(Comment comment);
+    Comment addComment(Comment comment, Long idPost);
     Comment updateComment(Comment comment);
 
     void deleteComment(Long idComment);

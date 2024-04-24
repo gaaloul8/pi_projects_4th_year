@@ -16,7 +16,8 @@ package com.esprit.pi_project.entities;
         FINANCE,
         ASTRONOMY,
         VOLUNTEERING,
-        LEADERSHIP
+        LEADERSHIP,
+        UNKNOWN
     }
 
 

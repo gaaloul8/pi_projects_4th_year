@@ -1,0 +1,24 @@
+<div class="container mt-5">
+    <h2>Angular Webcam Capture Image from Camera</h2>
+    <div class="col-md-12">
+        <div class="webcam-container">
+            <webcam
+                [trigger]="invokeObservable"
+                (imageCapture)="captureImg($event)"
+                [mirrorImage]="'never'"
+            ></webcam>
+            <div class="overlay-box"></div> <!-- Add overlay box -->
+        </div>
+    </div>
+    <div class="col-md-12">
+        <button class="btn btn-danger" (click)="getSnapshot()">
+            Capture Image
+        </button>
+    </div>
+    <div class="col-12">
+        <div id="results">Your taken image manifests here...</div>
+        <div class="captured-image-container">
+            <img *ngIf="croppedImage" [src]="croppedImage" height="400px" /> <!-- Add ngIf directive -->
+        </div>
+    </div>
+</div>

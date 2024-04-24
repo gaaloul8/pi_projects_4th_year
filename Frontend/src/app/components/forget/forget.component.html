@@ -1,0 +1,25 @@
+<div class="background-image">
+    <div class="form-container">
+        <div class="p-fluid p-grid p-justify-center">
+            <div class="p-col-8">
+                <div class="card">
+                    <h1>Forget Password</h1>
+                    <form (ngSubmit)="forgetPassword()" #forgetForm="ngForm">
+                        <div class="p-field">
+                            <div class="input-with-icon">
+                                <input id="email" type="email" pInputText [(ngModel)]="forgetRequest.email" name="email" placeholder="Enter your email" required #email="ngModel">
+                                <i class="pi pi-envelope"></i>
+                            </div>
+                            <div *ngIf="formSubmitted && email.invalid" class="error-message">Please input Email</div>
+                        </div>
+                        <div *ngIf="Message" class="error-message">{{ Message }}</div>
+
+                        <div class="button-container">
+                            <button type="submit" pButton label="Submit"></button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

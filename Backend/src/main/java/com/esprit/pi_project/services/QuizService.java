@@ -7,6 +7,7 @@ import java.util.List;
 
 public interface QuizService {
    List<Quiz> getAll();
+ List<Quiz> getAllAllowedToPublish();
 
     Quiz addQuiz (Quiz quiz);
     Quiz updateQuiz (Quiz quiz);
@@ -15,4 +16,8 @@ public interface QuizService {
     void removeQuiz (Quiz quiz);
 
     Quiz findById(Integer idQuiz);
+
+    Quiz publishQuiz(Quiz quiz);
+ Quiz unpublishQuiz(Quiz quiz);
+
 }

@@ -1,0 +1,71 @@
+<div class="grid">
+    <div class="col-12">
+        <div class="card px-6 py-6">
+            <p-toolbar styleClass="mb-4">
+                <ng-template pTemplate="left">
+                    <div class="my-2">
+                        <button pButton pRipple label="Feed Back Of users" icon="pi pi-plus" class="p-button-success mr-2" ></button>
+                    </div>
+                </ng-template>
+
+
+            </p-toolbar>
+            <p-table [value]="feedbacks">
+                <ng-template pTemplate="caption">
+                    <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
+                        <h5 class="m-0">Validate Feedbacks</h5>
+                    </div>
+                </ng-template>
+               
+                  
+    
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th style="width: 3rem">
+                            <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                        </th>
+                        <th>User First Name</th>
+                        <th>User Last Name</th>
+                        <th>Content of Feeed Back</th>    
+                        <th></th>
+                    </tr>
+                </ng-template>
+             
+                <ng-template pTemplate="body" let-feedback>
+                    <tr>
+                        <td>
+                            <p-tableCheckbox [value]="feedback"></p-tableCheckbox>
+                        </td>
+                        <td>Obba</td>
+                        <td>Arij</td>
+                     <!-- <td>feedback.user.firstName </td>
+                        <td>feedback.user.firstName }}</td>-->  
+                        <td>{{ feedback.content}}</td>
+                     
+                       
+                        
+                        <td>
+                            <div class="flex flex-wrap gap-2"> 
+                                <button pButton pRipple type="button" icon="pi pi-search" class="p-button-rounded p-button-success p-button-outlined"></button>
+                                <button pButton pRipple type="button" icon="pi pi-check" class="p-button-rounded p-button-outlined"></button>
+                            </div>
+                        </td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+        
+        <p-dialog header="Confirm" [modal]="true" [style]="{width:'450px'}">
+            <div class="flex align-items-center justify-content-center">
+                <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
+                <span>Are you sure you want to trait this feedback?</span>
+            </div>
+            <ng-template pTemplate="footer">
+                <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No" ></button>
+                <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Yes" ></button>
+            </ng-template>
+        </p-dialog>
+    </div>
+  </div>
+  
+  
