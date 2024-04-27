@@ -26,6 +26,11 @@ public class QuizController {
 
         return quizService.getAll();
     }
+    @GetMapping("allowedToPublish")
+    public List<Quiz> retrieveAllQuizAllowedToPublish() {
+
+        return quizService.getAllAllowedToPublish();
+    }
 
     @PutMapping("update")
     @ResponseBody
@@ -44,6 +49,15 @@ public class QuizController {
         this.quizService.removeQuiz(quiz);
     }
 
-
+    @PutMapping("publish")
+    @ResponseBody
+    public Quiz publishQuiz (@RequestBody Quiz quiz){
+        return  quizService.publishQuiz(quiz);
+    }
+    @PutMapping("unpublish")
+    @ResponseBody
+    public Quiz unpublishQuiz (@RequestBody Quiz quiz){
+        return  quizService.unpublishQuiz(quiz);
+    }
 
 }

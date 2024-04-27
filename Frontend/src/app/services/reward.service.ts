@@ -9,8 +9,7 @@ import {Transaction_history} from "../interfaces/Transaction_history";
 })
 export class RewardService {
     private baseUrl = 'http://localhost:8081/reward'; // Base URL of your Spring backend
-    private token = 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzYWRvay5zYXNzaUBlc3ByaXQudG4iLCJpYXQiOjE3MTM2OTk2NDEsImV4cCI6MTcxMzc4NjA0MX0.MI582kUnXRIJAfQAtvhm4IS2WRHff6Na7KMLP3-WP8A'
-
+    private token = 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzYWRvay5zYXNzaUBlc3ByaXQudG4iLCJpYXQiOjE3MTM5NDgxMDUsImV4cCI6MTcxNDAzNDUwNX0.P8R44rfSXGTGd9485NMS_3zmiSVhEfeYOzT2yyMFcn0'
     constructor(private http: HttpClient) { }
 
     getAllRewards(): Observable<Reward[]> {
@@ -25,21 +24,25 @@ export class RewardService {
         return this.http.get<any>(`${this.baseUrl}/findrewardbyid/${id}`);
     }
 
-    addReward(reward: any): Observable<any> {
-        const httpOptions = {
-            headers: new HttpHeaders({
-                'Content-Type': 'application/json'
-            })
-        };
-
-        return this.http.post(`${this.baseUrl}/addreward`, {
-            name: reward.name,
-            description: reward.description,
-            cost: reward.cost,
-            nbDispo: reward.nbDispo,
-            image:reward.image
-        }, httpOptions);
+    findrewardbyname(name: String): Observable<any> {
+        return this.http.get<any>(`${this.baseUrl}/findrewardbyname/${name}`);
     }
+
+
+    addReward(reward:Reward ,image:File): Observable<any> {
+            const formData = new FormData();
+            formData.append('name', reward.name);
+            formData.append('image', image);
+            formData.append('cost',  reward.cost.toString() );
+            formData.append('description', reward.description);
+        formData.append('nbDispo',  reward.nbDispo.toString() );
+
+        const headers = new HttpHeaders({
+                'Authorization': 'Bearer ' + this.token
+            });
+            return this.http.post<Reward>(`${this.baseUrl}/addreward`, formData, { headers: headers });
+        }
+
 
     updatereward(reward: Reward): Observable<Reward> {
         return this.http.put<Reward>(`${this.baseUrl}/updatereward`, reward);

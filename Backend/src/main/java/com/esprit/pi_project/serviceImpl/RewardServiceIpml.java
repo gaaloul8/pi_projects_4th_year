@@ -13,7 +13,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.text.ParseException;
 import java.util.*;
 
 @Service
@@ -29,8 +32,21 @@ public class RewardServiceIpml implements RewardService {
     UserService userService;
 
     @Override
-    public Reward newReward(Reward reward) {
-        return rewardDao.save(reward);
+    public Reward newReward( MultipartFile image,float cost,String name,int nbDispo,String description) throws IOException  {
+
+        byte[] imageData = image.getBytes(); // Read image data
+        Reward reward=new Reward();
+        String base64Image = Base64.getEncoder().encodeToString(imageData);
+        System.out.println(base64Image);
+        reward.setImage(base64Image);
+            reward.setCost(cost);
+            reward.setName(name);
+            reward.setDescription(description);
+            reward.setNbDispo(nbDispo);
+
+
+            return rewardDao.save(reward);
+
     }
 
     @Override
@@ -185,5 +201,10 @@ public class RewardServiceIpml implements RewardService {
         }
 
         return monthlyCounts;
+    }
+
+    @Override
+    public Reward findRewardByName(String name) {
+        return rewardDao.findRewardByName(name);
     }
 }

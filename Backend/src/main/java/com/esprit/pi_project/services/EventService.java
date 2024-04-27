@@ -19,5 +19,11 @@ public interface EventService {
 
    List<Evenement> searchEventByTpe (TypeEvenement typeEvenement);
 
+   List<Evenement> searchEventByName (String name);
+
+   //List<Evenement> searchEventByMultiple(TypeEvenement typeM);
+
+   List<Object[]> getEventFeedbackStatistics();
+
 
 }

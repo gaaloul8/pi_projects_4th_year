@@ -6,8 +6,8 @@ import { Status } from "../../interfaces/status";
 import { TypeEvent } from "../../interfaces/type-event";
 import { User } from "../../interfaces/user";
 import { Event } from "../../interfaces/event";
-import { FormBuilder,FormControl,Validator, Validators } from '@angular/forms';
 
+import { DatePipe} from '@angular/common';
 
 @Component({
   selector: 'app-event-back',
@@ -22,14 +22,22 @@ export class EventBackComponent implements OnInit {
   event: Event = {};
   deleteEventDialog: boolean = false;
   selectedEventId: number;
-  messageService: MessageService
   eventTypes: string[] = Object.values(TypeEvent);
   eventStatus: string[] = Object.values(Status);
-  constructor(private eventService : EventService,private fb: FormBuilder){}
+  selectedImage: File | null = null;
+  selectedFile: File | null = null;
+  imagesToUpload: File[] = [];
+  constructor(private eventService : EventService,private messageService: MessageService,private datePipe: DatePipe){}
 
   ngOnInit(): void {
     this.getEvent();
   }
+
+
+
+onFileChange(event) {
+    this.imagesToUpload = event.target.files;
+}
 
   getEvent(): void {
     this.eventService.getAllEvent().subscribe(
@@ -43,10 +51,9 @@ export class EventBackComponent implements OnInit {
     );
   }
 
-  public addEvent() {
+  addEvent() {
     this.submitted = true;
-    this.event.eventOwner = { id_user: 4, role: "ClubManager" };
-    
+    //this.event.eventOwner = { id_user: 1}; 
     try {
         console.log(this.event);
         this.eventService.addNewEvent(this.event).toPromise();
@@ -58,6 +65,7 @@ export class EventBackComponent implements OnInit {
         console.error(error);
     }
 }
+
   openNew() {
     this.event = {};
     this.submitted = false;
@@ -67,42 +75,46 @@ hideDialog() {
   this.eventDialog = false;
   this.submitted = false;
 }
+
 confirmDeleteEvent(idEvent: number) {
-  this.eventService.deleteEvent(idEvent).subscribe(
-    () => {
-      if (this.messageService) {
-        this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Event Deleted Successfully', life: 3000 });
+  this.eventService.deleteEvent(idEvent)
+    .subscribe(
+      () => {
+        // La suppression de l'événement a réussi
+        console.log('Event deleted with ID:', idEvent);
+        this.messageService.add({severity:'success', summary:'Success', detail:'Event deleted successfully!'});
+        this.getEvent(); // Mettez à jour les données si nécessaire
+        this.deleteEventDialog = false; // Fermer la boîte de dialogue après la suppression
+      },
+      error => {
+        // Gestion des erreurs
+        console.error('Error deleting event:', error);
+        this.messageService.add({severity:'error', summary:'Error', detail:'Error deleting event.'});
       }
-      // Rafraîchir la liste des événements après la suppression réussie
-      this.getEvent();
-    },
-    (error) => {
-      console.error('Error deleting event:', error);
-      if (this.messageService) {
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Failed to delete event', life: 3000 });
-      }
-    }
-  );
-  this.deleteEventDialog = false; // Supposé pour fermer la boîte de dialogue après la suppression
+    );
 }
 
 confirmDelete(idEvent: number){
   this.selectedEventId = idEvent;
   this.deleteEventDialog = true;
 }
-updateEvent(eventToUpdate : Event) {
+
+
+
+// Angular Component
+updateEvent(eventToUpdate: Event) {
   this.eventService.updateEvent(eventToUpdate).subscribe(
     updatedEvent => {
       console.log('Event updated:', updatedEvent);
-      // Réussite : Gérer la réponse mise à jour si nécessaire
+      this.eventDialog = false;
+      window.location.reload();
     },
     error => {
       console.error('Error updating event:', error);
-      console.log('Selected eventType:', this.event.eventType);
-      // Erreur : Gérer les erreurs si nécessaire
     }
   );
 }
+
 
 editEvent(eventEdit : Event) {
   this.event = { ...eventEdit };

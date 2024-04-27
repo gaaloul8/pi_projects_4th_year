@@ -18,6 +18,8 @@ public class Reward implements Serializable {
     private String description;
     private float cost;
     private Integer nbDispo;
+    @Column(length = 200000000)
+    @Lob
     private String image;
 
     @ManyToOne
