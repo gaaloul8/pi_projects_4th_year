@@ -23,7 +23,7 @@ import {TakeimageComponent} from "./components/takeimage/takeimage.component";
 import { CardModule } from 'primeng/card';
 import {HttpClient} from "@angular/common/http";
 import {WebcamModule} from "ngx-webcam";
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+
 import { BrowserModule } from '@angular/platform-browser';
 import { ClubsComponent } from './components/clubs/clubs.component';
 import { TableModule } from 'primeng/table';
@@ -44,6 +44,7 @@ import { RadioButtonModule } from 'primeng/radiobutton';
 import { RewardService } from "./services/reward.service";
 import { RewardusersComponent } from "./components/rewardusers/rewardusers.component";
 import { RewardComponent } from "./components/reward/reward.component";
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { QuizService } from "./services/quiz/quiz.service";
 import { HttpClientModule } from '@angular/common/http';
 import { EventBackComponent } from '../app/components/event-back/event-back.component';
@@ -66,12 +67,13 @@ import { ChartModule } from 'primeng/chart';
 import { ChartEventComponent } from './components/chart-event/chart-event.component';
 import { ListfeedbackClubManagerComponent } from './components/listfeedback-club-manager/listfeedback-club-manager.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
+import { PostFrontComponent } from './components/post-front/post-front.component';
 
 
 
 @NgModule({
     declarations: [AppComponent, FeedbackComponent,ChartEventComponent,NotfoundComponent , ListfeedbackClubManagerComponent,ListReservationEventComponent,ForumComponent,ForumDetailComponent ,
-    LandingHomeComponent ,SidebarComponent, FooterComponent,HeaderComponent, HomeComponent ,EventBackComponent , EventfrontComponent,
+    LandingHomeComponent ,SidebarComponent, FooterComponent,HeaderComponent, HomeComponent ,EventBackComponent , EventfrontComponent,PostFrontComponent,
     ClubsComponent,PostComponent],
     imports: [AppRoutingModule, AppLayoutModule,
          ReactiveFormsModule, FormsModule,

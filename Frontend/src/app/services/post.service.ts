@@ -9,20 +9,32 @@ import { Post } from '../interfaces/post'; // Assuming you have a Post model
 export class PostService {
 
   private baseUrl = 'http://localhost:8081/posts'; // Assuming this is your backend base URL
-  private token = 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzYWRva0Blc3ByaXQudG4iLCJpYXQiOjE3MTM3MTI3MjksImV4cCI6MTcxMzc5OTEyOX0.6Swtj-z6GG6Dvt6NPi8eEeJxk6wZy2CE4dJqnYYEWNQ'; // Assuming you have authentication
+  private token = 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzYWRva0Blc3ByaXQudG4iLCJpYXQiOjE3MTQyMjE4NjgsImV4cCI6MTcxNDMwODI2OH0.xOZBqJt88F2WFkfqPeFJr7Q59PpKwfnk3Ounsy0J9vQ'; // Assuming you have authentication
 
   constructor(private http: HttpClient) { }
 
 
-  addPost(post: Post): Observable<Post> {
-    // const headers = new HttpHeaders({
-    //   'Authorization': 'Bearer ' + this.token,
-    //   'Content-Type': 'multipart/form-data'
-    // });
-   const headers = new HttpHeaders().set('Accept', 'multipart/form-data');
-
-    return this.http.post<Post>(`${this.baseUrl}/add`, post, { headers: headers });
+  addPost(content: string, image: File): Observable<any> {
+    const formData = new FormData();
+    formData.append('content', content);
+    formData.append('image', image);
+    const headers = new HttpHeaders({
+      'Authorization': 'Bearer ' + this.token
+    });
+    return this.http.post(`${this.baseUrl}/add`, formData, { headers: headers });
   }
+
+  updateReward(postId: number, post: Post, image: File): Observable<any> {
+    const formData = new FormData();
+    formData.append('image', image);
+    formData.append('content', post.content);
+
+    const headers = new HttpHeaders({
+        'Authorization': 'Bearer ' + this.token
+    });
+
+    return this.http.put<Post>(`${this.baseUrl}/updatepost/${postId}`, formData, { headers: headers });
+}
 
   updatePost(post: Post): Observable<Post> {
     const headers = new HttpHeaders({
@@ -32,8 +44,8 @@ export class PostService {
     return this.http.put<Post>(`${this.baseUrl}/update`, post, { headers: headers });
   }
 
-  getAllPosts(): Observable<Post[]> {
-    return this.http.get<Post[]>(`${this.baseUrl}/getall`);
+  getAllPosts() {
+    return this.http.get(`${this.baseUrl}/getall`);
   }
 
   getPostById(id: number): Observable<Post> {
@@ -50,7 +62,11 @@ export class PostService {
   getPostsByDate(postDate: Date): Observable<Post[]> {
     return this.http.get<Post[]>(`${this.baseUrl}/getByDate/${postDate}`);
   }
+  getMonthlyPostsCounts(): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}/monthly-count`);
+}
+
+
 
 }
 export { Post };
-
