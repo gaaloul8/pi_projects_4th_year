@@ -9,6 +9,7 @@ import com.esprit.pi_project.services.DiscountService;
 import com.esprit.pi_project.services.RewardService;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -110,21 +111,22 @@ public class DiscountServiceImpl implements DiscountService {
         }
     }
 
-
-    public void checkDiscountsValidity(List<Discount> discounts) {
+    @Scheduled(fixedRate =20000)
+    public void checkDiscountsValidity() {
         // Get the current local date
         LocalDate currentDate = LocalDate.now();
-        System.out.println("sssssssssssss");
+        List<Discount> discounts=discountDao.findAll();
+        int i=0;
         // Iterate over the list of discounts
         for (Discount discount : discounts) {
             // Check if the end date of the discount has passed
             if (discount.getEndDiscount().before(java.sql.Date.valueOf(currentDate))) {
-
+                // If the end date has passed, retrieve the reward and revert its price to the initial value
                 Reward reward = discount.getReward();
                 if (reward != null && reward.getIdReward() != null) {
                     Reward existingReward = rewardService.findById(reward.getIdReward());
-                    if (existingReward != null) {
-
+                    if (existingReward != null && i==0) {
+                        // Calculate the initial cost using the discount value
                         String discountValueString = discount.getDiscountValue().replace("%", "");
                         float discountValue = Float.parseFloat(discountValueString);
                         float initialRewardCost = existingReward.getCost() * (100 / (100 - discountValue));
@@ -144,19 +146,8 @@ public class DiscountServiceImpl implements DiscountService {
             }
         }
     }
-    public void startCheckingValidity() {
-        scheduler.scheduleAtFixedRate(this::performDiscountValidityCheck, 0, 24, TimeUnit.SECONDS);
-        System.out.println("wa9ttttttttttt");
-    }
-
-    private void performDiscountValidityCheck() {
-        List<Discount> discounts = getAll(); // Implement this method to retrieve discounts from your data source
-        checkDiscountsValidity(discounts);
-    }
-
-
-    public void stopCheckingValidity() {
-        scheduler.shutdown();
-    }
 
 }
+
+
+

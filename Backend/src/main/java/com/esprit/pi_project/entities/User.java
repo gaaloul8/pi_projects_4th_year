@@ -60,6 +60,8 @@ public class User implements UserDetails, Serializable {
 
     @OneToMany(cascade = CascadeType.ALL,mappedBy = "User")
     //@JsonBackReference
+    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class , property = "idReward")
+
     private List<Reward> rewardList;
 
     @OneToMany(cascade = CascadeType.ALL,mappedBy = "QuizOwner")
