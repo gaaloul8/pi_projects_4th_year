@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { MessageService } from 'primeng/api';
@@ -19,12 +20,12 @@ export class PostComponent implements OnInit {
   selectedPostId: number;
   messageService: MessageService;
   showConfirmation: boolean = false;
-  selectedImage: string | ArrayBuffer | null = null;
+  selectedImage: any ;
+  content: string;
+  //imageUrl:String;
 
-  constructor(private postService: PostService, private formbuilder: FormBuilder) { }
-  chooseImage() {
-    document.getElementById('imageInput')?.click();
-  }
+  constructor(private postService: PostService, private formbuilder: FormBuilder,private http:HttpClient) { }
+  
 
   ngOnInit(): void {
     this.getAllPosts();
@@ -35,14 +36,16 @@ export class PostComponent implements OnInit {
     });
   }
   onImageSelected(event: any) {
-    const file = event.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        this.selectedImage = e.target?.result;
-      };
-      reader.readAsDataURL(file);
-    }
+    this.selectedImage=event.target.files[0];
+   /* const file: File = event.target.files[0];
+        this.post.image = file;
+
+        // Preview the image
+        const reader = new FileReader();
+        reader.onload = () => {
+            this.imageUrl = reader.result as string;
+        };
+        reader.readAsDataURL(file);*/
   }
 
   getAllPosts(): void {
@@ -55,17 +58,36 @@ export class PostComponent implements OnInit {
       });
   }
 
+  /*addPost(): void {
+    this.submitted = true;
+    this.postService.addPost(this.content, this.selectedImage).subscribe(
+      response => {
+        //console.log("Post created Successfully");
+        window.location.reload();
+        this.postDialog = false;
+        this.getAllPosts(); // Reload posts after adding
+        
+      },
+      error => {
+        console.error('Error creating post:', error);
+        // Handle error appropriately, e.g., show error message
+      }
+    );
+  }*/
   addPost(): void {
     this.submitted = true;
     try {
-      this.postService.addPost(this.post).toPromise();
-      console.log("Post created Successfully");
-      this.postDialog = false;
-      window.location.reload();
-    } catch (error) {
-      console.error(error);
+        this.postService.addPost(this.content , this.selectedImage).toPromise();
+
+                console.log("Post created Successfully");
+                this.postDialog = false;
+                window.location.reload();
+    }catch (error){
+        console.error(error)
     }
-  }
+
+
+    }
 
   openNew() {
     this.post = {};
@@ -78,7 +100,7 @@ export class PostComponent implements OnInit {
     this.submitted = false;
   }
 
-  deletePost(postId: number): void {
+ /* deletePost(postId: number): void {
     this.postService.deletePost(postId).subscribe(
       () => {
         if (this.messageService) {
@@ -94,14 +116,47 @@ export class PostComponent implements OnInit {
           this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Failed to delete post', life: 3000 });
         }
         this.deletePostDialog = false;
+      },
+      () => {
+        this.getAllPosts(); // Reload posts after deletion
       }
     );
-  }
+  }*/
+  deletePost(postId: number): void {
+    this.postService.deletePost(postId).subscribe(
+        () => {
+            if (this.messageService) {
+                this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Event Deleted Successfully', life: 3000 });
+            }
+            this.getAllPosts(); // Refresh rewards after deletion
+            this.deletePostDialog = false; // Move it here
+        },
+        error => {
+            console.error('Error deleting reward:', error);
+            if (this.messageService) {
+                this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Failed to delete event', life: 3000 });
+            }
+            this.deletePostDialog = false; // Move it here too, to handle error case
+        }
+    );
+}
 
-  confirmDelete(postId: number) {
-    this.selectedPostId = postId;
+  confirmDelete(post: Post) {
+    this.selectedPostId = post.postId;
     this.deletePostDialog = true;
   }
+  updateReward(rewardId: number): void {
+    this.submitted = true;
+    try {
+        this.postService.updateReward(rewardId, this.postForm.value, this.selectedImage).toPromise();
+        console.log("Reward updated Successfully");
+        window.location.reload();
+        // Handle success, e.g., show a success message to the user
+    } catch (error) {
+        console.error(error);
+        // Handle error, e.g., show an error message to the user
+    }
+}
 
   updatePost(post: Post) {
     this.showConfirmation= true;
@@ -149,4 +204,5 @@ export class PostComponent implements OnInit {
       }
     );
   }
+ 
 }

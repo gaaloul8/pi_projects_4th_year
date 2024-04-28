@@ -6,6 +6,6 @@ export interface Post {
     postDate?: Date;
     content?: string;
     
-   // comments?: Comment[]; // Assuming you have a Comment model
+    comments?: Comment[]; // Assuming you have a Comment model
   }
   
