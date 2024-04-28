@@ -1,0 +1,67 @@
+<br>
+<br>
+<br>
+<br>
+
+<div id="groups" class="container">
+
+    <div class="groups-grid">
+
+
+
+        <div class="columns is-multiline">
+
+            <div class="column is-3" *ngFor="let club of clubs" >
+                <article class="group-box">
+
+                    <div class="box-info-hover">
+
+
+
+                    </div>
+
+
+                    <div class="box-img has-background-image" [style.background-image]="'url(' + (club.image ? 'data:image/png;base64,' + club.image : 'https://via.placeholder.com/940x650') + ')'">
+                    </div>
+                    <a>
+                        <div class="box-img--hover has-background-image" [style.background-image]="'url(' + (club.image ? 'data:image/png;base64,' + club.image : 'https://via.placeholder.com/940x650') + ')'">
+                        </div>
+                    </a>
+                    
+                    
+
+                    <div class="box-info">
+                        <span class="box-category">{{club.clubName}}</span><br>
+                        <span class="box-category" style="text-transform: lowercase; font-family: Arial, sans-serif;">{{club.description}}</span>
+
+                        <span class="box-members">
+
+
+              <!--<a class="btn btn-primary tooltips" (click)="launchQuizModal()" data-bs-toggle="modal" data-bs-target="#quizModal" >Start Quiz<span class="sr-only">(current)</span></a>-->
+                    <!-- <a class="btn tooltips" style="color: black; background-color: transparent; margin-right: 12px;" (click)="launchQuizModal()" data-bs-toggle="modal" data-bs-target="#quizModal">
+<img src="assets/chance.png" alt="Logo" style="width: 35px;">
+Activities <span class="sr-only">(current)</span>
+</a>
+
+<a class="btn tooltips" style="color: black; background-color: transparent;" (click)="launchQuizModal()" data-bs-toggle="modal" data-bs-target="#quizModal">
+<img src="assets/startup.png" alt="Logo" style="width: 35px;">
+Start <span class="sr-only">(current)</span>
+</a> -->
+
+
+
+
+
+
+
+
+        </span>
+                    </div>
+                </article>
+            </div>
+        </div>
+
+
+
+    </div>
+</div>

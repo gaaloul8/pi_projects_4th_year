@@ -5,5 +5,6 @@ export interface Club{
   // manager?: User; // Assuming User interface is defined elsewhere
   description?: string;
   membershipCount?: number;
-  tag?: String;
+  tag?: string;
+  image?: any;
 }

@@ -1,5 +1,5 @@
 import { RouterModule } from '@angular/router';
-import { NgModule } from '@angular/core';
+import { Component, NgModule } from '@angular/core';
 import { NotfoundComponent } from './demo/components/notfound/notfound.component';
 import { AppLayoutComponent } from "./layout/app.layout.component";
 import { ClubsComponent } from './components/clubs/clubs.component';
@@ -15,6 +15,7 @@ import { ForumDetailComponent } from './components/forum-detail/forum-detail.com
 import { QuestionDetailComponent } from './components/question-detail/question-detail.component';
 import { HomeComponent } from './components/home/home.component';
 import { LandingHomeComponent } from './components/landing-home/landing-home.component';
+
 
 import {QuizComponent} from "./components/quiz/quiz.component";
 import {QuestionQuizComponent} from "./components/question-quiz/question-quiz.component";
@@ -41,6 +42,10 @@ import {CompleteprofileComponent} from "./components/completeprofile/completepro
 import {TakeimageComponent} from "./components/takeimage/takeimage.component";
 import {RegisterWithCardComponent} from "./components/register-with-card/register-with-card.component";
 import {UserBackComponent} from "./components/user-back/user-back.component";
+import { PostFrontComponent } from './components/post-front/post-front.component';
+import { PostStatComponent } from './components/post-stat/post-stat.component';
+import { ClubStatComponent } from './components/club-stat/club-stat.component';
+import { FrontClubComponent } from './components/front-club/front-club.component';
 
 
 
@@ -63,6 +68,11 @@ import {UserBackComponent} from "./components/user-back/user-back.component";
                     { path: 'reward', component: RewardComponent },
                     { path: 'discounts', component: DiscountsComponent },
                     { path: 'transactions', component: TransactionhistoryComponent },
+                    {path:'front-post',component:PostFrontComponent},
+                    {path:'stat-club',component:ClubStatComponent},
+                    {path:'stat-post',component:PostStatComponent},
+                    {path:'front-post',component:PostFrontComponent},
+                    { path: 'front-club', component: FrontClubComponent },
 
 
                     {path:'eventBack',component : EventBackComponent },
