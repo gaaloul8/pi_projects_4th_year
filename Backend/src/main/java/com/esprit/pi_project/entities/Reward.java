@@ -24,9 +24,21 @@ public class Reward implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "id_user")
-    //@JsonManagedReference
+   // @JsonManagedReference
     private User User;
 
+    @Override
+    public String toString() {
+        return "Reward{" +
+                "idReward=" + idReward +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", cost=" + cost +
+                ", nbDispo=" + nbDispo +
+                ", image='" + image + '\'' +
+                ", user=" + (User != null ? User.getId_user() : null) + // Assuming getIdUser() returns the user's ID
+                '}';
+    }
 
     //@OneToOne(mappedBy = "reward")
     //private Discount discount;

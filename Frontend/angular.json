@@ -46,7 +46,7 @@
                             "node_modules/easy-autocomplete/dist/jquery.easy-autocomplete.min.js",
                             "node_modules/dropzone/dist/dropzone-min.js",
                             "node_modules/izitoast/dist/js/iziToast.min.js",
-                            
+
                             "node_modules/croppie/croppie.min.js",
                             "node_modules/cropperjs/dist/cropper.min.js",
                             "node_modules/modal-video/js/jquery-modal-video.min.js",

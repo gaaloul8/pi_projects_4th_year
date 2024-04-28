@@ -8,6 +8,7 @@ import com.esprit.pi_project.entities.TransactionHistory;
 import com.esprit.pi_project.entities.User;
 import com.esprit.pi_project.services.RewardService;
 import com.esprit.pi_project.services.UserService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -32,17 +33,18 @@ public class RewardServiceIpml implements RewardService {
     UserService userService;
 
     @Override
-    public Reward newReward( MultipartFile image,float cost,String name,int nbDispo,String description) throws IOException  {
+    public Reward newReward( MultipartFile image,float cost,String name,int nbDispo,String description,User user) throws IOException  {
 
         byte[] imageData = image.getBytes(); // Read image data
         Reward reward=new Reward();
         String base64Image = Base64.getEncoder().encodeToString(imageData);
-        System.out.println(base64Image);
+       // System.out.println(base64Image);
         reward.setImage(base64Image);
             reward.setCost(cost);
             reward.setName(name);
             reward.setDescription(description);
             reward.setNbDispo(nbDispo);
+            reward.setUser(user);
 
 
             return rewardDao.save(reward);
@@ -72,6 +74,46 @@ public class RewardServiceIpml implements RewardService {
     }
 
     @Override
+    public Reward updateReward(Integer rewardId, MultipartFile image, Float cost, String name, int nbDispo, String description, User user) throws IOException {
+        Optional<Reward> optionalReward = rewardDao.findById(rewardId);
+
+        if (!optionalReward.isPresent()) {
+            // Handle the case where the reward with the specified ID is not found
+            return null; // Or throw a custom exception
+        }
+
+        Reward existingReward = optionalReward.get();
+
+        // Check if image is provided
+        if (image != null && !image.isEmpty()) {
+            byte[] imageData = image.getBytes(); // Read image data
+            String base64Image = Base64.getEncoder().encodeToString(imageData);
+            existingReward.setImage(base64Image);
+        }
+
+        // Update other fields if provided
+        if (cost != null) {
+            existingReward.setCost(cost);
+        }
+        if (name != null) {
+            existingReward.setName(name);
+        }
+        if (nbDispo >= 0) {
+            existingReward.setNbDispo(nbDispo);
+        }
+        if (description != null) {
+            existingReward.setDescription(description);
+        }
+        if (user != null) {
+            existingReward.setUser(user);
+        }
+
+        // Save and return updated reward
+        return rewardDao.save(existingReward);
+    }
+
+
+   /* @Override
     public Reward updateReward(Reward reward) {
         Optional<Reward> existingReward = rewardDao.findById(reward.getIdReward());
 
@@ -95,6 +137,8 @@ public class RewardServiceIpml implements RewardService {
 
 
 
+    */
+
 
 
        /* public void buyreward(User user ,Reward reward){
@@ -117,37 +161,31 @@ public class RewardServiceIpml implements RewardService {
 
         */
 
-       @Transactional
-       public Reward purchaseReward(Integer rewardId) {
-           Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-           String userEmail = authentication.getName(); // Get the email of the authenticated user
-           User authenticatedUser = userService.findByEmail(userEmail);
-           System.out.println("********************************");
-           System.out.println(authenticatedUser);
+    @Transactional
+    public Reward purchaseReward(Integer rewardId, User authenticatedUser) {
+        Reward reward = rewardDao.findById(rewardId).orElse(null);
 
+        if (reward != null && reward.getNbDispo() > 0) {
+            // Reduce the available count of the reward
+            reward.setNbDispo(reward.getNbDispo() - 1);
+            rewardDao.save(reward);
 
-           Reward reward = rewardDao.findById(rewardId).orElse(null);
-           if (reward != null && reward.getNbDispo() > 0) {
-               // Reduce the available count of the reward
-               reward.setNbDispo(reward.getNbDispo() - 1);
-               rewardDao.save(reward);
+            // Create transaction history
+            TransactionHistory transactionHistory = new TransactionHistory();
+            transactionHistory.setReward(reward);
+            transactionHistory.setPurchaseDate(new Date());
+            transactionHistory.setPrice(reward.getCost());
+            transactionHistory.setImage(reward.getImage());
+            transactionHistory.setUser(authenticatedUser); // Set the authenticated user
 
+            transactionHistoryDao.save(transactionHistory);
 
-               // Create transaction history
+            return reward;
+        } else {
+            throw new RuntimeException("Reward not available or does not exist!");
+        }
+    }
 
-               TransactionHistory transactionHistory = new TransactionHistory();
-               transactionHistory.setReward(reward);
-               transactionHistory.setPurchaseDate(new Date());
-               transactionHistory.setPrice(reward.getCost());
-               transactionHistory.setImage(reward.getImage());
-               transactionHistory.setUser(authenticatedUser);
-               transactionHistoryDao.save(transactionHistory);
-
-               return reward;
-           } else {
-               throw new RuntimeException("Reward not available or does not exist!");
-           }
-       }
 
 
 
@@ -207,4 +245,6 @@ public class RewardServiceIpml implements RewardService {
     public Reward findRewardByName(String name) {
         return rewardDao.findRewardByName(name);
     }
+
+
 }

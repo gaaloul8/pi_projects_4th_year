@@ -123,22 +123,32 @@ export class RewardComponent implements OnInit{
     }
 
 
-    updateReward(reward1 : Reward) {
-        this.rewardService.updatereward(reward1).subscribe(
-            updatedReward => {
-                console.log('Event updated:', updatedReward);
-                window.location.reload();
-
-                // Réussite : Gérer la réponse mise à jour si nécessaire
-            },
-            error => {
-                console.error('Error updating event:', error);
-                // Erreur : Gérer les erreurs si nécessaire
-            }
-        );
+    updateReward(rewardId: number): void {
+        this.submitted = true;
+        try {
+            this.rewardService.updateReward(rewardId, this.rewardForm.value, this.selectedImage).toPromise();
+            console.log("Reward updated Successfully");
+            window.location.reload();
+            // Handle success, e.g., show a success message to the user
+        } catch (error) {
+            console.error(error);
+            // Handle error, e.g., show an error message to the user
+        }
     }
 
-    editReward(rewardEdit : Reward) {
+    editReward(rewardEdit: Reward) {
+        // Populate the form fields with existing reward information
+        this.rewardForm.patchValue({
+            // Assuming rewardEdit contains properties like name, description, etc.
+            name: rewardEdit.name,
+            description: rewardEdit.description,
+            cost: rewardEdit.cost,
+            nbDispo: rewardEdit.nbDispo,
+            image: rewardEdit.image,
+
+            // Add other fields as needed
+        });
+
         this.reward = { ...rewardEdit };
         this.rewardDialog = true;
     }

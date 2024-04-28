@@ -80,7 +80,7 @@
                     <!-- Add button -->
                     <button *ngIf="!reward.idReward" pButton pRipple label="Add" icon="pi pi-plus" class="p-button-text" (click)="addReward()"></button>
                     <!-- Update button -->
-                    <button *ngIf="reward.idReward" pButton pRipple label="Update" icon="pi pi-check" class="p-button-text" (click)="updateReward(reward)"></button>
+                    <button *ngIf="reward.idReward" pButton pRipple label="Update" icon="pi pi-check" class="p-button-text" (click)="updateReward(reward.idReward)"></button>
                 </ng-template>
             </p-dialog>
 
