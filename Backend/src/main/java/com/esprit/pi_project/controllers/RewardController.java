@@ -105,6 +105,7 @@ public class RewardController {
         if (optionalUser.isPresent()) {
             User user1 = optionalUser.get();
             this.rewardService.purchaseReward(id, user1);
+
         } else {
             // Handle the case where no user is authenticated
             throw new RuntimeException("User not authenticated");
@@ -139,6 +140,11 @@ public class RewardController {
     @GetMapping("/findrewardbyname/{name}")
     public Reward findrewardbyname(@PathVariable String name){
         return this.rewardService.findRewardByName(name);
+    }
+
+    @GetMapping("/getconnecteduser")
+    public Optional<User> getconnecteduser(HttpServletRequest request){
+        return this.userService.getUserFromJwt(request);
     }
 
 }

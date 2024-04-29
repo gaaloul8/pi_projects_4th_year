@@ -134,6 +134,7 @@ public class DiscountServiceImpl implements DiscountService {
                         // Revert the price of the reward to the initial value
                         existingReward.setCost(initialRewardCost);
                         rewardDao.save(existingReward);
+                        deleteDiscount(discount.getIdDiscount());
                         System.out.println("Discount with ID " + discount.getIdDiscount() + " has expired. Reward price reverted to initial value.");
                     } else {
                         System.err.println("Existing reward not found for id: " + reward.getIdReward());

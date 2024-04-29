@@ -16,6 +16,9 @@ import {RippleModule} from "primeng/ripple";
 import {Forum} from "../../services/forum.service";
 import {OrderListModule} from "primeng/orderlist";
 import {PickListModule} from "primeng/picklist";
+import {UserModel} from "../../models/userModel";
+import {User} from "../../interfaces/user";
+import {MatDialog} from "@angular/material/dialog";
 
 @Component({
   selector: 'app-rewardusers',
@@ -54,10 +57,12 @@ export class RewardusersComponent implements OnInit{
     showDropdown: boolean = false;
     closed?: boolean;
 
-    constructor(private rewardService: RewardService, private messageService: MessageService) { }
+    connectedUser: User;
+    constructor(private rewardService: RewardService, private messageService: MessageService,private dialog: MatDialog) { }
 
     ngOnInit() {
         this.loadRewards();
+        this.GetConnectedUser();
 
         this.sortOptions = [
             { label: 'Price High to Low', value: '!price' },
@@ -81,19 +86,46 @@ export class RewardusersComponent implements OnInit{
         );
 
     }
+    GetConnectedUser():void {
+        this.rewardService.getConnectedUser().subscribe(
+            (user: User) => {
+                this.connectedUser = user;
+                console.log("User",this.connectedUser)
 
-    purchaseReward(id: number): void {
-        this.rewardService.purchaseReward(id).subscribe(
-            () => {
-                console.log('Reward purchased successfully');
-                this.loadRewards(); // Optionally, you can update the rewards list here or trigger a reload
             },
-            error => {
-                console.error('Error purchasing reward:', error);
+            (error) => {
+                console.error('Error fetching connected user:', error);
             }
         );
     }
 
+
+    purchaseReward(id: number): void {
+        console.log(this.connectedUser.tokenSolde);
+        this.rewardService.getRewardById(id).subscribe(
+            (reward) => {
+                console.log(reward.cost); // Ensure that reward is fetched correctly
+                if (reward.cost < this.connectedUser.tokenSolde) {
+                    this.rewardService.purchaseReward(id).subscribe(
+                        () => {
+                            this.openDialog('Reward purchased successfully');
+                            console.log('Reward purchased successfully');
+                            this.loadRewards();
+                            window.location.reload();// Optionally, you can update the rewards list here or trigger a reload
+                        },
+                        error => {
+                            console.error('Error purchasing reward:', error);
+                        }
+                    );
+                } else {
+                    this.openDialog('Solde insuffisant');
+                }
+            },
+            error => {
+                console.error('Error fetching reward:', error);
+            }
+        );
+    }
 
 
     onFilter(dv: DataView, event: Event) {
@@ -116,5 +148,20 @@ export class RewardusersComponent implements OnInit{
     }
 
 
+    openDialog(message: string): void {
+        alert(message);
+    }
 
+    sendSMS(rewardName: string, cost: number, NbDispo: number): void {
+        this.rewardService.sendSMS(rewardName, cost, NbDispo).subscribe(
+            response => {
+                console.log('Message sent successfully:', response);
+                // Handle success, if needed
+            },
+            error => {
+                console.error('Failed to send message:', error);
+                // Handle error, if needed
+            }
+        );
+    }
 }

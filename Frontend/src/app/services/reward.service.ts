@@ -9,7 +9,7 @@ import {Transaction_history} from "../interfaces/Transaction_history";
 })
 export class RewardService {
     private baseUrl = 'http://localhost:8081/reward'; // Base URL of your Spring backend
-    private token = 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzYWRvay5zYXNzaUBlc3ByaXQudG4iLCJpYXQiOjE3MTQyMjk3NDAsImV4cCI6MTcxNDMxNjE0MH0.gn6aH1n49k43N7P-bLjn-grURd7fSH3vI_LM4_Yd2FM'
+    private token = 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzYWRvay5zYXNzaUBlc3ByaXQudG4iLCJpYXQiOjE3MTQzOTA0MTksImV4cCI6MTcxNDQ3NjgxOX0.POloBnqze7G3YMS2ddkYw9qKZCI5kVVVLa5krlHhB5I'
     constructor(private http: HttpClient) { }
 
     getAllRewards(): Observable<Reward[]> {
@@ -27,6 +27,14 @@ export class RewardService {
         return this.http.post<any>(`${this.baseUrl}/buyreward/${id}`, null, { headers });
     }
 
+    sendSMS(rewardName: string, cost: number, NbDispo: number): Observable<any> {
+        const url = `${this.baseUrl}/sendSMS?rewardName=${rewardName}&cost=${cost}&NbDispo=${NbDispo}`;
+        const headers = new HttpHeaders({
+            'Authorization': 'Bearer ' + this.token
+        });
+        return this.http.get<any>(url, { headers });
+    }
+
     getRewardById(id: number): Observable<any> {
         return this.http.get<any>(`${this.baseUrl}/findrewardbyid/${id}`);
     }
@@ -35,6 +43,12 @@ export class RewardService {
         return this.http.get<any>(`${this.baseUrl}/findrewardbyname/${name}`);
     }
 
+    getConnectedUser(): Observable<any> {
+        const headers = new HttpHeaders({
+            'Authorization': 'Bearer ' + this.token
+        });
+        return this.http.get<any>(`${this.baseUrl}/getconnecteduser`,{ headers: headers });
+    }
 
     addReward(reward:Reward ,image:File): Observable<any> {
             const formData = new FormData();
@@ -106,6 +120,7 @@ export class RewardService {
     getMonthlyTransactionCounts(): Observable<any> {
         return this.http.get<any>(`${this.baseUrl}/monthly-count`);
     }
+
 
 
 
