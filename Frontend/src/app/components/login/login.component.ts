@@ -87,7 +87,7 @@ export class LoginComponent {
                     if (this.authResponse.firstLogin == true) {
                         this.router.navigate(['/complete']);
                     } else {
-                        this.router.navigate(['/welcome']);
+                        this.router.navigate(['/main/home']);
                     }
                 },
                 error: (error) => {

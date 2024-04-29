@@ -3,6 +3,10 @@ package com.esprit.pi_project.serviceImpl;
 import com.esprit.pi_project.dao.QuestionDao;
 import com.esprit.pi_project.entities.Question;
 import com.esprit.pi_project.services.QuestionService;
+import edu.stanford.nlp.ling.CoreAnnotations;
+import edu.stanford.nlp.ling.CoreLabel;
+import edu.stanford.nlp.pipeline.Annotation;
+import edu.stanford.nlp.pipeline.StanfordCoreNLP;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
@@ -12,8 +16,7 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class QuestionServiceImpl implements QuestionService {
@@ -107,5 +110,42 @@ public class QuestionServiceImpl implements QuestionService {
 
         ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.POST, requestEntity, String.class);
         return response;
+    }
+    @Override
+    public List<String> getTags(String text) {
+        List<String> tags = new ArrayList<>();
+        Annotation document = new Annotation(text);
+        StanfordCoreNLP pipeline = createPipeline();
+        pipeline.annotate(document);
+
+        Map<String, Integer> wordFrequency = new HashMap<>();
+
+        // Extract part-of-speech tags for each word and count their frequency
+        List<CoreLabel> tokens = document.get(CoreAnnotations.TokensAnnotation.class);
+        for (CoreLabel token : tokens) {
+            String word = token.get(CoreAnnotations.TextAnnotation.class);
+            String pos = token.get(CoreAnnotations.PartOfSpeechAnnotation.class);
+
+            // Filter out words that are too short or not nouns
+            if (word.length() > 2 && pos.startsWith("NN")) {
+                wordFrequency.put(word.toLowerCase(), wordFrequency.getOrDefault(word.toLowerCase(), 0) + 1);
+            }
+        }
+
+        // Exclude words with frequency greater than a threshold
+        int frequencyThreshold = 2;
+        for (Map.Entry<String, Integer> entry : wordFrequency.entrySet()) {
+            if (entry.getValue() <= frequencyThreshold) {
+                tags.add(entry.getKey());
+            }
+        }
+
+        return tags;
+    }
+    public static StanfordCoreNLP createPipeline() {
+        // Load the Stanford NLP pipeline with the specified properties
+        Properties props = new Properties();
+        props.setProperty("annotators", "tokenize,ssplit,pos");
+        return new StanfordCoreNLP(props);
     }
 }

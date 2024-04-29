@@ -13,10 +13,9 @@ import { NodeService } from './demo/service/node.service';
 import { PhotoService } from './demo/service/photo.service';
 import { DiscountService } from "./services/discount.service";
 import { ForumDetailComponent } from './components/forum-detail/forum-detail.component';
-import { FooterComponent } from './components/footer/footer.component';
 import { LandingHomeComponent } from './components/landing-home/landing-home.component';
-import { HeaderComponent } from './components/header/header.component';
 import { HomeComponent } from './components/home/home.component';
+import { QuestionDetailComponent } from './components/question-detail/question-detail.component';
 import {RegisterComponent} from "./components/register/register.component";
 import {CompleteprofileComponent} from "./components/completeprofile/completeprofile.component";
 import {TakeimageComponent} from "./components/takeimage/takeimage.component";
@@ -73,11 +72,14 @@ import { PostFrontComponent } from './components/post-front/post-front.component
 
 @NgModule({
     declarations: [AppComponent, FeedbackComponent,ChartEventComponent,NotfoundComponent , ListfeedbackClubManagerComponent,ListReservationEventComponent,ForumComponent,ForumDetailComponent ,
-    LandingHomeComponent ,SidebarComponent, FooterComponent,HeaderComponent, HomeComponent ,EventBackComponent , EventfrontComponent,PostFrontComponent,
+    LandingHomeComponent ,SidebarComponent, HomeComponent ,EventBackComponent , EventfrontComponent,PostFrontComponent,QuestionDetailComponent,
     ClubsComponent,PostComponent],
-    imports: [AppRoutingModule, AppLayoutModule,
-         ReactiveFormsModule, FormsModule,
-          BrowserModule,ToolbarModule,
+    imports: [AppRoutingModule,
+         AppLayoutModule,
+         ReactiveFormsModule, 
+         FormsModule,
+          BrowserModule,
+          ToolbarModule,
           ChartModule,
           MultiSelectModule,
           FilterPipe,
