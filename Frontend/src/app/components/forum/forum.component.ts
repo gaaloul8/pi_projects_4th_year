@@ -1,5 +1,5 @@
 import { Component, OnInit,AfterViewInit, Renderer2 } from '@angular/core';
-import { Forum, ForumService } from '../../services/forum.service';
+import { Forum, ForumService, ForumStatus } from '../../services/forum.service';
 import { MessageService } from 'primeng/api';
 
 
@@ -18,11 +18,13 @@ export class ForumComponent implements AfterViewInit , OnInit {
   forum: Forum = {};
   deleteForumDialog: boolean = false;
   submitted: boolean = false;
+  checkLang: boolean = false;
   selectedForumId: number;
   messageService : MessageService;
   showDropdown: boolean = false;
   statuses: any[] = [];
   isLiked: boolean = false;
+  detectedLanguage: string;
 
 
 
@@ -71,7 +73,18 @@ confirmDelete(forumId: number){
   this.selectedForumId = forumId;
   this.deleteForumDialog = true;
 }
-
+// detectLanguage(): void {
+//   this.forumService.detectLanguage(this.forum.content)
+//     .subscribe(
+//       (language: string) => {
+//         this.detectedLanguage = language;
+//         console.log(this.detectedLanguage);
+//       },
+//       (error) => {
+//         console.error('Error detecting language:', error);
+//       }
+//     );
+// }
 editForum(forum: Forum) {
   this.showDropdown = true;
   this.forum = { ...forum };
@@ -123,9 +136,22 @@ async saveForum() {
   this.forum.createdAt = new Date(); 
   this.forum.closed = false;
   this.forum.likes = 0;
-  }
-
-  try {
+}
+  this.forumService.detectLanguage(this.forum.content)
+    .subscribe(
+      async (language: string) => {
+        this.detectedLanguage = language;
+        console.log(this.detectedLanguage);
+        if(this.detectedLanguage != "ENGLISH"){
+          this.checkLang = true;
+        }else{
+          this.checkLang = false;
+          try {
+            this.forum.createdAt = new Date(); 
+  this.forum.closed = false;
+  this.forum.likes = 0;
+  this.forum.status = ForumStatus.PENDING;
+   
     const newForum = await this.forumService.createForum(this.forum).toPromise();
     console.log('New forum created:', newForum);
 
@@ -136,6 +162,13 @@ async saveForum() {
   } catch (error) {
     console.error('Error creating forum:', error);
   }
+        }
+      },
+      (error) => {
+        console.error('Error detecting language:', error);
+      }
+    );
+  
 }
 
 

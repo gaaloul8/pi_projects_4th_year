@@ -3,12 +3,16 @@ package com.esprit.pi_project.serviceImpl;
 import com.esprit.pi_project.dao.ResponseDao;
 import com.esprit.pi_project.entities.Response;
 import com.esprit.pi_project.services.ResponseService;
+import edu.stanford.nlp.pipeline.Annotation;
+import edu.stanford.nlp.pipeline.StanfordCoreNLP;
+import edu.stanford.nlp.ling.CoreAnnotations;
+import edu.stanford.nlp.ling.CoreLabel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.AbstractMap.SimpleEntry;
+import java.util.stream.Collectors;
 
 @Service
 public class ResponseServiceImpl implements ResponseService {
@@ -41,30 +45,32 @@ public class ResponseServiceImpl implements ResponseService {
     }
 
     @Override
-    public void reportResponse(Integer responseId) {
+    public Response reportResponse(Integer responseId) {
         Response response = getResponseById(responseId);
         if (response != null) {
             response.setReported(true);
-            responseDao.save(response);
+            return responseDao.save(response);
+        }else{
+            return null;
         }
     }
 
     @Override
-    public void upvoteResponse(Integer responseId) {
+    public Response upvoteResponse(Integer responseId) {
         Response response = getResponseById(responseId);
         if (response != null) {
             response.setUpvotes(response.getUpvotes() + 1);
-            responseDao.save(response);
-        }
+           return responseDao.save(response);
+        }else return null;
     }
 
     @Override
-    public void downvoteResponse(Integer responseId) {
+    public Response downvoteResponse(Integer responseId) {
         Response response = getResponseById(responseId);
         if (response != null) {
             response.setUpvotes(response.getUpvotes() - 1);
-            responseDao.save(response);
-        }
+            return responseDao.save(response);
+        }else return null;
     }
 
     @Override
@@ -95,4 +101,17 @@ public class ResponseServiceImpl implements ResponseService {
     public List<Response> getResponsesByDateRange(Date startDate, Date endDate) {
         return responseDao.findByCreatedAtBetween(startDate, endDate);
     }
+
+
+
+    private static double inverseDocumentFrequency(String word, String[] sentences) {
+        int documentFrequency = 0;
+        for (String sentence : sentences) {
+            if (sentence.toLowerCase().contains(word.toLowerCase())) {
+                documentFrequency++;
+            }
+        }
+        return Math.log((double) sentences.length / (documentFrequency + 1)); // Add 1 to avoid division by zero
+    }
+
 }

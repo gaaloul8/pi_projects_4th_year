@@ -21,6 +21,9 @@ import {GooglemapComponent} from "./components/googlemap/googlemap.component";
 
 import { EventBackComponent } from './components/event-back/event-back.component';
 import { EventfrontComponent } from './components/eventfront/eventfront.component';
+import { ForumBackComponent } from './components/forum-back/forum-back.component';
+import { ForumStatsComponent } from './components/forum-stats/forum-stats.component';
+import { FrontofficeComponent } from './frontoffice/frontoffice.component';
 
 
 
@@ -29,50 +32,31 @@ import { EventfrontComponent } from './components/eventfront/eventfront.componen
         BrowserModule ,
         RouterModule.forRoot([
             {
-                path: '', component: AppLayoutComponent,
+                path: '',
                 children: [
-                    //{ path: '', redirectTo: '/home', pathMatch: 'full' },
+                    {
+                        path: '', 
+                        component: AppLayoutComponent,
+                        children: [
                     { path: '', loadChildren: () => import('./demo/components/dashboard/dashboard.module').then(m => m.DashboardModule) },
                     { path: 'uikit', loadChildren: () => import('./demo/components/uikit/uikit.module').then(m => m.UIkitModule) },
                     { path: 'utilities', loadChildren: () => import('./demo/components/utilities/utilities.module').then(m => m.UtilitiesModule) },
                     { path: 'documentation', loadChildren: () => import('./demo/components/documentation/documentation.module').then(m => m.DocumentationModule) },
                     { path: 'blocks', loadChildren: () => import('./demo/components/primeblocks/primeblocks.module').then(m => m.PrimeBlocksModule) },
                     { path: 'pages', loadChildren: () => import('./demo/components/pages/pages.module').then(m => m.PagesModule) },
-                    
+                    { path: 'forumback',component:ForumBackComponent},
+                    { path: 'forumstat',component:ForumStatsComponent}
+                        ],
 
-                ]
             },
-            { path: 'auth', loadChildren: () => import('./demo/components/auth/auth.module').then(m => m.AuthModule) },
-            { path: 'landing', loadChildren: () => import('./demo/components/landing/landing.module').then(m => m.LandingModule) },
-            { path: 'forum',component:ForumComponent},
-            { path: 'home',component:HomeComponent ,pathMatch: 'full'},
-            { path: 'forumdetail/:id', component: ForumDetailComponent },
+            {path:'main', component:FrontofficeComponent , loadChildren: ()=> import('./frontoffice/frontoffice.module').then(m=>m.FrontofficeModule)},
             { path: 'question/:id', component: QuestionDetailComponent },
-
             { path: 'notfound', component: NotfoundComponent },
-            { path: 'reward', component: RewardComponent },
-            { path: 'statistics', component: StatisticsComponent },
-
-            { path: 'discounts', component: DiscountsComponent },
-            { path: 'transactions', component: TransactionhistoryComponent },
-            { path: 'rewardusers', component: RewardusersComponent },
-
-            { path: 'quiz', component: QuizComponent},
-            { path: 'question-quiz', component: QuestionQuizComponent},
-            { path: 'quiz-frontend', component: QuizFrontendComponent},
-            { path: 'googlemap', component: GooglemapComponent},
-            { path: 'question-quiz/:idQuiz', component: QuestionQuizComponent },
-
-            { path: 'discounts', component: DiscountsComponent },
-            { path: 'transactions', component: TransactionhistoryComponent },
-            { path: 'statistics', component: StatisticsComponent },
-            { path: 'rewardusers', component: RewardusersComponent },
-
-            {path:'eventBack',component : EventBackComponent },
-            {path:'eventFront',component : EventfrontComponent},
 
 
-            { path: '**', redirectTo: '/notfound' },
+        ]
+    },
+            { path: '**', redirectTo: 'notfound' },
 
         ], { scrollPositionRestoration: 'enabled', anchorScrolling: 'enabled', onSameUrlNavigation: 'reload' })
     ],

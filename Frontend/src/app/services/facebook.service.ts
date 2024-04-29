@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 })
 export class FacebookService {
   private baseUrl = 'http://localhost:8081/forums';
-  private token = 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtZWQxQGVzcHJpdC50biIsImlhdCI6MTcxMzI5MzcwMywiZXhwIjoxNzEzMzgwMTAzfQ.Bp0NYDMZI4ZFFQFvjx1f2dhW7yhV1sozPYpN7-HEFIE';
+  private token = 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqb2huLmRvZUBlc3ByaXQudG4iLCJpYXQiOjE3MTQyMTQ1ODMsImV4cCI6MTcxNDMwMDk4M30.uKbGuAi1pIwYLovGbcqPkZ3y30KEKB-ZO_DKMr0XsKQ';
 
   constructor(private http: HttpClient) { }
 

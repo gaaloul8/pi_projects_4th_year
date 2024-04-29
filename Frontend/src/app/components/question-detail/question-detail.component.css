@@ -1,0 +1,174 @@
+.header .btn-getstarted {
+  color: var(--contrast-color);
+  background: var(--accent-color);
+  font-size: 14px;
+  padding: 8px 26px;
+  /* margin: 100px; */
+  margin-left: 130px;
+  border-radius: 4px;
+  transition: background 0.3s, color 0.3s;
+  border: none; /* Remove default button border */
+}
+
+.header .btn-getstarted span {
+  display: inline-block; /* Ensure span takes the width of its content */
+}
+
+.header .btn-getstarted:hover {
+  background: rgba(var(--accent-color-rgb), 0.85);
+}
+.comment-stats-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 640px;
+  }
+  
+  .comment-stats-wrap .comment-stats {
+    display: flex;
+  }
+  
+  .comment-stats-wrap .comment-stats .stat {
+    display: flex;
+    align-items: center;
+    padding: 0 4px;
+  }
+  
+  .comment-stats-wrap .comment-stats .stat.is-likes svg {
+    position: relative;
+    top: -2px;
+  }
+  
+  .comment-stats-wrap .comment-stats .stat.is-dislikes svg {
+    position: relative;
+    top: 2px;
+  }
+  
+  .comment-stats-wrap .comment-stats .stat span {
+    display: block;
+    font-size: 0.9rem;
+    color: #999; /* $muted-grey */
+  }
+  
+  .comment-stats-wrap .comment-stats .stat svg {
+    height: 18px;
+    width: 18px;
+    min-width: 20px;
+    stroke: #c8c8c8; /* $placeholder */
+  }
+  
+  .comment-stats-wrap .comment-actions {
+    display: flex;
+    align-items: center;
+    height: 40px;
+    width: 96px;
+  }
+  
+  .comment-stats-wrap .comment-actions .comment-action {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 30px;
+    width: 30px;
+    min-width: 30px;
+    margin: 0 2px;
+    border: 1px solid #e8e8e8; /* $fade-grey */
+    border-radius: 50%;
+    transition: all 0.3s;
+  }
+  
+  .comment-stats-wrap .comment-actions .comment-action:nth-child(2) svg {
+    position: relative;
+    top: 2px;
+  }
+  
+  .comment-stats-wrap .comment-actions .comment-action.is-like:hover {
+    border-color: #1ce589; /* $green */
+  }
+  
+  .comment-stats-wrap .comment-actions .comment-action.is-like:hover svg {
+    stroke: #1ce589; /* $green */
+  }
+  
+  .comment-stats-wrap .comment-actions .comment-action.is-dislike:hover {
+    border-color: #f71416; /* $red */
+  }
+  
+  .comment-stats-wrap .comment-actions .comment-action.is-dislike:hover svg {
+    stroke: #f71416; /* $red */
+  }
+  
+  .comment-stats-wrap .comment-actions .comment-action.is-reply:hover {
+    border-color: #393a4f; /* $dark-text */
+  }
+  
+  .comment-stats-wrap .comment-actions .comment-action.is-reply:hover svg {
+    stroke: #393a4f; /* $dark-text */
+  }
+  
+  .comment-stats-wrap .comment-actions .comment-action svg {
+    height: 14px;
+    width: 14px;
+    stroke: #c8c8c8; /* $placeholder */
+    transition: stroke 0.3s;
+  }
+  .comment-stats-wrap .comment-actions .comment-action.is-like.active svg {
+    stroke: #1ce589; /* $green */
+  }
+  
+  .comment-stats-wrap .comment-actions .comment-action.is-dislike.active svg {
+    stroke: #f71416; /* $red */
+  }
+  
+  .comment-stats-wrap .comment-actions .comment-action.is-reply.active svg {
+    stroke: #393a4f; /* $dark-text */
+  }
+  .best-tag {
+    margin-left: 10px;
+    padding: 4px 12px;
+    border-radius: 100px;
+    background: #c7e0bd; /* lightened green color */
+    font-weight: 400;
+    font-size: 0.75rem;
+    color: #4caf50; /* green color */
+    font-family: 'Roboto', sans-serif;
+}
+.positive-tag {
+    margin-left: 10px;
+    padding: 4px 12px;
+    border-radius: 100px;
+    background: #c7e0bd; /* lightened green color */
+    font-weight: 400;
+    font-size: 0.75rem;    
+    color: #4caf50; /* green color */
+    font-family: 'Roboto', sans-serif;
+}
+
+.negative-tag {
+    font-weight: 400;
+    font-size: 0.75rem;  
+    background-color: #f3a4a4; /* lightened red color */
+    color: #f44336; /* red color */
+    font-family: 'Roboto', sans-serif;
+    margin-left: 10px;
+    padding: 4px 12px;
+    border-radius: 100px;
+
+}
+
+.neutral-tag {
+    font-family: 'Roboto', sans-serif;
+    margin-left: 10px;
+    padding: 4px 12px;
+    border-radius: 100px;
+    background-color: #f0f0f0; /* light grey color */
+    color: #666666; /* dark grey color */
+    font-weight: 400;
+    font-size: 0.75rem;  
+}
+
+
+
+  
+  

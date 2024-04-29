@@ -50,11 +50,12 @@ import { FooterComponent } from './components/footer/footer.component';
 import { LandingHomeComponent } from './components/landing-home/landing-home.component';
 import { HeaderComponent } from './components/header/header.component';
 import { HomeComponent } from './components/home/home.component';
+import { QuestionDetailComponent } from './components/question-detail/question-detail.component';
 
 
 @NgModule({
     declarations: [AppComponent, NotfoundComponent , ForumComponent,ForumDetailComponent , 
-    LandingHomeComponent , FooterComponent,HeaderComponent, HomeComponent ,EventBackComponent , EventfrontComponent],
+    LandingHomeComponent , HomeComponent ,EventBackComponent , EventfrontComponent , QuestionDetailComponent],
     imports: [AppRoutingModule, 
         AppLayoutModule , 
         DialogModule ,

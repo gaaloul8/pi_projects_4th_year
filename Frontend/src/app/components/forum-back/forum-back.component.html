@@ -1,0 +1,162 @@
+<div class="grid">
+    <div class="col-12">
+        <div class="card px-6 py-6">
+           
+            
+            <p-table #dt [value]="forums" [globalFilterFields]="['topic','content','status']">
+            <ng-template pTemplate="caption">
+                <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
+                    <p-dropdown [options]="ForumStatus"  [(ngModel)]="forum.status" placeholder="Select forum status" [showClear]="true" (onChange)="filterForumsByStatus($event)"></p-dropdown>
+                        <span class="block mt-10 md:mt-0 p-input-icon-left">
+                        <ng-template let-type pTemplate="item">
+                                {{ type }}
+                            </ng-template>
+                    </span>
+                    <span class="block mt-2 md:mt-0 p-input-icon-left">
+                        <i class="pi pi-search"></i>
+                        <input pInputText type="text" (input)="onGlobalFilter(dt, $event)" placeholder="Search..."  class="w-full sm:w-auto"/>
+                    </span>
+                     
+                </div>
+            </ng-template>
+           
+              
+
+            <ng-template pTemplate="header">
+                <tr>
+                    <th style="width: 3rem">
+                        <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                    </th>
+                    <th>Forum Topic</th>
+                    <th>Forum Content</th>
+                    <th>Creation Date</th>
+                    <th>Forum Likes</th>
+                    <th>Forum Owner</th>
+                    <th>Open/Closed</th>
+                    <th>Forum Status</th>
+                    <th></th>
+                </tr>
+            </ng-template>
+         
+            <ng-template pTemplate="body" let-forum>
+                <tr>
+                    <td>
+                        <p-tableCheckbox [value]="forum"></p-tableCheckbox>
+                    </td>
+                    <td>{{ forum.topic }}</td>
+                    <td>{{ forum.content }}</td>
+                    <td>{{ forum.createdAt }}</td>
+                    <td>{{ forum.likes }}</td>
+                    <td>{{ forum.forumOwner.firstName }} {{ forum.forumOwner.lastName }}</td>
+                    <td>{{ forum.closed }}</td>
+                    <td><span [class]="'product-badge status-' + (forum.status === 'PENDING' ? 'lowstock' : (forum.status === 'ACCEPTED' ? 'instock' : 'outofstock'))">{{forum.status}}</span>
+                    </td>
+                    <td>
+                        <div class="flex">
+                            <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" (click)="editForum(forum)"></button>
+                            <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning" (click)="confirmDelete(forum.forumId)"></button>                        </div>
+                    </td>
+                </tr>
+            </ng-template>
+           
+        </p-table>
+      </div>
+      <p-dialog [(visible)]="forumDialog" [style]="{width: '450px'}" header="Forum Details" [modal]="true" class="p-fluid">
+        <ng-template pTemplate="content">
+            <img src="assets/forum1.jpg" 
+            alt="assets/forum1.jpg" width="150" class="mt-0 mx-auto mb-5 block shadow-2">
+            <div class="field">
+                <label for="name">Forum topic</label>
+                <input type="text" pInputText id="name" [(ngModel)]="forum.topic" required autofocus [ngClass]="{'ng-invalid ng-dirty' : submitted && !forum.topic}"/>
+                <small class="ng-dirty ng-invalid" *ngIf="submitted && !forum.topic">Topic is required.</small>
+            </div>
+          
+            <div class="field">
+                <label for="description">Forum Content</label>
+                <textarea id="description" pInputTextarea [(ngModel)]="forum.content" required rows="3" cols="20"></textarea>
+            </div>
+          
+            <!-- <div class="field">
+                <label for="name">Location</label>
+                <input type="text" pInputText id="name" [(ngModel)]="event.location" required autofocus [ngClass]="{'ng-invalid ng-dirty' : submitted && !event.location}"/>
+                <small class="ng-dirty ng-invalid" *ngIf="submitted && !event.location">Location is required.</small>
+            </div> -->
+            <div class="field">
+                <label for="status">Open / Closed</label>
+            <p-dropdown [(ngModel)]="forum.closed" inputId="forumStatus" optionValue="value" [options]="statuses" placeholder="Select">
+                <ng-template pTemplate="selectedItem" let-selectedItem>
+                  <span>{{ selectedItem.label}}</span>
+                </ng-template>
+                <ng-template let-option pTemplate="item">
+                  <span>{{ option.label }}</span>
+                </ng-template>
+              </p-dropdown>
+              </div>
+              <div class="field">
+                <label for="status">Forum Status</label>
+                <p-dropdown [(ngModel)]="forum.status" optionLabel="label" optionValue="value" [options]="forumStatusOptions" placeholder="Select"
+                            (onChange)="onStatusChange($event)">
+                    <ng-template pTemplate="selectedItem" let-selectedItem>
+                        <span *ngIf="forum && forum.status" [class]="'product-badge status-' + (forum.status === 'PENDING' ? 'lowstock' : (forum.status === 'ACCEPTED' ? 'instock' : 'outofstock'))">{{forum.status}}</span>
+                    </ng-template>
+                    <ng-template let-option pTemplate="item">
+                        <span [class]="'product-badge status-' + option.value">{{option.label}}</span>
+                    </ng-template>
+                </p-dropdown>
+            </div>
+            
+            
+              <!-- <div class="field">
+                <label for="status">Forum Status</label>
+                <p-dropdown [(ngModel)]="forum.status"  optionLabel="label" [options]="forumStatusOptions"  placeholder="Select"
+                            (onChange)="onStatusChange($event)">
+                    <ng-template pTemplate="selectedItem" >
+                        <span *ngIf="forum && forum.status" [class]="'product-badge status-' + (forum.status === 'PENDING' ? 'lowstock' : (forum.status === 'ACCEPTED' ? 'instock' : 'outofstock'))">{{forum.status}}</span>
+                    </ng-template>
+                  <ng-template let-option pTemplate="item">
+                    <span [class]="'product-badge status-' + option.value">{{option.label}}</span>
+                  </ng-template>
+                </p-dropdown>
+            </div> -->
+            
+  
+                <br>
+                <br>
+                <br>
+                <br>
+
+            
+            
+        </ng-template>
+        <ng-template pTemplate="footer">
+            <button pButton pRipple label="Cancel" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
+            <!-- Afficher le bouton "Add" lorsque vous ajoutez un nouvel événement -->
+          <!---->  <button *ngIf="!forum.forumId" pButton pRipple label="Add" icon="pi pi-plus" class="p-button-text" (click)="addEvent()"></button>
+            <!-- Afficher le bouton "Update" lorsque vous éditez un événement existant -->
+            <button *ngIf="forum.forumId" pButton pRipple label="Update" icon="pi pi-check" class="p-button-text" (click)="updateForum()"></button>
+        </ng-template>
+        
+    </p-dialog>
+    <p-dialog [(visible)]="deleteForumDialog" header="Confirm" [modal]="true" [style]="{width:'450px'}">
+        <div class="flex align-items-center justify-content-center">
+            <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
+            <span>Are you sure you want to delete this forum?</span>
+        </div>
+        <ng-template pTemplate="footer">
+            <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No" (click)="deleteForumDialog = false"></button>
+            <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Yes" (click)="confirmDeleteForum()"></button>
+        </ng-template>
+    </p-dialog>
+    <!-- <p-dialog [(visible)]="deleteEventDialog" header="Confirm" [modal]="true" [style]="{width:'450px'}">
+        <div class="flex align-items-center justify-content-center">
+            <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
+            <span>Are you sure you want to delete this forum?</span>
+        </div>
+        <ng-template pTemplate="footer">
+            <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No" (click)="deleteEventDialog = false"></button>
+            <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Yes" (click)="confirmDeleteEvent(selectedEventId)"></button>
+        </ng-template>
+    </p-dialog> -->
+    </div>
+</div>
+
