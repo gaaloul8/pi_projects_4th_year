@@ -43,6 +43,7 @@ public class User implements UserDetails, Serializable {
     private String niveau;
     private String Identifiant;
     private boolean FirstLogin;
+    private float tokenSolde;
 
     @Column(name = "registration_date")
     private Date registrationDate;

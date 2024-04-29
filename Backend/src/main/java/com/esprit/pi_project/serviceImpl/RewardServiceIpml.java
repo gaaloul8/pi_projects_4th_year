@@ -166,11 +166,14 @@ public class RewardServiceIpml implements RewardService {
         Reward reward = rewardDao.findById(rewardId).orElse(null);
 
         if (reward != null && reward.getNbDispo() > 0) {
-            // Reduce the available count of the reward
+
             reward.setNbDispo(reward.getNbDispo() - 1);
+
+            //System.out.println(reward.getNbDispo() );
+            authenticatedUser.setTokenSolde(authenticatedUser.getTokenSolde()-reward.getCost());
+
             rewardDao.save(reward);
 
-            // Create transaction history
             TransactionHistory transactionHistory = new TransactionHistory();
             transactionHistory.setReward(reward);
             transactionHistory.setPurchaseDate(new Date());
