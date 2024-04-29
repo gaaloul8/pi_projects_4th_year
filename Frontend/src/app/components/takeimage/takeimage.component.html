@@ -1,0 +1,22 @@
+<div class="background-image">
+    <div class="form-container">
+        <div class="p-fluid p-grid p-justify-center">
+            <div class="p-col-8">
+                <div class="card">
+                    <h1>Upload Student Card Image</h1>
+                    <div>
+                        <div style="text-align: center;">
+                            <label for="profilePicture">
+                                <img src="assets/palceholder.png" alt="Profile Picture" style="width: 150px; height: 150px; border-radius: 50%; border: 2px solid #ccc; cursor: pointer;">
+                            </label>
+                            <input type="file" id="profilePicture" name="profilePicture" (change)="onFileSelected($event)" style="display: none;">
+                        </div>
+                        <div style="margin-top: 20px;">
+                            <button (click)="uploadImage() "type="submit" style="width: 100%; padding: 10px; background-color: #007bff; color: #fff; border: none; border-radius: 5px; cursor: pointer;">Submit</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

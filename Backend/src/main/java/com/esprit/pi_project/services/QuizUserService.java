@@ -11,4 +11,5 @@ public interface QuizUserService {
     QuizUser ajouterQuizAUser (QuizUser quizUser, Integer idQuiz);
 
     List<QuizUser> getAll();
+    public List<Object[]> getQuizUserParticipationDatesAndCounts();
 }

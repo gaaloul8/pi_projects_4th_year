@@ -17,35 +17,28 @@ import { RewardusersComponent } from '../components/rewardusers/rewardusers.comp
 import { StatisticsComponent } from '../components/statistics/statistics.component';
 import { TransactionhistoryComponent } from '../components/transactionhistory/transactionhistory.component';
 import { NotfoundComponent } from '../demo/components/notfound/notfound.component';
+import { FrontClubComponent } from '../components/front-club/front-club.component';
 
 const routes: Routes = [
 
 { path: 'forum',component:ForumComponent},
 { path: 'home',component:HomeComponent},
 { path: 'forumdetail/:id', component: ForumDetailComponent },
-{ path: 'question/:id', component: QuestionDetailComponent },
-
 { path: 'notfound', component: NotfoundComponent },
 { path: 'reward', component: RewardComponent },
 { path: 'statistics', component: StatisticsComponent },
-
-{ path: 'discounts', component: DiscountsComponent },
 { path: 'transactions', component: TransactionhistoryComponent },
 { path: 'rewardusers', component: RewardusersComponent },
-
 { path: 'quiz', component: QuizComponent},
 { path: 'question-quiz', component: QuestionQuizComponent},
-{ path: 'quiz-frontend', component: QuizFrontendComponent},
 { path: 'googlemap', component: GooglemapComponent},
 { path: 'question-quiz/:idQuiz', component: QuestionQuizComponent },
-
 { path: 'discounts', component: DiscountsComponent },
-{ path: 'transactions', component: TransactionhistoryComponent },
-{ path: 'statistics', component: StatisticsComponent },
-{ path: 'rewardusers', component: RewardusersComponent },
+{ path: 'quiz-frontend', component: QuizFrontendComponent},
+{ path: 'eventFront', component : EventfrontComponent},
+{ path: 'front-club', component: FrontClubComponent },
 
-{path:'eventBack',component : EventBackComponent },
-{path:'eventFront',component : EventfrontComponent}];
+];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],

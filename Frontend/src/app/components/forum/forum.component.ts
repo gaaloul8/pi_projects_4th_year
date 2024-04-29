@@ -131,7 +131,7 @@ async saveForum() {
 
   console.log("topic : " + this.forum.topic + " content : " + this.forum.content);
 
-  this.forum.forumOwner = { id_user: 3, role: "ClubManager" }; 
+  // this.forum.forumOwner = { id_user: 3, role: "ClubManager" }; 
   if(this.showDropdown = false){
   this.forum.createdAt = new Date(); 
   this.forum.closed = false;

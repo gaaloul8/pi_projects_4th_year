@@ -1,1 +1,59 @@
-<p>transactionhistory works!</p>
+<div class="grid">
+    <div class="col-12">
+        <div class="card px-6 py-6">
+
+
+            <p-table [value]="transactions">
+                <ng-template pTemplate="caption">
+                    <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
+                        <h5 class="m-0">Manage transactions</h5>
+
+
+
+
+                    </div>
+                </ng-template>
+
+
+
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th style="width: 3rem">
+                            <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                        </th>
+                        <th>Date</th>
+                        <th>Price</th>
+                        <th>Image</th>
+                        <th>Buyed by</th>
+                        <th>Reward Name</th>
+
+
+                        <th></th>
+                    </tr>
+                </ng-template>
+
+                <ng-template pTemplate="body" let-transaction>
+                    <tr>
+                        <td>
+                            <p-tableCheckbox [value]="transaction"></p-tableCheckbox>
+                        </td>
+                        <td>{{ transaction.purchaseDate | date }}</td>
+
+                        <td>{{ transaction.price }}</td>
+                        <td>
+                        <img [src]="transaction.image ? 'data:image/png;base64,' + transaction.image : ''" alt="reward Image" width="150" class="mt-2">
+                    </td>
+                        <td>{{ transaction.user ? transaction.user.firstName + ' ' + transaction.user.lastName : '-' }}</td>
+                        <td>{{ transaction.reward ? transaction.reward.name : '-' }}</td>
+
+
+
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+
+
+    </div>
+</div>
+

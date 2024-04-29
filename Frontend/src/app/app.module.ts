@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
-import { HashLocationStrategy, LocationStrategy, PathLocationStrategy } from '@angular/common';
+
+import { DatePipe,CommonModule, HashLocationStrategy, LocationStrategy, PathLocationStrategy } from '@angular/common';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { AppLayoutModule } from './layout/app.layout.module';
@@ -10,54 +11,86 @@ import { CustomerService } from './demo/service/customer.service';
 import { IconService } from './demo/service/icon.service';
 import { NodeService } from './demo/service/node.service';
 import { PhotoService } from './demo/service/photo.service';
-import { ForumComponent } from '../app/components/forum/forum.component';
-import { CommonModule } from '@angular/common';
-import { TableModule } from 'primeng/table';
-import { FileUploadModule } from 'primeng/fileupload';
-import { ButtonModule } from 'primeng/button';
-import { RippleModule } from 'primeng/ripple';
-import { ToastModule } from 'primeng/toast';
-import { ToolbarModule } from 'primeng/toolbar';
-import { RatingModule } from 'primeng/rating';
-import { InputTextModule } from 'primeng/inputtext';
-import { InputTextareaModule } from 'primeng/inputtextarea';
-import { DropdownModule } from 'primeng/dropdown';
-import { RadioButtonModule } from 'primeng/radiobutton';
-import { InputNumberModule } from 'primeng/inputnumber';
-import { DialogModule } from 'primeng/dialog';
-import { FormsModule } from '@angular/forms';
-import { ReactiveFormsModule } from '@angular/forms';
-import {RewardService} from "./services/reward.service";
-import {RewardusersComponent} from "./components/rewardusers/rewardusers.component";
-import {DiscountService} from "./services/discounts/discounts.module";
-import {RewardComponent} from "./components/reward/reward.component";
+import { DiscountService } from "./services/discount.service";
+import { ForumDetailComponent } from './components/forum-detail/forum-detail.component';
+import { LandingHomeComponent } from './components/landing-home/landing-home.component';
+import { HomeComponent } from './components/home/home.component';
+import { QuestionDetailComponent } from './components/question-detail/question-detail.component';
+import {RegisterComponent} from "./components/register/register.component";
+import {CompleteprofileComponent} from "./components/completeprofile/completeprofile.component";
+import {TakeimageComponent} from "./components/takeimage/takeimage.component";
+import { CardModule } from 'primeng/card';
+import {HttpClient} from "@angular/common/http";
+import {WebcamModule} from "ngx-webcam";
 
 import { BrowserModule } from '@angular/platform-browser';
+import { ClubsComponent } from './components/clubs/clubs.component';
+import { TableModule } from 'primeng/table';
+import { ToolbarModule } from 'primeng/toolbar';
+import { ButtonModule } from 'primeng/button';
+import { DialogModule } from 'primeng/dialog';
+import { InputTextModule } from 'primeng/inputtext';
+import { InputTextareaModule } from 'primeng/inputtextarea';
+import { InputNumberModule } from 'primeng/inputnumber';
+import { PostComponent } from './components/post/post.component';
+import { ForumComponent } from '../app/components/forum/forum.component';
+import { FileUploadModule } from 'primeng/fileupload';
+import { RippleModule } from 'primeng/ripple';
+import { ToastModule } from 'primeng/toast';
+import { RatingModule } from 'primeng/rating';
+import { DropdownModule } from 'primeng/dropdown';
+import { RadioButtonModule } from 'primeng/radiobutton';
+import { RewardService } from "./services/reward.service";
+import { RewardusersComponent } from "./components/rewardusers/rewardusers.component";
+import { RewardComponent } from "./components/reward/reward.component";
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { QuizService } from "./services/quiz/quiz.service";
-
 import { HttpClientModule } from '@angular/common/http';
 import { EventBackComponent } from '../app/components/event-back/event-back.component';
-
 import { EventService } from './services/event.service';
 import { MessageService } from 'primeng/api';
 import { CalendarModule } from 'primeng/calendar';
 import { DataViewModule } from 'primeng/dataview';
 import { EventfrontComponent } from './components/eventfront/eventfront.component';
+import { CarouselModule } from 'primeng/carousel';
+import { GalleriaModule } from 'primeng/galleria';
+import { ImageModule } from 'primeng/image';
+import { MediaDemoRoutingModule } from './demo/components/uikit/media/mediademo-routing.module';
+import { PickList } from 'primeng/picklist';
+import { ListReservationEventComponent } from './components/list-reservation-event/list-reservation-event.component';
+import { FeedbackComponent } from './components/feedback/feedback.component';
+import { StarRatingModule } from 'angular-star-rating';
+import { FilterPipe } from './filter.pipe';
+import { MultiSelectModule } from 'primeng/multiselect';
+import { ChartModule } from 'primeng/chart';
+import { ChartEventComponent } from './components/chart-event/chart-event.component';
+import { ListfeedbackClubManagerComponent } from './components/listfeedback-club-manager/listfeedback-club-manager.component';
+import { SidebarComponent } from './components/sidebar/sidebar.component';
+import { PostFrontComponent } from './components/post-front/post-front.component';
 
-
-import { ForumDetailComponent } from './components/forum-detail/forum-detail.component';
-import { FooterComponent } from './components/footer/footer.component';
-import { LandingHomeComponent } from './components/landing-home/landing-home.component';
-import { HeaderComponent } from './components/header/header.component';
-import { HomeComponent } from './components/home/home.component';
-import { QuestionDetailComponent } from './components/question-detail/question-detail.component';
 
 
 @NgModule({
-    declarations: [AppComponent, NotfoundComponent , ForumComponent,ForumDetailComponent , 
-    LandingHomeComponent , HomeComponent ,EventBackComponent , EventfrontComponent , QuestionDetailComponent],
-    imports: [AppRoutingModule, 
-        AppLayoutModule , 
+    declarations: [AppComponent, FeedbackComponent,ChartEventComponent,NotfoundComponent , ListfeedbackClubManagerComponent,ListReservationEventComponent,ForumComponent,ForumDetailComponent ,
+    LandingHomeComponent ,SidebarComponent, HomeComponent ,EventBackComponent , EventfrontComponent,PostFrontComponent,QuestionDetailComponent,
+    ClubsComponent,PostComponent],
+    imports: [AppRoutingModule,
+         AppLayoutModule,
+         ReactiveFormsModule, 
+         FormsModule,
+          BrowserModule,
+          ToolbarModule,
+          ChartModule,
+          MultiSelectModule,
+          FilterPipe,
+          StarRatingModule,
+          AppLayoutModule , 
+        ButtonModule,
+        DialogModule,
+        InputTextModule,
+        InputTextareaModule,
+        InputNumberModule,
+        AppLayoutModule ,
         DialogModule ,
         TableModule,
         FileUploadModule,
@@ -73,7 +106,6 @@ import { QuestionDetailComponent } from './components/question-detail/question-d
         InputNumberModule,
         FormsModule,
         ReactiveFormsModule,
-        ReactiveFormsModule,
         BrowserModule,
         DialogModule,
         ToolbarModule,
@@ -83,16 +115,29 @@ import { QuestionDetailComponent } from './components/question-detail/question-d
         BrowserModule,
         CalendarModule,
         ReactiveFormsModule,
-        DataViewModule
-    ],
-    providers: [
-        { provide: LocationStrategy, useClass: PathLocationStrategy },
+        DataViewModule,
+        CarouselModule,
+        CommonModule,
+		MediaDemoRoutingModule,
+		ButtonModule,
+		ImageModule,
+		GalleriaModule,
+        DataViewModule,
+        WebcamModule,
+        DialogModule,
+        RegisterComponent,
+        CompleteprofileComponent,
+        TakeimageComponent,
+        CardModule
+        ],
+        providers: [
+            { provide: LocationStrategy, useClass: PathLocationStrategy },
+            CountryService, CustomerService, IconService, NodeService,
+            PhotoService, ProductService,RewardService,DiscountService,EventService, MessageService,DatePipe,HttpClient,QuizService
+        ],
+        bootstrap: [AppComponent]
+    })
 
-        CountryService, CustomerService, EventService, IconService, NodeService,
-        PhotoService, ProductService,RewardService,DiscountService,QuizService,
-        MessageService,
 
-    ],
-    bootstrap: [AppComponent]
-})
+
 export class AppModule {}

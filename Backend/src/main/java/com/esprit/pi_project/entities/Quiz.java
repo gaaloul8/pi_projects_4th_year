@@ -20,6 +20,7 @@ public class Quiz implements Serializable {
     private String type;
 
     private String description ;
+    private boolean publication;
 
     @JsonIgnore
     @ManyToOne

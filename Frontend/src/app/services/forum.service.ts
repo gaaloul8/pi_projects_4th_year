@@ -7,7 +7,8 @@ import { Observable } from 'rxjs';
 export class ForumService {
 
   private baseUrl = 'http://localhost:8081/forums';
-  private token = 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqb2huLmRvZUBlc3ByaXQudG4iLCJpYXQiOjE3MTQzOTA3MjUsImV4cCI6MTcxNDQ3NzEyNX0.v2TDfH01tSwVh9R2aGNb0ZWnUoojYdOo_esadp4r3QA';
+  private token =  localStorage.getItem('jwtAccessToken');
+
 
 
   constructor(private http: HttpClient) { }
@@ -32,6 +33,7 @@ export class ForumService {
     });
     return this.http.get<Object[]>(`${this.baseUrl}/getForumWithQuestiondAndResponse`,{ headers: headers });
   }
+
   getForumsWithBestAnswers(): Observable<Object[]> {
     const headers = new HttpHeaders({
       'Authorization': 'Bearer ' + this.token
@@ -111,6 +113,9 @@ export interface User {
   resetToken?: string;
   email?: string;
   role?: string;
+  profilePicture?: string;
+  identifiant?: string;
+  niveau?: string;
 }
 
 export interface Question {

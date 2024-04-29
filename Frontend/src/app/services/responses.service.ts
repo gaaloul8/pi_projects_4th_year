@@ -9,7 +9,7 @@ import { Forum, Response } from './forum.service';
 })
 export class ResponsesService {
   private baseUrl = 'http://localhost:8081/responses';
-  private token = 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqb2huLmRvZUBlc3ByaXQudG4iLCJpYXQiOjE3MTQzOTA3MjUsImV4cCI6MTcxNDQ3NzEyNX0.v2TDfH01tSwVh9R2aGNb0ZWnUoojYdOo_esadp4r3QA';
+  private token = localStorage.getItem('jwtAccessToken');
 
   constructor(private http: HttpClient) { }
   createResponse(response: Response): Observable<Response> {

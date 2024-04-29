@@ -1,15 +1,14 @@
 package com.esprit.pi_project.controllers;
 
 import com.esprit.pi_project.dao.ForumDao;
-import com.esprit.pi_project.entities.Evenement;
-import com.esprit.pi_project.entities.Forum;
-import com.esprit.pi_project.entities.ForumStatus;
-import com.esprit.pi_project.entities.TypeEvenement;
+import com.esprit.pi_project.entities.*;
 import com.esprit.pi_project.services.ForumService;
 import com.esprit.pi_project.services.LanguageDetectionService;
+import com.esprit.pi_project.services.UserService;
 import com.restfb.*;
 import com.restfb.exception.FacebookException;
 import com.restfb.types.FacebookType;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -21,6 +20,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
+import java.util.Optional;
 
 @RestController()
 @RequestMapping("/forums")
@@ -34,6 +34,8 @@ public class ForumController {
     private ForumDao forumDao;
     @Autowired
     private final LanguageDetectionService languageDetectionService;
+    @Autowired
+    private UserService userService;
 
 
     @Value("${facebook.access.token}")
@@ -62,9 +64,15 @@ String pictureUrl = "https://www.drhakandoganay.com/wp-content/uploads/2020/06/h
 
 
     @PostMapping("/addForum")
-    public ResponseEntity<Forum> createForum(@RequestBody Forum forum) {
-        Forum createdForum = forumService.saveForum(forum);
-        return new ResponseEntity<>(createdForum, HttpStatus.CREATED);
+    public ResponseEntity<Forum> createForum(@RequestBody Forum forum ,HttpServletRequest request
+    ) {
+       Optional<User> user = userService.getUserFromJwt(request);
+       if(user != null){
+           forum.setForumOwner(user.get());
+           Forum createdForum = forumService.saveForum(forum);
+           return new ResponseEntity<>(createdForum, HttpStatus.CREATED);
+       } else
+        return new ResponseEntity<>(HttpStatus.FORBIDDEN);
     }
 
     @GetMapping("/{forumId}")

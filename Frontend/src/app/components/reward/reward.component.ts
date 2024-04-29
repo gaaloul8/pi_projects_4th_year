@@ -19,11 +19,11 @@ import {ToolbarModule} from "primeng/toolbar";
 //import { reward } from "../../interfaces/reward";
 
 @Component({
-  selector: 'app-reward',
-  standalone: true,
+    selector: 'app-reward',
+    standalone: true,
     imports: [CommonModule, ReactiveFormsModule, FormsModule, ButtonModule, DialogModule, DropdownModule, InputTextModule, InputTextareaModule, RippleModule, SharedModule, CalendarModule, InputNumberModule, TableModule, ToolbarModule],
-  templateUrl: './reward.component.html',
-  styleUrl: './reward.component.scss'
+    templateUrl: './reward.component.html',
+    styleUrl: './reward.component.scss'
 })
 export class RewardComponent implements OnInit{
     rewards: Reward[] = [];
@@ -31,25 +31,36 @@ export class RewardComponent implements OnInit{
     rewardDialog: boolean = false;
     submitted: boolean = false;
     reward:Reward={};
-    messageService: MessageService
+   // messageService: MessageService
     deleteRewardDialog: boolean = false;
     selectedRewardId: number;
-
+    selectedImage:any;
+     name: string;
+     cost: number;
+     description: string;
+     nbDispo: number;
     constructor(
         private rewardService: RewardService,
         private formBuilder: FormBuilder,
+        private messageService: MessageService
     ) { }
 
     ngOnInit(): void {
         this.loadRewards();
+        this.rewardForm=this.formBuilder.group({
+            image:['', ],
+            name:['', ],
+            description:['', ],
+            cost:[''],
+            nbDispo:['']
+        });
     }
 
     loadRewards(): void {
         this.rewardService.getAllRewards().subscribe(
             (rewards:Reward[]) => {
                 this.rewards = rewards;
-                console.log('Events:', this.rewards);
-
+                console.log('Reward:', this.rewards);
             },
             error => {
                 console.log("error fetching rewards",error);
@@ -57,18 +68,22 @@ export class RewardComponent implements OnInit{
         );
     }
 
+    // Inside your TypeScript component
     addReward(): void {
         this.submitted = true;
         try {
-            this.rewardService.addReward(this.reward).toPromise();
-            console.log("reward created");
-            this.rewardDialog = false;
-            window.location.reload();
-        } catch (error) {
-            console.error(error);
+            this.rewardService.addReward(this.rewardForm.value , this.selectedImage).toPromise();
+
+                    console.log("Reward created Successfully");
+                    this.rewardDialog = false;
+                    window.location.reload();
+        }catch (error){
+            console.error(error)
+        }
+
 
         }
-    }
+
 
     openNew() {
         this.reward = {};
@@ -108,20 +123,32 @@ export class RewardComponent implements OnInit{
     }
 
 
-    updateEvent(reward1 : Reward) {
-        this.rewardService.updatereward(reward1).subscribe(
-            updatedReward => {
-                console.log('Event updated:', updatedReward);
-                // Réussite : Gérer la réponse mise à jour si nécessaire
-            },
-            error => {
-                console.error('Error updating event:', error);
-                // Erreur : Gérer les erreurs si nécessaire
-            }
-        );
+    updateReward(rewardId: number): void {
+        this.submitted = true;
+        try {
+            this.rewardService.updateReward(rewardId, this.rewardForm.value, this.selectedImage).toPromise();
+            console.log("Reward updated Successfully");
+            window.location.reload();
+            // Handle success, e.g., show a success message to the user
+        } catch (error) {
+            console.error(error);
+            // Handle error, e.g., show an error message to the user
+        }
     }
 
-    editReward(rewardEdit : Reward) {
+    editReward(rewardEdit: Reward) {
+        // Populate the form fields with existing reward information
+        this.rewardForm.patchValue({
+            // Assuming rewardEdit contains properties like name, description, etc.
+            name: rewardEdit.name,
+            description: rewardEdit.description,
+            cost: rewardEdit.cost,
+            nbDispo: rewardEdit.nbDispo,
+            image: rewardEdit.image,
+
+            // Add other fields as needed
+        });
+
         this.reward = { ...rewardEdit };
         this.rewardDialog = true;
     }
@@ -130,8 +157,9 @@ export class RewardComponent implements OnInit{
         this.rewardForm.reset();
         this.rewardDialog = true;
     }
-
-
+    onImageSelected(event: any) {
+        this.selectedImage=event.target.files[0];
+    }
 
 
 

@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.ParseException;
 import java.util.List;
 
 @RestController
@@ -19,13 +20,13 @@ public class CommentController {
 
     private CommentService commentService;
     private BadWordService badWordService;
-    @PostMapping("/add")
-    public ResponseEntity<String> addComment(@RequestBody Comment comment){
+    @PostMapping("/add/{idPost}")
+    public ResponseEntity<String> addComment(@RequestBody Comment comment, @PathVariable Long idPost) throws ParseException {
         if (badWordService.containsBadWords(comment.getContent())){
             return new  ResponseEntity<>("Hate speech alert. Please modify your comment before posting.",
                     HttpStatus.CREATED);
         }
-         commentService.addComment(comment);
+         commentService.addComment(comment,idPost);
         return new ResponseEntity<>("Comment added successfully",
                 HttpStatus.CREATED);
     }

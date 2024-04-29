@@ -9,7 +9,7 @@ import { Forum, Question } from './forum.service';
 })
 export class QuestionsService {
   private baseUrl = 'http://localhost:8081/questions';
-  private token = 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqb2huLmRvZUBlc3ByaXQudG4iLCJpYXQiOjE3MTQzOTA3MjUsImV4cCI6MTcxNDQ3NzEyNX0.v2TDfH01tSwVh9R2aGNb0ZWnUoojYdOo_esadp4r3QA';
+  private token = localStorage.getItem('jwtAccessToken');
 
 
   constructor(private http: HttpClient) { }

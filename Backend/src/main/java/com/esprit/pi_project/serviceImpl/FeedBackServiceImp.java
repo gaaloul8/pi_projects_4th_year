@@ -1,5 +1,6 @@
 package com.esprit.pi_project.serviceImpl;
 
+import com.esprit.pi_project.dao.EventDao;
 import com.esprit.pi_project.dao.FeedbackDao;
 import com.esprit.pi_project.entities.Evenement;
 import com.esprit.pi_project.entities.FeedBack;
@@ -10,8 +11,6 @@ import jakarta.annotation.Resource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,32 +23,42 @@ public class FeedBackServiceImp implements FeedBackService {
     @Resource
     @Autowired
     private EventService eventService;
+
+    @Autowired
+    private EventDao eventDao;
     @Override
-    public FeedBack addFeedBack(Integer idEvent,FeedBack feedBack) {
-        Evenement evenement = eventService.findByEvenementidEvent(idEvent);
-        // Initialiser le statut du feedback à "non traité"
+    public FeedBack addFeedBack(Integer idEvent, FeedBack feedBack) {
+        Optional<Evenement> evenementOptional = eventDao.findById(idEvent);
         feedBack.setStatus(StatusFeedback.Unprocessed);
 
-        Date eventDateTime = evenement.getDatetime();
-        Date currentDateTime = new Date(); // Date actuelle
-        // Vérification de la date et de l'heure de l'événement
-        if (currentDateTime.after(eventDateTime)) {
+        if (evenementOptional.isPresent()) {
+            Evenement evenement = evenementOptional.get();
             feedBack.setEvenement(evenement);
+            // Autres traitements si nécessaire
             return feedbackDao.save(feedBack);
         } else {
-            throw new IllegalStateException("You cannot yet add feedback for this event.");
+            throw new IllegalStateException("Événement non trouvé avec l'ID : " + idEvent);
         }
     }
 
     @Override
     public List<FeedBack> findAll() {
         return feedbackDao.findAll();
+       /* List<FeedBack> allfeedBacks = feedbackDao.findAll();
+        // Filtrer les réservations pour l'utilisateur spécifique
+        List<FeedBack> feedbackForUser = new ArrayList<>();
+        for (FeedBack feedback :  allfeedBacks ) {
+            if (feedback.getUser() != null && feedback.getUser().getId_user() == idUser) {
+                feedbackForUser.add(feedback);
+            }
+        }
+        return feedbackForUser;*/
     }
 
+    @Override
     public void deleteFeedBackByidFeedback(Integer idFeedback) {
         FeedBack feedback = feedbackDao.findById(idFeedback)
                 .orElseThrow(() -> new IllegalArgumentException("Feedback not found with specified ID."));
-
         if (feedback.getStatus() == StatusFeedback.Processed) {
             feedbackDao.deleteById(idFeedback);
         } else {
@@ -57,29 +66,14 @@ public class FeedBackServiceImp implements FeedBackService {
         }
     }
 
-    public FeedBack  UpdateFeedBack (Integer idFeedback, FeedBack updatedFeedback) {
-        // Recherche du feedback par son ID
-        Optional<FeedBack> existingFeedbackOptional = feedbackDao.findById(idFeedback);
-        if (existingFeedbackOptional.isPresent()) {
-            FeedBack existingFeedback = existingFeedbackOptional.get();
-            // Vérification si le feedback est déjà traité
-            if (existingFeedback.getStatus() == StatusFeedback.Unprocessed) {
-                // Mettre à jour le contenu du feedback
-                existingFeedback.setContent(updatedFeedback.getContent());
-                // Enregistrer les modifications dans la base de données
-                return feedbackDao.save(existingFeedback);
-            }
-        }
-        // Si le feedback est déjà traité, retourner null avec un message d'erreur
-        return null;
-
+    @Override
+    public FeedBack UpdateFeedBack(FeedBack feedBack) {
+        return feedbackDao.save(feedBack);
     }
 
-
-
     @Override
-    public FeedBack findByidFeedback(Integer idFeedback) {
-        return null;
+    public Optional<FeedBack> findByidFeedback(Integer idFeedback) {
+        return feedbackDao.findById(idFeedback);
     }
 
     @Override
@@ -87,3 +81,4 @@ public class FeedBackServiceImp implements FeedBackService {
         return feedbackDao.findFeedBackByStatus(statusFeedback);
     }
 }
+
