@@ -1,3 +1,4 @@
+
 package com.esprit.pi_project.dao;
 
 
@@ -13,5 +14,7 @@ import java.util.List;
 public interface EventDao extends JpaRepository<Evenement,Integer> {
     Evenement findByDatetime(Date datetime);
     List<Evenement> findEvenementByEventType(TypeEvenement typeEvenement);
+    List<Evenement> findEvenementByEventName(String name);
+   // List<Evenement> findEventByTypeAndEventType(TypeEvenement typeEvenement);
 
 }

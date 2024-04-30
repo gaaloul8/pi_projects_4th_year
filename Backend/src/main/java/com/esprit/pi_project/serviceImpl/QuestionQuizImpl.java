@@ -1,3 +1,4 @@
+
 package com.esprit.pi_project.serviceImpl;
 
 import com.esprit.pi_project.dao.QuestionQuizDao;
@@ -24,6 +25,11 @@ public class QuestionQuizImpl implements QuestionQuizService {
     @Override
     public List<QuizQuestion> getAll() {
         return questionDao.findAll();
+    }
+
+    @Override
+    public List<QuizQuestion> getAllQuestionByQuizId(Integer idQuiz) {
+        return questionDao.findByQuiz_IdQuiz(idQuiz);
     }
 
     @Override
@@ -88,7 +94,8 @@ public class QuestionQuizImpl implements QuestionQuizService {
 
     @Override
     public void removeQuestion(QuizQuestion quiz) {
-     questionDao.delete(quiz);
+
+        questionDao.delete(quiz);
     }
 
     @Override

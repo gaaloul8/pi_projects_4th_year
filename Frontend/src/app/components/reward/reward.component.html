@@ -1,27 +1,99 @@
-<div>
-    <h2>Rewards List</h2>
-    <button (click)="addReward()">Add Reward</button>
-    <table>
-        <thead>
-        <tr>
-            <th>Name</th>
-            <th>Description</th>
-            <th>Cost</th>
-            <th>Number Available</th>
-            <th>Actions</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr *ngFor="let reward of rewards">
-            <td>{{ reward.name }}</td>
-            <td>{{ reward.description }}</td>
-            <td>{{ reward.cost }}</td>
-            <td>{{ reward.nbDispo }}</td>
-            <td>
-                <button (click)="updateReward(7,reward)">Update</button>
-                <button (click)="deleteReward(9)">Delete</button>
-            </td>
-        </tr>
-        </tbody>
-    </table>
+<div class="grid">
+    <div class="col-12">
+        <div class="card px-6 py-6">
+            <p-toolbar styleClass="mb-4">
+                <ng-template pTemplate="left">
+                    <div class="my-2">
+                        <button pButton pRipple label="Add new reward" icon="pi pi-plus" class="p-button-success mr-2" (click)="openNew()"></button>
+                    </div>
+                </ng-template>
+            </p-toolbar>
+
+            <p-table [value]="rewards">
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th style="width: 3rem">
+                            <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                        </th>
+                        <th>Image</th>
+                        <th>Reward Name</th>
+                        <th>Reward Description</th>
+                        <th>cost</th>
+                        <th>number dispo</th>
+                        <th></th>
+                    </tr>
+                </ng-template>
+
+                <ng-template pTemplate="body" let-reward>
+                    <tr>
+                        <td>
+                            <p-tableCheckbox [value]="reward"></p-tableCheckbox>
+                        </td>
+                        <td>
+                            <img [src]="reward.image ? 'data:image/png;base64,' + reward.image : ''" alt="reward Image" width="150" class="mt-2">
+                        </td>
+                        <td>{{ reward.name }}</td>
+                        <td>{{ reward.description }}</td>
+                        <td>{{ reward.cost }}</td>
+                        <td>{{ reward.nbDispo }}</td>
+
+                        <td>
+                            <div class="flex">
+                                <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" (click)="editReward(reward)"></button>
+                                <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning" (click)="confirmDelete(reward.idReward)"></button>
+                            </div>
+                        </td>
+                    </tr>
+                </ng-template>
+            </p-table>
+
+            <p-dialog [(visible)]="rewardDialog" [style]="{width: '450px'}" header="reward Details" [modal]="true" class="p-fluid">
+                <ng-template pTemplate="content">
+                    <form [formGroup]="rewardForm" enctype="multipart/form-data">
+                        <div class="field">
+                            <label for="name">RewardName</label>
+                            <input type="text" id="name" pInputText formControlName="name" required autofocus>
+                        </div>
+                        <div class="field">
+                            <label for="description">Description</label>
+                            <textarea id="description" pInputTextarea formControlName="description" required rows="3" cols="20"></textarea>
+                        </div>
+                        <div class="field">
+                            <label for="cost">Cost</label>
+                            <input type="number" id="cost" pInputText formControlName="cost" required autofocus>
+                        </div>
+                        <div class="field">
+                            <label for="nbDispo">Nombre</label>
+                            <input type="number" id="nbDispo" pInputText formControlName="nbDispo" required autofocus>
+                        </div>
+
+                        <div class="field">
+                            <label for="imageInput">Image</label>
+                            <input type="file" (change)="onImageSelected($event)" accept="image/*" id="imageInput">
+                            <img *ngIf="selectedImage" [src]="selectedImage" alt="Selected Image" width="150" class="mt-2">
+                        </div>
+                    </form>
+                </ng-template>
+
+                <ng-template pTemplate="footer">
+                    <button pButton pRipple label="Cancel" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
+                    <!-- Add button -->
+                    <button *ngIf="!reward.idReward" pButton pRipple label="Add" icon="pi pi-plus" class="p-button-text" (click)="addReward()"></button>
+                    <!-- Update button -->
+                    <button *ngIf="reward.idReward" pButton pRipple label="Update" icon="pi pi-check" class="p-button-text" (click)="updateReward(reward.idReward)"></button>
+                </ng-template>
+            </p-dialog>
+
+            <p-dialog [(visible)]="deleteRewardDialog" header="Confirm" [modal]="true" [style]="{width:'450px'}">
+                <div class="flex align-items-center justify-content-center">
+                    <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
+                    <span>Are you sure you want to delete this reward?</span>
+                </div>
+                <ng-template pTemplate="footer">
+                    <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No" (click)="deleteRewardDialog = false"></button>
+                    <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Yes" (click)="deleteReward(selectedRewardId)"></button>
+                </ng-template>
+            </p-dialog>
+        </div>
+    </div>
 </div>

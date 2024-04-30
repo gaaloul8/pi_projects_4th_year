@@ -1,3 +1,4 @@
+
 package com.esprit.pi_project.services;
 
 import com.esprit.pi_project.entities.Evenement;
@@ -18,6 +19,12 @@ public interface EventService {
    List<Evenement> searchEventByDate(Date date);
 
    List<Evenement> searchEventByTpe (TypeEvenement typeEvenement);
+
+   List<Evenement> searchEventByName (String name);
+
+   //List<Evenement> searchEventByMultiple(TypeEvenement typeM);
+
+   List<Object[]> getEventFeedbackStatistics();
 
 
 }

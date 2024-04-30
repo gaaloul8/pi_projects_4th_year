@@ -1,7 +1,9 @@
+
 package com.esprit.pi_project.services;
 
 import com.esprit.pi_project.entities.Response;
 
+import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 
@@ -16,11 +18,11 @@ public interface ResponseService {
 
     List<Response> getAllResponses();
 
-    void reportResponse(Integer responseId);
+    Response reportResponse(Integer responseId);
 
-    void upvoteResponse(Integer responseId);
+    Response upvoteResponse(Integer responseId);
 
-    void downvoteResponse(Integer responseId);
+    Response downvoteResponse(Integer responseId);
 
     List<Response> getResponsesByQuestionId(Integer questionId);
 

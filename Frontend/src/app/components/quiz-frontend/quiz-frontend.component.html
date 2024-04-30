@@ -1,0 +1,205 @@
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+
+
+<div class="container" id="main-container">
+    <div class="row">
+
+
+
+
+        <div *ngFor="let quiz of quizzes" (click)="selectQuiz(quiz)" class="col-md-6 col-xl-3">
+            <div class="card m-b-30">
+                <div class="card-body row">
+                    <div class="col-6">
+                        <a href=""><img src="https://resize.elle.fr/original/var/plain_site/storage/images/societe/news/sante-mentale-dans-le-monde-la-souffrance-est-enorme-alerte-l-oms-4028858/96897868-1-fre-FR/Sante-mentale-dans-le-monde-la-souffrance-est-enorme-alerte-l-OMS.jpg" alt="" class="img-fluid rounded-circle w-60"></a>
+                    </div>
+
+                    <div class="col-6 card-title align-self-center mb-0">
+                        <h5>{{quiz.title}}</h5>
+
+
+                    </div>
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item"><i class="fa fa-envelope float-right"></i>Description : <a href="#">{{quiz.description}}</a></li>
+                    <li class="list-group-item"><i class="fa fa-phone float-right"></i>Type: {{quiz.type}}</li>
+                </ul>
+                <div class="card-body">
+                    <div class="float-right btn-group btn-group-sm">
+
+                        <a class="btn btn-primary tooltips" data-bs-toggle="modal" data-bs-target="#quizModal" (click)="openQuizModal(quiz)">Start Quiz <span class="sr-only">(current)</span></a>
+                        <a class="btn btn-primary tooltips" (click)="launchQuizModal()" data-bs-toggle="modal" data-bs-target="#quizModal" >Start  Quiz launcher <span class="sr-only">(current)</span></a>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<div class="quiz-launcher-container" *ngIf="showQuizLauncher">
+    <div class="quiz-launcher animated fadeInUp">
+        <img src="assets/cerveau.png" alt="Mental Health Icon">
+
+        <div class="loading-message">
+
+            <p>Please wait while we prepare the quiz for you.</p>
+            <p>This may take a moment.</p>
+
+        </div>
+        <p-progressSpinner *ngIf="loading" [style]="{ 'width': '50px', 'height': '50px' }"></p-progressSpinner>
+    </div>
+</div>
+<div class="modal fade" id="quizModal" tabindex="-1" role="dialog" aria-labelledby="quizModalLabel" aria-hidden="true" [hidden]="!showQuizModal">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+
+            <div class="modal-header d-flex align-items-center justify-content-between">
+                <h5 class="modal-title" id="quizModalLabel">Quiz Questions</h5>
+                <div class="d-flex align-items-center">
+                    <label size="large" class="me-2" style="background-color: #d5182a; color: white; border-radius: 50%; width: 3rem; height: 3rem; display: inline-flex; justify-content: center; align-items: center; font-weight: bold;  font-style: italic;">
+                        {{ currentQuestionIndex }} / {{ questions.length }}
+                    </label>
+
+
+
+                    <button type="button" class="close" data-bs-dismiss="modal" (click)="resetQuiz()" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            </div>
+            <div class="modal-body">
+                <div class="progress mt-3 mb-3">
+                    <div class="progress-bar" role="progressbar"  [style.width.%]="calculateProgress()" [attr.aria-valuenow]="calculateProgress()" aria-valuemin="0" aria-valuemax="100" style="background-color: #d5182a">{{ calculateProgress() }}%   </div>
+                </div>
+
+                <div *ngIf="!questions || questions.length === 0">
+                    <p>This quiz is not yet available because it has no questions.</p>
+                </div>
+                <div *ngIf="questions && questions.length > 0 && currentQuestionIndex < questions.length">
+                    <h6>{{ questions[currentQuestionIndex].content }} ?</h6>
+                    <ul>
+                        <li *ngFor="let option of questions[currentQuestionIndex].options">
+                            <label>
+                                <input type="radio" name="optionSelection_{{questions[currentQuestionIndex].idQuestion}}" [(ngModel)]="selectedOptions[questions[currentQuestionIndex].idQuestion]" [value]="option.idOption" (change)="updateSelectedOptionContent(questions[currentQuestionIndex].idQuestion, option.content)"> {{ option.content }}
+                            </label>
+                        </li>
+                    </ul>
+                    <button class="btn btn-primary" (click)="nextQuestion()">Suivant</button>
+                </div>
+                <div *ngIf="questions && questions.length > 0 && currentQuestionIndex >= questions.length">
+                    <p>Vous avez répondu à toutes les questions.</p>
+                    <!--<button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#quizFinishModal" (click)="submitQuiz()">Terminer le quiz</button>-->
+                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#quizFinishModal" (click)="submitQuiz()" >Terminer le quiz</button>
+
+                </div>
+                <!--<div *ngIf="questions && questions.length > 0 && currentQuestionIndex >= questions.length">
+                    <p>{{ description }}</p>
+                </div>-->
+            </div>
+
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="resetQuiz()">Fermer</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="quizFinishModal" tabindex="-1" role="dialog" aria-labelledby="quizFinishModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+                <div class="quiz-launcher animated fadeInUp" *ngIf="loading1">
+                    <img src="assets/cerveau.png" alt="Mental Health Icon">
+
+                    <div class="loading-message">
+
+                        <p>Thank you for completing the quiz!</p>
+                        <p>Please wait while we prepare the result for you.</p>
+
+                    </div>
+                    <p-progressSpinner *ngIf="loading" [style]="{ 'width': '50px', 'height': '50px' }"></p-progressSpinner>
+                </div>
+
+
+                <!-- Animated message -->
+                <div *ngIf="!loading1" class="result-message">
+                    <img src="assets/Animation%20-%201713730909292.gif" alt="Success Animation">
+                    <p class="result-text">Here is your result:</p>
+                    <p>{{ description }}</p>
+                    <img src="https://png.pngtree.com/png-clipart/20221015/original/pngtree-psychological-support-recovery-mental-rehabilitation-png-image_8695600.png" style="max-width: 100%; height: 200px; ">
+                </div>
+            </div>
+            <div class="modal-footer" *ngIf="!loading1">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">ok</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                ...
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--<div class="modal fade" id="quizModal" tabindex="-1" role="dialog" aria-labelledby="quizModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="quizModalLabel">Quiz Questions</h5>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <ul>
+                    <li *ngFor="let question of questions">
+                        <h6>{{ question.content }}</h6>
+                        <ul>
+                            <li *ngFor="let option of question.options">
+                                {{ option.content}}
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>-->
+
+
+
+
+
+
+
+
+
+

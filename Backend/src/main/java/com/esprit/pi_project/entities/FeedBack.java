@@ -1,6 +1,9 @@
+
 package com.esprit.pi_project.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -21,9 +24,10 @@ public class FeedBack implements Serializable {
     @Column(name = "status")
     private StatusFeedback status;
 
+    private int rating;
+
     @ManyToOne
     @JoinColumn(name = "idEvent")
-    @JsonIgnore
     Evenement evenement;
 
     @ManyToOne

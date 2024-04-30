@@ -1,0 +1,465 @@
+
+
+    <div class="pageloader"></div>
+    <div class="infraloader is-active"></div>
+
+    <div class="app-overlay"></div>
+
+    
+    <div class="view-wrapper">
+        <!-- /html/partials/pages/questions/questions-nav-single.html -->
+        <div class="questions-nav">
+            <div class="inner">
+                <div class="container">
+                    <div class="question-summary">
+                        <img src="https://via.placeholder.com/150x150" data-demo-src="assets/img/avatars/dan.jpg" data-user-popover="1" alt="" />
+                        <div class="meta">
+                            <h4> {{question?.title}}</h4>
+                            <span>{{question?.author.firstName}} {{question?.author.lastName}} | {{question?.createdAt}}</span>
+                        </div>
+                        <div class="dropdown is-spaced is-accent is-right dropdown-trigger">
+                            <div>
+                                <div class="button">
+                                    <i data-feather="more-vertical"></i>
+                                </div>
+                            </div>
+                            <div class="dropdown-menu" role="menu">
+                                <div class="dropdown-content">
+                                    <a href="#" class="dropdown-item">
+                                        <div class="media">
+                                            <i data-feather="message-circle"></i>
+                                            <div class="media-content">
+                                                <h3>My Questions</h3>
+                                                <small>All questions you posted.</small>
+                                            </div>
+                                        </div>
+                                    </a>
+                                    <a class="dropdown-item">
+                                        <div class="media">
+                                            <i data-feather="hexagon"></i>
+                                            <div class="media-content">
+                                                <h3>My Groups</h3>
+                                                <small>View the groups you are part of.</small>
+                                            </div>
+                                        </div>
+                                    </a>
+                                    <a class="dropdown-item">
+                                        <div class="media">
+                                            <i data-feather="delete"></i>
+                                            <div class="media-content">
+                                                <h3>Unsolved</h3>
+                                                <small>View unsolved questions.</small>
+                                            </div>
+                                        </div>
+                                    </a>
+                                    <a class="dropdown-item">
+                                        <div class="media">
+                                            <i data-feather="disc"></i>
+                                            <div class="media-content">
+                                                <h3>Solved</h3>
+                                                <small>View solved questions.</small>
+                                            </div>
+                                        </div>
+                                    </a>
+                                    <hr class="dropdown-divider" />
+                                    <a (click)="openReplyModal()" class="dropdown-item">
+                                        <div class="media">
+                                            <i data-feather="message-square"></i>
+                                            <div class="media-content">
+                                                <h3>Reply</h3>
+                                                <small>Give us your answer.</small>
+                                            </div>
+                                        </div>
+                                    </a>
+                                        <a   class="dropdown-item" (click)="openShareModal()"> 
+                                        <div class="media">
+                                            <i data-feather="share"></i>
+                                            <div class="media-content">
+                                                <h3>Share</h3>
+                                                <small>share this on FACEBOOK 
+                                                </small><i data-feather="facebook"></i>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Question wrap -->
+        <div class="questions-wrap is-smaller">
+            <!-- Container -->
+            <div class="container">
+                <div class="question-content">
+                    <!-- /html/partials/global/placeload/questions/questions-shadow-dom-single.html -->
+                    <div id="questions-shadow-dom-single" class="columns">
+                        <div class="column">
+                            <!--Top Bar-->
+                            <div class="top-single-header has-text-right">
+                                <a class="button is-solid grey-button is-rounded">Back To Questions</a>
+                            </div>
+                            <!-- /html/partials/global/placeload/placeloads/questions-single-placeload.html -->
+                            <div class="placeload is-bold questions-single-placeload is-header">
+                                <div class="inner-wrap">
+                                    <div class="content-shape loads"></div>
+                                </div>
+                            </div>
+
+                            <div class="placeload questions-single-placeload is-card">
+                                <div class="inner-wrap">
+                                    <div class="card-head">
+                                        <div class="img loads"></div>
+                                        <div class="content-shape loads"></div>
+                                    </div>
+                                    <div class="content-shape is-body loads"></div>
+                                    <div class="content-shape is-body loads"></div>
+                                    <div class="content-shape is-body loads"></div>
+                                </div>
+                            </div>
+
+                            <div class="placeload questions-single-placeload is-card">
+                                <div class="inner-wrap">
+                                    <div class="card-head">
+                                        <div class="img loads"></div>
+                                        <div class="content-shape loads"></div>
+                                    </div>
+                                    <div class="content-shape is-body loads"></div>
+                                    <div class="content-shape is-body loads"></div>
+                                    <div class="content-shape is-body loads"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="columns true-dom is-hidden">
+                        <div class="column">
+                            <!-- Question content -->
+                            <div class="question-content">
+                                <!--Top Bar-->
+                                <div class="top-single-header has-text-right">
+                                    <a class="button is-solid grey-button is-rounded">Back To Questions</a>
+                                </div>
+                                <!-- Main question -->
+                                <div class="question-block">
+                                    <!-- Title -->
+                                    <h4> <a  class="question-title is-link">
+                                        {{question?.title}}
+                                    </a></h4>
+                                    <!-- Author -->
+                                    <div class="question-author">
+                                        <img src="https://via.placeholder.com/150x150" data-demo-src="assets/img/avatars/dan.jpg" data-user-popover="1" alt="" />
+                                        <div class="meta">
+                                            <span>{{question?.author.firstName}} {{question?.author.lastName}}</span>
+                                            <span>{{question?.createdAt}}</span>
+                                            <small [ngClass]="{'positive-tag': sentimentResult === 'Positive', 'negative-tag': sentimentResult === 'Negative', 'neutral-tag': sentimentResult === 'Neutral'}">{{ sentimentResult }}</small>
+
+                                        </div>
+                                    </div>
+                                    <!-- Content -->
+                                    <div class="question-text">
+                                        <p>
+                                            {{question?.content}}
+                                        </p>
+                                    </div>
+                                    <!-- Footer -->
+                                    <div class="question-footer">
+                                        <div class="likes">
+                                            <div class="like-icon">
+                                                <i data-feather="heart"></i>
+                                            </div>
+                                            <span>{{question?.upvotes}} Likes</span>
+                                        </div>
+                                        <div class="report">
+                                            <div class="report-icon">
+                                                <i data-feather="alert-octagon"></i>
+                                            </div>
+                                            <span>Report Topic</span>
+                                        </div>
+                                    </div>
+                                    <div class="answers-count">
+                                        <span>{{responses.length}} Answers</span>
+                                    </div>
+                                </div>
+                                <!-- Main answer -->
+                                <div  *ngFor="let response of responses">
+                                    <div [ngClass]="{'answer-block': true, 'is-best': response.responseId === bestAnswer?.responseId}">
+                                        <div class="answer-author">
+                                        <div class="avatar-wrap">
+                                            <img class="avatar" src="https://via.placeholder.com/150x150" data-demo-src="assets/img/avatars/elise.jpg" data-user-popover="6" alt="" />
+                                            <div class="badge">
+                                                <i data-feather="check"></i>
+                                            </div>
+                                        </div>
+                                        <div class="meta">
+                                            <span
+                    >{{response.author.firstName}} {{response.author.lastName}}
+                    <small class="best-tag" *ngIf="response === bestAnswer">Best Answer</small>
+                </span>
+                                            <span>{{response.createdAt}}</span>
+                                        </div>
+                                    </div>
+                                    <!-- Content -->
+                                    <div class="answer-text">
+                                        <p>
+                                            {{response.content}}
+                                        </p>
+                                    </div>
+                                    <!-- Footer -->
+                                    <div class="answer-footer">
+                                        <div class="upvote">
+                                            <div class="upvote-icon">
+                                                <i data-feather="check"></i>
+                                            </div>
+                                            <span>Upvoted {{response.upvotes}} times</span>
+                                        </div>
+                                        <div class="report">
+                                            <div class="report-icon">
+                                                <i data-feather="alert-octagon"></i>
+                                            </div>
+                                            <span>Report Answer</span>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="comment-stats-wrap">
+
+                                        <div class="comment-actions">
+                                            <a class="comment-action is-like" (click)="toggleActiveClass('like', $event , response)">
+                                              <i data-feather="thumbs-up"></i>
+                                            </a>
+                                            <a class="comment-action is-dislike" (click)="toggleActiveClass('dislike', $event , response)">
+                                              <i data-feather="thumbs-down"></i>
+                                            </a>
+                                            <a class="comment-action is-reply" (click)="toggleActiveClass('reply', $event , response)">
+                                              <i data-feather="message-circle"></i>
+                                            </a>
+                                          </div>
+                                          
+                                          
+                                    </div>
+                                </div>
+                            </div>
+                                <!-- Load more answers -->
+                                <div class="load-more-wrap has-text-centered">
+                                    <a href="#" class="load-more-button">Load More</a>
+                                </div>
+                            </div>
+
+                            <!-- Other random questions -->
+                            <div class="other-questions">
+                                <!-- Title -->
+                                <h2 class="other-title">Other people asked</h2>
+                                <!-- Other question -->
+                                <div class="other-question">
+                                    <div class="avatar-wrap">
+                                        <img class="avatar" src="https://via.placeholder.com/150x150" data-demo-src="assets/img/avatars/david.jpg" data-user-popover="4" alt="" />
+                                        <div class="badge">
+                                            <i data-feather="check"></i>
+                                        </div>
+                                    </div>
+                                    <div class="meta">
+                                        <a>I'd like to learn a js framework, any ideas?</a>
+                                        <span>David Kim | 1 day ago</span>
+                                    </div>
+                                </div>
+                                <!-- Other question -->
+                                <div class="other-question">
+                                    <div class="avatar-wrap">
+                                        <img class="avatar" src="https://via.placeholder.com/150x150" data-demo-src="assets/img/avatars/elise.jpg" data-user-popover="6" alt="" />
+                                        <div class="badge">
+                                            <i data-feather="check"></i>
+                                        </div>
+                                    </div>
+                                    <div class="meta">
+                                        <a>Trouble running with Kubernetes + Docker</a>
+                                        <span>Elise Walker | 3 days ago</span>
+                                    </div>
+                                </div>
+                                <!-- Other question -->
+                                <div class="other-question">
+                                    <div class="avatar-wrap">
+                                        <img class="avatar" src="https://via.placeholder.com/150x150"  data-user-popover="10" alt="" />
+                                        <div class="badge">
+                                            <i data-feather="check"></i>
+                                        </div>
+                                    </div>
+                                    <div class="meta">
+                                        <a>Is it worth buying the new Surface tablet?</a>
+                                        <span>Lana Henrikssen | 7 days ago</span>
+                                    </div>
+                                </div>
+                                <!-- Other question -->
+                                <div class="other-question">
+                                    <div class="avatar-wrap">
+                                        <img class="avatar" src="https://via.placeholder.com/150x150"  data-user-popover="5" alt="" />
+                                        <div class="badge">
+                                            <i data-feather="check"></i>
+                                        </div>
+                                    </div>
+                                    <div class="meta">
+                                        <a>How much should I charge for freelance design?</a>
+                                        <span>Edward Mayers | a month ago</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div id="share-modal" class="modal share-modal is-xsmall has-light-bg">
+        <div class="modal-background"></div>
+        <div class="modal-content">
+            <div class="card">
+                <div class="card-heading">
+                    <div class="dropdown is-primary share-dropdown">
+                        <div>
+                            <div class="button">
+                                <i class="mdi mdi-format-float-left"></i>
+                                <span>Share in your feed</span>
+                                <i data-feather="chevron-down"></i>
+                            </div>
+                        </div>
+                        <div class="dropdown-menu" role="menu">
+                            <div class="dropdown-content">
+                                <div class="dropdown-item" data-target-channel="feed">
+                                    <div class="media">
+                                        <i class="mdi mdi-format-float-left"></i>
+                                        <div class="media-content">
+                                            <h3>Share in your forum page</h3>
+                                            <small>Share this publication on EspritClaim page.</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Close X button -->
+                    <div class="close-wrap">
+                        <span class="close-modal">
+        <i data-feather="x"></i>
+      </span>
+                    </div>
+                </div>
+                <div class="share-inputs">
+                    <div class="field is-autocomplete">
+                        <div id="share-to-friend" class="control share-channel-control is-hidden">
+                            <input id="share-with-friend" type="text" class="input is-sm no-radius share-input simple-users-autocpl" placeholder="Your friend's name" />
+                            <div class="input-heading">Friend :</div>
+                        </div>
+                    </div>
+
+                    <div class="field is-autocomplete">
+                        <div id="share-to-group" class="control share-channel-control is-hidden">
+                            <input id="share-with-group" type="text" class="input is-sm no-radius share-input simple-groups-autocpl" placeholder="Your group's name" />
+                            <div class="input-heading">Group :</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="control">
+                        <textarea class="textarea comment-textarea" rows="1" placeholder="Say something about this ..."></textarea>
+                        <button class="emoji-button">
+                            <i data-feather="smile"></i>
+                        </button>
+                    </div>
+                    <div class="shared-publication">
+                        <div class="featured-image">
+                            <img id="share-modal-image" src="https://via.placeholder.com/1600x900" data-demo-src="assets/forum1.jpg" alt="" />
+                        </div>
+                        <div class="publication-meta">
+                            <div class="inner-flex">
+                                <img id="share-modal-avatar" src="https://via.placeholder.com/300x300" data-demo-src="assets/img/avatars/dan.jpg" data-user-popover="1" alt="" />
+                                <p id="share-modal-text">
+                                   {{question?.content}}
+                                </p>
+                            </div>
+                            <div class="publication-footer">
+                                <div >
+                                    <div class="stat-block">
+                                        <i class="mdi mdi-earth"></i>
+                                        <small>Public</small>
+                                    </div>
+                                    <div class="stat-block">
+                                        <i class="mdi mdi-eye"></i>
+                                        <small>163 views</small>
+                                    </div>
+                                </div>
+                                <div class="publication-origin">
+                                    <small>EspritClaim.io</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <div class="action-wrap">
+                        <div class="footer-action" data-target-action="tag">
+                            <i class="mdi mdi-account-plus"></i>
+                        </div>
+                        <div class="footer-action" data-target-action="place">
+                            <i class="mdi mdi-map-marker"></i>
+                        </div>
+                        <div class="footer-action dropdown is-spaced is-neutral dropdown-trigger is-up" data-target-action="permissions">
+                            <div>
+                                <i class="mdi mdi-lock-clock"></i>
+                            </div>
+                        </div>
+                    </div>
+=                    <div class="button-wrap">
+                        <div class="header">
+                        <button type="button" class="button is-solid dark-grey-button close-modal">
+                            Cancel
+                        </button>
+                        
+                            <button type="button" class="btn-getstarted" (click)="publishToFacebook()">
+                              <span>Publish</span>
+                            </button>
+                          
+                       </div>                       
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="reply-modal" class="modal share-modal is-xsmall has-light-bg">
+        <div class="modal-background"></div>
+        <div class="modal-content">
+            <div class="close-wrap">
+                <span class="close-modal">
+                    <i data-feather="x"></i>
+                </span>
+            </div>
+            <div class="card">
+                <div class="card-body">
+                    <div class="response-inputs">
+                        <div class="field">
+                            <label class="label" for="response-textarea">Your Response:</label>
+                            <div class="control">
+                                <textarea id="response-textarea" class="textarea" placeholder="Write your response" [(ngModel)]="this.response.content"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer" class="header">
+                        <a class="button is-solid dark-grey-button close-modal">
+                            Cancel
+                        </a>
+                        <a class="btn-getstarted" (click)="submitResponse()">
+                            <span>Reply</span>
+                        </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    
+    
+
+    

@@ -1,3 +1,4 @@
+
 package com.esprit.pi_project.entities;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -6,6 +7,7 @@ import java.util.List;
 
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
@@ -18,25 +20,25 @@ public class Forum implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer forumId;
 
-    @NotBlank(message = "Topic is required")
     private String topic;
 
     @ManyToOne
     @JoinColumn(name = "id_user")
-    @JsonBackReference
+   // @JsonManagedReference
     private User ForumOwner;
 
     @Temporal(TemporalType.DATE)
     private Date createdAt;
 
-    @NotBlank(message = "Content is required")
     private String content;
 
     private Integer likes;
 
     private Boolean closed;
+    @Enumerated(EnumType.STRING)
+    private ForumStatus status;
 
-    @OneToMany(mappedBy = "forum")
-    private List<Question> questions = new ArrayList<>();
+//    @OneToMany(mappedBy = "forum")
+//    private List<Question> questions = new ArrayList<>();
 
 }

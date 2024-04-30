@@ -1,3 +1,4 @@
+
 package com.esprit.pi_project.controllers;
 
 import com.esprit.pi_project.entities.Evenement;
@@ -9,13 +10,13 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @RestController
+@RequestMapping("/event")
+@CrossOrigin(origins = "*")
 public class EventController {
 
     @Autowired
@@ -30,10 +31,15 @@ public class EventController {
 
 
     @PutMapping("/updateEvent")
-    public Evenement updateEvent (@RequestBody Evenement evenement){ return eventService.UpdateEvenement(evenement);}
+    public Evenement updateEvent(@RequestBody Evenement evenement) {
+        return eventService.UpdateEvenement(evenement);
+    }
+
+
 
     @PostMapping("/addEvent")
-    public  ResponseEntity<Evenement>  addEvent (@RequestBody Evenement evenement){
+    public  ResponseEntity<Evenement>  addEvent (@RequestBody Evenement evenement,
+                                                 @RequestPart("image") MultipartFile image){
         try {
             Evenement savedEvent = eventService.addEvent(evenement);
             return new ResponseEntity<>(savedEvent, HttpStatus.CREATED);
@@ -43,20 +49,16 @@ public class EventController {
 
     }
 
-    @DeleteMapping("/events/{idEvent}")
-    public ResponseEntity<String>  deleteEvent(@PathVariable Integer  idEvent) {
-        try {
-            eventService.deleteEvenementByidEvent(idEvent);
-            return ResponseEntity.ok().build();
-            // Renvoyer une réponse 200 OK si la suppression réussit
-        } catch (EntityNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-            // Renvoyer un message d'erreur
-        }
+    @DeleteMapping("/{idEvent}")
+    public ResponseEntity<Void>  deleteEvent(@PathVariable Integer  idEvent) {
+        eventService.deleteEvenementByidEvent(idEvent);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+
+
     }
 
     @GetMapping("/searchByDate/{date}")
-    public List<Evenement> searchEventByDate (@PathVariable @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")Date date){
+    public List<Evenement> searchEventByDate (@PathVariable @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX")Date date){
         return eventService.searchEventByDate(date);
     }
 
@@ -65,9 +67,17 @@ public class EventController {
     {
         return eventService.searchEventByTpe(type);
     }
+    @GetMapping("/searchByName/{name}")
+    public List<Evenement> searchEventByName (@PathVariable String name)
+    {
+        return eventService.searchEventByName(name);
+    }
+    @GetMapping("/feedbackStatistics")
+    public List<Object[]> getEventFeedbackStatistics() {
+        return eventService.getEventFeedbackStatistics();
+    }
 
 
 
 
 }
-

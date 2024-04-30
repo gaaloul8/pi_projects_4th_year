@@ -1,3 +1,4 @@
+
 package com.esprit.pi_project.config;
 
 import com.esprit.pi_project.dao.TokenDao;
@@ -64,7 +65,6 @@ public class JwtAuthentifcationFilter extends OncePerRequestFilter {
                     SecurityContextHolder.getContext().setAuthentication(authToken);
                     filterChain.doFilter(request,response);
                 } else {
-                    // Return unauthorized response
                     response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                 }
 

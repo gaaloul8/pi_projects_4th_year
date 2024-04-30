@@ -1,3 +1,4 @@
+
 package com.esprit.pi_project.services;
 
 import com.esprit.pi_project.entities.Quiz;
@@ -6,7 +7,9 @@ import com.esprit.pi_project.entities.QuizQuestion;
 import java.util.List;
 
 public interface QuestionQuizService {
+
     List<QuizQuestion> getAll();
+    List<QuizQuestion> getAllQuestionByQuizId(Integer idQuiz);
 
     QuizQuestion addQuestion (QuizQuestion question);
     QuizQuestion updateQuestion (QuizQuestion question);

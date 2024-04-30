@@ -1,3 +1,4 @@
+
 package com.esprit.pi_project.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -17,10 +18,10 @@ public class QuizQuestion implements Serializable {
 
     private String content;
     @JsonIgnore
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private Quiz quiz;
 
-    @OneToMany (mappedBy = "question",cascade = CascadeType.ALL)
+    @OneToMany (mappedBy = "question",fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     private List<QuizOption> options;
 
 

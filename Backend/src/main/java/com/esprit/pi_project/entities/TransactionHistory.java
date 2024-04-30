@@ -1,3 +1,4 @@
+
 package com.esprit.pi_project.entities;
 
 import jakarta.persistence.*;
@@ -17,9 +18,13 @@ public class TransactionHistory implements Serializable {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "reward_id")
     private Reward reward;
+
+    @Column(length = 200000000)
+    @Lob
+    private String image;
 
     @Temporal(TemporalType.TIMESTAMP)
     private Date purchaseDate;

@@ -1,3 +1,4 @@
+
 package com.esprit.pi_project.controllers;
 
 
@@ -8,6 +9,7 @@ import com.esprit.pi_project.services.OptionService;
 import com.esprit.pi_project.services.QuestionQuizService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,6 +17,7 @@ import java.util.List;
 @RestController
 @RequestMapping("questionq")
 @AllArgsConstructor
+@CrossOrigin(origins = "http://localhost:4200", maxAge = 3600, allowCredentials = "true")
 public class QuestionQuizController {
 
     QuestionQuizService questionService;
@@ -44,4 +47,11 @@ public class QuestionQuizController {
 
         return  questionService.updateQuestion(question);
     }
+
+    @GetMapping("/by-quiz/{quizId}")
+    public List<QuizQuestion> getQuestionsByQuizId(@PathVariable Integer quizId) {
+       return  questionService.getAllQuestionByQuizId(quizId);
+
+    }
 }
+

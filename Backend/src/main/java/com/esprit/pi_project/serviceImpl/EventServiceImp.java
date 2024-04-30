@@ -1,12 +1,16 @@
+
 package com.esprit.pi_project.serviceImpl;
 
 import com.esprit.pi_project.dao.EventDao;
 import com.esprit.pi_project.entities.Evenement;
+import com.esprit.pi_project.entities.Quiz;
 import com.esprit.pi_project.entities.TypeEvenement;
 import com.esprit.pi_project.services.EventService;
 import io.micrometer.common.util.StringUtils;
 import jakarta.annotation.Resource;
+import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.persistence.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,8 +26,11 @@ public class EventServiceImp implements EventService {
     @Autowired
     private EventDao eventDao;
 
+    @Autowired
+    private EntityManager entityManager;
+
     @Override
-    public Evenement addEvent(Evenement evenement)  {
+    public Evenement addEvent(Evenement evenement) {
         // Vérifier s'il existe déjà un événement avec la même date et heure
         Evenement existingEvent = eventDao.findByDatetime(evenement.getDatetime());
         if (existingEvent != null) {
@@ -31,6 +38,7 @@ public class EventServiceImp implements EventService {
         }
         return eventDao.save(evenement);
     }
+
     @Override
     public List<Evenement> findAll() {
         return eventDao.findAll();
@@ -45,11 +53,9 @@ public class EventServiceImp implements EventService {
             throw new EntityNotFoundException("L'événement avec l'ID " + idEvent + " n'existe pas.");
         }
     }
-
-    @Override
     public Evenement UpdateEvenement(Evenement evenement) {
-        return eventDao.save(evenement);
-    }
+        return eventDao.save(evenement);}
+
 
     @Override
     public Evenement findByEvenementidEvent(Integer idEvent) {
@@ -72,6 +78,20 @@ public class EventServiceImp implements EventService {
         return eventDao.findEvenementByEventType(typeEvenement);
     }
 
+    @Override
+    public List<Evenement> searchEventByName(String name) {
+        return eventDao.findEvenementByEventName(name);
+    }
+
+    @Override
+    public List<Object[]> getEventFeedbackStatistics() {
+        String sql = "SELECT e.eventName, COUNT(f.idFeedback) AS feedbackCount " +
+                "FROM Evenement e LEFT JOIN FeedBack f ON e.idEvent = f.evenement.idEvent " +
+                "GROUP BY e.eventName";
+
+        Query query = entityManager.createQuery(sql);
+        return query.getResultList();
+    }
 
 
 

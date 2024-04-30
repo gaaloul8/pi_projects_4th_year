@@ -1,3 +1,4 @@
+
 package com.esprit.pi_project.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -15,6 +16,10 @@ public class Activity implements Serializable {
     private Integer idActivity;
     private String title;
     private String content;
+    private String name;
+
+    private String imageUrl;
+    private String imageId;
     private String type;
     @JsonIgnore
     @ManyToOne

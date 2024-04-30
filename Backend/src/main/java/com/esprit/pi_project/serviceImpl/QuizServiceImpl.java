@@ -1,3 +1,4 @@
+
 package com.esprit.pi_project.serviceImpl;
 
 import com.esprit.pi_project.dao.QuizDao;
@@ -17,6 +18,11 @@ public class QuizServiceImpl implements QuizService {
     @Override
     public List<Quiz> getAll() {
         return quizDao.findAll();
+    }
+
+    @Override
+    public List<Quiz> getAllAllowedToPublish() {
+        return quizDao.getAllByPublication(true);
     }
 
     @Override
@@ -60,5 +66,44 @@ public class QuizServiceImpl implements QuizService {
             }
         }
         return  null;
+    }
+
+    @Override
+    public Quiz publishQuiz(Quiz quiz) {
+
+        Optional<Quiz> existingQuizOptional = quizDao.findById(quiz.getIdQuiz());
+        if (existingQuizOptional.isPresent()) {
+            Quiz existingQuiz = existingQuizOptional.get();
+
+            existingQuiz.setDescription(quiz.getDescription());
+            existingQuiz.setTitle(quiz.getTitle());
+            existingQuiz.setType(quiz.getType());
+            existingQuiz.setPublication(true);
+
+            return quizDao.saveAndFlush(existingQuiz);
+        } else {
+
+            System.out.println("Le quiz avec l'ID " + quiz.getIdQuiz() + " n'existe pas.");
+            return null;
+        }
+    }
+
+    @Override
+    public Quiz unpublishQuiz(Quiz quiz) {
+        Optional<Quiz> existingQuizOptional = quizDao.findById(quiz.getIdQuiz());
+        if (existingQuizOptional.isPresent()) {
+            Quiz existingQuiz = existingQuizOptional.get();
+
+            existingQuiz.setDescription(quiz.getDescription());
+            existingQuiz.setTitle(quiz.getTitle());
+            existingQuiz.setType(quiz.getType());
+            existingQuiz.setPublication(false);
+
+            return quizDao.saveAndFlush(existingQuiz);
+        } else {
+
+            System.out.println("Le quiz avec l'ID " + quiz.getIdQuiz() + " n'existe pas.");
+            return null;
+        }
     }
 }

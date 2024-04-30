@@ -1,3 +1,4 @@
+
 package com.esprit.pi_project.serviceImpl;
 
 import com.esprit.pi_project.authentification.AuthResponse;
@@ -5,11 +6,13 @@ import com.esprit.pi_project.authentification.SignInRequest;
 import com.esprit.pi_project.authentification.SignupRequest;
 import com.esprit.pi_project.dao.TokenDao;
 import com.esprit.pi_project.dao.UserDao;
+import com.esprit.pi_project.entities.Role;
 import com.esprit.pi_project.entities.Token;
 import com.esprit.pi_project.entities.TokenT;
 import com.esprit.pi_project.entities.User;
 import com.esprit.pi_project.services.AuthService;
 import com.esprit.pi_project.services.EmailSender;
+import com.esprit.pi_project.services.TesseractOCRService;
 import com.esprit.pi_project.services.jwtService;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -17,15 +20,19 @@ import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
+import java.security.SecureRandom;
 import java.util.Base64;
 import java.util.Optional;
 import java.util.UUID;
@@ -38,7 +45,11 @@ public class AuthServiceImpl implements AuthService {
     private final TokenDao tokenDao;
     private final PasswordEncoder passwordEncoder;
     private final EmailSender emailSender;
+    private static final String CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 
+
+    @Autowired
+    private TesseractOCRService tesseractOCRService;
 
 
     private  final AuthenticationManager authenticationManager;
@@ -65,12 +76,17 @@ public class AuthServiceImpl implements AuthService {
               .password(passwordEncoder.encode(newuser.getPassword()))
               .registrationDate(newuser.setRegistration())
               .lastLogin(newuser.setLastLogin())
-              .role(newuser.getRole())
+              .role(Role.User)
+                .FirstLogin(true)
+                .Identifiant(newuser.getIdentifiant())
               .build();
+
 
         System.out.println("Before printing firstName");
         System.out.println(newuser.getEmail());
         System.out.println(newuser.getLastName());
+        System.out.println(newuser.getPassword());
+
 
         System.out.println("After printing firstName");
     var currUser=  userDao.save(user);
@@ -85,6 +101,7 @@ public class AuthServiceImpl implements AuthService {
         return AuthResponse.builder()
         .jwtaccestoken(jwtToken)
                 .jwtRefreshtoken(refreshToken)
+
         .build();
     }
 
@@ -99,10 +116,11 @@ public class AuthServiceImpl implements AuthService {
 
         var user=userDao.findByEmail(user1.getEmail())
                 .orElseThrow();
-        System.out.print(user);
-        System.out.println(user.getEmail());
+      //  System.out.print(user);
+        //System.out.println(user.getEmail());
         var jwtToken= jwtService.issueToken(user);
         var refreshToken = jwtService.issueRefreshToken(user);
+        var FirstLogin= user.isFirstLogin();
 
         RevokeTokens(user);
         saveUserToken(user, jwtToken);
@@ -112,9 +130,55 @@ public class AuthServiceImpl implements AuthService {
         return AuthResponse.builder()
                 .jwtaccestoken(jwtToken)
                 .jwtRefreshtoken(refreshToken)
+                .FirstLogin(FirstLogin)
                 .build();
     }
 
+    @Override
+    public AuthResponse register( MultipartFile file) throws IOException {
+        String extractedText = tesseractOCRService.recognizeText(file.getInputStream());
+        TesseractOCRService.ExtractedData extractedData = tesseractOCRService.extractData(extractedText);
+        User newUser = new User();
+        newUser.setLastName(extractedData.getNom());
+        newUser.setFirstName(extractedData.getPrenom());
+        newUser.setRole(Role.User);
+        String email = extractedData.getNom().toLowerCase() + "." + extractedData.getPrenom().toLowerCase() + "@esprit.tn";
+        newUser.setEmail(email);
+        String password = generateRandomPassword();
+        String recipientEmail = email;
+        String subject = "Claim password";
+        String content = "Your password is :\n" + password;
+        try {
+            emailSender.sendEmail(recipientEmail, subject, content);
+            System.out.println("Email sent successfully.");
+        } catch (MessagingException | UnsupportedEncodingException e) {
+            System.out.println("Failed to send email. Error: " + e.getMessage());
+        }
+        newUser.setPassword(passwordEncoder.encode(password));
+        var currUser=  userDao.save(newUser);
+        var jwtToken= jwtService.issueToken(currUser);
+        var refreshToken = jwtService.issueRefreshToken(newUser);
+        RevokeTokens(newUser);
+        saveUserToken(newUser, jwtToken);
+
+
+
+
+        return AuthResponse.builder()
+                .jwtaccestoken(jwtToken)
+                .jwtRefreshtoken(refreshToken)
+
+                .build();
+    }
+    public static String generateRandomPassword() {
+        SecureRandom random = new SecureRandom();
+        StringBuilder password = new StringBuilder(8);
+        for (int i = 0; i < 8; i++) {
+            int randomIndex = random.nextInt(CHARACTERS.length());
+            password.append(CHARACTERS.charAt(randomIndex));
+        }
+        return password.toString();
+    }
     @Override
     public void refreshToken(HttpServletRequest request, HttpServletResponse response) throws IOException {
         final String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
@@ -154,7 +218,7 @@ public class AuthServiceImpl implements AuthService {
             System.out.println(resetToken);
             user.setResetToken(resetToken);
             userDao.save(user);
-            String resetUrl = "http://localhost:8081/auth/reset-password/" + resetToken;
+            String resetUrl = "http://localhost:4200/auth/reset-password/" + resetToken;
             String recipientEmail = user.getEmail();
             String subject = "Password Reset";
             String content = "Reset urlSent:\n" + resetUrl;
@@ -165,18 +229,26 @@ public class AuthServiceImpl implements AuthService {
                 System.out.println("Failed to send email. Error: " + e.getMessage());
             }
         } else {
-            System.out.println("dosnt exists");        }
+            throw new IllegalArgumentException(" dosn'texists.");
+
+
+
+        }
     }
 
     @Override
-    public void ResetPw(String newpassword, String resetToken) {
+    public void ResetPw(String password, String resetToken) {
+        System.out.println(resetToken +"ahwa");
 
         Optional<User> userOptional = userDao.findByResetToken(resetToken);
+       // System.out.println(userOptional);
         if (userOptional.isPresent()) {
             User user = userOptional.get();
-            user.setPassword(newpassword);
+            user.setPassword(passwordEncoder.encode(password));
+            userDao.save(user);
         } else {
-            System.out.println(" Url invalid");
+            System.out.println("user not found");
+
         }
     }
 

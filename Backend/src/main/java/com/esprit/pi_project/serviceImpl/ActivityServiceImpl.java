@@ -1,3 +1,4 @@
+
 package com.esprit.pi_project.serviceImpl;
 
 import com.esprit.pi_project.dao.ActivityDao;
@@ -69,5 +70,10 @@ public class ActivityServiceImpl implements ActivityService {
             }
         }
         return  null;
+    }
+
+    @Override
+    public List<Activity> getAllActivitiesByQuizId(Integer idQuiz) {
+        return activityDao.findByQuiz_IdQuiz(idQuiz);
     }
 }

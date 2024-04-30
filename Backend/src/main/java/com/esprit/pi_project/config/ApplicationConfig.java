@@ -1,3 +1,4 @@
+
 package com.esprit.pi_project.config;
 
 import com.esprit.pi_project.dao.UserDao;
@@ -37,4 +38,5 @@ public class ApplicationConfig {
     public PasswordEncoder passwordEncoder() {
         return  new BCryptPasswordEncoder();
     }
+
 }

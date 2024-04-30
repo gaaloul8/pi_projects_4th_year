@@ -1,3 +1,4 @@
+
 package com.esprit.pi_project.dao;
 
 import com.esprit.pi_project.entities.Question;
@@ -12,4 +13,8 @@ import java.util.List;
 public interface QuestionDao extends JpaRepository<Question,Integer> {
     @Query("SELECT q FROM Question q WHERE q.title LIKE %:keyword% OR q.content LIKE %:keyword%")
     List<Question> findByTitleContainingOrContentContaining(@Param("keyword") String keyword);
+    @Query("SELECT q FROM Question q WHERE q.forum.forumId = :forumId")
+    List<Question> findByForumId(@Param("forumId") Integer forumId);
+
 }
+    

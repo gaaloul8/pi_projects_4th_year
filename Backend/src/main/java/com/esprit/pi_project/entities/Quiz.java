@@ -1,3 +1,4 @@
+
 package com.esprit.pi_project.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -20,7 +21,9 @@ public class Quiz implements Serializable {
     private String type;
 
     private String description ;
+    private boolean publication;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "id_user")
     private User QuizOwner;
@@ -31,7 +34,7 @@ public class Quiz implements Serializable {
     @OneToMany(mappedBy = "quiz")
     private List<Activity> activities;
 
-    @OneToMany(mappedBy = "quiz")
+    @OneToMany(mappedBy = "quiz" , fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     private List<QuizQuestion> questions;
 
 

@@ -1,3 +1,4 @@
+
 package com.esprit.pi_project.entities;
 
 
@@ -18,6 +19,6 @@ public class QuizOption implements Serializable {
     private Boolean correct;
 
     @JsonIgnore
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     QuizQuestion question;
 }
