@@ -18,6 +18,7 @@
           <li><a href="#portfolio">Portfolio</a></li>
           <li><a href="#team">Team</a></li>
           <li><a routerLink="/forum">Forum</a></li>
+            <li><a routerLink="/quiz-frontend">Quiz</a></li>
           <li class="dropdown has-dropdown"><a href="#"><span>Dropdown</span> <i class="bi bi-chevron-down"></i></a>
             <ul class="dd-box-shadow">
               <li><a href="#">Dropdown 1</a></li>
@@ -50,10 +51,10 @@
           document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
               e.preventDefault();
-      
+
               const targetId = this.getAttribute('href').substring(1);
               const targetElement = document.getElementById(targetId);
-      
+
               if (targetElement) {
                 targetElement.scrollIntoView({
                   behavior: 'smooth'

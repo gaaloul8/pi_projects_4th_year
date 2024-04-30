@@ -1,6 +1,7 @@
 package com.esprit.pi_project.entities;
 import com.esprit.pi_project.serviceImpl.CustomAuthorityDeserializer;
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import jakarta.persistence.*;
@@ -58,7 +59,7 @@ public class User implements UserDetails, Serializable {
     @OneToMany(cascade = CascadeType.ALL,mappedBy = "User")
     //@JsonBackReference
     private List<Reward> rewardList;
-
+    @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL,mappedBy = "QuizOwner")
     private List<Quiz> quizList;
 

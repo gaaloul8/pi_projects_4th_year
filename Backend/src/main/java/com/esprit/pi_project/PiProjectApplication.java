@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Configuration;
 @SpringBootApplication
 @EnableAspectJAutoProxy
 @EnableScheduling
+@Configuration
 
 public class PiProjectApplication {
 

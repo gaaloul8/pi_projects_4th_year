@@ -19,7 +19,6 @@ import { LandingHomeComponent } from './components/landing-home/landing-home.com
 import {QuizComponent} from "./components/quiz/quiz.component";
 import {QuestionQuizComponent} from "./components/question-quiz/question-quiz.component";
 import {QuizFrontendComponent} from "./components/quiz-frontend/quiz-frontend.component";
-import {GooglemapComponent} from "./components/googlemap/googlemap.component";
 
 import { EventBackComponent } from './components/event-back/event-back.component';
 import { EventfrontComponent } from './components/eventfront/eventfront.component';
@@ -37,6 +36,8 @@ import {CompleteprofileComponent} from "./components/completeprofile/completepro
 import {TakeimageComponent} from "./components/takeimage/takeimage.component";
 import {RegisterWithCardComponent} from "./components/register-with-card/register-with-card.component";
 import {UserBackComponent} from "./components/user-back/user-back.component";
+import {ActivityFrontendComponent} from "./components/activity-frontend/activity-frontend.component";
+import {ScrapingDataComponent} from "./components/scraping-data/scraping-data.component";
 
 
 
@@ -58,6 +59,12 @@ import {UserBackComponent} from "./components/user-back/user-back.component";
                     {path:'club',component:ClubsComponent},
                     {path:'post',component:PostComponent},
                     {path:'users',component:UserBackComponent},
+                    { path: 'quiz-back', component: QuizComponent},
+                    { path: 'quiz-chart', component: QuizChartComponent},
+                    { path: 'activities-back', component: ActivitiesComponent},
+                    { path: 'question-quiz', component: QuestionQuizComponent},
+                    { path: 'question-quiz/:idQuiz', component: QuestionQuizComponent },
+                    { path: 'activities-back/:idQuiz', component: ActivitiesComponent },
 
 
                 ]
@@ -90,14 +97,12 @@ import {UserBackComponent} from "./components/user-back/user-back.component";
             { path: 'transactions', component: TransactionhistoryComponent },
             { path: 'rewardusers', component: RewardusersComponent },
 
-            { path: 'quiz', component: QuizComponent},
-            { path: 'quiz-chart', component: QuizChartComponent},
-            { path: 'activities-back', component: ActivitiesComponent},
-            { path: 'question-quiz', component: QuestionQuizComponent},
+
             { path: 'quiz-frontend', component: QuizFrontendComponent},
-            { path: 'googlemap', component: GooglemapComponent},
-            { path: 'question-quiz/:idQuiz', component: QuestionQuizComponent },
-            { path: 'activities-back/:idQuiz', component: ActivitiesComponent },
+            { path: 'docteur-frontend', component: ScrapingDataComponent},
+
+            { path: 'activity-frontend/:idQuiz', component: ActivityFrontendComponent },
+
 
             { path: 'discounts', component: DiscountsComponent },
             { path: 'transactions', component: TransactionhistoryComponent },
