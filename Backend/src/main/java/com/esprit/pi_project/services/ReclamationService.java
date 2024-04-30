@@ -29,12 +29,18 @@ import java.util.stream.Collectors;
 public class ReclamationService implements IReclamationService{
     private ReclamationRepository reclamationRepository;
     private UserRepository userRepository;
+    @Autowired
+    private MailSendService mailSendService;
+    private static List<String> badWords = Arrays.asList("hell", "shit", "bhim");
 
+    @Autowired
+    private TwilioService twilioService ;
 
     @Override
     public Reclamation createReclamation(Reclamation reclamation, MultipartFile imageFile) throws IOException {
         User user = userRepository.findById(reclamation.getCreatedBy().getId())
                 .orElseThrow(() -> new RuntimeException("User not found"));
+        int occ =0 ;
 
         // Set the club name from the user's associated club
         if (user.getClub() != null) {
@@ -45,10 +51,22 @@ public class ReclamationService implements IReclamationService{
         reclamation.setCreatedBy(user);
         reclamation.setArchived(false);
         reclamation.setCreatedAt(new Date(System.currentTimeMillis()));
-
+        reclamation.setDescription(filterBadWords(reclamation.getDescription()));
         if (imageFile != null && !imageFile.isEmpty()) {
             Map uploadResult = cloudinary.uploader().upload(imageFile.getBytes(), ObjectUtils.emptyMap());
             reclamation.setImageUrl((String) uploadResult.get("url"));
+        }
+
+        if (reclamation.getDescription().contains("******")){
+            List<Reclamation> listrecUser = reclamationRepository.findByCreatedBy(user);
+            for (Reclamation r : listrecUser){
+                if (r.getDescription().contains("******")){
+                    occ++;
+                }
+            }
+            if (occ >=2){
+                mailSendService.sendEmail(user.getEmail(),"you can't ....","Bad words");
+            }
         }
 
         return reclamationRepository.save(reclamation);
@@ -62,7 +80,7 @@ public class ReclamationService implements IReclamationService{
             return null;
         }else {
             reclamation.setTitle(reclamationDetails.getTitle());
-            reclamation.setDescription(reclamationDetails.getDescription());
+            reclamation.setDescription(filterBadWords(reclamationDetails.getDescription()));
             reclamation.setStatus(reclamationDetails.getStatus());
         }
 
@@ -89,7 +107,7 @@ public class ReclamationService implements IReclamationService{
     public Reclamation updateReclamationStatus(int id, ReclamationStatus newStatus) {
         Reclamation reclamation = reclamationRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Reclamation not found with id " + id));
-
+        twilioService.sendSMS("+21622800427", "your reclamtion status is upated check it\n");
         reclamation.setStatus(newStatus);
         return reclamationRepository.save(reclamation);
     }
@@ -241,7 +259,7 @@ public class ReclamationService implements IReclamationService{
 
     //@Scheduled(cron = "0 0 12 * * SUN") // Every Sunday at noon
     //repeat every 10 seconds
-   // @Scheduled(fixedRate = 10000)
+    @Scheduled(fixedRate = 30000)
     public void reportWeeklyReclamations() {
         LocalDate now = LocalDate.now();
         LocalDate startOfWeek = now.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
@@ -263,4 +281,17 @@ public class ReclamationService implements IReclamationService{
         return new ArrayList<>(upcomingEventMessages);
     }
 
+    public static String filterBadWords(String input) {
+        StringBuilder filteredText = new StringBuilder(input);
+
+        for (String badWord : badWords) {
+            // Crée une chaîne de caractères avec autant d'astérisques que la longueur du mot interdit
+            String replacement = "******";
+
+            // Remplace toutes les occurrences du mot interdit par la chaîne d'astérisques dans le texte
+            filteredText = new StringBuilder(filteredText.toString().replaceAll("(?i)" + badWord, replacement));
+        }
+
+        return filteredText.toString();
+    }
 }
