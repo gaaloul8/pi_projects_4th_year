@@ -67,7 +67,7 @@ bookEvent(eventId: number): void {
         console.log('Réservation ajoutée pour l\'événement avec l\'ID : ', eventId);
         this.messageService.add({severity:'success', summary:'Success', detail:'Réservation effectuée avec succès!'});
         // Rediriger l'utilisateur vers la liste des réservations
-       this.router.navigate(['/listreservationfront']);
+       this.router.navigate(['/main/listreservationfront']);
       },
       error => {
         // Gérer les erreurs

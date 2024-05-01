@@ -17,7 +17,7 @@
                         <img [src]="event.image ? 'data:image/png;base64,' + event.image : ''" alt="Event Image" width="150" class="mt-2">
                     </div>
                     <a>
-                        <div class="box-img--hover has-background-image" [routerLink]="['/event-details', event.idEvent]" [style.background-image]="'url(' + (event.image ? 'data:image/png;base64,' + event.image : 'https://via.placeholder.com/940x650') + ')'"></div>
+                        <div class="box-img--hover has-background-image" [routerLink]="['/main/event-details', event.idEvent]" [style.background-image]="'url(' + (event.image ? 'data:image/png;base64,' + event.image : 'https://via.placeholder.com/940x650') + ')'"></div>
                     </a>
                     
                     <div class="box-info">
@@ -29,7 +29,7 @@
 
                    <!-- <span class="box-category" style="text-transform: lowercase; font-family: Arial, sans-serif;">{{event.description}}</span>-->    
                      <span class="box-members">
-                        <button [disabled]="event.status == 'Finished'" pButton pRipple label="Book" (click)="bookEvent(event.idEvent)"></button>
+                        <button [disabled]="event.status == 'Finished'" pButton pRipple label="Book" (click)="bookEvent(event.idEvent)" [routerLink]="['/main/listreservationfront']"></button>
                      </span>
                     </div>
                 

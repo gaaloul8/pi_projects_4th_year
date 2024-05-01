@@ -53,15 +53,9 @@ public class FeedbackController {
 
     @DeleteMapping("/deleteFeedback/{idFeedback}")
     public ResponseEntity<String> deleteFeedbackById(@PathVariable Integer idFeedback) {
-        try {
             feedBackService.deleteFeedBackByidFeedback(idFeedback);
-            return ResponseEntity.ok().body("Feedback deleted successfully.");
-        } catch (IllegalStateException e) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.notFound().build();
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
-    }
 
 
     @GetMapping("/getAllFeedBack")

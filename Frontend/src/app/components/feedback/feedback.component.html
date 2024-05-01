@@ -1,3 +1,8 @@
+
+
+<br>
+<br>
+<br>
 <div class="container mt-4">
     <div class="row">
       <div class="col-12">
@@ -16,13 +21,11 @@
                 <div class="card-body">
                   <h5 class="card-title">Content</h5>
                   <p class="card-text">{{ feedback.content }}</p>
-                  <h5 class="card-title">Status</h5>
-                  <p class="card-text">{{ feedback.status }}</p>
                   <h5 class="card-title">Rating</h5>
                   <p-rating [ngModel]="feedback.rating" [readonly]="true" [cancel]="false"></p-rating>
                   <div class="flex">
-                    <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" (click)="editFeedBack(feedback, feedback.idFeedback)"></button>
-                    <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning" (click)="confirmDelete(feedback.idFeedback)"></button>
+                    <button pButton pRipple label="Edit" class="p-button-text p-button-rounded p-button-info mr-2" (click)="editFeedBack(feedback, feedback.idFeedback)"></button>
+                    <button pButton pRipple label="Delete" class="p-button-text p-button-rounded p-button-danger" (click)="confirmDelete(feedback.idFeedback)"></button>
                   </div>
                 </div>
               </div>
@@ -31,15 +34,20 @@
                   <form [formGroup]="feedbackForm">
                     <div class="field">
                       <label for="content">Content</label>
-                      <textarea id="content" pInputTextarea formControlName="content" required rows="3" cols="20"></textarea>
+                      <textarea id="content" pInputTextarea formControlName="content" required rows="3" cols="20">{{ feedback.content }}</textarea>
+                    </div>
+                    <div class="field">
+                      <label for="rating">Rating</label>
+                      <p-rating [ngModel]="feedback.rating" (ngModelChange)="feedback.rating = $event" [readonly]="false" [stars]="5" cancel="false"></p-rating>
                     </div>
                   </form>
                 </ng-template>
                 <ng-template pTemplate="footer">
                   <button pButton pRipple label="Cancel" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
-                  <button *ngIf="feedback.idFeedback" pButton pRipple label="Update" icon="pi pi-check" class="p-button-text" (click)="updateEvent(feedback.idFeedback)"></button>
+                  <button *ngIf="feedback.idFeedback" pButton pRipple label="Update" icon="pi pi-check" class="p-button-text" (click)="updateFeedback(feedback.idFeedback)"></button>
                 </ng-template>
               </p-dialog>
+              
               <p-dialog [(visible)]="deleteRDialog" header="Confirm" [modal]="true" [style]="{ width: '450px' }">
                 <div class="flex align-items-center justify-content-center">
                   <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
@@ -47,7 +55,7 @@
                 </div>
                 <ng-template pTemplate="footer">
                   <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No" (click)="deleteRDialog = false"></button>
-                  <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Yes" (click)="confirmDeleteFeedBack(selectedFeedbackId)"></button>
+                  <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Yes" (click)="confirmDeleteFeedback(selectedFeedbackId)"></button>
                 </ng-template>
               </p-dialog>
             </div>

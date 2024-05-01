@@ -80,5 +80,4 @@ public class DiscountController {
         this.discountService.calculcostafterdiscount(discount);
     }
 
-
 }

@@ -31,24 +31,36 @@ export class RewardComponent implements OnInit{
     rewardDialog: boolean = false;
     submitted: boolean = false;
     reward:Reward={};
-    messageService: MessageService
+   // messageService: MessageService
     deleteRewardDialog: boolean = false;
     selectedRewardId: number;
-
+    selectedImage:any;
+     name: string;
+     cost: number;
+     description: string;
+     nbDispo: number;
     constructor(
         private rewardService: RewardService,
         private formBuilder: FormBuilder,
+        private messageService: MessageService
     ) { }
 
     ngOnInit(): void {
         this.loadRewards();
+        this.rewardForm=this.formBuilder.group({
+            image:['', ],
+            name:['', ],
+            description:['', ],
+            cost:[''],
+            nbDispo:['']
+        });
     }
 
     loadRewards(): void {
         this.rewardService.getAllRewards().subscribe(
             (rewards:Reward[]) => {
                 this.rewards = rewards;
-                console.log('Events:', this.rewards);
+                console.log('Reward:', this.rewards);
             },
             error => {
                 console.log("error fetching rewards",error);
@@ -60,19 +72,18 @@ export class RewardComponent implements OnInit{
     addReward(): void {
         this.submitted = true;
         try {
-            this.reward.image = '/assets/reward3.jpg';
+            this.rewardService.addReward(this.rewardForm.value , this.selectedImage).toPromise();
 
-            this.rewardService.addReward(this.reward).toPromise().then(() => {
-                console.log("Reward created with static image path");
-                this.rewardDialog = false;
-                window.location.reload(); // Reloading the page might not be the best approach, consider alternatives
-            }).catch(error => {
-                console.error("Error creating reward with static image path:", error);
-            });
-        } catch (error) {
-            console.error(error);
+                    console.log("Reward created Successfully");
+                    this.rewardDialog = false;
+                    window.location.reload();
+        }catch (error){
+            console.error(error)
         }
-    }
+
+
+        }
+
 
     openNew() {
         this.reward = {};
@@ -112,22 +123,32 @@ export class RewardComponent implements OnInit{
     }
 
 
-    updateReward(reward1 : Reward) {
-        this.rewardService.updatereward(reward1).subscribe(
-            updatedReward => {
-                console.log('Event updated:', updatedReward);
-                window.location.reload();
-
-                // Réussite : Gérer la réponse mise à jour si nécessaire
-            },
-            error => {
-                console.error('Error updating event:', error);
-                // Erreur : Gérer les erreurs si nécessaire
-            }
-        );
+    updateReward(rewardId: number): void {
+        this.submitted = true;
+        try {
+            this.rewardService.updateReward(rewardId, this.rewardForm.value, this.selectedImage).toPromise();
+            console.log("Reward updated Successfully");
+            window.location.reload();
+            // Handle success, e.g., show a success message to the user
+        } catch (error) {
+            console.error(error);
+            // Handle error, e.g., show an error message to the user
+        }
     }
 
-    editReward(rewardEdit : Reward) {
+    editReward(rewardEdit: Reward) {
+        // Populate the form fields with existing reward information
+        this.rewardForm.patchValue({
+            // Assuming rewardEdit contains properties like name, description, etc.
+            name: rewardEdit.name,
+            description: rewardEdit.description,
+            cost: rewardEdit.cost,
+            nbDispo: rewardEdit.nbDispo,
+            image: rewardEdit.image,
+
+            // Add other fields as needed
+        });
+
         this.reward = { ...rewardEdit };
         this.rewardDialog = true;
     }
@@ -136,8 +157,9 @@ export class RewardComponent implements OnInit{
         this.rewardForm.reset();
         this.rewardDialog = true;
     }
-
-
+    onImageSelected(event: any) {
+        this.selectedImage=event.target.files[0];
+    }
 
 
 

@@ -9,7 +9,7 @@ import { Forum, Question } from './forum.service';
 })
 export class QuestionsService {
   private baseUrl = 'http://localhost:8081/questions';
-  private token = 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtZWQxQGVzcHJpdC50biIsImlhdCI6MTcxMzI5MzcwMywiZXhwIjoxNzEzMzgwMTAzfQ.Bp0NYDMZI4ZFFQFvjx1f2dhW7yhV1sozPYpN7-HEFIE';
+  private token = localStorage.getItem('jwtAccessToken');
 
 
   constructor(private http: HttpClient) { }
@@ -19,7 +19,13 @@ export class QuestionsService {
       'Authorization': 'Bearer ' + this.token,
       'Content-Type': 'application/json'
     });
-    return this.http.post<Forum>(`${this.baseUrl}/addQuestion`, question, { headers: headers });
+    return this.http.post<Question>(`${this.baseUrl}/addQuestion`, question, { headers: headers });
+  }
+  getAllQuestions(): Observable<Question[]> {
+    const headers = new HttpHeaders({
+      'Authorization': 'Bearer ' + this.token
+    });
+    return this.http.get<Question[]>(`${this.baseUrl}/getAllQuestions`, { headers: headers });
   }
   
   getAllQuestionsByForumId(forumId: number): Observable<Question[]> {
@@ -33,6 +39,18 @@ export class QuestionsService {
       'Authorization': 'Bearer ' + this.token
     });
     return this.http.get<Question>(`${this.baseUrl}/${questionId}`, { headers: headers });
+  }
+  getTags(questionContent: string): Observable<string[]> {
+    const headers = new HttpHeaders({
+      'Authorization': 'Bearer ' + this.token
+    });
+    return this.http.post<string[]>(`${this.baseUrl}/summarize`, questionContent, { headers: headers });
+  }
+  SentimentAnalyzer(questionContent: string): Observable<string> {
+    const headers = new HttpHeaders({
+      'Authorization': 'Bearer ' + this.token
+    });
+    return this.http.post<string>(`${this.baseUrl}/analyzeSentiment`, questionContent, { headers: headers  });
   }
 
   

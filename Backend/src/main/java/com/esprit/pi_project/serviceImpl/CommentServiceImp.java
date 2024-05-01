@@ -11,6 +11,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -25,7 +27,11 @@ public class CommentServiceImp implements CommentService {
     private PostService postService;
     @Override
 
-    public Comment addComment(Comment comment, Long idPost) {
+    public Comment addComment(Comment comment, Long idPost) throws ParseException {
+        Date currentDateTime = new Date();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+        String formattedDate = dateFormat.format(currentDateTime);
+        Date parsedDate = dateFormat.parse(formattedDate);
         Post post = postService.findPostById(idPost);
         comment.setPost(post);
         comment.setDate(new Date());

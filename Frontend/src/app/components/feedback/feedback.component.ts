@@ -45,35 +45,38 @@ export class FeedbackComponent implements OnInit {
         }
       );
   }
-
-
-  confirmDeleteFeedBack(idFeedback: number) {
+  confirmDeleteFeedback(idFeedback: number) {
     this.feedbackservice.deleteFeedBack(idFeedback)
       .subscribe(
         () => {
+          // La suppression de l'événement a réussi
+          console.log('Event deleted with ID:', idFeedback);
           this.getAllFeedBacksForCurrentUser(); // Mettez à jour les données si nécessaire
-          this.deleteRDialog = false; // Fermer la boîte de dialogue après la suppression
+          this.deleteRDialog = false// Fermer la boîte de dialogue après la suppression
         },
         error => {
-          console.error('Error deleting feedback:', error);
+          // Gestion des erreurs
+          console.error('Error deleting event:', error);
         }
       );
   }
   
+
   confirmDelete(idFeedback: number){
     this.selectedFeedbackId = idFeedback;
     this.deleteRDialog = true;
   }
-  updateEvent(idEvent : number): void {
+  
+  updateFeedback(idFeedback: number): void {
     this.submitted = true;
     try {
-        this.feedbackservice.updateFeedback(idEvent, this.feedbackForm.value).toPromise();
-        console.log("event updated Successfully");
-        window.location.reload();
+      this.feedbackservice.updateFeedback(idFeedback, this.feedbackForm.value).toPromise();
+      this.messageService.add({severity:'success', summary:'Success', detail:'Feedback updated successfully!'});
+      console.log("Feedback updated Successfully");
+      window.location.reload();
     } catch (error) {
-        console.error(error);
+      console.error(error);    
     }
-  
   }
   
   editFeedBack(feedbackEdit : Feedback) {

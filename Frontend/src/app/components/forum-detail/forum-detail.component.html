@@ -141,7 +141,7 @@
                                 <h3>Questions {{questions.length}}</h3>
                             </div>
 
-                            <div class="media is-comment" *ngFor="let question of questions">
+                            <div class="media is-comment" *ngFor="let question of questionsWithTags; let i = index">
                                 <div class="media-left">
                                     <div class="avatar-wrap is-smaller">
                                         <img src="https://via.placeholder.com/150x150" data-demo-src="assets/img/avatars/dan.jpg" data-user-popover="1" alt="" />
@@ -152,11 +152,13 @@
                                 </div>
                                 <div class="media-content">
                                     <div class="comment-meta">
-                                        <h4><a>{{question.author.firstName}} {{question.author.lastName}}</a> <small> {{question.createdAt || date()}} </small></h4>
-                                        <h4> <a [routerLink]="['/question', question.questionId]" class="question-title is-link">
-                                            {{question.title}}
+                                        <h4><a>{{question.question.author.firstName}} {{question.question.author.lastName}}</a> <small> {{question.question.createdAt || date()}} </small></h4>
+                                        <h4> <a [routerLink]="['/question', question.question.questionId]" class="question-title is-link">
+                                            {{question.question.title}}
                                         </a></h4>
+                                        
                                     </div>
+                                    
                                     <div class="comment-stats-wrap">
                                         <div class="comment-stats">
                                             <div class="stat is-likes">
@@ -180,7 +182,12 @@
                                             </a>
                                         </div>
                                     </div>
-                                    <div class="nested-replies">
+                                    <div class="post-tags">
+                                        <div class="tags">
+                                            <span *ngFor="let tag of questionsWithTags[i].tags" class="tag">#{{ tag }}</span>
+                                        </div>
+                                    </div>
+                                    <!-- <div class="nested-replies">
                                         <a class="header">
                                             <span>5 Replies</span>
                                             <i data-feather="chevron-down"></i>
@@ -188,7 +195,7 @@
                                         <div class="nested-comments">
                                          
                                         </div>
-                                    </div>
+                                    </div> -->
                                 </div>
                             </div>
 

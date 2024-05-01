@@ -21,6 +21,9 @@ public class Club implements Serializable {
     //private User manager;
     @Size(min = 1,max = 150)
     private String description;
+    @Lob
+    @Column(nullable = true, length = 10000000)
+    private String image;
    
     private Integer membershipCount;
     @Enumerated(EnumType.STRING)

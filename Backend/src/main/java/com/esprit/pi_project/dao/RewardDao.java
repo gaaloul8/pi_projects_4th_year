@@ -12,5 +12,7 @@ public interface RewardDao extends JpaRepository<Reward,Integer> {
 
     @Query("SELECT r FROM Reward r WHERE r.idReward NOT IN (SELECT d.reward.idReward FROM Discount d)")
     List<Reward> findRewardsWithNoDiscount();
+    Reward findRewardByName(String name);
+
 }
 

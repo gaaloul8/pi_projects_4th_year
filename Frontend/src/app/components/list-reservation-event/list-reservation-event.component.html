@@ -4,12 +4,12 @@
             <p-toolbar styleClass="mb-4">
                 <ng-template pTemplate="left">
                     <div class="flex mb-4">
-                        <input type="text" [(ngModel)]="userIdentifiant" placeholder="Search by User Identifiant" class="form-control" />
-                        <button class="btn btn-primary ml-2" (click)="searchByUserIdentifiant()">Search</button>
+                        <input type="text" [(ngModel)]="filterText" placeholder="Search by User Identifiant" class="form-control" />
+                        <button class="btn btn-primary ml-2" >Search</button>
                     </div>
                 </ng-template>
             </p-toolbar>
-            <p-table [value]="reservations">
+            <p-table [value]="reservations | filter: filterText">
                 <ng-template pTemplate="caption">
                     <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
                         <h5 class="m-0">Manage Reservation</h5>
@@ -32,7 +32,7 @@
                 <ng-template pTemplate="body" let-reservation>
                     <tr>
                         <td>
-                            <p-tableCheckbox [value]="filteredReservations"></p-tableCheckbox>
+                            <p-tableCheckbox [value]="reservation"></p-tableCheckbox>
                         </td>
                         <td>{{ reservation.evenementR.eventName }}</td>
                         <td>{{ reservation.evenementR.datetime | date: 'yyyy-MM-dd HH:mm:ss' }}</td>

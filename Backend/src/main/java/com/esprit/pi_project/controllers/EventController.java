@@ -173,7 +173,7 @@ public class EventController {
             User user = reservation.getUser();
             System.out.println("uuu"+user);
             // Affecter les jetons à l'utilisateur
-            eventService.assignTokenToUser(eventId, userId);
+            eventService.assignTokenToUser(eventId,userId);
 
             return ResponseEntity.ok("Tokens assigned successfully.");
         } catch (Exception e) {

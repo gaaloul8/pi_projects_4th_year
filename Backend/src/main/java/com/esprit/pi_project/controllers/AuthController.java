@@ -32,7 +32,6 @@ import org.springframework.web.multipart.MultipartFile;
 @CrossOrigin("*")
 public class AuthController {
     @Autowired
-
     private final  AuthService Service;
 
 

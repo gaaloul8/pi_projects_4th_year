@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -20,6 +21,7 @@ import static com.esprit.pi_project.entities.Role.User;
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig {
     private final JwtAuthentifcationFilter jwtFilter;
     private final AuthenticationProvider authenticationProvider;
@@ -30,16 +32,24 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .authorizeRequests(authorizeRequests ->
                         authorizeRequests
-                                .requestMatchers("/auth/**","/profile/","/auth/reset-password/").permitAll()
-                                .requestMatchers("/reward/**","/discount/**").permitAll()
-                          // .requestMatchers("/event/**","/reservation/**","/feedback/**").permitAll()
 
+
+                                .requestMatchers("/reward/**","/discount/**").permitAll()
+                   .requestMatchers("/auth/**","/profile/**","/auth/reset-password/").permitAll()
                                 .requestMatchers("/clubs/**","/comments/**","/posts/**").permitAll()
 
 
-                                .requestMatchers("/quiz/**","/passerQuiz/**","/questionq/**","/activity/**").permitAll()
+                                //.requestMatchers("/getUsers").hasRole("Admin")
+                                .requestMatchers("/getUsers").hasAuthority(Admin.name())
+                                // .requestMatchers(HttpMethod.GET,"/auth/admin").hasAnyAuthority(ADMIN_READ.name())
+                                .requestMatchers("/reward/**","/discount/**","/sendSMS").permitAll()
+                                .requestMatchers("/event/**","/reservation/**","/feedback/**").permitAll()
 
-                                .requestMatchers("/reward/**","/discount/**","/forums/**").permitAll()
+
+
+
+                          //      .requestMatchers("/quiz/**","/passerQuiz/**","/questionq/**","/activity/**","/option/**").permitAll()
+
 
 
                              //   .requestMatchers("/feedback/**").hasAnyRole(User.name())
@@ -59,4 +69,5 @@ public class SecurityConfig {
 
         return http.build();
     }
+
 }

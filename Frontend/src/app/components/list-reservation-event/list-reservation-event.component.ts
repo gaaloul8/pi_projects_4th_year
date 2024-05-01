@@ -16,16 +16,33 @@ import { HttpErrorResponse } from '@angular/common/http';
 })
 export class ListReservationEventComponent  implements OnInit {
   events: Event[] = [];
-  reservations: Reservation[] = [];
+ // reservations: Reservation[] = [];
   reservation: Reservation;
-  deleteRDialog: boolean = false;
-  selectedRId: number;
+ // deleteRDialog: boolean = false;
+  //selectedRId: number;
   displayDialog: boolean = false;
   feedbackContent: string = '';
   selectedEventId: number;
   rating: number = 0;
-  userIdentifiant: string;
+  //userIdentifiant: string;
+  searchIdentifiant: string = ''; // Propriété pour stocker la valeur de recherche
+  //filteredReservations: any[] = [];
 
+  reservations: Reservation[] = [];
+  deleteRDialog: boolean = false;
+  selectedRId: number;
+  userIdentifiant: string;
+  filteredReservations: Reservation[] = [];
+  _filterText: string = '';
+
+  get filterText(){
+    return this._filterText;
+  }
+
+  set filterText(value: string){
+      this._filterText=value;
+      this.filteredReservations = this.filterByIdentifiant(value);
+  }
 
   constructor(private reservationService: ReservationService,
     private messageService: MessageService,
@@ -35,6 +52,7 @@ export class ListReservationEventComponent  implements OnInit {
 
   ngOnInit(): void {
     this.getReservationsForCurrentUser();
+    this.filteredReservations = this.reservations;
   }
   getReservationsForCurrentUser() {
    // const userId = 1; // Remplacez ceci par l'ID de l'utilisateur connecté
@@ -49,18 +67,18 @@ export class ListReservationEventComponent  implements OnInit {
         }
       );
   }
-  searchByUserIdentifiant(): void {
-    if (this.userIdentifiant.trim() === '') {
-        // Si le champ de recherche est vide, affichez toutes les réservations
-        this.getReservationsForCurrentUser();
+
+  filterReservations(): void {
+    // Filtrer uniquement si la barre de recherche n'est pas vide
+    if (this.searchIdentifiant.trim() !== '') {
+      this.filteredReservations = this.reservations.filter((reservation) =>
+        reservation.user.identifiant.toLowerCase().includes(this.searchIdentifiant.toLowerCase())
+      );
     } else {
-        // Filtrer les réservations en fonction de l'identifiant de l'utilisateur
-        this.reservations = this.reservations.filter(reservation => reservation.user.identifiant.includes(this.userIdentifiant.trim()));
+      // Si la barre de recherche est vide, afficher la liste complète
+      this.filteredReservations = this.reservations;
     }
 }
-
-
-
   
   confirmDeleteReservation(idR: number) {
     this.reservationService.deleteReservation(idR)
@@ -101,14 +119,27 @@ assignTokens(eventId: number, userId: number) {
   this.eventService.assignTokens(eventId, userId).subscribe(
     (response) => {
       console.log('Tokens assigned successfully:', response);
-      // Ajoutez ici toute logique supplémentaire après l'affectation des jetons
+      this.messageService.add({severity:'success', summary:'Success', detail:'Token added successfully!'});
+     
     },
     (error) => {
       console.error('Failed to assign tokens:', error);
-      // Gérez ici les erreurs d'affectation des jetons
+      this.messageService.add({severity:'success', summary:'Success', detail:'Token added successfully!'});
+      
     }
   );
 }
 
+filterByIdentifiant(filterterme: string){
+  if(this.reservations.length === 0 || this.filterText === ''){
+    return this.reservations;
+} else {
+    return this.reservations.filter((reservation) => 
+    { 
+        return reservation.user.identifiant.toLowerCase() === filterterme.toLowerCase()
+    })
+}
+
+}
 
 }

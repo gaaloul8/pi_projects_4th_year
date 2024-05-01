@@ -139,7 +139,7 @@ assignTokens(eventId: number, userId: number) {
   const headers = new HttpHeaders({
     'Authorization': 'Bearer ' + this.token
   });
-  return this.http.post(`${this.baseUrl}/event/${eventId}/assign-token/${userId}`,  {headers: headers });
+  return this.http.post<String>(`${this.baseUrl}/event/${eventId}/assign-token/${userId}`,  {headers: headers });
 }
 
 getFeedbackByIdEvent(id: number): Observable<Feedback[]> {

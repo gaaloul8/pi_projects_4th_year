@@ -49,19 +49,39 @@ export class ListReservationFrontComponent {
       );
   }
 
-
+/*
 
   showDialog(reservation: Reservation) {
     this.reservation = reservation; // Stocker la réservation sélectionnée
     const eventDate = new Date(reservation.evenementR.datetime);
     const currentDate = new Date();
-    if (eventDate < currentDate) {
+    if (eventDate < currentDate ) {
       // Si la date de l'événement est passée, ne pas afficher le dialogue
       this.messageService.add({severity:'error', summary:'Erreur', detail:'La date de l\'événement est passée. Vous ne pouvez pas ajouter de feedback.'});
-    }else {
+    }
+    
+    else {
       this.displayDialog = true; // Afficher le dialogue
     }
   }
+  */
+
+  showDialog(reservation: Reservation) {
+    this.reservation = reservation; // Stocker la réservation sélectionnée
+    const eventDate = new Date(reservation.evenementR.datetime);
+    const currentDate = new Date();
+    const isSameDate = eventDate.toDateString() === currentDate.toDateString();
+  
+    if (isSameDate) {
+      // Si la date de l'événement est égale à la date actuelle, afficher le dialogue
+      this.displayDialog = true;
+    } else {
+      // Si la date de l'événement est différente de la date actuelle, afficher un message d'erreur
+      this.messageService.add({severity:'error', summary:'Erreur', detail:'Vous ne pouvez ajouter de feedback que pour un événement qui se déroule aujourd\'hui.'});
+    }
+  }
+  
+  
 
   
 
@@ -79,7 +99,7 @@ addFeedback(eventId: number) {
         this.feedbackContent = '';
         this.displayDialog = false;
         // Rediriger l'utilisateur vers la liste des feedbacks
-        this.router.navigate(['/listFeedBack']);
+        this.router.navigate(['/main/listFeedBack']);
       },
       (error) => {
         console.error('Erreur lors de l\'ajout du feedback :', error);

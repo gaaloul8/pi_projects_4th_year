@@ -199,7 +199,7 @@ public class EventServiceImp implements EventService {
 
         // Affecter les tokens de l'événement à l'utilisateur
         int tokensToAdd = event.getTokenvalue();
-        user.setTokenA(user.getTokenA() + tokensToAdd);
+        user.setTokenSolde(user.getTokenSolde() + tokensToAdd);
 
         System.out.println(userId);
         userDao.save(user);

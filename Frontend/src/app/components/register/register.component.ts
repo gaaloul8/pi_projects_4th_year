@@ -50,7 +50,8 @@ export class RegisterComponent {
             .subscribe({
                 next: (response) => {
                     this.authResponse = response;
-                    this.router.navigate(['/login']); // Navigate to the login component after successful registration
+                    localStorage.setItem('jwtAccessToken', this.authResponse.jwtaccestoken);
+                    this.router.navigate(['/complete']); // Navigate to the login component after successful registration
                 },
                 error: (error) => {
                     if (error.status === 403) {

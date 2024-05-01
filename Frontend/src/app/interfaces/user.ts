@@ -1,5 +1,5 @@
 export interface User {
-     
+
         id_user?: number;
         firstName?: string;
         lastName?: string;
@@ -8,7 +8,8 @@ export interface User {
         email?: string;
         role?: string;
         identifiant?: string;
-        tokenA?:number;
-     
+        tokenSolde?: number;
+
+
 
 }

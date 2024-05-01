@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ClubService,Club } from 'src/app/services/club.service';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { Tag } from '../../interfaces/tag';
 
@@ -21,12 +21,24 @@ export class ClubsComponent implements OnInit {
   messageService: MessageService;
   showConfirmation:boolean = false;
   tagValues = Object.values(Tag);
+  selectedImage: any;
+  selectedClub: Club;
+  selectedFile: File;
   
   
 
-  constructor(private clubService: ClubService,private formbuilder:FormBuilder) {}
+  constructor(private clubService: ClubService,private formbuilder:FormBuilder) {
+    
+  }
   ngOnInit(): void {
     this.onGetAllClubs();
+    this.clubForm = this.formbuilder.group({
+      image: [''], // Initialize clubForm with form controls
+      clubName: ['' ],
+      description: ['' ],
+      membershipCount: [''],
+      tag: ['']
+    });
     
     
     
@@ -42,7 +54,7 @@ export class ClubsComponent implements OnInit {
         console.error('Error fetching clubs:', error);
       });
   }
-  addClub(): void {
+  /*addClub(): void {
     this.submitted = true;
     try {
         this.clubService.addClub(this.club).toPromise();
@@ -53,7 +65,22 @@ export class ClubsComponent implements OnInit {
         console.error(error);
 
     }
+}*/
+addClub(): void {
+  this.submitted = true;
+  try {
+    // Pass the selected file to the addClub method
+    this.clubService.addClub(this.clubForm.value, this.selectedImage).toPromise();
+    console.log("Club created Successfully");
+    this.clubDialog = false;
+    window.location.reload();
+  } catch (error) {
+    console.error(error);
+  }
 }
+ onImageSelected(event: any) {
+   this.selectedImage=event.target.files[0];
+ }
 
 
 openNew() {
@@ -125,10 +152,41 @@ updateClub(club : Club) {
       }
   );
 }
-editClub(clubEdit : Club) {
-  this.club = { ...clubEdit };
-  this.clubDialog = true;
+//  editClub(clubEdit : Club) {
+//    this.club = { ...clubEdit };
+//    this.clubDialog = true;
+//  }
+
+editClub(club: Club) {
+  this.selectedClub = club; // Set the selected club
+
+  // Set the form values to the selected club's values
+  this.clubForm.patchValue({
+    clubName: club.clubName,
+    description: club.description,
+    membershipCount: club.membershipCount,
+    tag: club.tag
+    // Exclude 'image' control from being set
+  });
+
+  // Set the selected image
+  this.selectedImage = club.image ? 'data:image/png;base64,' + club.image : '';
+
+  this.clubDialog = true; // Open the dialog
 }
+
+/*onImageSelected(event: any) {
+  console.log("Image selected:", event.target.files[0]);
+  const file: File = event.target.files[0];
+  if (file) {
+    const reader = new FileReader();
+    reader.onload = () => {
+      this.selectedImage = reader.result as string;
+    };
+    reader.readAsDataURL(file);
+    this.selectedFile = file; // Store the selected file for uploading
+  }
+}*/
 
 
 showDialogToAdd(): void {
