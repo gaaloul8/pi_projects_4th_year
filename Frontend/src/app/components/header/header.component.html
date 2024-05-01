@@ -18,7 +18,9 @@
           <li><a href="/main/home#portfolio">Portfolio</a></li>
           <li><a href="/main/home#team">Team</a></li>
           <li><a routerLink="/main/forum">Forum</a></li>
-          <li class="dropdown has-dropdown"><a href="#"><span>Dropdown</span> <i class="bi bi-chevron-down"></i></a>
+            <li><a routerLink="/main/rewardusers">Rewards</a></li>
+
+            <li class="dropdown has-dropdown"><a href="#"><span>Dropdown</span> <i class="bi bi-chevron-down"></i></a>
             <ul class="dd-box-shadow">
               <li><a href="#">Dropdown 1</a></li>
               <li class="dropdown has-dropdown"><a href="#"><span>Deep Dropdown</span> <i class="bi bi-chevron-down"></i></a>
@@ -44,7 +46,7 @@
       <a class="btn-getstarted" href="index.html#about">Get Started</a>
 
     </div>
-    
+
   </header><!-- End Header -->
   <script>
     // Smooth scroll behavior for anchor links in the header
@@ -52,10 +54,10 @@
       document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function (e) {
           e.preventDefault();
-  
+
           const targetId = this.getAttribute('href').substring(1);
           const targetElement = document.getElementById(targetId);
-  
+
           if (targetElement) {
             targetElement.scrollIntoView({
               behavior: 'smooth'

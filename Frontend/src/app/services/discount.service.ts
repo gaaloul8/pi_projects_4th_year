@@ -8,6 +8,7 @@ import {Discount} from "../interfaces/discount";
 })
 export class DiscountService {
     private apiUrl = 'http://localhost:8081/discount';
+    private token =  localStorage.getItem('jwtAccessToken');
 
     constructor(private http: HttpClient) { }
 

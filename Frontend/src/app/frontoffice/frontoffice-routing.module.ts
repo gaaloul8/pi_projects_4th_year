@@ -38,6 +38,7 @@ const routes: Routes = [
 { path: 'eventFront', component : EventfrontComponent},
 { path: 'front-club', component: FrontClubComponent },
 
+
 ];
 
 @NgModule({

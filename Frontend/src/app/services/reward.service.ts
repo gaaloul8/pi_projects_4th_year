@@ -9,7 +9,7 @@ import {Transaction_history} from "../interfaces/Transaction_history";
 })
 export class RewardService {
     private baseUrl = 'http://localhost:8081/reward'; // Base URL of your Spring backend
-    private token = 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzYWRvay5zYXNzaUBlc3ByaXQudG4iLCJpYXQiOjE3MTQzOTA0MTksImV4cCI6MTcxNDQ3NjgxOX0.POloBnqze7G3YMS2ddkYw9qKZCI5kVVVLa5krlHhB5I'
+    private token =  localStorage.getItem('jwtAccessToken');
     constructor(private http: HttpClient) { }
 
     getAllRewards(): Observable<Reward[]> {

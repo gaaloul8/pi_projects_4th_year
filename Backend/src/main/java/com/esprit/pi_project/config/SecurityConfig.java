@@ -30,7 +30,6 @@ public class SecurityConfig {
                 .authorizeRequests(authorizeRequests ->
                         authorizeRequests
                                 .requestMatchers("/auth/**","/profile/","/auth/reset-password/").permitAll()
-                                .requestMatchers("/reward/**","/discount/**","/sendSMS").permitAll()
                                 .requestMatchers("/event/**","/reservation/**","/feedback/**").permitAll()
 
                                 .requestMatchers("/clubs/**","/comments/**","/posts/**").permitAll()
