@@ -32,17 +32,8 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .authorizeRequests(authorizeRequests ->
                         authorizeRequests
+                                .requestMatchers("/auth/**","/profile/","/auth/reset-password/").permitAll()
 
-
-                                .requestMatchers("/reward/**","/discount/**").permitAll()
-                   .requestMatchers("/auth/**","/profile/**","/auth/reset-password/").permitAll()
-                                .requestMatchers("/clubs/**","/comments/**","/posts/**").permitAll()
-
-
-                                //.requestMatchers("/getUsers").hasRole("Admin")
-                                .requestMatchers("/getUsers").hasAuthority(Admin.name())
-                                // .requestMatchers(HttpMethod.GET,"/auth/admin").hasAnyAuthority(ADMIN_READ.name())
-                                .requestMatchers("/reward/**","/discount/**","/sendSMS").permitAll()
                                 .requestMatchers("/event/**","/reservation/**","/feedback/**").permitAll()
 
 

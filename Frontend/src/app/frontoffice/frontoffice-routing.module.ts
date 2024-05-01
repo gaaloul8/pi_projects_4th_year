@@ -48,6 +48,7 @@ const routes: Routes = [
     { path: 'activity-frontend/:idQuiz', component: ActivityFrontendComponent },
 
 
+
 ];
 
 @NgModule({
