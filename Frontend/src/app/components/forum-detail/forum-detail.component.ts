@@ -1,12 +1,12 @@
 import { Component, OnInit , AfterViewInit, Renderer2 } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { ForumService, Forum, Question } from '../../services/forum.service';
+import { ForumService, Forum, Question, QuestionWithTags } from '../../services/forum.service';
 import { QuestionsService } from 'src/app/services/questions.service';
 
 @Component({
   selector: 'app-forum-detail',
   templateUrl: './forum-detail.component.html',
-  styleUrls: ['../../../assets/scss/core.scss'
+  styleUrls: ['./forum-detail.component.scss','../../../assets/scss/core.scss'
 ]})
 export class ForumDetailComponent implements AfterViewInit , OnInit {
   forum: Forum;
@@ -17,6 +17,9 @@ export class ForumDetailComponent implements AfterViewInit , OnInit {
   questions: Question[] = [];
   title: string;
   content: string;
+  tagsList: string[][] = []; // Array to store tags for each question
+  questionsWithTags: { question: Question, tags: string[] }[] = [];
+
   constructor(private renderer: Renderer2,
     private forumService: ForumService,
     private questionsService: QuestionsService,
@@ -56,13 +59,26 @@ export class ForumDetailComponent implements AfterViewInit , OnInit {
     }; 
     this.renderer.appendChild(document.body, script);
   }
+  
   fetchQuestions(): void {
     const forumId = +this.route.snapshot.paramMap.get('id');
-    // Fetch questions for the current forum ID
     this.questionsService.getAllQuestionsByForumId(forumId).subscribe(
       (questions: Question[]) => {
         this.questions = questions;
-        console.log('Questions:', this.questions);
+        // console.log('Questions:', this.questions);
+        questions.forEach((question) => {
+          this.questionsService.getTags(question.content).subscribe(
+            (tags: string[]) => {
+              // console.log(tags);
+             // this.tagsList.push(tags);
+              this.questionsWithTags.push({ question, tags });
+
+            },
+            (error) => {
+              console.error('Error fetching tags:', error);
+            }
+          );
+        });
       },
       (error) => {
         console.error('Error fetching questions:', error);
@@ -71,7 +87,6 @@ export class ForumDetailComponent implements AfterViewInit , OnInit {
   }
   async saveQuestion() {
 
-    console.log("question title : " + this.title + " content : " + this.content);
     
     this.questionn.title = this.title;
     this.questionn.content = this.content;
@@ -82,7 +97,7 @@ export class ForumDetailComponent implements AfterViewInit , OnInit {
     this.questionn.upvotes=0;
     try {
       const newQuestion = await this.questionsService.createQuestion(this.questionn).toPromise();
-      console.log('New Question created:', newQuestion);
+      // console.log('New Question created:', newQuestion);
   
       // // Load necessary scripts
       // // Fetch forums and close the dialog
@@ -104,7 +119,7 @@ export class ForumDetailComponent implements AfterViewInit , OnInit {
     this.forumService.getForumById(forumId).subscribe(
       (forum: Forum) => {
         this.forum = forum;
-        console.log('Forum details:', this.forum);
+        // console.log('Forum details:', this.forum);
       },
       (error) => {
         console.error('Error fetching forum details:', error);

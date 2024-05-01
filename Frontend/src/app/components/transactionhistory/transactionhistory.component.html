@@ -41,8 +41,8 @@
 
                         <td>{{ transaction.price }}</td>
                         <td>
-                            <img [src]="transaction.image" alt="Reward Image" style="width: 100px; height: 100px;">
-                        </td>
+                        <img [src]="transaction.image ? 'data:image/png;base64,' + transaction.image : ''" alt="reward Image" width="150" class="mt-2">
+                    </td>
                         <td>{{ transaction.user ? transaction.user.firstName + ' ' + transaction.user.lastName : '-' }}</td>
                         <td>{{ transaction.reward ? transaction.reward.name : '-' }}</td>
 

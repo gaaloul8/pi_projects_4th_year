@@ -1,7 +1,11 @@
 package com.esprit.pi_project.entities;
 
 import jakarta.persistence.*;
+
 import jakarta.transaction.Transactional;
+
+import jakarta.validation.constraints.Size;
+
 import lombok.Data;
 
 import java.io.Serializable;
@@ -37,8 +41,8 @@ public class Question implements Serializable {
 
     private Boolean closed;
 
-    @OneToMany(mappedBy = "question")
-    private List<Response> responses = new ArrayList<>();
+//    @OneToMany(mappedBy = "question")
+//    private List<Response> responses = new ArrayList<>();
 
     @ManyToOne
     @JoinColumn(name = "forumId")
