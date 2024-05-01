@@ -29,7 +29,10 @@ export class AppMenuComponent implements OnInit {
                     { label: 'Forum', icon: 'pi pi-fw pi-id-card', routerLink: ['/forumback'] },
                     { label: 'Quiz', icon: 'pi pi-fw pi-list', routerLink: ['/quiz-back'] },
                     { label: 'Quiz Chart',icon: 'pi pi-fw pi-chart-bar', routerLink: ['/quiz-chart'] },
-
+                    { label: 'Event Statistics',icon: 'pi pi-fw pi-chart-bar', routerLink: ['/staticEventByFeedback'] },
+                    { label: 'Event', icon: 'pi pi-fw pi-list', routerLink: ['/eventBack'] },
+                    { label: 'Reservation', icon: 'pi pi-fw pi-list', routerLink: ['/listReservationEvent'] },
+                    { label: 'FeedBack', icon: 'pi pi-fw pi-list', routerLink: ['/listFeedBackClubManager'] },
                    /* { label: 'Form Layout', icon: 'pi pi-fw pi-id-card', routerLink: ['/uikit/formlayout'] },
                     { label: 'Input', icon: 'pi pi-fw pi-check-square', routerLink: ['/uikit/input'] },
                     { label: 'Float Label', icon: 'pi pi-fw pi-bookmark', routerLink: ['/uikit/floatlabel'] },

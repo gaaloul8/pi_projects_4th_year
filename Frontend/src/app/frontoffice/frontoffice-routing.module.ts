@@ -20,6 +20,9 @@ import { NotfoundComponent } from '../demo/components/notfound/notfound.componen
 import { FrontClubComponent } from '../components/front-club/front-club.component';
 import {ScrapingDataComponent} from "../components/scraping-data/scraping-data.component";
 import {ActivityFrontendComponent} from "../components/activity-frontend/activity-frontend.component";
+import { PageEventComponent } from '../components/page-event/page-event.component';
+import { ListReservationFrontComponent } from '../components/list-reservation-front/list-reservation-front.component';
+import { FeedbackComponent } from '../components/feedback/feedback.component';
 
 const routes: Routes = [
 
@@ -35,11 +38,16 @@ const routes: Routes = [
 { path: 'discounts', component: DiscountsComponent },
 { path: 'quiz-frontend', component: QuizFrontendComponent},
 { path: 'eventFront', component : EventfrontComponent},
+  {path:'event-details/:idEvent',component : PageEventComponent},
+  {path:'listreservationfront',component : ListReservationFrontComponent},
+  {path: 'listFeedBack', component: FeedbackComponent},
+
 { path: 'front-club', component: FrontClubComponent },
     { path: 'quiz-frontend', component: QuizFrontendComponent},
     { path: 'docteur-frontend', component: ScrapingDataComponent},
-
     { path: 'activity-frontend/:idQuiz', component: ActivityFrontendComponent },
+
+
 ];
 
 @NgModule({

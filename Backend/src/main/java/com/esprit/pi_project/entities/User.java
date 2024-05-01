@@ -49,11 +49,15 @@ public class User implements UserDetails, Serializable {
     private String niveau;
     private String Identifiant;
     private boolean FirstLogin;
+
+    //private int tokenA;
+
     private float tokenSolde;
 
 
     @Column(name = "password_hint")
     private String passwordHint;
+
 
     @Column(name = "registration_date")
     private Date registrationDate;

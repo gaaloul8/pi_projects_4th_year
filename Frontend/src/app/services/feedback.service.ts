@@ -8,32 +8,54 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 })
 export class FeedbackService {
   private baseUrl = 'http://localhost:8081';
-  //private token = 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhcmlqLm9iYmFAZXNwcml0LnRuIiwiaWF0IjoxNzEzNjIwMTcwLCJleHAiOjE3MTM3MDY1NzB9.TGjnP6zaHoK0SP4ZvyFv59SxuuPtYC5BN2kYtOwXnjU'
+  //token mta3 el clubManager
+  private token =  localStorage.getItem('jwtAccessToken');
+
   constructor(private http: HttpClient) { }
   
   addFeedback(eventId: number, feedback: Feedback): Observable<Feedback> {
-  
-    return this.http.post<Feedback>(`${this.baseUrl}/feedback/addFeedback/${eventId}`, feedback);
+    const headers = new HttpHeaders({
+      'Authorization': 'Bearer ' + this.token
+    });
+    return this.http.post<Feedback>(`${this.baseUrl}/feedback/addFeedback/${eventId}`, feedback,{ headers: headers });
   }
 
 
   deleteFeedBack(idFeedback: number): Observable<void> {
- 
-    return this.http.delete<void>(`${this.baseUrl}/feedback/deleteFeedback/${idFeedback}`);
+    const headers = new HttpHeaders({
+      'Authorization': 'Bearer ' + this.token
+    });
+    return this.http.delete<void>(`${this.baseUrl}/feedback/deleteFeedback/${idFeedback}`,{ headers: headers });
   }
 
   getAllFeedbacksForUser(): Observable<Feedback[]> {
- 
-    return this.http.get<Feedback[]>(`${this.baseUrl}/feedback/getAllFeedBack`);
+    const headers = new HttpHeaders({
+      'Authorization': 'Bearer ' + this.token
+    });
+    return this.http.get<Feedback[]>(`${this.baseUrl}/feedback/getAllFeedBack`,{ headers: headers });
   }
 
        
-  updateFeedback (feedback : Feedback): Observable<any> {
- 
-    return this.http.put(`${this.baseUrl}/feedback/updateFeedback`,feedback);
+  updateFeedback (idfeedback : number, feedback : Feedback): Observable<any> {
+    const headers = new HttpHeaders({
+      'Authorization': 'Bearer ' + this.token
+    });
+    return this.http.put(`${this.baseUrl}/feedback/${idfeedback}`,feedback,{ headers: headers });
 }
+
+
 getFeedbackById(id: number): Observable<Feedback> {
-  return this.http.get<Feedback>(`${this.baseUrl}/feedback/getFeedBackById/${id}`);
+  const headers = new HttpHeaders({
+    'Authorization': 'Bearer ' + this.token
+  });
+  return this.http.get<Feedback>(`${this.baseUrl}/feedback/getFeedBackById/${id}`,{ headers: headers });
 }
+
+getFeedbackStatistics(): Observable<any[]> {
+  const headers = new HttpHeaders({
+    'Authorization': 'Bearer ' + this.token
+  });
+  return this.http.get<any[]>(`${this.baseUrl}/feedback/feedback/statistics`,{ headers: headers });
+} 
 
 }

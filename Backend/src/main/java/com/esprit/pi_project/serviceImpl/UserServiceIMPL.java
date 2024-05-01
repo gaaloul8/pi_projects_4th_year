@@ -2,6 +2,7 @@ package com.esprit.pi_project.serviceImpl;
 
 import com.esprit.pi_project.authentification.UserUpdateRequest;
 import com.esprit.pi_project.dao.UserDao;
+import com.esprit.pi_project.entities.Reservation;
 import com.esprit.pi_project.entities.Role;
 import com.esprit.pi_project.entities.Tag;
 import com.esprit.pi_project.entities.User;
@@ -145,6 +146,7 @@ public class UserServiceIMPL implements UserService {
         return Optional.empty();
     }
 
+
     @Override
     public void lockUserAccount(User user, LocalDateTime lockTime) {
         user.setFailedLoginAttempts(0);
@@ -152,6 +154,7 @@ public class UserServiceIMPL implements UserService {
         user.setAccountNonLocked(false);
         userDao.save(user);
     }
+
 
     @Override
     public User updateUser(Integer userId, UserUpdateRequest updateRequest) throws IOException {
@@ -178,6 +181,10 @@ public class UserServiceIMPL implements UserService {
 
         // Save the updated user
         return userDao.save(user);
-    }    }
+    }
+
+}
+
+
 
 

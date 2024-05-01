@@ -27,6 +27,9 @@ public class Evenement implements Serializable {
     private Date datetime;
     private String location;
     private String description;
+
+    @Lob
+    @Column(length = 200000000)
     private String image;
     private int nbplacesMax;
     private int nbPlacesReservees;
