@@ -23,10 +23,13 @@ export class AppMenuComponent implements OnInit {
             {
                 label: 'UI Components',
                 items: [
+                    { label: 'Users', icon: 'pi pi-fw pi-id-card', routerLink: ['/users'] },
+
                     { label: 'Forum Statistics', icon: 'pi pi-fw pi-chart-bar', routerLink: ['/forumstat'] },
                     { label: 'Forum', icon: 'pi pi-fw pi-id-card', routerLink: ['/forumback'] },
                     { label: 'Quiz', icon: 'pi pi-fw pi-list', routerLink: ['/quiz-back'] },
                     { label: 'Quiz Chart',icon: 'pi pi-fw pi-chart-bar', routerLink: ['/quiz-chart'] },
+
                    /* { label: 'Form Layout', icon: 'pi pi-fw pi-id-card', routerLink: ['/uikit/formlayout'] },
                     { label: 'Input', icon: 'pi pi-fw pi-check-square', routerLink: ['/uikit/input'] },
                     { label: 'Float Label', icon: 'pi pi-fw pi-bookmark', routerLink: ['/uikit/floatlabel'] },

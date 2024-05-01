@@ -2,12 +2,15 @@ import { Component, OnInit } from '@angular/core';
 import { PrimeNGConfig } from 'primeng/api';
 import {NavigationEnd, Router} from "@angular/router";
 import {filter} from "rxjs";
+import * as events from "events";
+
 
 @Component({
     selector: 'app-root',
     templateUrl: './app.component.html'
 })
 export class AppComponent implements OnInit {
+    isUserPage:boolean;
 
     isQuizPage: boolean;
     constructor(private primengConfig: PrimeNGConfig,private router: Router) {

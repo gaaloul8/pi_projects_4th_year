@@ -37,5 +37,8 @@ export class AuthService {
     resetPassword(resetRequest: any, resetToken: string) {
         return this.http.post<string>(`${this.baseUrl}/reset-password/${resetToken}`, resetRequest);
     }
+    logout(): void {
+        localStorage.removeItem('jwtAccessToken');
+    }
 
 }

@@ -1,20 +1,15 @@
-import {Component, OnInit} from '@angular/core';
-import {WebcamImage, WebcamInitError, WebcamModule, WebcamUtil} from "ngx-webcam";
-import {NgIf} from "@angular/common";
+import { Component } from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Router} from "@angular/router";
 
 @Component({
-  selector: 'app-takeimage',
+  selector: 'app-registercard2',
   standalone: true,
-    imports: [
-        WebcamModule,
-        NgIf
-    ],
-  templateUrl: './takeimage.component.html',
-  styleUrl: './takeimage.component.scss'
+  imports: [],
+  templateUrl: './registercard2.component.html',
+  styleUrl: './registercard2.component.scss'
 })
-export class TakeimageComponent {
+export class Registercard2Component {
     selectedFile: File;
     recognizedText: any;
 
@@ -34,19 +29,15 @@ export class TakeimageComponent {
 
         const formData = new FormData();
         formData.append('carte', this.selectedFile);
-        const token = localStorage.getItem('jwtAccessToken');
-        const headers = new HttpHeaders({
-            'Authorization': 'Bearer ' + token
-        });
 
-        this.http.post<any>('http://localhost:8081/profile/upload', formData, { headers: headers })
+
+        this.http.post<any>('http://localhost:8081/auth/carte', formData, )
             .subscribe(
                 response => {
 
                     console.log('Text recognized:', response);
                     this.router.navigate(['/login']); // Navigate to the login component after successful registration
 
-                    this.handleResponse(response);
 
                 },
                 error => {
@@ -56,12 +47,7 @@ export class TakeimageComponent {
                 }
             );
     }
-    handleResponse(response: boolean) {
-        if (!response) {
-            localStorage.removeItem('jwtAccessToken');
-            console.log('Access restricted. JWT token removed from local storage.');
-        }
-    }
+
 
 
 }
