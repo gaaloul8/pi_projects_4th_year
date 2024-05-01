@@ -1,89 +1,60 @@
-<div class="grid">
-    <div class="col-12">
-        <div class="card px-6 py-6">
-            <p-toolbar styleClass="mb-4">
-                <ng-template pTemplate="left">
-                    <div class="my-2">
-                        <button pButton pRipple label="FeedBack" icon="pi pi-plus" class="p-button-success mr-2" ></button>
-                    </div>
-                </ng-template>
-            </p-toolbar>
-
-
-            <p-table [value]="feedbacks">
-                <ng-template pTemplate="caption">
-                    <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
-                        <h5 class="m-0">Manage Your FeedBacks</h5>
-                    </div>
-                </ng-template>
-               
-                  
-    
-                <ng-template pTemplate="header">
-                    <tr>
-                        <th style="width: 3rem">
-                            <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
-                        </th>
-                        <th>Event Name</th>
-                        <th>Feed Back Status</th>
-                        <th>Feed Back Content</th>
-                       
-                        <th></th>
-                    </tr>
-                </ng-template>
-             
-                <ng-template pTemplate="body" let-feedback>
-                    <tr>
-                        <td>
-                            <p-tableCheckbox [value]="feedback"></p-tableCheckbox>
-                        </td>
-                        <td>{{feedback.evenement.eventName}}</td>
-                        <td>{{feedback.status}}</td>
-                        <td>{{feedback.content}}</td>
-                        
-                        <td>
-                            <div class="flex">
-                                <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" [disabled]="feedback.status === 'Processed'"  (click)="editFeedBack(feedback,feedback.idFeedback)"></button>
-                                <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning" (click)="confirmDelete(feedback.idFeedback)"></button>  
-                                  </div>
-                        </td>
-                    </tr>
-                </ng-template>
-            </p-table>
-        </div>
-
-
-
-        <p-dialog [(visible)]="feedbackDialog" [style]="{width: '450px'}" header="FeedBack Details" [modal]="true" class="p-fluid">
-            <ng-template pTemplate="content">
-                
-                <div class="field">
-                   
-                    <label for="name">Content of FeedBack</label>
-                    <input type="text" pInputText id="name" [(ngModel)]="feedback.content" required autofocus [ngClass]="{'ng-invalid ng-dirty' : submitted && !feedback.content}"/>
-                    <small class="ng-dirty ng-invalid" *ngIf="submitted && !feedback.content">Update your feedback please.</small>
-                </div>
-            </ng-template>
-            <ng-template pTemplate="footer">
-                <button pButton pRipple label="Cancel" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
-                <button *ngIf="feedback.idFeedback" pButton pRipple label="Update FeedBack" icon="pi pi-check" class="p-button-text" (click)="updateFeedBack(feedback)"></button>
-            </ng-template>
-            
-        </p-dialog>
-
-
-        <p-dialog [(visible)]="deleteRDialog" header="Confirm" [modal]="true" [style]="{width:'450px'}">
-            <div class="flex align-items-center justify-content-center">
-                <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
-                <span>Are you sure you want to delete this feedback?</span>
-            </div>
-            <ng-template pTemplate="footer">
-
-                <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No" (click)="deleteRDialog = false"></button>
-                <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Yes" (click)="confirmDeleteFeedBack(selectedFeedbackId)"></button>
-            </ng-template>
-        </p-dialog> 
+<div class="container mt-4">
+    <div class="row">
+      <div class="col-12">
+        <h1>My Feedbacks</h1>
+      </div>
     </div>
+    <div class="row">
+      <div class="col-12">
+        <p-carousel [value]="feedbacks" [numVisible]="2" [numScroll]="1">
+          <ng-template let-feedback pTemplate="item">
+            <div class="p-col-12 p-md-4">
+              <div class="card">
+                <div class="card-header">
+                  <h4>{{ feedback.evenement.eventName }}</h4>
+                </div>
+                <div class="card-body">
+                  <h5 class="card-title">Content</h5>
+                  <p class="card-text">{{ feedback.content }}</p>
+                  <h5 class="card-title">Status</h5>
+                  <p class="card-text">{{ feedback.status }}</p>
+                  <h5 class="card-title">Rating</h5>
+                  <p-rating [ngModel]="feedback.rating" [readonly]="true" [cancel]="false"></p-rating>
+                  <div class="flex">
+                    <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" (click)="editFeedBack(feedback, feedback.idFeedback)"></button>
+                    <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning" (click)="confirmDelete(feedback.idFeedback)"></button>
+                  </div>
+                </div>
+              </div>
+              <p-dialog [(visible)]="feedbackDialog" [style]="{ width: '450px' }" header="Feedback Details" [modal]="true" class="p-fluid">
+                <ng-template pTemplate="content">
+                  <form [formGroup]="feedbackForm">
+                    <div class="field">
+                      <label for="content">Content</label>
+                      <textarea id="content" pInputTextarea formControlName="content" required rows="3" cols="20"></textarea>
+                    </div>
+                  </form>
+                </ng-template>
+                <ng-template pTemplate="footer">
+                  <button pButton pRipple label="Cancel" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
+                  <button *ngIf="feedback.idFeedback" pButton pRipple label="Update" icon="pi pi-check" class="p-button-text" (click)="updateEvent(feedback.idFeedback)"></button>
+                </ng-template>
+              </p-dialog>
+              <p-dialog [(visible)]="deleteRDialog" header="Confirm" [modal]="true" [style]="{ width: '450px' }">
+                <div class="flex align-items-center justify-content-center">
+                  <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
+                  <span>Are you sure you want to delete this feedback?</span>
+                </div>
+                <ng-template pTemplate="footer">
+                  <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No" (click)="deleteRDialog = false"></button>
+                  <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Yes" (click)="confirmDeleteFeedBack(selectedFeedbackId)"></button>
+                </ng-template>
+              </p-dialog>
+            </div>
+          </ng-template>
+        </p-carousel>
+      </div>
+    </div>
+    <p-toast></p-toast>
   </div>
-  
   

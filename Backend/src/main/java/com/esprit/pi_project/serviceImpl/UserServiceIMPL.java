@@ -1,6 +1,7 @@
 package com.esprit.pi_project.serviceImpl;
 
 import com.esprit.pi_project.dao.UserDao;
+import com.esprit.pi_project.entities.Reservation;
 import com.esprit.pi_project.entities.Role;
 import com.esprit.pi_project.entities.Tag;
 import com.esprit.pi_project.entities.User;
@@ -136,6 +137,7 @@ public class UserServiceIMPL implements UserService {
         }
         return Optional.empty();
     }
+
 
 }
 

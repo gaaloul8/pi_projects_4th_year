@@ -12,11 +12,14 @@ export class AppComponent implements OnInit {
     isQuizPage: boolean;
     constructor(private primengConfig: PrimeNGConfig,private router: Router) {
         this.router.events
-            .pipe(filter(event => event instanceof NavigationEnd))
-            .subscribe((event: NavigationEnd) => {
-                this.isQuizPage = event.url.includes('/quiz');
-            });
-    }
+        .pipe(filter(event => event instanceof NavigationEnd))
+        .subscribe((event: NavigationEnd) => {
+          // Define an array of paths you want to check against
+          const pathsToCheck = ['/dashboard','/eventBack','/listReservationEvent','/listFeedBack','/staticEventByFeedback']; // Add more paths as needed
+          // Check if the current URL contains any of the paths
+          this.isQuizPage = pathsToCheck.some(path => event.url.includes(path));
+        });
+     }
 
     ngOnInit() {
         this.primengConfig.ripple = true;

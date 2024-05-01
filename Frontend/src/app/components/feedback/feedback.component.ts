@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup,Validators } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { Feedback } from 'src/app/interfaces/feedback';
 import { Reservation } from 'src/app/interfaces/reservation';
@@ -17,11 +18,19 @@ export class FeedbackComponent implements OnInit {
   selectedFeedbackId: number;
   feedbackDialog: boolean = false;
   submitted: boolean = false;
-  constructor(private feedbackservice: FeedbackService,private messageService: MessageService){}
+  feedbackForm: FormGroup;
+  feedbackToUpdate: Feedback;
+
+  constructor(private feedbackservice: FeedbackService,private messageService: MessageService,private formBuilder: FormBuilder){
+  
+  }
 
   ngOnInit(): void {
     this.getAllFeedBacksForCurrentUser();
-  }
+    this.feedbackForm = this.formBuilder.group({
+        content: ['', Validators.required]
+    });
+}
 
   getAllFeedBacksForCurrentUser() {
    // const  = 1; // Remplacez ceci par l'ID de l'utilisateur connecté
@@ -55,20 +64,17 @@ export class FeedbackComponent implements OnInit {
     this.selectedFeedbackId = idFeedback;
     this.deleteRDialog = true;
   }
-
-  updateFeedBack(feedbacktoupdate: Feedback) {
-    this.feedbackservice.updateFeedback(feedbacktoupdate).subscribe(
-      updatedEvent => {
-        console.log('Event updated:', updatedEvent);
-        this.feedbackDialog = false;
+  updateEvent(idEvent : number): void {
+    this.submitted = true;
+    try {
+        this.feedbackservice.updateFeedback(idEvent, this.feedbackForm.value).toPromise();
+        console.log("event updated Successfully");
         window.location.reload();
-      },
-      error => {
-        console.error('Error updating event:', error);
-      }
-    );
-  }
+    } catch (error) {
+        console.error(error);
+    }
   
+  }
   
   editFeedBack(feedbackEdit : Feedback) {
     this.feedback = { ...feedbackEdit };

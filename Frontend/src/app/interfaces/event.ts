@@ -5,7 +5,7 @@ import { User } from "./user";
 export interface Event {
      idEvent?:number;
      eventName?:string;
-     eventType?: TypeEvent;
+     eventType?: string;
      datetime?: Date;
      location?: string;
      description?:string;

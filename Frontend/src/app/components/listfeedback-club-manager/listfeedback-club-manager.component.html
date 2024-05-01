@@ -2,11 +2,7 @@
     <div class="col-12">
         <div class="card px-6 py-6">
             <p-toolbar styleClass="mb-4">
-                <ng-template pTemplate="left">
-                    <div class="my-2">
-                        <button pButton pRipple label="Feed Back Of users" icon="pi pi-plus" class="p-button-success mr-2" ></button>
-                    </div>
-                </ng-template>
+           
 
 
             </p-toolbar>
@@ -16,9 +12,6 @@
                         <h5 class="m-0">Validate Feedbacks</h5>
                     </div>
                 </ng-template>
-               
-                  
-    
                 <ng-template pTemplate="header">
                     <tr>
                         <th style="width: 3rem">
@@ -26,7 +19,8 @@
                         </th>
                         <th>User First Name</th>
                         <th>User Last Name</th>
-                        <th>Content of Feeed Back</th>    
+                        <th>Content of Feeed Back</th>  
+                        <th>Status of Feeed Back</th>    
                         <th></th>
                     </tr>
                 </ng-template>
@@ -36,17 +30,16 @@
                         <td>
                             <p-tableCheckbox [value]="feedback"></p-tableCheckbox>
                         </td>
-                        <td>Obba</td>
-                        <td>Arij</td>
-                     <!-- <td>feedback.user.firstName </td>
-                        <td>feedback.user.firstName }}</td>-->  
+                        <td>obba</td>
+                        <td>arij</td>
                         <td>{{ feedback.content}}</td>
+                        <td>{{ feedback.status}}</td>
                      
                        
                         
                         <td>
                             <div class="flex flex-wrap gap-2"> 
-                                <button pButton pRipple type="button" icon="pi pi-search" class="p-button-rounded p-button-success p-button-outlined"></button>
+                                <button pButton pRipple type="button" icon="pi pi-search" class="p-button-rounded p-button-success p-button-outlined" (click)="editEvent(feedback.idFeedback)"></button>
                                 <button pButton pRipple type="button" icon="pi pi-check" class="p-button-rounded p-button-outlined"></button>
                             </div>
                         </td>
@@ -55,6 +48,16 @@
             </p-table>
         </div>
         
+     <!-- Template -->
+<p-dialog [(visible)]="displayDialog" [style]="{width: '450px'}" header="FeedBack Details" [modal]="true" class="p-fluid">
+    <ng-template pTemplate="content"> 
+        <div class="field">
+            <textarea id="content" [(ngModel)]="feedbackContent.content" rows="5" cols="30" [readonly]="true" style="width: 100%; height: 100%; border: 1px solid #ccc; border-radius: 5px; padding: 10px; resize: none;"></textarea>
+        </div>
+    </ng-template>
+</p-dialog>
+
+    
         <p-dialog header="Confirm" [modal]="true" [style]="{width:'450px'}">
             <div class="flex align-items-center justify-content-center">
                 <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
@@ -65,7 +68,9 @@
                 <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Yes" ></button>
             </ng-template>
         </p-dialog>
+
     </div>
-  </div>
+</div>
+
   
   

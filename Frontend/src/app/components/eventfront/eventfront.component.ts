@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output, Renderer2 } from '@angular/core';
  
 import { EventService } from 'src/app/services/event.service';
 import { Event } from "../../interfaces/event";
@@ -8,12 +8,16 @@ import { Reservation } from 'src/app/interfaces/reservation';
 import { TypeEvent } from "../../interfaces/type-event";
 import { Subject, debounceTime, distinctUntilChanged, switchMap } from 'rxjs';
 import { Router } from '@angular/router';
+import { EvenementWithRating } from 'src/app/interfaces/evenement-with-rating';
 @Component({
   selector: 'app-eventfront',
   templateUrl: './eventfront.component.html',
-  styleUrl: './eventfront.component.scss'
+  styleUrls: ['./eventfront.component.scss' ,'../forum/forum.component.scss','../../../assets/scss/core.scss'] 
+
+ 
 })
 export class EventfrontComponent implements OnInit{
+  reservations: Reservation[] = [];
 events: Event[] = [];
 sortOrder: number = 0;
 sortField: string = '';
@@ -27,34 +31,33 @@ eventTypes: SelectItem[] = Object.keys(TypeEvent).map((key) => ({
   value: TypeEvent[key as keyof typeof TypeEvent],
 }));
 selectedTypes: string[] = [];
+eventsWithRatings: EvenementWithRating[];
 
 constructor(private eventService : EventService,
   private reservationService: ReservationService,
   private messageService: MessageService,
-  private router: Router
+  private router: Router,
+  private renderer: Renderer2
 ){}
 
 
 
-ngOnInit() {
-  this.getEvent();
+ngOnInit(): void {
+  this.getEventsWithRatings();
+  setTimeout(() => {
+    this.loadJsFiles();
+
+}, 100);
 }
 
-getEvent(): void {
-  this.eventService.getAllEvent().subscribe(
-    (events: Event[]) => {
-      this.events = events;
-      console.log('Events:', this.events);
-    },
-    (error) => {
-      console.log('Error fetching events:', error);
-    }
-  );
+getEventsWithRatings(): void {
+  this.eventService.getAllEventsWithRatings()
+      .subscribe(events => this.eventsWithRatings = events);
 }
 
 bookEvent(eventId: number): void {
- const reservation: Reservation = {
-    //user: { id_user: 1, role: "ClubManager" }
+  const reservation: Reservation = {
+    //user: { id_user: 1, role: "User" }
   };
 
   this.reservationService.addReservation(eventId, reservation)
@@ -63,36 +66,40 @@ bookEvent(eventId: number): void {
         // La réservation a été ajoutée avec succès
         console.log('Réservation ajoutée pour l\'événement avec l\'ID : ', eventId);
         this.messageService.add({severity:'success', summary:'Success', detail:'Réservation effectuée avec succès!'});
-        // Ajout de la notification avant la redirection
-        //this.router.navigate(['/listReservationEvent']);
+        // Rediriger l'utilisateur vers la liste des réservations
+       this.router.navigate(['/listreservationfront']);
       },
       error => {
-        // Gérez les erreurs
+        // Gérer les erreurs
         console.error('Impossible de réserver. Toutes les places sont déjà réservées.', error);
         this.messageService.add({severity:'error', summary:'Error', detail:'Impossible de réserver. Toutes les places sont déjà réservées.'});
       }
     );
 }
-searchEventsByType() {
-  
-  // Si aucun type n'est sélectionné, affichez tous les événements
-  if (this.selectedTypes.length === 0) {
-    this.getEvent();
-    return;
-  }
 
-  // Recherchez les événements par type
-  this.eventService.searchEventByType(this.selectedTypes).subscribe(
-    (events: Event[]) => {
-      this.events = events;
-      console.log('Events filtered by type:', this.events);
-    },
-    (error) => {
-      console.log('Error fetching events by type:', error);
-    }
-  );
+
+public loadJsFile(url: string) {
+  const body = <HTMLDivElement>document.body;
+  const script = document.createElement('script');
+  script.innerHTML = '';
+  script.src = url;
+  script.async = false;
+  script.defer = true;
+  script.className = "custom-js";
+  script.onerror = (error) => {
+      console.error('Failed to load script:', error);
+  };
+  this.renderer.appendChild(document.body, script);
 }
 
+loadJsFiles(): void {
+  this.loadJsFile("../../../../assets/js/common.js");
+  this.loadJsFile("../../../../assets/js/global.js");
+  this.loadJsFile("../../../../assets/js/main.js");
+}
+navigateToEventDetails(eventId: number) {
+  this.router.navigate(['/event-details', eventId]);
+}
  
 }
 

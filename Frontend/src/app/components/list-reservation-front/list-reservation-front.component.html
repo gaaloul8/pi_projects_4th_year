@@ -1,0 +1,47 @@
+<div class="container mt-4">
+  <div class="row">
+    <div class="col-12">
+      <h1>My Reservations</h1>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12">
+      <div *ngIf="reservations.length > 0; else noReservations">
+        <p-carousel [value]="reservations" [numVisible]="3" [numScroll]="1">
+          <ng-template let-reservation pTemplate="item">
+            <div class="p-col-12 p-md-4 mb-4">
+              <div class="card">
+                <div class="card-header">
+                  <h4>{{ reservation.evenementR.eventName }}</h4>
+                </div>
+                <div class="card-body">
+                  <h5>Date:<br>{{ reservation.evenementR.datetime | date: 'yyyy-MM-dd HH:mm:ss' }}</h5>
+                  <h5>Lieu:<br>{{ reservation.evenementR.location }}</h5>
+                  <button pButton pRipple icon="pi pi-comment" class="p-button-rounded p-button-success mr-2" (click)="showDialog(reservation)"></button>
+                  <p-dialog [(visible)]="displayDialog" header="Add a Feedback" [modal]="true" [responsive]="true">
+                    <div>
+                      <textarea [(ngModel)]="feedbackContent" rows="5" cols="30" placeholder="Enter your feedback here..."></textarea>
+                      <div style="margin-top: 10px;">
+                        <p-rating [(ngModel)]="rating"></p-rating>
+                      </div>
+                    </div>
+                    <p-footer>
+                      <button pButton pRipple icon="pi pi-times" class="p-button-text" label="Cancel" (click)="displayDialog = false"></button>
+                      <button pButton pRipple icon="pi pi-comment" class="p-button-success" label="Send" [disabled]="!feedbackContent || !rating" (click)="addFeedback(reservation.evenementR.idEvent)">
+                      </button>
+                    </p-footer>
+                  </p-dialog>
+                  <!-- Other reservation details -->
+                </div>
+              </div>
+            </div>
+          </ng-template>
+        </p-carousel>
+      </div>
+      <ng-template #noReservations>
+        <p>No reservations available at the moment.</p>
+      </ng-template>
+    </div>
+  </div>
+</div>
+<p-toast></p-toast>

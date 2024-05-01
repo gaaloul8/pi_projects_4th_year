@@ -41,6 +41,8 @@ import {CompleteprofileComponent} from "./components/completeprofile/completepro
 import {TakeimageComponent} from "./components/takeimage/takeimage.component";
 import {RegisterWithCardComponent} from "./components/register-with-card/register-with-card.component";
 import {UserBackComponent} from "./components/user-back/user-back.component";
+import { PageEventComponent } from './components/page-event/page-event.component';
+import { ListReservationFrontComponent } from './components/list-reservation-front/list-reservation-front.component';
 
 
 
@@ -61,7 +63,6 @@ import {UserBackComponent} from "./components/user-back/user-back.component";
 
                     {path:'eventBack',component : EventBackComponent },
                     {path:'listReservationEvent',component : ListReservationEventComponent},
-                    {path: 'listFeedBack', component: FeedbackComponent},
                     {path: 'staticEventByFeedback' , component:ChartEventComponent},
                     {path: 'listFeedBackClubManager' , component:ListfeedbackClubManagerComponent},
                     {path:'club',component:ClubsComponent},
@@ -114,8 +115,12 @@ import {UserBackComponent} from "./components/user-back/user-back.component";
             { path: 'statistics', component: StatisticsComponent },
             { path: 'rewardusers', component: RewardusersComponent },
 
-
+            {path: 'listFeedBack', component: FeedbackComponent},
             {path:'eventFront',component : EventfrontComponent},
+            {path:'event-details/:idEvent',component : PageEventComponent},
+            {path:'listreservationfront',component : ListReservationFrontComponent},
+          
+
          
 
 
