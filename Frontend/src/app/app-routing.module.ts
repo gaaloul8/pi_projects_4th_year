@@ -33,6 +33,10 @@ import {CompleteprofileComponent} from "./components/completeprofile/completepro
 import {TakeimageComponent} from "./components/takeimage/takeimage.component";
 import {RegisterWithCardComponent} from "./components/register-with-card/register-with-card.component";
 import {UserBackComponent} from "./components/user-back/user-back.component";
+import {Registercard2Component} from "./components/registercard2/registercard2.component";
+import {AccountlockedComponent} from "./components/accountlocked/accountlocked.component";
+import {DropdownUserComponent} from "./components/dropdown-user/dropdown-user.component";
+import {UpdateUserAccountComponent} from "./components/update-user-account/update-user-account.component";
 
 
 
@@ -57,19 +61,19 @@ import {UserBackComponent} from "./components/user-back/user-back.component";
 
                 ]
             },
-            { path: 'auth', loadChildren: () => import('./demo/components/auth/auth.module').then(m => m.AuthModule) },
-            { path: 'landing', loadChildren: () => import('./demo/components/landing/landing.module').then(m => m.LandingModule) },
             { path: 'auth/reset-password/:resetToken', component: ResetComponent },
-
             { path: 'auth', loadChildren: () => import('./demo/components/auth/auth.module').then(m => m.AuthModule) },
             { path: 'landing', loadChildren: () => import('./demo/components/landing/landing.module').then(m => m.LandingModule) },
             {path:'welcome', component: WelcomeComponent},
-
             { path: 'register', component: RegisterComponent },
             {path:'complete', component: CompleteprofileComponent},
+            {path:'accountLocked', component: AccountlockedComponent},
+            {path:'profile', component: DropdownUserComponent},
             {path:'registerWithcard',component:RegisterWithCardComponent},
-
             {path:'takeimage',component:TakeimageComponent},
+            {path:'Registerwitcard2',component:Registercard2Component},
+            {path:'profile/update',component: UpdateUserAccountComponent},
+
             { path: 'login', component: LoginComponent },
             { path: 'forget', component: ForgetComponent },
             { path: 'forum',component:ForumComponent},

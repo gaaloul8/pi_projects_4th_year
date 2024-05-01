@@ -30,21 +30,19 @@ export class ResetComponent implements  OnInit{
 
     }
     resetPassword() {
-
         const resetRequest = { password: this.password };
         this.authService.resetPassword(resetRequest, this.resetToken).subscribe(
-
             response => {
-                this.Message="Your password has been Reset"
-                this.router.navigate(['/login']);
-
+                this.Message = "Your password has been Reset";
+                // Redirect to login page
             },
             error => {
-                this.Message="An error occured reseting your password"
+                this.Message = "your pass has been reset";
+                this.router.navigate(['/login']);
 
+                // Handle error, if necessary
             }
         );
-    }
 
 
-}
+}}

@@ -52,7 +52,10 @@ export class LoginComponent {
     authResponse: AuthResponse = {};
     errorMessage: string;
     formSubmitted: boolean = false;
+    trackLoginAttempts: number=0;
+    remainingTime: number;
     public captchaResolved : boolean = false;
+
 
 
 
@@ -76,22 +79,51 @@ export class LoginComponent {
             this.errorMessage = 'Email and password are required';
             return; // Return without submitting the form
         }
+        const storedTime = localStorage.getItem('LockTime');
+        const lockedDate = new Date(storedTime);
+        const currentDate = new Date();
+        console.log(currentDate);
+        console.log(lockedDate);
 
+        if(currentDate>lockedDate){
+            console.log("haha")
+
+            localStorage.setItem('isAccountNonLocked', String(true));
+
+        }
+
+        const isAccountNonLocked = localStorage.getItem('isAccountNonLocked');
+        console.log(isAccountNonLocked);
+        if (isAccountNonLocked === 'false') {
+            console.log(isAccountNonLocked);
+            this.errorMessage = 'Your account is locked. Please contact support for assistance.';
+            return; // Return without submitting the form
+        }
         // Proceed with login request
         this.authService.login(this.loginRequest)
             .subscribe({
                 next: (response) => {
                     this.authResponse = response;
                     localStorage.setItem('jwtAccessToken', this.authResponse.jwtaccestoken);
-                    console.log(this.authResponse.firstLogin)
-                    if (this.authResponse.firstLogin == true) {
-                        this.router.navigate(['/complete']);
+                        console.log(this.authResponse.userLocked);
+                    if (this.authResponse.role === 'Admin' || this.authResponse.role=== 'ClubManager') {
+                        this.router.navigate(['/users']);
                     } else {
                         this.router.navigate(['/welcome']);
                     }
+
+
+
                 },
                 error: (error) => {
                     if (error.status === 403) {
+                        this.trackLoginAttempts++;
+                        if(this.trackLoginAttempts>=3){
+                            console.log(this.trackLoginAttempts)
+                            this.router.navigate(['/registerWithcard']);
+
+
+                        }
                         this.errorMessage = 'Invalid email or password';
                     } else {
                         localStorage.removeItem('jwtAccessToken');

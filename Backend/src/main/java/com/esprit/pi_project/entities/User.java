@@ -1,12 +1,12 @@
 package com.esprit.pi_project.entities;
 import com.esprit.pi_project.serviceImpl.CustomAuthorityDeserializer;
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
@@ -41,6 +41,10 @@ public class User implements UserDetails, Serializable {
     private String Identifiant;
     private boolean FirstLogin;
 
+
+    @Column(name = "password_hint")
+    private String passwordHint;
+
     @Column(name = "registration_date")
     private Date registrationDate;
 
@@ -72,6 +76,12 @@ public class User implements UserDetails, Serializable {
     @OneToMany(cascade = CascadeType.ALL,mappedBy = "createdBy")
     private List<Reclamation> reclamationList;
 
+    @Column(name = "failed_login_attempts")
+    private int failedLoginAttempts;
+    @Column(name = "lock_time")
+    private LocalDateTime lockTime;
+
+
     @OneToOne(cascade = CascadeType.ALL)
     private Club club;
 
@@ -84,6 +94,8 @@ public class User implements UserDetails, Serializable {
     @OneToMany(cascade = CascadeType.ALL,mappedBy = "eventOwner")
     private List<Evenement> evenements;
 
+    @Column(name = "account_non_locked")
+    private boolean accountNonLocked;
 
     @Column(length = 2000000000)
     private String profilePicture;
@@ -96,7 +108,6 @@ public class User implements UserDetails, Serializable {
 
 
     @JsonDeserialize(using = CustomAuthorityDeserializer.class)
-
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority(role.name()));
@@ -107,14 +118,19 @@ public class User implements UserDetails, Serializable {
         return email;
     }
 
+
     @Override
     public boolean isAccountNonExpired() {
-        return true;
+
+       return  true;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return true;
+        if (lockTime == null) {
+            return true;
+        }
+        return LocalDateTime.now().isAfter(lockTime);
     }
 
     @Override

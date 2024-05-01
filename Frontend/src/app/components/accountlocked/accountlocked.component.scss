@@ -1,31 +1,3 @@
-/* Add this CSS to your styles.css or component-specific CSS file */
-.webcam-container {
-    position: relative;
-    width: 100%;
-    height: auto;
-}
-/* Add this CSS to flip the video horizontally */
-.webcam-container video {
-    transform: scaleX(-1);
-}
-
-
-.overlay-box {
-    position: absolute;
-    top: 120px; /* Adjust the top position as needed */
-    left: 140px; /* Adjust the left position as needed */
-    width: 450px; /* Adjust the width of the box */
-    height: 300px; /* Adjust the height of the box */
-    border: 2px solid red; /* Customize border color and thickness */
-    pointer-events: none; /* Ensure the box doesn't interfere with clicking */
-}
-
-
-.captured-image-container {
-    overflow: hidden; /* Hide the overflow outside the box */
-    width: 100%;
-    height: auto;
-}
 
 
 .card {
@@ -149,4 +121,25 @@ a {
 re-captcha.is-invalid > div {
     border: 1px solid #dc3545 !important;
     border-radius: 0.2rem;
+}
+.timer {
+    font-family: Arial, sans-serif;
+    font-size: 24px;
+    color: #333;
+    background-color: #f0f0f0;
+    padding: 15px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.timer-label {
+    margin-right: 10px;
+}
+
+.timer-display {
+    background-color: #ddd;
+    padding: 5px 10px;
+    border-radius: 5px;
 }

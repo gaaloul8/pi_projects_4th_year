@@ -1,40 +1,10 @@
-/* Add this CSS to your styles.css or component-specific CSS file */
-.webcam-container {
-    position: relative;
-    width: 100%;
-    height: auto;
-}
-/* Add this CSS to flip the video horizontally */
-.webcam-container video {
-    transform: scaleX(-1);
-}
-
-
-.overlay-box {
-    position: absolute;
-    top: 120px; /* Adjust the top position as needed */
-    left: 140px; /* Adjust the left position as needed */
-    width: 450px; /* Adjust the width of the box */
-    height: 300px; /* Adjust the height of the box */
-    border: 2px solid red; /* Customize border color and thickness */
-    pointer-events: none; /* Ensure the box doesn't interfere with clicking */
-}
-
-
-.captured-image-container {
-    overflow: hidden; /* Hide the overflow outside the box */
-    width: 100%;
-    height: auto;
-}
-
-
 .card {
     background-color: rgba(248, 249, 250, 0.7); /* Adjust the transparency here */
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     padding: 2rem;
     transition: transform 0.3s ease, background-color 0.3s ease; /* Added transition for hover effect */
-    max-width: 1400px; /* Increased card width */
+    max-width: 1700px; /* Increased card width */
     width: 100%; /* Make the card fill its container */
 }
 
@@ -65,7 +35,7 @@ h1 {
 .input-with-icon input {
     padding-left: 30px;
     height: 40px;
-    border: 1px solid #007bff;
+    border: 1px solid #2dd4bf;
     border-radius: 8px;
     width: calc(100% - 38px); /* Adjusted width to accommodate the icon */
 }
@@ -98,6 +68,7 @@ a {
 .not-member-text .login-link {
     color: #007bff;
 }
+
 .background-image {
     background-image: url('../../../assets/azze.jpg'); /* Path to your background image */
     background-size: cover;
@@ -115,6 +86,7 @@ a {
     align-items: center;
     height: 100vh; /* Make the form container take the full height of the viewport */
 }
+
 .card:hover {
     transform: scale(1.05); /* Zoom effect on hover */
     background-color: rgba(248, 249, 250, 1); /* Change background color on hover */
@@ -139,14 +111,10 @@ a {
     border-radius: 8px;
     padding-left: 30px;
 }
+
 .error-message {
     margin-top: 15px; /* Adjust the margin to create space between the error message and the button */
-    margin-bottom:15px;
+    margin-bottom: 15px;
     font-size: 14px; /* Adjust the font size to make it smaller */
     color: red; /* Optionally, set the color of the error message to red */
-}
-
-re-captcha.is-invalid > div {
-    border: 1px solid #dc3545 !important;
-    border-radius: 0.2rem;
 }
