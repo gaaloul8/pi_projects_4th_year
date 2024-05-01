@@ -3,6 +3,7 @@ package com.esprit.pi_project.serviceImpl;
 
 import com.esprit.pi_project.dao.ClubDao;
 import com.esprit.pi_project.entities.Club;
+import com.esprit.pi_project.entities.Post;
 import com.esprit.pi_project.entities.Tag;
 import com.esprit.pi_project.services.ClubService;
 import com.itextpdf.text.*;
@@ -13,12 +14,12 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
-import java.util.NoSuchElementException;
-import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -27,9 +28,22 @@ public class ClubServiceImp implements ClubService {
 
     private ClubDao clubDao;
     @Override
-    public Club addClub(Club club) {
-       return  clubDao.save(club);
+    public Club addClub(MultipartFile imageFile, String clubName, String description, Integer membershipCount, String tag) throws IOException {
+        byte[] imageData = imageFile.getBytes();
+        String base64Image = Base64.getEncoder().encodeToString(imageData);
+        System.out.println("Base64 Image: " + base64Image); // Add this line to print base64Image
+
+        Club club = new Club();
+        Tag tagEnum = Tag.valueOf(tag);
+        System.out.println("Tag Enum: " + tagEnum); // Add this line to print tagEnum
+        club.setImage(base64Image);
+        club.setClubName(clubName);
+        club.setMembershipCount(membershipCount);
+        club.setTag(tagEnum);
+        club.setDescription(description);
+        return clubDao.save(club);
     }
+
 
     public Club updateClub(Club club) {
         return clubDao.save(club);
@@ -123,11 +137,45 @@ public class ClubServiceImp implements ClubService {
         }
     }
 
+    /*@Override
+    public Map<Tag, Long> countClubsByTag() {
+        // Get all clubs from the database
+        List<Club> clubs = clubDao.findAll();
 
+        // Initialize a map to hold tag counts
+        Map<Tag, Long> tagCounts = new EnumMap<>(Tag.class);
 
-    public Map<String, Long> countClubsByTag() {
-        return clubDao.countClubsByTag();
+        // Initialize counts for all tags to 0
+        Arrays.stream(Tag.values()).forEach(tag -> tagCounts.put(tag, 0L));
+
+        // Count clubs for each tag
+        Map<Tag, Long> clubsByTag = clubs.stream()
+                .collect(Collectors.groupingBy(Club::getTag, Collectors.counting()));
+
+        // Merge counts with existing counts, including tags with no clubs
+        clubsByTag.forEach((tag, count) -> tagCounts.merge(tag, count, Long::sum));
+
+        return tagCounts;
+    }*/
+    public Map<Tag, Long> countClubsByTag() {
+        List<Club> clubs = clubDao.findAll(); // Assuming a method to retrieve all clubs
+        Map<Tag, Long> tagStatistics = new HashMap<>();
+
+        for (Club club : clubs) {
+            Tag tag = club.getTag();
+            tagStatistics.put(tag, tagStatistics.getOrDefault(tag, 0L) + 1);
+        }
+
+        return tagStatistics;
     }
 
 
+
+
+//  public Map<Tag, Long> countClubsByTag() {
+//        return clubDao.countClubsByTag();
+//  }
+
+
 }
+

@@ -2,6 +2,7 @@ package com.esprit.pi_project.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.transaction.Transactional;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -11,6 +12,7 @@ import java.util.List;
 @Data
 @Entity
 @Table(name = "QuizUsers")
+@Transactional
 public class QuizUser implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

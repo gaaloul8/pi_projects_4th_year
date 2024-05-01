@@ -1,0 +1,16 @@
+.product-badge {
+    &.status-ACCEPTED {
+        background: #C8E6C9;
+        color: #256029;
+    }
+
+    &.status-REJECTED {
+        background: #FFCDD2;
+        color: #C63737;
+    }
+
+    &.status-PENDING {
+        background: #FEEDAF;
+        color: #8A5340;
+    }
+}

@@ -1,0 +1,83 @@
+
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<div id="groups" class="container">
+
+    <div class="groups-grid">
+
+
+
+        <div class="columns is-multiline">
+
+            <div class="column is-3" *ngFor="let activity of activities" >
+                <article class="group-box" (click)="openModal(activity)">
+
+                    <div class="box-info-hover">
+
+
+
+                    </div>
+
+
+                    <div  class="box-img has-background-image" data-background="https://via.placeholder.com/940x650" [attr.data-demo-background]="activity.imageUrl" *ngIf="isImage(activity.imageUrl)"></div>
+                    <a >
+                        <div class="box-img--hover has-background-image" data-background="https://via.placeholder.com/940x650" [attr.data-demo-background]="activity.imageUrl" *ngIf="isImage(activity.imageUrl)"></div>
+                    </a>
+
+                    <a *ngIf="isVideo(activity.imageUrl)">
+                        <video controls width="360" height="240">
+                            <source [src]="activity.imageUrl" type="video/mp4">
+                            <!-- Ajoutez d'autres sources vidéo ici pour une compatibilité avec différents formats -->
+                            Votre navigateur ne supporte pas la lecture de vidéos.
+                        </video>
+                    </a>
+
+                    <div class="box-info">
+                        <span class="box-category">{{activity.type}}</span>
+                        <h3 class="box-title">Title : {{activity.title}}</h3>
+
+                        <span class="box-members">
+
+
+
+
+
+
+
+
+
+
+            </span>
+                    </div>
+                </article>
+            </div>
+        </div>
+
+
+
+    </div>
+
+    <div class="modal" [class.is-active]="selectedActivity">
+        <div class="modal-background"></div>
+        <div class="modal-content pinterest-style">
+            <!-- Contenu du modal -->
+            <div class="activity-details">
+                <div class="box-img has-background-image" [style.background-image]="'url(' + selectedActivity?.imageUrl + ')'" ></div>
+            </div>
+            <div class="activity-info">
+                <p class="type">{{selectedActivity?.type}}</p>
+                <h2>{{selectedActivity?.title}}</h2>
+
+                <p class="content">{{selectedActivity?.content}}</p>
+            </div>
+        </div>
+        <button class="modal-close is-large" aria-label="close" (click)="closeModal()"></button>
+    </div>
+
+
+
+</div>

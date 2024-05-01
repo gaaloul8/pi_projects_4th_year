@@ -33,11 +33,23 @@ public class SecurityConfig {
                         authorizeRequests
                                 .requestMatchers("/auth/**","/profile/**","/auth/reset-password/").permitAll()
                                 .requestMatchers("/clubs/**","/comments/**","/posts/**").permitAll()
-                                .requestMatchers("/quiz/**","/passerQuiz/**","/questionq/**","/activity/**").permitAll()
+                              //  .requestMatchers("/quiz/**","/passerQuiz/**","/questionq/**","/activity/**").permitAll()
                                 .requestMatchers("/reward/**","/discount/**","/forums/**").permitAll()
                                 //.requestMatchers("/getUsers").hasRole("Admin")
                                 .requestMatchers("/getUsers").hasAuthority(Admin.name())
                                 // .requestMatchers(HttpMethod.GET,"/auth/admin").hasAnyAuthority(ADMIN_READ.name())
+                                .requestMatchers("/reward/**","/discount/**","/sendSMS").permitAll()
+                                .requestMatchers("/event/**","/reservation/**","/feedback/**").permitAll()
+
+
+
+                          //      .requestMatchers("/quiz/**","/passerQuiz/**","/questionq/**","/activity/**","/option/**").permitAll()
+
+
+
+
+                             //   .requestMatchers("/auth/admin").hasAnyRole(Admin.name())
+                               // .requestMatchers(HttpMethod.GET,"/auth/admin").hasAnyAuthority(ADMIN_READ.name())
                                 .anyRequest().authenticated()
                 )
                 .sessionManagement(sessionManagement ->

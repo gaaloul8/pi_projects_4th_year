@@ -26,6 +26,7 @@ public interface QuestionService {
 
     List<Question> getAllQuestionsByForumId(Integer forumId);
     ResponseEntity<String> filterText(String text);
+     List<String> getTags(String text);
 
     }
 

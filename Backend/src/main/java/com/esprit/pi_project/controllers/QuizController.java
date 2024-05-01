@@ -2,12 +2,18 @@ package com.esprit.pi_project.controllers;
 
 import com.esprit.pi_project.entities.Quiz;
 import com.esprit.pi_project.entities.QuizQuestion;
+import com.esprit.pi_project.entities.User;
 import com.esprit.pi_project.services.QuizService;
+import com.esprit.pi_project.services.UserService;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
+
+import static com.esprit.pi_project.entities.Role.ClubManager;
 
 @RestController
 @RequestMapping("quiz")
@@ -15,9 +21,17 @@ import java.util.List;
 public class QuizController {
     @Autowired
     QuizService quizService;
+    @Autowired
+    UserService userService;
 
     @PostMapping("add")
-    public void addQuiz(@RequestBody Quiz quiz) {
+    public void addQuiz(@RequestBody Quiz quiz, HttpServletRequest request) {
+        Optional<User> user = userService.getUserFromJwt(request);
+
+        if (user != null && user.get().getRole().equals(ClubManager)){
+            quiz.setQuizOwner(user.get());
+
+        }
         quizService.addQuiz(quiz);
     }
 
@@ -25,6 +39,11 @@ public class QuizController {
     public List<Quiz> retrieveAllQuiz() {
 
         return quizService.getAll();
+    }
+    @GetMapping("allowedToPublish")
+    public List<Quiz> retrieveAllQuizAllowedToPublish() {
+
+        return quizService.getAllAllowedToPublish();
     }
 
     @PutMapping("update")
@@ -44,6 +63,15 @@ public class QuizController {
         this.quizService.removeQuiz(quiz);
     }
 
-
+    @PutMapping("publish")
+    @ResponseBody
+    public Quiz publishQuiz (@RequestBody Quiz quiz){
+        return  quizService.publishQuiz(quiz);
+    }
+    @PutMapping("unpublish")
+    @ResponseBody
+    public Quiz unpublishQuiz (@RequestBody Quiz quiz){
+        return  quizService.unpublishQuiz(quiz);
+    }
 
 }
