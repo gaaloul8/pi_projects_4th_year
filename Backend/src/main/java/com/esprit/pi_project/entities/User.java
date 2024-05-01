@@ -1,7 +1,11 @@
 package com.esprit.pi_project.entities;
 import com.esprit.pi_project.serviceImpl.CustomAuthorityDeserializer;
 import com.fasterxml.jackson.annotation.JsonBackReference;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -64,7 +68,7 @@ public class User implements UserDetails, Serializable {
     @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class , property = "idReward")
 
     private List<Reward> rewardList;
-
+    @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL,mappedBy = "QuizOwner")
     private List<Quiz> quizList;
 

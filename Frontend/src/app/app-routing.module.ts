@@ -20,7 +20,6 @@ import { LandingHomeComponent } from './components/landing-home/landing-home.com
 import {QuizComponent} from "./components/quiz/quiz.component";
 import {QuestionQuizComponent} from "./components/question-quiz/question-quiz.component";
 import {QuizFrontendComponent} from "./components/quiz-frontend/quiz-frontend.component";
-import {GooglemapComponent} from "./components/googlemap/googlemap.component";
 
 import { EventBackComponent } from './components/event-back/event-back.component';
 import { EventfrontComponent } from './components/eventfront/eventfront.component';
@@ -45,10 +44,15 @@ import {CompleteprofileComponent} from "./components/completeprofile/completepro
 import {TakeimageComponent} from "./components/takeimage/takeimage.component";
 import {RegisterWithCardComponent} from "./components/register-with-card/register-with-card.component";
 import {UserBackComponent} from "./components/user-back/user-back.component";
+
+import {ActivityFrontendComponent} from "./components/activity-frontend/activity-frontend.component";
+import {ScrapingDataComponent} from "./components/scraping-data/scraping-data.component";
+
 import { PostFrontComponent } from './components/post-front/post-front.component';
 import { PostStatComponent } from './components/post-stat/post-stat.component';
 import { ClubStatComponent } from './components/club-stat/club-stat.component';
 import { FrontClubComponent } from './components/front-club/front-club.component';
+
 
 
 
@@ -61,7 +65,7 @@ import { FrontClubComponent } from './components/front-club/front-club.component
                 path: '',
                 children: [
                     {
-                        path: '', 
+                        path: '',
                         component: AppLayoutComponent,
                         children: [
                     { path: '', loadChildren: () => import('./demo/components/dashboard/dashboard.module').then(m => m.DashboardModule) },
@@ -87,9 +91,24 @@ import { FrontClubComponent } from './components/front-club/front-club.component
                     {path:'club',component:ClubsComponent},
                     {path:'post',component:PostComponent},
                     {path:'users',component:UserBackComponent},
+                            { path: 'quiz', component: QuizComponent},
+                            { path: 'question-quiz', component: QuestionQuizComponent},
+
+                            { path: 'question-quiz/:idQuiz', component: QuestionQuizComponent },
+                    { path: 'quiz-back', component: QuizComponent},
+                    { path: 'quiz-chart', component: QuizChartComponent},
+                    { path: 'activities-back', component: ActivitiesComponent},
+                    { path: 'question-quiz', component: QuestionQuizComponent},
+                    { path: 'question-quiz/:idQuiz', component: QuestionQuizComponent },
+                    { path: 'activities-back/:idQuiz', component: ActivitiesComponent },
+
                     { path: 'activities-back/:idQuiz', component: ActivitiesComponent },
                     { path: 'activities-back', component: ActivitiesComponent},
                     { path: 'quiz-chart', component: QuizChartComponent},
+                            { path: 'discounts', component: DiscountsComponent },
+                            { path: 'transactions', component: TransactionhistoryComponent },
+                            { path: 'statistics', component: StatisticsComponent },
+                            { path: 'rewardusers', component: RewardusersComponent },
 
                 ],
             },
@@ -109,6 +128,24 @@ import { FrontClubComponent } from './components/front-club/front-club.component
             { path: 'forget', component: ForgetComponent },
             { path: 'question/:id', component: QuestionDetailComponent },
             { path: 'notfound', component: NotfoundComponent },
+
+           // { path: 'reward', component: RewardComponent },
+          //  { path: 'statistics', component: StatisticsComponent },
+
+           // { path: 'discounts', component: DiscountsComponent },
+          //  { path: 'transactions', component: TransactionhistoryComponent },
+          //  { path: 'rewardusers', component: RewardusersComponent },
+
+
+
+
+
+
+
+
+
+
+
 
 
         ]

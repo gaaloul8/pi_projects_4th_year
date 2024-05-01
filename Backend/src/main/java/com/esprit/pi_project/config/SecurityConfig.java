@@ -36,7 +36,7 @@ public class SecurityConfig {
                                 .requestMatchers("/clubs/**","/comments/**","/posts/**").permitAll()
 
 
-                                .requestMatchers("/quiz/**","/passerQuiz/**","/questionq/**","/activity/**").permitAll()
+                          //      .requestMatchers("/quiz/**","/passerQuiz/**","/questionq/**","/activity/**","/option/**").permitAll()
 
                                 .requestMatchers("/reward/**","/discount/**","/forums/**").permitAll()
 
