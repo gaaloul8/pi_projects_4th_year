@@ -5,15 +5,17 @@ import { FrontofficeRoutingModule } from './frontoffice-routing.module';
 import { FrontofficeComponent } from './frontoffice.component';
 import { HeaderComponent } from '../components/header/header.component';
 import { FooterComponent } from '../components/footer/footer.component';
+import {DropdownUserComponent} from "../components/dropdown-user/dropdown-user.component";
 
 
 @NgModule({
   declarations: [
     FrontofficeComponent,HeaderComponent,FooterComponent
   ],
-  imports: [
-    CommonModule,
-    FrontofficeRoutingModule
-  ]
+    imports: [
+        CommonModule,
+        FrontofficeRoutingModule,
+        DropdownUserComponent
+    ]
 })
 export class FrontofficeModule { }

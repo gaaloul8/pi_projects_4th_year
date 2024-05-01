@@ -8,7 +8,7 @@ import { ForumDetailComponent } from '../components/forum-detail/forum-detail.co
 import { DiscountsComponent } from '../components/discounts/discounts.component';
 import { EventBackComponent } from '../components/event-back/event-back.component';
 import { EventfrontComponent } from '../components/eventfront/eventfront.component';
-import { GooglemapComponent } from '../components/googlemap/googlemap.component';
+
 import { QuestionQuizComponent } from '../components/question-quiz/question-quiz.component';
 import { QuizFrontendComponent } from '../components/quiz-frontend/quiz-frontend.component';
 import { QuizComponent } from '../components/quiz/quiz.component';
@@ -18,6 +18,11 @@ import { StatisticsComponent } from '../components/statistics/statistics.compone
 import { TransactionhistoryComponent } from '../components/transactionhistory/transactionhistory.component';
 import { NotfoundComponent } from '../demo/components/notfound/notfound.component';
 import { FrontClubComponent } from '../components/front-club/front-club.component';
+import {ScrapingDataComponent} from "../components/scraping-data/scraping-data.component";
+import {ActivityFrontendComponent} from "../components/activity-frontend/activity-frontend.component";
+import { PageEventComponent } from '../components/page-event/page-event.component';
+import { ListReservationFrontComponent } from '../components/list-reservation-front/list-reservation-front.component';
+import { FeedbackComponent } from '../components/feedback/feedback.component';
 
 const routes: Routes = [
 
@@ -26,17 +31,22 @@ const routes: Routes = [
 { path: 'forumdetail/:id', component: ForumDetailComponent },
 { path: 'notfound', component: NotfoundComponent },
 { path: 'reward', component: RewardComponent },
-{ path: 'statistics', component: StatisticsComponent },
+
 { path: 'transactions', component: TransactionhistoryComponent },
 { path: 'rewardusers', component: RewardusersComponent },
-{ path: 'quiz', component: QuizComponent},
-{ path: 'question-quiz', component: QuestionQuizComponent},
-{ path: 'googlemap', component: GooglemapComponent},
-{ path: 'question-quiz/:idQuiz', component: QuestionQuizComponent },
+
 { path: 'discounts', component: DiscountsComponent },
 { path: 'quiz-frontend', component: QuizFrontendComponent},
 { path: 'eventFront', component : EventfrontComponent},
+  {path:'event-details/:idEvent',component : PageEventComponent},
+  {path:'listreservationfront',component : ListReservationFrontComponent},
+  {path: 'listFeedBack', component: FeedbackComponent},
+
 { path: 'front-club', component: FrontClubComponent },
+    { path: 'quiz-frontend', component: QuizFrontendComponent},
+    { path: 'docteur-frontend', component: ScrapingDataComponent},
+    { path: 'activity-frontend/:idQuiz', component: ActivityFrontendComponent },
+
 
 
 ];

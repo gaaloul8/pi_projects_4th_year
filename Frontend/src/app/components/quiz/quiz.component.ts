@@ -58,7 +58,9 @@ export class QuizComponent implements OnInit {
             description: [''],
             title: [''],
             type: [''],
-            publication: ['']
+            publication: [''],
+
+
         });
     }
 
@@ -67,6 +69,7 @@ export class QuizComponent implements OnInit {
             (quizzes: any[]) => {
                 this.quizzes = quizzes;
                 console.log(quizzes);
+
             },
             (error) => {
                 console.error('Une erreur s\'est produite lors du chargement des quizzes : ', error);
@@ -86,6 +89,8 @@ export class QuizComponent implements OnInit {
         this.isNewQuiz = false;
         this.selectedQuizId = this.selectedQuiz.idQuiz;
         console.log(this.selectedQuizId)
+
+
     }
 
     addNewQuiz(): void {
@@ -98,6 +103,7 @@ export class QuizComponent implements OnInit {
 
         if (this.addForm.valid || this.updateForm.valid) {
             const quizData = this.addForm.value;
+            //quizData.quizOwner={id_user: 2}
             if (this.isNewQuiz) {
                 this.quizService.addQuiz(quizData).subscribe(
                     (response) => {
@@ -130,7 +136,7 @@ export class QuizComponent implements OnInit {
 
     deleteQuiz(): void {
         if (this.selectedQuiz) {
-            if (confirm('Voulez-vous vraiment supprimer ce quiz ?')) {
+           if (confirm('Are you sure you want to delete this quiz?')) {
                 this.quizService.deleteQuiz(this.selectedQuiz).subscribe(
                     (response) => {
                         console.log('Quiz supprimé avec succès : ', response);
@@ -141,7 +147,7 @@ export class QuizComponent implements OnInit {
                         console.error('Une erreur s\'est produite lors de la suppression du quiz : ', error);
                     }
                 );
-            }
+          }
         } else {
             console.error('Aucun quiz sélectionné pour la suppression');
         }
@@ -218,6 +224,24 @@ export class QuizComponent implements OnInit {
                     console.error('Une erreur s\'est produite lors de la mise à jour  du quiz : ', error);
                 }
             );
+        }
+    }
+    searchTerm: string = '';
+    filteredQuiz: any[];
+    filterQuiz() {
+        if (this.searchTerm.trim() === '') {
+            // Si le terme de recherche est vide, afficher toutes les questions
+            this.filteredQuiz = this.quizzes;
+        } else {
+
+            // Sinon, filtrer les questions en fonction du terme de recherche
+            this.filteredQuiz = this.quizzes.filter(question =>
+                question.title.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+                question.type.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+            question.description.toLowerCase().includes(this.searchTerm.toLowerCase())
+
+            );
+            console.log(this.filteredQuiz);
         }
     }
 

@@ -66,20 +66,27 @@ import { ChartModule } from 'primeng/chart';
 import { ChartEventComponent } from './components/chart-event/chart-event.component';
 import { ListfeedbackClubManagerComponent } from './components/listfeedback-club-manager/listfeedback-club-manager.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
+
+import { PageEventComponent } from './components/page-event/page-event.component';
+import { ListReservationFrontComponent } from './components/list-reservation-front/list-reservation-front.component';
+
 import { PostFrontComponent } from './components/post-front/post-front.component';
 
 
 
 @NgModule({
     declarations: [AppComponent, FeedbackComponent,ChartEventComponent,NotfoundComponent , ListfeedbackClubManagerComponent,ListReservationEventComponent,ForumComponent,ForumDetailComponent ,
+
     LandingHomeComponent ,SidebarComponent, HomeComponent ,EventBackComponent , EventfrontComponent,PostFrontComponent,QuestionDetailComponent,
-    ClubsComponent,PostComponent],
+    ClubsComponent,PostComponent,PageEventComponent,ListReservationFrontComponent],
+
     imports: [AppRoutingModule,
          AppLayoutModule,
          ReactiveFormsModule, 
          FormsModule,
           BrowserModule,
           ToolbarModule,
+
           ChartModule,
           MultiSelectModule,
           FilterPipe,

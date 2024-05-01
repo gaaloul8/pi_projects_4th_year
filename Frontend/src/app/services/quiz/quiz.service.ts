@@ -7,24 +7,37 @@ import { Observable } from 'rxjs';
 })
 export class QuizService {
     private baseUrl = 'http://localhost:8081/quiz';
-   // private token ="eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJmYXRtYTEyNEBlc3ByaXQudG4iLCJpYXQiOjE3MTIwOTgyNjYsImV4cCI6MTcxMjE4NDY2Nn0.YGyVTDbY2GVz9xlaQQ4BDzHN5gPut5_dnfoXuLHkZkw"
+    private token =  localStorage.getItem('jwtAccessToken');
+
     constructor(private http: HttpClient) { }
- createHeaders(): HttpHeaders {
+ /*createHeaders(): HttpHeaders {
         return new HttpHeaders({
-         //   'Authorization': `Bearer ${this.token}`,
+           'Authorization': `Bearer ${this.token}`,
             'Content-Type': 'application/json'
         });
-    }
+    }*/
     addQuiz(quiz: any): Observable<any> {
-        return this.http.post(`${this.baseUrl}/add`, quiz);
+        const headers = new HttpHeaders({
+            'Authorization': 'Bearer ' + this.token,
+            'Content-Type': 'application/json'
+        });
+        return this.http.post(`${this.baseUrl}/add`, quiz,{ headers: headers });
     }
 
     getAllQuizzes(): Observable<any[]> {
-        return this.http.get<any[]>(`${this.baseUrl}/all`);
+        const headers = new HttpHeaders({
+            'Authorization': 'Bearer ' + this.token,
+            'Content-Type': 'application/json'
+        });
+        return this.http.get<any[]>(`${this.baseUrl}/all`,{ headers: headers });
     }
 
     getAllQuizzesAllowedToPublish(): Observable<any[]> {
-        return this.http.get<any[]>(`${this.baseUrl}/allowedToPublish`);
+        const headers = new HttpHeaders({
+            'Authorization': 'Bearer ' + this.token,
+            'Content-Type': 'application/json'
+        });
+        return this.http.get<any[]>(`${this.baseUrl}/allowedToPublish`,{ headers: headers });
     }
 /*
     getAllQuizzes(): Observable<any[]> {
@@ -32,23 +45,43 @@ export class QuizService {
     }*/
 
     updateQuiz(quiz: any): Observable<any> {
-        return this.http.put<any>(`${this.baseUrl}/update`, quiz);
+        const headers = new HttpHeaders({
+            'Authorization': 'Bearer ' + this.token,
+            'Content-Type': 'application/json'
+        });
+        return this.http.put<any>(`${this.baseUrl}/update`, quiz,{ headers: headers });
     }
     publishQuiz(quiz:any):Observable<any> {
-        return this.http.put<any>(`${this.baseUrl}/publish`, quiz);
+        const headers = new HttpHeaders({
+            'Authorization': 'Bearer ' + this.token,
+            'Content-Type': 'application/json'
+        });
+        return this.http.put<any>(`${this.baseUrl}/publish`, quiz,{ headers: headers });
     }
 
     unpublishQuiz(quiz:any):Observable<any> {
-        return this.http.put<any>(`${this.baseUrl}/unpublish`, quiz);
+        const headers = new HttpHeaders({
+            'Authorization': 'Bearer ' + this.token,
+            'Content-Type': 'application/json'
+        });
+        return this.http.put<any>(`${this.baseUrl}/unpublish`, quiz,{ headers: headers });
     }
 
     getQuizById(id: number): Observable<any> {
-        return this.http.get<any>(`${this.baseUrl}/getQuiz/${id}`);
+        const headers = new HttpHeaders({
+            'Authorization': 'Bearer ' + this.token,
+            'Content-Type': 'application/json'
+        });
+        return this.http.get<any>(`${this.baseUrl}/getQuiz/${id}`,{ headers: headers });
     }
 
 
     deleteQuiz(quiz: any): Observable<any> {
-        return this.http.delete(`${this.baseUrl}/delete `, { body: quiz });
+        const headers = new HttpHeaders({
+            'Authorization': 'Bearer ' + this.token,
+            'Content-Type': 'application/json'
+        });
+        return this.http.delete(`${this.baseUrl}/delete `, { body: quiz , headers: headers });
     }
 
 

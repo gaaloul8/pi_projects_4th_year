@@ -44,7 +44,7 @@ export class TakeimageComponent {
                 response => {
 
                     console.log('Text recognized:', response);
-                    this.router.navigate(['/main/home']); // Navigate to the login component after successful registration
+                    this.router.navigate(['/login']); // Navigate to the login component after successful registration
 
                     this.handleResponse(response);
 

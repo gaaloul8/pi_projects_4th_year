@@ -1,0 +1,69 @@
+<br>
+<br>
+<br>
+<br>
+<br>
+
+ <!--<div *ngFor="let doctor of doctorsData.split('\n')">
+    <div *ngIf="doctor">
+        <p>Name: {{ doctor.split(',')[0] }}</p>
+        <p>Profile URL: {{ doctor.split(',')[1] }}</p>
+        <p>Description: {{ doctor.split(',')[2] }}</p>
+    </div>
+</div>-->
+<div class="search-container">
+    <input type="text" placeholder="Search ..." [(ngModel)]="searchQuery">
+</div>
+
+<div id="groups" class="container">
+
+    <div class="groups-grid">
+
+
+
+        <div class="columns is-multiline">
+
+            <ng-container *ngFor="let doctor of filteredDoctors; let i = index">
+            <div class="column is-3"  >
+
+                <div class="group-box">
+                <article class="group-box" >
+
+                    <div class="box-info-hover">
+
+                    </div>
+
+
+                    <div  class="box-img has-background-image" data-background="https://via.placeholder.com/940x650" data-demo-background="assets/doctor.png"></div>
+                    <a >
+                        <div class="box-img--hover has-background-image" data-background="https://via.placeholder.com/940x650" data-demo-background="assets/doctor.png"></div>
+                    </a>
+
+
+
+                    <div class="box-info">
+                        <span class="box-category">{{ doctor.split(',')[2] }}</span>
+                        <h3 class="box-title">Doctor Name :{{ doctor.split(',')[0] }}</h3>
+                        <a [href]="doctor.split(',')[1]" class="box-category" target="_blank">{{ doctor.split(',')[1] }}</a>
+
+                        <span class="box-members">
+
+
+            </span>
+                    </div>
+
+                </article>
+                </div>
+
+            </div>
+            </ng-container>
+
+          </div>
+
+
+
+</div>
+    </div>
+
+
+

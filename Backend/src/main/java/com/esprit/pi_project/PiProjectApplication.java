@@ -13,6 +13,7 @@ import org.springframework.context.annotation.Configuration;
 @EnableAspectJAutoProxy
 @EnableScheduling
 @Configuration
+
 public class PiProjectApplication {
 
     public static void main(String[] args) {

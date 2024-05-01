@@ -1,0 +1,27 @@
+<div class="card-container">
+    <div class="card">
+        <div class="card-inner">
+            <form class="form" (ngSubmit)="onSubmit()">
+                <label for="firstName">First Name:</label>
+                <input type="text" id="firstName" name="firstName" [(ngModel)]="updateData.firstName" />
+
+                <label for="lastName">Last Name:</label>
+                <input type="text" id="lastName" name="lastName" [(ngModel)]="updateData.lastName" />
+
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" [(ngModel)]="updateData.password" />
+
+                <!-- Placeholder image with a label -->
+                <div style="text-align: center;">
+                    <label for="profilePicture">
+                        <img src="assets/palceholder.png" alt="Profile Picture" style="width: 150px; height: 150px; border-radius: 50%; border: 2px solid #ccc; cursor: pointer;">
+                    </label>
+                    <!-- Hidden file input field -->
+                    <input type="file" id="profilePicture" name="profilePicture" (change)="onFileSelected($event)" style="display: none;">
+                </div>
+
+                <button type="submit">Update</button>
+            </form>
+        </div>
+    </div>
+</div>

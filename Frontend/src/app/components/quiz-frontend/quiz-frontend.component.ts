@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, OnInit, Renderer2,AfterViewInit, ViewChild} from '@angular/core';
 import {FormBuilder, FormGroup, FormsModule, NgForm} from "@angular/forms";
 import {NgForOf} from "@angular/common";
 import {PaginatorModule} from "primeng/paginator";
@@ -10,6 +10,13 @@ import {QuizUserService} from "../../services/quiz-user/quiz-user.service";
 import {ProgressBarModule} from "primeng/progressbar";
 import {BadgeModule} from "primeng/badge";
 import {ProgressSpinnerModule} from "primeng/progressspinner";
+import {ButtonModule} from "primeng/button";
+import {DialogModule} from "primeng/dialog";
+import {InputTextModule} from "primeng/inputtext";
+import {InputTextareaModule} from "primeng/inputtextarea";
+import {RippleModule} from "primeng/ripple";
+import {RouterLink} from "@angular/router";
+import { MatDialog } from '@angular/material/dialog';
 
 
 @Component({
@@ -24,13 +31,21 @@ import {ProgressSpinnerModule} from "primeng/progressspinner";
         ProgressBarModule,
         BadgeModule,
         ProgressSpinnerModule,
+        ButtonModule,
+        DialogModule,
+        InputTextModule,
+        InputTextareaModule,
+        RippleModule,
+        RouterLink,
         // Assurez-vous que CommonModule est importé ici
 
     ],
   templateUrl: './quiz-frontend.component.html',
-  styleUrl: './quiz-frontend.component.scss'
+
+    styleUrls: ['./quiz-frontend.component.scss','../forum/forum.component.scss','../../../assets/scss/core.scss'
+    ],
 })
-export class QuizFrontendComponent implements OnInit {
+export class QuizFrontendComponent implements OnInit{
     quizzes: any[] = [];
     questions: any[] = [];
     selectedQuiz: any = {};
@@ -43,6 +58,9 @@ export class QuizFrontendComponent implements OnInit {
     selectedOptionContent: { [questionId: number]: string } = {};
     loading = true;
     loading1 = true;
+    showModal: boolean = false;
+    participation: any;
+
 
     quizUser: any = {
         score: 12,
@@ -56,12 +74,15 @@ export class QuizFrontendComponent implements OnInit {
     public showQuizModal: boolean;
     showResultMessage = false;
 
+     participationStates: boolean[];
 
-    constructor(private quizService: QuizService, private formBuilder: FormBuilder, private questionQuizService: QuestionQuizService, private quizUserService: QuizUserService,) {
+
+    constructor(private quizService: QuizService, private formBuilder: FormBuilder, private questionQuizService: QuestionQuizService, private quizUserService: QuizUserService, private renderer: Renderer2,private dialog: MatDialog) {
     }
 
     ngOnInit(): void {
         this.loadQuizzes();
+
         this.quiForm = this.formBuilder.group({
             idQuiz: [''],
             description: [''],
@@ -70,14 +91,46 @@ export class QuizFrontendComponent implements OnInit {
 
         });
 
+        setTimeout(() => {
+            this.loadJsFiles();
+
+        }, 100);
 
     }
 
-    loadQuizzes(): void {
+    /*ngAfterViewInit(): void {
+        setTimeout(() => {
+            this.loadJsFiles();
+
+        }, 100);
+
+
+    }*/
+
+
+ /*   loadQuizzes(): void {
         this.quizService.getAllQuizzesAllowedToPublish().subscribe(
             (quizzes: any[]) => {
                 this.quizzes = quizzes;
                 console.log(quizzes);
+
+            },
+            (error) => {
+                console.error('Une erreur s\'est produite lors du chargement des quizzes : ', error);
+            }
+        );
+    }*/
+    loadQuizzes(): void {
+        this.quizService.getAllQuizzesAllowedToPublish().subscribe(
+            (quizzes: any[]) => {
+                const participationPromises = quizzes.map(quiz => this.showLastParticipation1(quiz.idQuiz));
+
+                Promise.all(participationPromises).then((participations: any[]) => {
+                    this.quizzes = quizzes;
+                    this.participationStates = participations.map(participation => participation !== null);
+                }).catch(error => {
+                    console.error('Une erreur s\'est produite lors du chargement des participations : ', error);
+                });
             },
             (error) => {
                 console.error('Une erreur s\'est produite lors du chargement des quizzes : ', error);
@@ -86,12 +139,57 @@ export class QuizFrontendComponent implements OnInit {
     }
 
 
+
     selectQuiz(quiz: any): void {
         this.selectedQuiz = quiz;
 
         this.isNewQuiz = false;
         this.selectedQuizId = this.selectedQuiz.idQuiz;
         console.log(this.selectedQuizId)
+    }
+
+    showLastParticipation1(idQuiz: number): Promise<any> {
+        return new Promise((resolve, reject) => {
+            this.quizUserService.retrieveQuizUserParticipation(idQuiz).subscribe(
+                (participation: any) => {
+                    console.log(participation);
+                    resolve(participation);
+                },
+                (error) => {
+                    console.error('Une erreur s\'est produite lors du chargement de la dernière participation au quiz : ', error);
+                    reject(error);
+                }
+            );
+        });
+    }
+    showLastParticipation(idQuiz): void {
+       console.log(idQuiz);
+        this.quizUserService.retrieveQuizUserParticipation(idQuiz).subscribe(
+            (participation: any) => {
+                this.participation = participation;
+                console.log(participation);
+                this.showModal = true;
+            },
+            (error) => {
+                console.error('Une erreur s\'est produite lors du chargement de la dernière participation au quiz : ', error);
+            }
+        );
+    }
+
+    closeModal(): void {
+        this.showModal = false;
+    }
+
+
+    hasParticipation(idQuiz: number): boolean {
+        // Vérifier si idQuiz est null
+        if (idQuiz === null) {
+            return false; // Aucun quiz n'est sélectionné, donc pas de participation
+        }
+
+        // Vérifier si une participation existe pour le quiz sélectionné
+        const participation = this.showLastParticipation(idQuiz);
+        return participation !== null;
     }
 
     /* startQuiz(quizId: number): void {
@@ -131,9 +229,29 @@ export class QuizFrontendComponent implements OnInit {
 
         });
     }
+    showErrorMessage: boolean = false;
 
+    // Fonction pour afficher l'alerte d'erreur
+    displayErrorMessage() {
+        this.showErrorMessage = true;
+    }
+
+    // Fonction pour fermer l'alerte d'erreur
+    dismissErrorMessage() {
+        this.showErrorMessage = false;
+    }
 
     nextQuestion(): void {
+        const currentQuestionId = this.questions[this.currentQuestionIndex].idQuestion;
+        console.log(currentQuestionId);
+
+        if (!this.selectedOptions[currentQuestionId]) {
+
+           // alert("Please select an answer before moving on to the next question.");
+            this.displayErrorMessage();
+            return;
+        }
+
         if (this.currentQuestionIndex < this.questions.length) {
             this.currentQuestionIndex++;
         }
@@ -189,7 +307,7 @@ export class QuizFrontendComponent implements OnInit {
                 this.loading1 = false;
                 console.log(this.showResultMessage)
                 this.showResultMessage = true;
-            }, 2000);
+            }, 2500);
 
             // Réinitialiser les options sélectionnées
             this.selectedOptions = {};
@@ -219,17 +337,37 @@ export class QuizFrontendComponent implements OnInit {
         setTimeout(() => {
             // Après 5 secondes, ouvrez le modal du quiz
             console.log(this.selectedQuiz);
+
             this.showQuizModal = true;
             this.showQuizLauncher = false;
+
             this.openQuizModal(this.selectedQuiz);
-        }, 2500);
+        }, 2000);
+    }
+
+    public loadJsFile(url: string) {
+        const body = <HTMLDivElement>document.body;
+        const script = document.createElement('script');
+        script.innerHTML = '';
+        script.src = url;
+        script.async = false;
+        script.defer = true;
+        script.className = "custom-js";
+        script.onerror = (error) => {
+            console.error('Failed to load script:', error);
+        };
+        this.renderer.appendChild(document.body, script);
+    }
+
+    loadJsFiles(): void {
+        this.loadJsFile("../../../../assets/js/common.js");
+        this.loadJsFile("../../../../assets/js/global.js");
+        this.loadJsFile("../../../../assets/js/main.js");
     }
 
 
 
+
 }
-
-
-
 
 

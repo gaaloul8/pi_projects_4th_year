@@ -5,6 +5,8 @@ import com.esprit.pi_project.services.AuthService;
 import com.esprit.pi_project.services.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,10 +25,10 @@ public class AdminController {
         return  this.userService.getAll();
     }
     @GetMapping("/getuser/{id}")
-    public User getUserbyId(@PathVariable Integer id){
+    public User getUserById(@PathVariable Integer id) {
         return this.userService.findById(id);
-
     }
+
     @DeleteMapping("/deleteuser/{id}")
     public void deleteUser(@PathVariable Integer id){
       User  UserToDelete=this.userService.findById(id);
