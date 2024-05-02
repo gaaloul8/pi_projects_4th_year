@@ -1,0 +1,20 @@
+.post-image-container {
+    display: flex;
+    justify-content: center;
+    width: 100%; /* Take up the full width */
+    padding: 10px; /* Add padding for a sleek look */
+    box-sizing: border-box; /* Ensure padding doesn't affect container size */
+}
+
+.post-image {
+    max-width: 60%; /* Ensure the image doesn't exceed the container width */
+    max-height: 85%; /* Ensure the image doesn't exceed the container height */
+    border-radius: 16px; /* Adjust this value to your preference */
+    object-fit: cover; /* Ensures the image covers the entire container */
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2); /* Enhanced shadow effect with a subtle tint */
+    transition: transform 0.3s ease-in-out; /* Add a smooth transition effect */
+}
+
+.post-image:hover {
+    transform: scale(1.05); /* Scale up the image on hover for a dynamic effect */
+}

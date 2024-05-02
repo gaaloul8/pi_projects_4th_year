@@ -71,14 +71,17 @@ import { PageEventComponent } from './components/page-event/page-event.component
 import { ListReservationFrontComponent } from './components/list-reservation-front/list-reservation-front.component';
 
 import { PostFrontComponent } from './components/post-front/post-front.component';
+import { CommentComponent } from './components/comment/comment.component';
+import { CommentService } from './services/comment.service';
+import { ModalModule } from 'ngx-bootstrap/modal';
 
 
 
 @NgModule({
     declarations: [AppComponent, FeedbackComponent,ChartEventComponent,NotfoundComponent , ListfeedbackClubManagerComponent,ListReservationEventComponent,ForumComponent,ForumDetailComponent ,
-
-    LandingHomeComponent ,SidebarComponent, HomeComponent ,EventBackComponent , EventfrontComponent,PostFrontComponent,QuestionDetailComponent,
-    ClubsComponent,PostComponent,PageEventComponent,ListReservationFrontComponent],
+        PostFrontComponent,
+    LandingHomeComponent ,SidebarComponent, HomeComponent ,EventBackComponent , EventfrontComponent,QuestionDetailComponent,
+    ClubsComponent,PostComponent,PageEventComponent,ListReservationFrontComponent,CommentComponent],
 
     imports: [AppRoutingModule,
          AppLayoutModule,
@@ -135,12 +138,13 @@ import { PostFrontComponent } from './components/post-front/post-front.component
         RegisterComponent,
         CompleteprofileComponent,
         TakeimageComponent,
-        CardModule
+        CardModule,
+        ModalModule.forRoot(),
         ],
         providers: [
             { provide: LocationStrategy, useClass: PathLocationStrategy },
             CountryService, CustomerService, IconService, NodeService,
-            PhotoService, ProductService,RewardService,DiscountService,EventService, MessageService,DatePipe,HttpClient,QuizService
+            PhotoService, ProductService,RewardService,DiscountService,EventService, MessageService,DatePipe,HttpClient,QuizService,CommentService
         ],
         bootstrap: [AppComponent]
     })

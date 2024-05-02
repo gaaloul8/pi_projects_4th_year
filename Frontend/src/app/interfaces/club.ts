@@ -1,3 +1,5 @@
+import { UserModel } from "../models/userModel";
+
 export interface Club{
   clubId?: number;
   
@@ -7,4 +9,5 @@ export interface Club{
   membershipCount?: number;
   tag?: string;
   image?: any;
+  user?: UserModel;
 }

@@ -7,6 +7,7 @@
             <button pButton pRipple label="Add new Post" icon="pi pi-plus" class="p-button-success mr-2" (click)="openNew()"></button>
           </div>
         </ng-template>
+        
       </p-toolbar>
 
       <p-table [value]="posts">
@@ -27,11 +28,11 @@
             <td>
               <p-tableCheckbox [value]="post"></p-tableCheckbox>
             </td>
-            <td> <img [src]="post.image ? 'data:image/png;base64,' + post.image : ''" alt="Selected Image" width="150" class="mt-2"></td>
+            <td>
+              <img [src]="post.image ? 'data:image/png;base64,' + post.image : ''" alt="Selected Image" width="150" class="mt-2">
+            </td>
             <td>{{ post.postDate | date : 'dd/MM/yyyy HH:mm' }}</td>
             <td>{{ post.content }}</td>
-            
-
             <td>
               <div class="flex">
                 <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" (click)="editPost(post)"></button>
@@ -44,28 +45,22 @@
 
       <p-dialog [(visible)]="postDialog" [style]="{width: '450px'}" header="Post Details" [modal]="true" class="p-fluid">
         <ng-template pTemplate="content">
-          
-
-          <form [formGroup]="postForm" enctype="multipart/form-data">
-            <div class="field">
-              <label for="content">Content</label>
-              <textarea id="content" [(ngModel)]="content" pInputTextarea formControlName="content" required rows="3" cols="20"></textarea>
-            </div>
-            <div class="field">
-              <label for="image">Image</label>
-              <input type="file" (change)="onImageSelected($event)" accept="image/*" id="imageInput">
-              <img [src]="selectedImage" [(ngModel)]="selectedImage" alt="Selected Image" width="150" class="mt-2">
-            </div>
-          </form>
-
+          <div class="field">
+            <label for="content">Content</label>
+            <textarea id="content" [(ngModel)]="content" pInputTextarea required rows="3" cols="20" name="content" ngDefaultControl></textarea>
+          </div>
+          <div class="field">
+            <label for="image">Image</label>
+            <input type="file" (change)="onImageSelected($event)" accept="image/*" id="imageInput">
+            <img [src]="selectedImage" alt="Selected Image" width="150" class="mt-2">
+          </div>
         </ng-template>
-
         <ng-template pTemplate="footer">
           <button pButton pRipple label="Cancel" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
           <!-- Add button -->
           <button *ngIf="!post.postId" pButton pRipple label="Add" icon="pi pi-plus" class="p-button-text" (click)="addPost()"></button>
           <!-- Update button -->
-          <button *ngIf="post.postId" pButton pRipple label="Update" icon="pi pi-check" class="p-button-text" (click)="updateReward(post.postId)"></button>
+          <button *ngIf="post.postId" pButton pRipple label="Update" icon="pi pi-check" class="p-button-text" (click)="updatePost(post.postId, content, selectedImage)"></button>
         </ng-template>
       </p-dialog>
 

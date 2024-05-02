@@ -23,6 +23,8 @@ import {ActivityFrontendComponent} from "../components/activity-frontend/activit
 import { PageEventComponent } from '../components/page-event/page-event.component';
 import { ListReservationFrontComponent } from '../components/list-reservation-front/list-reservation-front.component';
 import { FeedbackComponent } from '../components/feedback/feedback.component';
+import { PostFrontComponent } from '../components/post-front/post-front.component';
+import { CommentComponent } from '../components/comment/comment.component';
 
 const routes: Routes = [
 
@@ -42,10 +44,13 @@ const routes: Routes = [
   {path:'listreservationfront',component : ListReservationFrontComponent},
   {path: 'listFeedBack', component: FeedbackComponent},
 
-{ path: 'front-club', component: FrontClubComponent },
+    { path: 'front-club', component: FrontClubComponent },
     { path: 'quiz-frontend', component: QuizFrontendComponent},
     { path: 'docteur-frontend', component: ScrapingDataComponent},
     { path: 'activity-frontend/:idQuiz', component: ActivityFrontendComponent },
+    {path:'comment',component:CommentComponent},
+    {path:'front-post',component:PostFrontComponent},
+
 
 
 

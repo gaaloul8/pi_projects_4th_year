@@ -6,6 +6,7 @@ import { FrontofficeComponent } from './frontoffice.component';
 import { HeaderComponent } from '../components/header/header.component';
 import { FooterComponent } from '../components/footer/footer.component';
 import {DropdownUserComponent} from "../components/dropdown-user/dropdown-user.component";
+import { PostFrontComponent } from '../components/post-front/post-front.component';
 
 
 @NgModule({

@@ -60,6 +60,7 @@ import { PostFrontComponent } from './components/post-front/post-front.component
 import { PostStatComponent } from './components/post-stat/post-stat.component';
 import { ClubStatComponent } from './components/club-stat/club-stat.component';
 import { FrontClubComponent } from './components/front-club/front-club.component';
+import { CommentComponent } from './components/comment/comment.component';
 
 
 
@@ -101,7 +102,6 @@ import { FrontClubComponent } from './components/front-club/front-club.component
                     {path:'users',component:UserBackComponent},
                             { path: 'quiz', component: QuizComponent},
                             { path: 'question-quiz', component: QuestionQuizComponent},
-
                             { path: 'question-quiz/:idQuiz', component: QuestionQuizComponent },
                     { path: 'quiz-back', component: QuizComponent},
                     { path: 'quiz-chart', component: QuizChartComponent},
@@ -117,6 +117,7 @@ import { FrontClubComponent } from './components/front-club/front-club.component
                             { path: 'transactions', component: TransactionhistoryComponent },
                             { path: 'statistics', component: StatisticsComponent },
                             { path: 'rewardusers', component: RewardusersComponent },
+
 
                 ],
             },

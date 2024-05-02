@@ -17,11 +17,15 @@ public class Comment implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long commentId;
+
     private Date date;
-    @NotBlank(message = "Content must not be blank")
+
     private String content;
 
     @ManyToOne
     @JsonIgnore
     private Post post;
+
+    @ManyToOne
+    private User user;
 }

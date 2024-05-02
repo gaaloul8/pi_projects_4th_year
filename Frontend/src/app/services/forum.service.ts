@@ -7,7 +7,9 @@ import { Observable } from 'rxjs';
 export class ForumService {
 
   private baseUrl = 'http://localhost:8081/forums';
+
   private token =  localStorage.getItem('jwtAccessToken');
+
 
 
 

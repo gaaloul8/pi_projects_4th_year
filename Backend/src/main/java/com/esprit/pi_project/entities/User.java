@@ -1,14 +1,6 @@
 package com.esprit.pi_project.entities;
 import com.esprit.pi_project.serviceImpl.CustomAuthorityDeserializer;
-
-import com.fasterxml.jackson.annotation.JsonBackReference;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.fasterxml.jackson.annotation.*;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import jakarta.persistence.*;
@@ -49,15 +41,11 @@ public class User implements UserDetails, Serializable {
     private String niveau;
     private String Identifiant;
     private boolean FirstLogin;
-
     //private int tokenA;
 
     private float tokenSolde;
-
-
     @Column(name = "password_hint")
     private String passwordHint;
-
 
     @Column(name = "registration_date")
     private Date registrationDate;
@@ -76,8 +64,8 @@ public class User implements UserDetails, Serializable {
     @OneToMany(cascade = CascadeType.ALL,mappedBy = "User")
     //@JsonBackReference
     @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class , property = "idReward")
-
     private List<Reward> rewardList;
+
     @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL,mappedBy = "QuizOwner")
     private List<Quiz> quizList;
@@ -97,9 +85,15 @@ public class User implements UserDetails, Serializable {
     @Column(name = "lock_time")
     private LocalDateTime lockTime;
 
-
-    @OneToOne(cascade = CascadeType.ALL)
+    @JsonBackReference
+    @OneToOne(mappedBy = "user")
     private Club club;
+    @JsonIgnore
+    @OneToMany(mappedBy = "user")
+    private List<Comment> comments;
+    @JsonIgnore
+    @OneToMany(mappedBy = "user")
+    private List<Post> posts ;
 
     @OneToMany(cascade = CascadeType.ALL,mappedBy = "User")
     @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class , property = "idFeedback")
@@ -127,6 +121,7 @@ public class User implements UserDetails, Serializable {
 
 
     @JsonDeserialize(using = CustomAuthorityDeserializer.class)
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority(role.name()));
@@ -137,11 +132,9 @@ public class User implements UserDetails, Serializable {
         return email;
     }
 
-
     @Override
     public boolean isAccountNonExpired() {
-
-       return  true;
+        return true;
     }
 
     @Override

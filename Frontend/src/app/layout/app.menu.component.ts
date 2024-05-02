@@ -32,6 +32,10 @@ export class AppMenuComponent implements OnInit {
                     { label: 'Transaction', icon: 'pi pi-fw pi-id-card', routerLink: ['/transactions'] },
                     { label: 'StatTransaction', icon: 'pi pi-fw pi-id-card', routerLink: ['/stattransaction'] },
                     { label: 'StatUsers', icon: 'pi pi-fw pi-id-card', routerLink: ['/statistics'] },
+                    { label: 'Club Statistics', icon: 'pi pi-fw pi-chart-bar', routerLink: ['/stat-club'] },
+                    { label: 'Post Statistics', icon: 'pi pi-fw pi-chart-bar', routerLink: ['/stat-post'] },
+                    { label: 'All posts', icon: 'pi pi-fw pi-id-card', routerLink: ['/post'] },
+                    { label: 'All clubs', icon: 'pi pi-fw pi-id-card', routerLink: ['/club'] },
 
 
                     { label: 'Form Layout', icon: 'pi pi-fw pi-id-card', routerLink: ['/uikit/formlayout'] },

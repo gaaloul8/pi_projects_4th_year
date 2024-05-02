@@ -3,6 +3,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { PostService, Post } from 'src/app/services/post.service';
+import BadWordsFilter from 'bad-words'; // Import BadWordsFilter library
+
 
 
 @Component({
@@ -23,11 +25,15 @@ export class PostComponent implements OnInit {
   selectedImage: any ;
   content: string;
   //imageUrl:String;
+  filter: any;
+  
 
-  constructor(private postService: PostService, private formbuilder: FormBuilder,private http:HttpClient) { }
+  constructor(private postService: PostService, private formbuilder: FormBuilder,private http:HttpClient,) { }
   
 
   ngOnInit(): void {
+    this.filter = new BadWordsFilter();
+
     this.getAllPosts();
     this.postForm = this.formbuilder.group({
       image: [''],
@@ -58,36 +64,36 @@ export class PostComponent implements OnInit {
       });
   }
 
-  /*addPost(): void {
+  
+//  async addPost(): Promise<void> {
+//     this.submitted = true;
+//     try {
+//         const newpost=await this.postService.addPost(this.content , this.selectedImage).toPromise();
+
+//                 console.log("Post created Successfully");
+//                 this.postDialog = false;
+//                 this.posts.push(newpost);
+                
+//                 this.content='';
+//                 //window.location.reload();
+//     }catch (error){
+//         console.error(error)
+//     }
+  //}
+  async addPost(): Promise<void> {
     this.submitted = true;
-    this.postService.addPost(this.content, this.selectedImage).subscribe(
-      response => {
-        //console.log("Post created Successfully");
-        window.location.reload();
-        this.postDialog = false;
-        this.getAllPosts(); // Reload posts after adding
-        
-      },
-      error => {
-        console.error('Error creating post:', error);
-        // Handle error appropriately, e.g., show error message
-      }
-    );
-  }*/
-  addPost(): void {
-    this.submitted = true;
+    const filteredContent = this.filter.clean(this.content); // Filter out bad words
     try {
-        this.postService.addPost(this.content , this.selectedImage).toPromise();
-
-                console.log("Post created Successfully");
-                this.postDialog = false;
-                window.location.reload();
-    }catch (error){
-        console.error(error)
+      const newpost = await this.postService.addPost(filteredContent, this.selectedImage).toPromise();
+      console.log("Post created Successfully");
+      this.posts.push(newpost);
+      this.content = '';
+      this.postDialog = false;
+    } catch (error) {
+      console.error(error);
     }
-
-
-    }
+  }
+  
 
   openNew() {
     this.post = {};
@@ -145,11 +151,14 @@ export class PostComponent implements OnInit {
     this.selectedPostId = post.postId;
     this.deletePostDialog = true;
   }
-  updateReward(rewardId: number): void {
+  updatePost(postId: number,content:string,selectedImage:File): void {
+    this.selectedImage=selectedImage;
+    this.content=content;
+    
     this.submitted = true;
     try {
-        this.postService.updateReward(rewardId, this.postForm.value, this.selectedImage).toPromise();
-        console.log("Reward updated Successfully");
+        this.postService.updateReward(postId, this.content, this.selectedImage).toPromise();
+        console.log("Post updated Successfully");
         window.location.reload();
         // Handle success, e.g., show a success message to the user
     } catch (error) {
@@ -158,25 +167,16 @@ export class PostComponent implements OnInit {
     }
 }
 
-  updatePost(post: Post) {
-    this.showConfirmation= true;
-    this.postService.updatePost(post).subscribe(
-      
-      updatedPost => {
-        console.log('Post updated:', updatedPost);
-        // Success: Handle the updated response if necessary
-      },
-      error => {
-        console.error('Error updating post:', error);
-        // Error: Handle errors if necessary
-      }
-    );
-  }
+  
 
   editPost(postEdit: Post) {
-    this.post = { ...postEdit };
+     this.post = { ...postEdit };
+    console.log(postEdit.content);
+    this.content=postEdit.content;
+   
     this.postDialog = true;
   }
+  
 
   showDialogToAdd(): void {
     this.postForm.reset();
