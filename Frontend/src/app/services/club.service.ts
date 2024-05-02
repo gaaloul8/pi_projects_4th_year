@@ -1,7 +1,9 @@
+import { Club } from './../interfaces/club';
+
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Club } from '../interfaces/club';
+import { UserModel } from '../models/userModel';
 
 @Injectable({
   providedIn: 'root'
@@ -9,7 +11,7 @@ import { Club } from '../interfaces/club';
 export class ClubService {
 
   private baseUrl = 'http://localhost:8081/clubs';
-  private token = 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzYWRva0Blc3ByaXQudG4iLCJpYXQiOjE3MTQyMjE4NjgsImV4cCI6MTcxNDMwODI2OH0.xOZBqJt88F2WFkfqPeFJr7Q59PpKwfnk3Ounsy0J9vQ';
+  private token = localStorage.getItem('jwtAccessToken');
 
   constructor(private http: HttpClient) { }
 
@@ -20,7 +22,7 @@ export class ClubService {
     });
     return this.http.post<Club>(`${this.baseUrl}/add`, club, { headers: headers });
   }*/
-  addClub(club: Club, imageFile: File): Observable<any> {
+  addClub(club: Club, imageFile: File): Observable<Club> {
     const formData = new FormData();
     formData.append('clubName', club.clubName);
     formData.append('description', club.description);
@@ -34,12 +36,18 @@ export class ClubService {
     return this.http.post<Club>(`${this.baseUrl}/add`, formData, { headers: headers });
   }
 
-  updateClub(club: Club): Observable<Club> {
-    const headers = new HttpHeaders({
-      'Authorization': 'Bearer ' + this.token,
-      'Content-Type': 'application/json'
-    });
-    return this.http.put<Club>(`${this.baseUrl}/update`, club, { headers: headers });
+  updateClub(clubId:number, club:Club ,image:File): Observable<Club> {
+    const formData = new FormData();
+        formData.append('clubName', club.clubName);
+        formData.append('tag', club.tag);
+        formData.append('membershipCount', club.membershipCount.toString());
+        formData.append('description', club.description);
+        formData.append('image', image);
+
+        const headers = new HttpHeaders({
+            'Authorization': 'Bearer ' + this.token
+        });
+        return this.http.put<Club>(`${this.baseUrl}/updateclub/${clubId}`, formData, { headers: headers });
   }
 
   getAllClubs(): Observable<Club[]> {
@@ -56,7 +64,12 @@ export class ClubService {
     });
     return this.http.delete<void>(`${this.baseUrl}/${id}`, { headers: headers });
   }
-
+  getUser(): Observable<UserModel> {
+    const headers = new HttpHeaders({
+      'Authorization': 'Bearer ' + this.token
+    });
+    return this.http.get<UserModel>(`${this.baseUrl}/getconnecteduser`, { headers: headers });
+  }
   getClubByTag(tag: string): Observable<Club[]> {
     return this.http.get<Club[]>(`${this.baseUrl}/getByTag/${tag}`);
   }
@@ -64,6 +77,7 @@ export class ClubService {
   getClubByName(clubName: string): Observable<Club> {
     return this.http.get<Club>(`${this.baseUrl}/getByName/${clubName}`);
   }
+  
 
   generatePDF(): Observable<Blob> {
      return this.http.get(`${this.baseUrl}/generate-pdf`, { responseType: 'blob' });

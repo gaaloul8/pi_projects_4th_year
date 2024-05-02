@@ -23,6 +23,7 @@ import {TakeimageComponent} from "./components/takeimage/takeimage.component";
 import { CardModule } from 'primeng/card';
 import {HttpClient} from "@angular/common/http";
 import {WebcamModule} from "ngx-webcam";
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import { BrowserModule } from '@angular/platform-browser';
 import { ClubsComponent } from './components/clubs/clubs.component';
@@ -68,13 +69,17 @@ import { ChartEventComponent } from './components/chart-event/chart-event.compon
 import { ListfeedbackClubManagerComponent } from './components/listfeedback-club-manager/listfeedback-club-manager.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { PostFrontComponent } from './components/post-front/post-front.component';
+import { CommentComponent } from './components/comment/comment.component';
+import { ModalModule } from 'ngx-bootstrap/modal';
+import { CommentService } from './services/comment.service';
+
 
 
 
 @NgModule({
     declarations: [AppComponent, FeedbackComponent,ChartEventComponent,NotfoundComponent , ListfeedbackClubManagerComponent,ListReservationEventComponent,ForumComponent,ForumDetailComponent ,
     LandingHomeComponent ,SidebarComponent, FooterComponent,HeaderComponent, HomeComponent ,EventBackComponent , EventfrontComponent,PostFrontComponent,
-    ClubsComponent,PostComponent],
+    ClubsComponent,PostComponent,CommentComponent],
     imports: [AppRoutingModule, AppLayoutModule,
          ReactiveFormsModule, FormsModule,
           BrowserModule,ToolbarModule,
@@ -126,12 +131,14 @@ import { PostFrontComponent } from './components/post-front/post-front.component
         RegisterComponent,
         CompleteprofileComponent,
         TakeimageComponent,
-        CardModule
+        CardModule,
+        ModalModule.forRoot(),
+        FontAwesomeModule
         ],
         providers: [
             { provide: LocationStrategy, useClass: PathLocationStrategy },
             CountryService, CustomerService, IconService, NodeService,
-            PhotoService, ProductService,RewardService,DiscountService,EventService, MessageService,DatePipe,HttpClient,QuizService
+            PhotoService, ProductService,RewardService,DiscountService,EventService, MessageService,DatePipe,HttpClient,QuizService,CommentService
         ],
         bootstrap: [AppComponent]
     })

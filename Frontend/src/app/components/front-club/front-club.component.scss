@@ -1,0 +1,10 @@
+/* Custom CSS for responsiveness */
+@media (max-width: 768px) {
+    .field.is-grouped {
+      flex-direction: column;
+    }
+    .field.is-grouped .control {
+      margin-bottom: 10px;
+    }
+  }
+  

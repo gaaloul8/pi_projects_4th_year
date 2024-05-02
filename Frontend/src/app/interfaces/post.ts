@@ -1,3 +1,4 @@
+import { UserModel } from "../models/userModel";
 
 
 export interface Post {
@@ -5,6 +6,9 @@ export interface Post {
     image?: string;
     postDate?: Date;
     content?: string;
+    user?: UserModel;
+    likes?: number;
+    likedByCurrentUser?: boolean;
     
     comments?: Comment[]; // Assuming you have a Comment model
   }

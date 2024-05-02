@@ -1,0 +1,154 @@
+/* post-comments-modal.component.css */
+.comment-container {
+    margin-bottom: 20px;
+}
+
+.comment {
+    display: flex;
+}
+
+.user-photo-container {
+    margin-right: 10px;
+}
+
+.user-photo {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+}
+
+.user-info {
+    margin-bottom: 5px;
+}
+
+.user-info p {
+    margin: 0; /* Remove default margin */
+}
+
+.user-name {
+    font-weight: bold;
+}
+
+.comment-time {
+    font-size: 0.8em;
+    color: #777;
+}
+
+.comment-text {
+    margin-top: 5px;
+    word-wrap: break-word; /* Ensure long comments wrap within the container */
+    max-width: 300px; /* Set a maximum width for the comment text */
+    overflow-wrap: break-word; /* Handle long words */
+}
+
+.comment-box {
+    display: flex; /* Make the comment box flex container */
+    flex-wrap: wrap; /* Allow content to wrap within the container */
+}
+
+.comment-details {
+    flex-grow: 1; /* Make comment details take remaining space */
+}
+
+/* Rest of your CSS styles... */
+
+/* post-comments-modal.component.css */
+.futuristic-header {
+    background-color: rgba(255, 255, 255, 0.9); /* Light background with low opacity */
+    color: #333333; /* Dark text */
+}
+
+.futuristic-body {
+    background-color: rgba(255, 255, 255, 0.8); /* Lighter background with low opacity */
+}
+
+.futuristic-message {
+    color: #666666; /* Medium gray text color */
+}
+
+.futuristic-comment-box {
+    background-color: rgba(255, 255, 255, 0.9); /* Light comment box with low opacity */
+    padding: 15px;
+    border-radius: 10px;
+}
+
+.futuristic-comment-details {
+    margin-left: 15px; /* Space between user photo and comment details */
+}
+
+.futuristic-user-name {
+    color: #333333; /* Dark user name */
+}
+
+.futuristic-comment-time {
+    color: #666666; /* Medium gray text color for time */
+}
+
+.futuristic-comment-text {
+    color: #333333; /* Dark comment text */
+}
+
+.futuristic-add-comment-container {
+    margin-top: 20px; /* Space between comments and add comment input */
+}
+
+.futuristic-input-group {
+    border: 1px solid #333333; /* Dark border */
+    border-radius: 10px;
+}
+
+.futuristic-comment-input {
+    background-color: rgba(255, 255, 255, 0.7); /* Light input background with low opacity */
+    color: #333333; /* Dark text color */
+    border: none; /* Remove border */
+}
+
+.futuristic-add-comment-button {
+    background-color: #cd0f0f; /* Red button color */
+    border: none; /* Remove border */
+}
+
+.futuristic-add-comment-button:hover {
+    background-color: #880a0a; /* Darker red on hover */
+}
+/* post-comments-modal.component.css */
+.comment-container {
+    margin-bottom: 20px; /* Space between comments */
+}
+
+.comment-box {
+    background-color: rgba(238, 235, 235, 0.9); /* Light comment box with low opacity */
+    padding: 15px;
+    border-radius: 10px;
+    border: 1px solid #e0e0e0; /* Light border */
+    width: 80%;
+}
+
+.comment-box:hover {
+    border: 1px solid #a8a4a4; /* Darker border on hover */
+    
+}
+/* post-comments-modal.component.css */
+.futuristic-close-button {
+    background: linear-gradient(45deg, #ffffff, #e72b05);
+    border: none;
+    border-radius: 50%;
+    color: #fff;
+    cursor: pointer;
+    font-size: 20px;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
+    transition: background 0.3s ease;
+}
+
+.futuristic-close-button:hover {
+    background: linear-gradient(45deg, hsl(8, 97%, 48%), #f6f8f6);
+}
+
+
+
+
