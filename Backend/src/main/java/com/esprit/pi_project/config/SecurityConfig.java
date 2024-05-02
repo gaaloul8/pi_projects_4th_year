@@ -34,7 +34,7 @@ public class SecurityConfig {
                         authorizeRequests
                                 .requestMatchers("/auth/**","/profile/","/auth/reset-password/").permitAll()
 
-                                .requestMatchers("/event/**","/reservation/**","/feedback/**").permitAll()
+                                .requestMatchers("/event/**","/reservation/**","/feedback/**","/discount/**","/reward/sendSMS").permitAll()
 
 
 
