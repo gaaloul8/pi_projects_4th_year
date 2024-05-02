@@ -86,9 +86,9 @@ export class PostComponent implements OnInit {
     try {
       const newpost = await this.postService.addPost(filteredContent, this.selectedImage).toPromise();
       console.log("Post created Successfully");
-      this.postDialog = false;
       this.posts.push(newpost);
       this.content = '';
+      this.postDialog = false;
     } catch (error) {
       console.error(error);
     }

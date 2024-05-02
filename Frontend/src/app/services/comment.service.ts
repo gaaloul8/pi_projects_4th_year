@@ -16,7 +16,7 @@ export class CommentService {
       'Authorization': 'Bearer ' + this.token,
       'Content-Type': 'application/json'
     });
-    return this.http.post<Comment>(`${this.baseUrl}/add/${postId}`, { content }, { headers });
+    return this.http.post<Comment>(`${this.baseUrl}/add/${postId}`,{content} , { headers: headers });
   }
 
   updateComment(comment: Comment): Observable<Comment> {
@@ -24,7 +24,7 @@ export class CommentService {
       'Authorization': 'Bearer ' + this.token,
       'Content-Type': 'application/json'
     });
-    return this.http.put<Comment>(`${this.baseUrl}/update`, comment, { headers });
+    return this.http.put<Comment>(`${this.baseUrl}/update`, comment, { headers: headers  });
   }
 
   getAllComments(): Observable<Comment[]> {
@@ -32,25 +32,29 @@ export class CommentService {
       'Authorization': 'Bearer ' + this.token,
       'Content-Type': 'application/json'
     });
-    return this.http.get<Comment[]>(`${this.baseUrl}/getall`,{ headers });
+    return this.http.get<Comment[]>(`${this.baseUrl}/getall`,{ headers: headers  });
   }
 
   getCommentById(id: number): Observable<Comment> {
-    return this.http.get<Comment>(`${this.baseUrl}/${id}`);
+    
+    const headers = new HttpHeaders({
+      'Authorization': 'Bearer ' + this.token
+  });
+    return this.http.get<Comment>(`${this.baseUrl}/${id}`, { headers: headers  });
   }
 
   deleteComment(id: number): Observable<Comment> {
     const headers = new HttpHeaders({
       'Authorization': 'Bearer ' + this.token
     });
-    return this.http.delete<Comment>(`${this.baseUrl}/${id}`, { headers });
+    return this.http.delete<Comment>(`${this.baseUrl}/${id}`, { headers: headers  });
   }
   getCommentsForPost(postId: number): Observable<Comment[]> {
     const headers = new HttpHeaders({
       'Authorization': 'Bearer ' + this.token,
       'Content-Type': 'application/json'
     });
-    return this.http.get<Comment[]>(`${this.baseUrl}/findbyPost/${postId}`, { headers });
+    return this.http.get<Comment[]>(`${this.baseUrl}/findbyPost/${postId}`, { headers: headers  });
   }
   
   

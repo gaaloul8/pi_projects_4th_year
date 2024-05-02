@@ -42,6 +42,7 @@ public class PostServiceImp implements PostService {
         post.setImage(base64Image);
         post.setPostDate(parsedDate);
         post.setContent(content);
+        post.setLikes(0);
 
 
 

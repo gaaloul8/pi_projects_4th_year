@@ -51,11 +51,18 @@ export class ClubService {
   }
 
   getAllClubs(): Observable<Club[]> {
-    return this.http.get<Club[]>(`${this.baseUrl}`);
+    const headers = new HttpHeaders({
+      'Authorization': 'Bearer ' + this.token
+  });
+    return this.http.get<Club[]>(`${this.baseUrl}`,{ headers: headers });
   }
 
   getClubById(id: number): Observable<Club> {
-    return this.http.get<Club>(`${this.baseUrl}/${id}`);
+    
+    const headers = new HttpHeaders({
+      'Authorization': 'Bearer ' + this.token
+  });
+    return this.http.get<Club>(`${this.baseUrl}/${id}`, { headers: headers });
   }
 
   deleteClub(id: number): Observable<void> {
@@ -71,16 +78,28 @@ export class ClubService {
     return this.http.get<UserModel>(`${this.baseUrl}/getconnecteduser`, { headers: headers });
   }
   getClubByTag(tag: string): Observable<Club[]> {
-    return this.http.get<Club[]>(`${this.baseUrl}/getByTag/${tag}`);
+    
+    const headers = new HttpHeaders({
+      'Authorization': 'Bearer ' + this.token
+  });
+    return this.http.get<Club[]>(`${this.baseUrl}/getByTag/${tag}`, { headers: headers });
   }
 
   getClubByName(clubName: string): Observable<Club> {
-    return this.http.get<Club>(`${this.baseUrl}/getByName/${clubName}`);
+    
+    const headers = new HttpHeaders({
+      'Authorization': 'Bearer ' + this.token
+  });
+    return this.http.get<Club>(`${this.baseUrl}/getByName/${clubName}`, { headers: headers });
   }
   
 
   generatePDF(): Observable<Blob> {
-     return this.http.get(`${this.baseUrl}/generate-pdf`, { responseType: 'blob' });
+    
+    const headers = new HttpHeaders({
+      'Authorization': 'Bearer ' + this.token
+  });
+     return this.http.get(`${this.baseUrl}/generate-pdf`, { responseType: 'blob' , headers: headers});
    }
    getClubTagStatistics(): Observable<Map<string, number>> {
     const headers = new HttpHeaders({

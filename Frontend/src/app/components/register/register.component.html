@@ -37,7 +37,10 @@ User
                         <div class="error-message" *ngIf="errorMessage">{{ errorMessage }}</div>
                         <div class="button-container">
                             <button type="submit" pButton label="Register" class="register-button"></button>
+                            <span class="not-member-text"><a routerLink="/Registerwitcard2" class="login-link">Register with CarD</a></span>
+
                             <span class="not-member-text">Already a member?<a routerLink="/login" class="login-link">Login</a></span>
+
                         </div>
                     </form>
                 </div>

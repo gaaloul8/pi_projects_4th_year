@@ -20,10 +20,12 @@ import { LandingHomeComponent } from './components/landing-home/landing-home.com
 import {QuizComponent} from "./components/quiz/quiz.component";
 import {QuestionQuizComponent} from "./components/question-quiz/question-quiz.component";
 import {QuizFrontendComponent} from "./components/quiz-frontend/quiz-frontend.component";
-import {GooglemapComponent} from "./components/googlemap/googlemap.component";
 
 import { EventBackComponent } from './components/event-back/event-back.component';
 import { EventfrontComponent } from './components/eventfront/eventfront.component';
+import { ForumBackComponent } from './components/forum-back/forum-back.component';
+import { ForumStatsComponent } from './components/forum-stats/forum-stats.component';
+import { FrontofficeComponent } from './frontoffice/frontoffice.component';
 import { ListReservationEventComponent } from './components/list-reservation-event/list-reservation-event.component';
 import { FeedbackComponent } from './components/feedback/feedback.component';
 import { ChartEventComponent } from './components/chart-event/chart-event.component';
@@ -42,6 +44,18 @@ import {CompleteprofileComponent} from "./components/completeprofile/completepro
 import {TakeimageComponent} from "./components/takeimage/takeimage.component";
 import {RegisterWithCardComponent} from "./components/register-with-card/register-with-card.component";
 import {UserBackComponent} from "./components/user-back/user-back.component";
+
+import { PageEventComponent } from './components/page-event/page-event.component';
+import { ListReservationFrontComponent } from './components/list-reservation-front/list-reservation-front.component';
+
+import {Registercard2Component} from "./components/registercard2/registercard2.component";
+import {AccountlockedComponent} from "./components/accountlocked/accountlocked.component";
+import {DropdownUserComponent} from "./components/dropdown-user/dropdown-user.component";
+import {UpdateUserAccountComponent} from "./components/update-user-account/update-user-account.component";
+
+import {ActivityFrontendComponent} from "./components/activity-frontend/activity-frontend.component";
+import {ScrapingDataComponent} from "./components/scraping-data/scraping-data.component";
+
 import { PostFrontComponent } from './components/post-front/post-front.component';
 import { PostStatComponent } from './components/post-stat/post-stat.component';
 import { ClubStatComponent } from './components/club-stat/club-stat.component';
@@ -51,84 +65,98 @@ import { CommentComponent } from './components/comment/comment.component';
 
 
 
+
+
 @NgModule({
     imports: [
         BrowserModule ,
         RouterModule.forRoot([
             {
-                path: '', component: AppLayoutComponent,
+                path: '',
                 children: [
+                    {
+                        path: '',
+                        component: AppLayoutComponent,
+                        children: [
                     { path: '', loadChildren: () => import('./demo/components/dashboard/dashboard.module').then(m => m.DashboardModule) },
                     { path: 'uikit', loadChildren: () => import('./demo/components/uikit/uikit.module').then(m => m.UIkitModule) },
                     { path: 'utilities', loadChildren: () => import('./demo/components/utilities/utilities.module').then(m => m.UtilitiesModule) },
                     { path: 'documentation', loadChildren: () => import('./demo/components/documentation/documentation.module').then(m => m.DocumentationModule) },
                     { path: 'blocks', loadChildren: () => import('./demo/components/primeblocks/primeblocks.module').then(m => m.PrimeBlocksModule) },
                     { path: 'pages', loadChildren: () => import('./demo/components/pages/pages.module').then(m => m.PagesModule) },
+                    { path: 'forumback',component:ForumBackComponent},
+                    { path: 'forumstat',component:ForumStatsComponent},
                     {path:'stattransaction',component : TransactionstatComponent},
                     { path: 'statistics', component: StatisticsComponent },
                     { path: 'reward', component: RewardComponent },
                     { path: 'discounts', component: DiscountsComponent },
                     { path: 'transactions', component: TransactionhistoryComponent },
-                    {path:'front-post',component:PostFrontComponent},
                     {path:'stat-club',component:ClubStatComponent},
                     {path:'stat-post',component:PostStatComponent},
-                    {path:'front-post',component:PostFrontComponent},
-                    { path: 'front-club', component: FrontClubComponent },
-                    {path:'comment',component:CommentComponent},
-
-
                     {path:'eventBack',component : EventBackComponent },
                     {path:'listReservationEvent',component : ListReservationEventComponent},
-                    {path: 'listFeedBack', component: FeedbackComponent},
                     {path: 'staticEventByFeedback' , component:ChartEventComponent},
                     {path: 'listFeedBackClubManager' , component:ListfeedbackClubManagerComponent},
                     {path:'club',component:ClubsComponent},
                     {path:'post',component:PostComponent},
                     {path:'users',component:UserBackComponent},
+                            { path: 'quiz', component: QuizComponent},
+                            { path: 'question-quiz', component: QuestionQuizComponent},
+                            { path: 'question-quiz/:idQuiz', component: QuestionQuizComponent },
+                    { path: 'quiz-back', component: QuizComponent},
+                    { path: 'quiz-chart', component: QuizChartComponent},
+                    { path: 'activities-back', component: ActivitiesComponent},
+                    { path: 'question-quiz', component: QuestionQuizComponent},
+                    { path: 'question-quiz/:idQuiz', component: QuestionQuizComponent },
+                    { path: 'activities-back/:idQuiz', component: ActivitiesComponent },
+
+                    { path: 'activities-back/:idQuiz', component: ActivitiesComponent },
+                    { path: 'activities-back', component: ActivitiesComponent},
+                    { path: 'quiz-chart', component: QuizChartComponent},
+                            { path: 'discounts', component: DiscountsComponent },
+                            { path: 'transactions', component: TransactionhistoryComponent },
+                            { path: 'statistics', component: StatisticsComponent },
+                            { path: 'rewardusers', component: RewardusersComponent },
 
 
-
-                ]
+                ],
             },
-            { path: 'auth', loadChildren: () => import('./demo/components/auth/auth.module').then(m => m.AuthModule) },
-            { path: 'landing', loadChildren: () => import('./demo/components/landing/landing.module').then(m => m.LandingModule) },
-            { path: 'auth/reset-password/:resetToken', component: ResetComponent },
+            {path:'main', component:FrontofficeComponent , loadChildren: ()=> import('./frontoffice/frontoffice.module').then(m=>m.FrontofficeModule)},
+                    { path: 'auth/reset-password/:resetToken', component: ResetComponent },
 
-            { path: 'auth', loadChildren: () => import('./demo/components/auth/auth.module').then(m => m.AuthModule) },
+                    { path: 'auth', loadChildren: () => import('./demo/components/auth/auth.module').then(m => m.AuthModule) },
             { path: 'landing', loadChildren: () => import('./demo/components/landing/landing.module').then(m => m.LandingModule) },
-            {path:'welcome', component: WelcomeComponent},
 
+             {path:'welcome', component: WelcomeComponent},
             { path: 'register', component: RegisterComponent },
             {path:'complete', component: CompleteprofileComponent},
+            {path:'accountLocked', component: AccountlockedComponent},
+            {path:'profile', component: DropdownUserComponent},
             {path:'registerWithcard',component:RegisterWithCardComponent},
-
             {path:'takeimage',component:TakeimageComponent},
+            {path:'Registerwitcard2',component:Registercard2Component},
+            {path:'profile/update',component: UpdateUserAccountComponent},
+
             { path: 'login', component: LoginComponent },
             { path: 'forget', component: ForgetComponent },
-            { path: 'forum',component:ForumComponent},
-            { path: 'home',component:HomeComponent ,pathMatch: 'full'},
-            { path: 'forumdetail/:id', component: ForumDetailComponent },
             { path: 'question/:id', component: QuestionDetailComponent },
-
             { path: 'notfound', component: NotfoundComponent },
-
-            { path: 'rewardusers', component: RewardusersComponent },
-
-            { path: 'quiz', component: QuizComponent},
-            { path: 'quiz-chart', component: QuizChartComponent},
-            { path: 'activities-back', component: ActivitiesComponent},
-            { path: 'question-quiz', component: QuestionQuizComponent},
-            { path: 'quiz-frontend', component: QuizFrontendComponent},
-            { path: 'googlemap', component: GooglemapComponent},
-            { path: 'question-quiz/:idQuiz', component: QuestionQuizComponent },
-            { path: 'activities-back/:idQuiz', component: ActivitiesComponent },
+          
 
 
 
-            {path:'eventFront',component : EventfrontComponent},
 
 
 
+
+
+
+
+
+
+
+        ]
+    },
             { path: '**', redirectTo: '/notfound' },
 
         ], { scrollPositionRestoration: 'enabled', anchorScrolling: 'enabled', onSameUrlNavigation: 'reload' })

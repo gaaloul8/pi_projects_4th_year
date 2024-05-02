@@ -19,7 +19,6 @@ public class Forum implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer forumId;
 
-    @NotBlank(message = "Topic is required")
     private String topic;
 
     @ManyToOne
@@ -30,12 +29,13 @@ public class Forum implements Serializable {
     @Temporal(TemporalType.DATE)
     private Date createdAt;
 
-    @NotBlank(message = "Content is required")
     private String content;
 
     private Integer likes;
 
     private Boolean closed;
+    @Enumerated(EnumType.STRING)
+    private ForumStatus status;
 
 //    @OneToMany(mappedBy = "forum")
 //    private List<Question> questions = new ArrayList<>();

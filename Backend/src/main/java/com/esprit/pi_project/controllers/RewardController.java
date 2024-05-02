@@ -50,10 +50,11 @@ public class RewardController {
             ,
         HttpServletRequest request
                 )throws IOException {
-        // Optional<User> optionalUser = userService.getUserFromJwt(request);
-        // User user = optionalUser.get();
+         Optional<User> optionalUser = userService.getUserFromJwt(request);
+         User user1 = optionalUser.get();
+        System.out.println("zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz"+user1);
         try {
-            rewardService.newReward(image, Cost, name, nbDispo, description);
+            rewardService.newReward(image, Cost, name, nbDispo, description,user1);
             return new ResponseEntity<>("Reward addes with success", HttpStatus.CREATED);
 
         } catch (Exception e) {
@@ -71,16 +72,47 @@ public class RewardController {
 
     }
 
-    @PutMapping("/updatereward")
-    public Reward updatereward(@RequestBody Reward reward){
-        return this.rewardService.updateReward(reward);
+    @PutMapping("/updatereward/{rewardId}")
+    public ResponseEntity<String> updateReward(
+            @PathVariable("rewardId") Integer rewardId,
+            @RequestParam(value = "image", required = false) MultipartFile image,
+            @RequestParam(value = "cost", required = false) Float cost,
+            @RequestParam(value = "name", required = false) String name,
+            @RequestParam(value = "nbDispo", required = false) Integer nbDispo,
+            @RequestParam(value = "description", required = false) String description,
+            HttpServletRequest request
+    ) throws IOException {
+        Optional<User> optionalUser = userService.getUserFromJwt(request);
+        User user1 = optionalUser.get();
+
+        try {
+            Reward updatedReward = rewardService.updateReward(rewardId, image, cost, name, nbDispo, description, user1);
+            if (updatedReward != null) {
+                return new ResponseEntity<>("Reward updated successfully", HttpStatus.OK);
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Reward not found");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to update reward");
+        }
     }
 
 
     @PostMapping("/buyreward/{id}")
-    public void purchaseReward(@PathVariable Integer id ){
-        this.rewardService.purchaseReward(id);
+    public void purchaseReward(@PathVariable Integer id, HttpServletRequest request) {
+        Optional<User> optionalUser = userService.getUserFromJwt(request);
+        if (optionalUser.isPresent()) {
+            User user1 = optionalUser.get();
+            this.rewardService.purchaseReward(id, user1);
+
+        } else {
+            // Handle the case where no user is authenticated
+            throw new RuntimeException("User not authenticated");
+        }
     }
+
+
     @GetMapping("/statstics")
     public Map<String,Object> getstatistics(){
         return this.rewardService.calculateUserStatistics();
@@ -108,6 +140,11 @@ public class RewardController {
     @GetMapping("/findrewardbyname/{name}")
     public Reward findrewardbyname(@PathVariable String name){
         return this.rewardService.findRewardByName(name);
+    }
+
+    @GetMapping("/getconnecteduser")
+    public Optional<User> getconnecteduser(HttpServletRequest request){
+        return this.userService.getUserFromJwt(request);
     }
 
 }

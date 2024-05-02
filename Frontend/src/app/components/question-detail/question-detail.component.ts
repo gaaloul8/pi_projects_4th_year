@@ -1,29 +1,54 @@
-import { AfterViewInit, Component, Renderer2 } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnInit, Renderer2 ,ViewChild} from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { FacebookService } from 'src/app/services/facebook.service';
-import { Forum, ForumService, Question } from 'src/app/services/forum.service';
+import { Forum, ForumService, Question , Response } from 'src/app/services/forum.service';
 import { QuestionsService } from 'src/app/services/questions.service';
+import { ResponsesService } from 'src/app/services/responses.service';
 
 @Component({
   selector: 'app-question-detail',
   templateUrl: './question-detail.component.html',
-  styleUrls: ['../../../assets/scss/core.scss'
+  styleUrls: ['./question-detail.component.css','../../../assets/scss/core.scss'
 ]})
-export class QuestionDetailComponent implements AfterViewInit {
+export class QuestionDetailComponent implements AfterViewInit{
+  @ViewChild('likeIcon') likeIcon: ElementRef;
+  @ViewChild('dislikeIcon') dislikeIcon: ElementRef;
+  @ViewChild('replyIcon') replyIcon: ElementRef;
   constructor(private renderer: Renderer2 ,private route: ActivatedRoute , private questionsService: QuestionsService,
-    private forumService: ForumService,private facebookService: FacebookService
+    private forumService: ForumService,private facebookService: FacebookService ,private responseService: ResponsesService,
+    private elementRef: ElementRef
 
   ){ 
   }
   
+  
   forum:Forum;
   question:Question;
+  response:any = {};
+  responses: Response[] = [];
+  sentimentResult: string = '';
+  activeButtons = {
+    like: false,
+    dislike: false,
+    reply: false
+  };
+
 
     ngAfterViewInit(): void {
     setTimeout(() => {
       this.loadJsFiles();
     }, 100);
     this.getQuestionDetails();
+    this.fetchResponses();
+    const bestAnswerId = parseInt(localStorage.getItem('bestAnswerId'));
+    if (bestAnswerId) {
+      console.log('Best answer ID from localStorage:', bestAnswerId);
+      const bestAnswer = this.responses.find(response => response.responseId === bestAnswerId);
+      console.log('Best answer:', bestAnswer);
+      this.bestAnswer = bestAnswer;
+      console.log('Assigned best answer:', this.bestAnswer);
+    }
+    // this.setupClickListeners();
   }
   loadJsFiles(): void {
     this.loadJsFile("../../../../assets/js/common.js");
@@ -72,6 +97,16 @@ export class QuestionDetailComponent implements AfterViewInit {
         console.error('Error fetching forum details:', error);
       }
     );
+    this.questionsService.SentimentAnalyzer(question.content).subscribe(
+      (result: string) => {
+        this.sentimentResult = result;
+        console.log('Sentiment analysis result:', this.sentimentResult);
+        // You can further process the result here, such as displaying it in the UI
+      },
+      (error: any) => {
+        console.error('Error analyzing sentiment:', error);
+      }
+    );
         console.log('Question details:', this.question);
         console.log("forum id for question : "+this.question.forum.forumId);
       },
@@ -94,13 +129,168 @@ export class QuestionDetailComponent implements AfterViewInit {
     );
   }
    openShareModal() {
-    console.log("aaa");
     // Get a reference to the modal element
     var modal = document.getElementById('share-modal');
     
     // Add the 'is-active' class to the modal to show it
     modal.classList.add('is-active');
 }
+openReplyModal() {
+  // Get a reference to the modal element
+  var modal = document.getElementById('reply-modal');
+  
+  // Add the 'is-active' class to the modal to show it
+  modal.classList.add('is-active');
+}
+async submitResponse() {
+  this.response.accepted=true;
+  this.response.createdAt = new Date();
+  this.response.question = {questionId : this.route.snapshot.paramMap.get('id')};
+  this.response.reported=false;
+  this.response.upvotes=0;
+  this.response.author = { id_user: 1, role: "User" };
+  try {
+    const newResponse = await this.responseService.createResponse(this.response).toPromise();
+    console.log('New Response created:', newResponse);
+
+    // // Load necessary scripts
+    // // Fetch forums and close the dialog
+    // this.forumDialog = false; 
+    //window.location.reload();
+    this.responses.push(newResponse);
+    window.location.reload();
+  } catch (error) {
+    console.error('Error creating question:', error);
+  }
+}
+fetchResponses(): void {
+  const questionId = +this.route.snapshot.paramMap.get('id');
+  // Fetch questions for the current forum ID
+  this.responseService.getAllResponsesByQuestionId(questionId).subscribe(
+    (responses: Response[]) => {
+      this.responses = responses;
+      responses.forEach(response => {
+        if (!this.bestAnswer || response.upvotes > this.bestAnswer.upvotes) {
+          this.bestAnswer = response;
+    }});
+      
+      console.log('Responses :', this.responses);
+    },
+    (error) => {
+      console.error('Error fetching questions:', error);
+    }
+  );
+}
+bestAnswer: any; // Variable to store the best answer
+
+// findBestAnswer(): void {
+//   let newBestAnswer: Response = null;
+//   for (const response of this.responses) {
+//     if (!newBestAnswer || response.upvotes > newBestAnswer.upvotes) {
+//       newBestAnswer = response;
+//     }
+//   }
+//   this.bestAnswer = newBestAnswer;
+// }
+findBestAnswer(): void {
+  let newBestAnswer: Response = null;
+  for (const response of this.responses) {
+    console.log('Response:', response);
+    if (!newBestAnswer || response.upvotes > newBestAnswer.upvotes) {
+      newBestAnswer = response;
+      console.log('New best answer found:', newBestAnswer);
+    }
+  }
+  this.bestAnswer = newBestAnswer;
+  console.log('Assigned best answer:', this.bestAnswer);
+}
+
+toggleActiveClass(action: string, event: MouseEvent, response: Response): void {
+  event.preventDefault(); // Prevent any default behavior of the anchor tag
+
+  const target = event.currentTarget as HTMLElement;
+
+  // Remove 'active' class from all buttons
+  const allButtons = document.querySelectorAll('.comment-action');
+  allButtons.forEach(button => {
+    if (button !== target) {
+      button.classList.remove('active');
+
+      // Reset the color of the SVG icon
+      const svg = button.querySelector('svg');
+      svg.style.stroke = '#c8c8c8'; // Placeholder color
+    }
+  });
+
+  // Toggle the 'active' class on the clicked element
+  target.classList.toggle('active');
+
+  // Get the SVG element within the clicked element
+  const svg = target.querySelector('svg');
+
+  // Increment upvotes when 'like' button is clicked
+  if (action === 'like') {
+    this.upvoteResponse(response);
+    response.upvotes++; // Increment upvotes by 1
+    if (!this.bestAnswer || response.upvotes > this.bestAnswer.upvotes) {
+      this.bestAnswer = response;
+      localStorage.setItem('bestAnswerId', response.responseId.toString());
+    }
+  }else if (action === "dislike"){
+   this.downvoteResponse(response);
+    response.upvotes--; // Increment upvotes by 1
+    if (this.bestAnswer && response.responseId === this.bestAnswer.responseId) {
+      this.bestAnswer =null;
+      localStorage.removeItem('bestAnswerId');
+      // If the disliked response was the best answer, find the new best answer
+      this.findBestAnswer();
+    }
+  }
+
+  // Here you can add more logic to handle other actions based on the 'action' parameter
+  switch (action) {
+    case 'like':
+      if (target.classList.contains('active')) {
+        // Apply the color for active like
+        svg.style.stroke = '#1ce589'; // Green
+      } else {
+        // Apply the default color for inactive like
+        svg.style.stroke = '#c8c8c8'; // Placeholder color
+      }
+      break;
+    case 'dislike':
+      if (target.classList.contains('active')) {
+        // Apply the color for active dislike
+        svg.style.stroke = '#f71416'; // Red
+      } else {
+        // Apply the default color for inactive dislike
+        svg.style.stroke = '#c8c8c8'; // Placeholder color
+      }
+      break;
+    case 'reply':
+      if (target.classList.contains('active')) {
+        // Apply the color for active reply
+        svg.style.stroke = '#393a4f'; // Dark text color
+      } else {
+        // Apply the default color for inactive reply
+        svg.style.stroke = '#c8c8c8'; // Placeholder color
+      }
+      break;
+    default:
+      break;
+  }
+}
+
+upvoteResponse(response: Response): void {
+  this.responseService.upvoteResponse(response.responseId).toPromise();
+}
+
+downvoteResponse(response: Response): void {
+  this.responseService.downvoteResponse(response.responseId).toPromise();
+
+}
+
+
 
 }
 

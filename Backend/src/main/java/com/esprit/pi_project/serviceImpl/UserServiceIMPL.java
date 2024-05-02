@@ -1,6 +1,8 @@
 package com.esprit.pi_project.serviceImpl;
 
+import com.esprit.pi_project.authentification.UserUpdateRequest;
 import com.esprit.pi_project.dao.UserDao;
+import com.esprit.pi_project.entities.Reservation;
 import com.esprit.pi_project.entities.Role;
 import com.esprit.pi_project.entities.Tag;
 import com.esprit.pi_project.entities.User;
@@ -10,10 +12,14 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.crossstore.ChangeSetPersister;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.*;
 
 @Service
@@ -24,6 +30,8 @@ public class UserServiceIMPL implements UserService {
     @Autowired
     private UserDao userDao;
     private final jwtService jwtservice;
+
+    private final PasswordEncoder passwordEncoder;
 
 
     @Override
@@ -101,6 +109,7 @@ public class UserServiceIMPL implements UserService {
     }
 
 
+    @Override
     public User CompletePorofile(Integer userId, List<Tag> tags, MultipartFile profilePicture, String niveau, String Identifiant) throws IOException {
         User user = userDao.findById(userId).orElse(null);
         if (user != null) {
@@ -137,6 +146,45 @@ public class UserServiceIMPL implements UserService {
         return Optional.empty();
     }
 
+
+    @Override
+    public void lockUserAccount(User user, LocalDateTime lockTime) {
+        user.setFailedLoginAttempts(0);
+        user.setLockTime(lockTime);
+        user.setAccountNonLocked(false);
+        userDao.save(user);
+    }
+
+
+    @Override
+    public User updateUser(Integer userId, UserUpdateRequest updateRequest) throws IOException {
+        User user = userDao.findById(userId).orElseThrow(null);
+
+        // Update the user with the provided information
+        if (updateRequest.getFirstName() != null) {
+            user.setFirstName(updateRequest.getFirstName());
+        }
+        if (updateRequest.getLastName() != null) {
+            user.setLastName(updateRequest.getLastName());
+        }
+        if (updateRequest.getPassword() != null) {
+            user.setPassword(passwordEncoder.encode(updateRequest.getPassword()));
+        }
+        System.out.println(updateRequest.getProfilePicture());
+        if (updateRequest.getProfilePicture() != null) {
+            System.out.println(updateRequest.getProfilePicture());
+            byte[] imageData = updateRequest.getProfilePicture().getBytes(); // Read image data
+
+            String base64Image = Base64.getEncoder().encodeToString(imageData);
+            user.setProfilePicture(base64Image);
+        }
+
+        // Save the updated user
+        return userDao.save(user);
+    }
+
 }
+
+
 
 

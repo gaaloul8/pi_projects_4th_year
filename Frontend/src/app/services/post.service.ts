@@ -45,12 +45,20 @@ export class PostService {
   }
 
   getAllPosts() {
+  
+    const headers = new HttpHeaders({
+      'Authorization': 'Bearer ' + this.token
+  });
     localStorage
-    return this.http.get(`${this.baseUrl}/getall`);
+    return this.http.get(`${this.baseUrl}/getall`,{ headers: headers });
   }
 
   getPostById(id: number): Observable<Post> {
-    return this.http.get<Post>(`${this.baseUrl}/${id}`);
+    
+    const headers = new HttpHeaders({
+      'Authorization': 'Bearer ' + this.token
+  });
+    return this.http.get<Post>(`${this.baseUrl}/${id}`, { headers : headers });
   }
 
   deletePost(id: number): Observable<void> {
@@ -61,18 +69,34 @@ export class PostService {
   }
 
   getPostsByDate(postDate: Date): Observable<Post[]> {
-    return this.http.get<Post[]>(`${this.baseUrl}/getByDate/${postDate}`);
+    
+    const headers = new HttpHeaders({
+      'Authorization': 'Bearer ' + this.token
+  });
+    return this.http.get<Post[]>(`${this.baseUrl}/getByDate/${postDate}`, { headers: headers });
   }
   getMonthlyPostsCounts(): Observable<any> {
-    return this.http.get<any>(`${this.baseUrl}/monthly-count`);
+    
+    const headers = new HttpHeaders({
+      'Authorization': 'Bearer ' + this.token
+  });
+    return this.http.get<any>(`${this.baseUrl}/monthly-count`, { headers: headers });
 }
 likePost(postId: number): Observable<Post> {
-  return this.http.put<Post>(`${this.baseUrl}/like/${postId}`, {});
+  
+  const headers = new HttpHeaders({
+    'Authorization': 'Bearer ' + this.token
+  });
+  return this.http.put<Post>(`${this.baseUrl}/like/${postId}`,null, { headers: headers});
 }
 
 // Add a method to dislike a post
 dislikePost(postId: number): Observable<Post> {
-  return this.http.put<Post>(`${this.baseUrl}/dislike/${postId}`, {});
+  
+  const headers = new HttpHeaders({
+    'Authorization': 'Bearer ' + this.token
+  });
+  return this.http.put<Post>(`${this.baseUrl}/dislike/${postId}`,null, {headers: headers});
 }
 
 

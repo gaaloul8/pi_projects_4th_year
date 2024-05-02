@@ -13,17 +13,15 @@ import { NodeService } from './demo/service/node.service';
 import { PhotoService } from './demo/service/photo.service';
 import { DiscountService } from "./services/discount.service";
 import { ForumDetailComponent } from './components/forum-detail/forum-detail.component';
-import { FooterComponent } from './components/footer/footer.component';
 import { LandingHomeComponent } from './components/landing-home/landing-home.component';
-import { HeaderComponent } from './components/header/header.component';
 import { HomeComponent } from './components/home/home.component';
+import { QuestionDetailComponent } from './components/question-detail/question-detail.component';
 import {RegisterComponent} from "./components/register/register.component";
 import {CompleteprofileComponent} from "./components/completeprofile/completeprofile.component";
 import {TakeimageComponent} from "./components/takeimage/takeimage.component";
 import { CardModule } from 'primeng/card';
 import {HttpClient} from "@angular/common/http";
 import {WebcamModule} from "ngx-webcam";
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import { BrowserModule } from '@angular/platform-browser';
 import { ClubsComponent } from './components/clubs/clubs.component';
@@ -68,21 +66,30 @@ import { ChartModule } from 'primeng/chart';
 import { ChartEventComponent } from './components/chart-event/chart-event.component';
 import { ListfeedbackClubManagerComponent } from './components/listfeedback-club-manager/listfeedback-club-manager.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
+
+import { PageEventComponent } from './components/page-event/page-event.component';
+import { ListReservationFrontComponent } from './components/list-reservation-front/list-reservation-front.component';
+
 import { PostFrontComponent } from './components/post-front/post-front.component';
 import { CommentComponent } from './components/comment/comment.component';
-import { ModalModule } from 'ngx-bootstrap/modal';
 import { CommentService } from './services/comment.service';
-
+import { ModalModule } from 'ngx-bootstrap/modal';
 
 
 
 @NgModule({
     declarations: [AppComponent, FeedbackComponent,ChartEventComponent,NotfoundComponent , ListfeedbackClubManagerComponent,ListReservationEventComponent,ForumComponent,ForumDetailComponent ,
-    LandingHomeComponent ,SidebarComponent, FooterComponent,HeaderComponent, HomeComponent ,EventBackComponent , EventfrontComponent,PostFrontComponent,
-    ClubsComponent,PostComponent,CommentComponent],
-    imports: [AppRoutingModule, AppLayoutModule,
-         ReactiveFormsModule, FormsModule,
-          BrowserModule,ToolbarModule,
+        PostFrontComponent,
+    LandingHomeComponent ,SidebarComponent, HomeComponent ,EventBackComponent , EventfrontComponent,QuestionDetailComponent,
+    ClubsComponent,PostComponent,PageEventComponent,ListReservationFrontComponent,CommentComponent],
+
+    imports: [AppRoutingModule,
+         AppLayoutModule,
+         ReactiveFormsModule, 
+         FormsModule,
+          BrowserModule,
+          ToolbarModule,
+
           ChartModule,
           MultiSelectModule,
           FilterPipe,
@@ -133,7 +140,6 @@ import { CommentService } from './services/comment.service';
         TakeimageComponent,
         CardModule,
         ModalModule.forRoot(),
-        FontAwesomeModule
         ],
         providers: [
             { provide: LocationStrategy, useClass: PathLocationStrategy },

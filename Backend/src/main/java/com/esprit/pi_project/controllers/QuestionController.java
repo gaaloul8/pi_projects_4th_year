@@ -2,6 +2,7 @@ package com.esprit.pi_project.controllers;
 
 import com.esprit.pi_project.entities.Question;
 import com.esprit.pi_project.services.QuestionService;
+import com.esprit.pi_project.services.SentimentAnalyzerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -15,23 +16,21 @@ import java.util.List;
 @RestController()
 @RequestMapping("/questions")
 @RequiredArgsConstructor
+@CrossOrigin(origins = "*")
 public class QuestionController {
 
     @Autowired
     private QuestionService questionService;
-    @CrossOrigin(origins = "*")
     @PostMapping("/filter-text")
     public ResponseEntity<String> filterText(@RequestBody String text) {
         ResponseEntity<String> response = questionService.filterText(text);
         return ResponseEntity.status(response.getStatusCode()).body(response.getBody());
     }
-    @CrossOrigin(origins = "*")
     @PostMapping("/addQuestion")
     public ResponseEntity<Question> createQuestion(@RequestBody Question question) {
         Question createdQuestion = questionService.saveQuestion(question);
         return new ResponseEntity<>(createdQuestion, HttpStatus.CREATED);
     }
-    @CrossOrigin(origins = "*")
     @GetMapping("/{questionId}")
     public ResponseEntity<Question> getQuestionById(@PathVariable Integer questionId) {
         Question question = questionService.getQuestionById(questionId);
@@ -41,13 +40,11 @@ public class QuestionController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
-    @CrossOrigin(origins = "*")
     @GetMapping("/getAllQuestions")
     public ResponseEntity<List<Question>> getAllQuestions() {
         List<Question> questions = questionService.getAllQuestions();
         return new ResponseEntity<>(questions, HttpStatus.OK);
     }
-    @CrossOrigin(origins = "*")
     @PutMapping("/{questionId}")
     public ResponseEntity<Question> updateQuestion(@PathVariable Integer questionId, @RequestBody Question questionDetails) {
         Question question = questionService.getQuestionById(questionId);
@@ -63,15 +60,26 @@ public class QuestionController {
         }
     }
 
-    @CrossOrigin(origins = "*")
     @DeleteMapping("/{questionId}")
     public ResponseEntity<Void> deleteQuestion(@PathVariable Integer questionId) {
         questionService.deleteQuestion(questionId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
-    @CrossOrigin(origins = "*")
     @GetMapping("/forum/{forumId}")
     public List<Question> getAllQuestionsByForumId(@PathVariable Integer forumId) {
         return questionService.getAllQuestionsByForumId(forumId);
+    }
+    @PostMapping("/summarize")
+    public ResponseEntity<List<String>> summarizeText(@RequestBody String text) {
+        List<String> tags = questionService.getTags(text);
+        return new ResponseEntity<>(tags, HttpStatus.OK);
+    }
+    @Autowired
+    private SentimentAnalyzerService sentimentAnalyzerService;
+
+    @PostMapping("/analyzeSentiment")
+    public ResponseEntity<String> analyzeSentiment(@RequestBody String text) {
+        String sentiment = sentimentAnalyzerService.analyzeSentiment(text);
+        return ResponseEntity.ok("\"" + sentiment + "\"");
     }
 }

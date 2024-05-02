@@ -13,9 +13,9 @@
                 <div class="grid-header">
                     <div class="header-inner">
                         <h2>Forums</h2>
-                        <div class="header-actions">
+                        <div class="header" id="header">
                             <div class="buttons">
-                                <a (click)="openNew()" class="button is-solid accent-button raised">Add new forum</a>
+                                <a (click)="openNew()" class="btn-getstarted">Add new forum</a>
                             </div>
                         </div>
                     </div>
@@ -46,7 +46,7 @@
 
 
                             <div  class="box-img has-background-image" data-background="https://via.placeholder.com/940x650" data-demo-background="assets/forum1.jpg"></div>
-                            <a [routerLink]="['/forumdetail', forum.forumId]" class="box-link">
+                            <a [routerLink]="['/main/forumdetail', forum.forumId]" class="box-link">
                                 <div class="box-img--hover has-background-image" data-background="https://via.placeholder.com/940x650" data-demo-background="assets/forum1.jpg"></div>
                             </a>
 
@@ -58,7 +58,7 @@
               <div class="members-preview">
                 <img
                   src="https://via.placeholder.com/150x150"
-                  data-demo-src="assets/img/avatars/milly.jpg"
+                  [data-demo-src]="'data:image/png;base64,' + forum.forumOwner.profilePicture"
                   data-user-popover="7"
                   alt=""
                 />
@@ -89,7 +89,8 @@
                       <div class="field">
                           <label for="description">Content</label>
                           <textarea id="description" pInputTextarea [(ngModel)]="forum.content"></textarea>
-                      </div>
+                          <small class="ng-dirty ng-invalid" *ngIf="checkLang">Content must be ENGLISH only !.</small>
+                      </div> 
                       <div *ngIf="showDropdown" class="field" style="margin-bottom: 80px;">
                         <label for="status">Forum Status</label>
                         <p-dropdown [(ngModel)]="forum.closed" inputId="forumStatus" optionValue="value" [options]="statuses" placeholder="Select">
@@ -141,6 +142,7 @@
                         <span class="close-modal">
             <i data-feather="x"></i>
           </span>
+          
                     </div>
                 </div>
             </div>

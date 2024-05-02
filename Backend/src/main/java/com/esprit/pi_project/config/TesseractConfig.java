@@ -11,7 +11,7 @@ public class TesseractConfig {
     Tesseract tesseract() {
         Tesseract tesseract = new Tesseract();
         tesseract.setDatapath("src/main/resources/tessdata");
-        tesseract.setLanguage("fra");//files of the example : https://github.com/tesseract-ocr/tessdata
+        tesseract.setLanguage("fra");
         tesseract.setTessVariable("user_defined_api","300");
         return tesseract;
     }

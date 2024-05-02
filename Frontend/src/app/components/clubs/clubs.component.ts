@@ -4,7 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { Tag } from '../../interfaces/tag';
 import { Subject, debounceTime, distinctUntilChanged } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { UserModel } from 'src/app/models/userModel';
 
 
@@ -29,6 +29,7 @@ export class ClubsComponent implements OnInit {
   selectedFile: File;
   searchQuery: string = '';
   deletedClubs: Club[] = [];
+  private token = localStorage.getItem('jwtAccessToken');
   private searchSubject: Subject<string> = new Subject<string>();
   user: UserModel;
   
@@ -73,7 +74,11 @@ export class ClubsComponent implements OnInit {
   }
   searchClubs(): void {
     if (this.searchQuery.trim() !== '') {
-      this.http.get<Club[]>('http://localhost:8081/clubs/search', { params: { query: this.searchQuery.trim() } })
+      const headers = new HttpHeaders({
+        'Authorization': 'Bearer ' + this.token,
+        'Content-Type': 'application/json'
+      });
+      this.http.get<Club[]>('http://localhost:8081/clubs/search', { params: { query: this.searchQuery.trim() } , headers: headers })
         .subscribe((response: Club[]) => {
           console.log('Searched clubs:', response);
           this.clubs = response;

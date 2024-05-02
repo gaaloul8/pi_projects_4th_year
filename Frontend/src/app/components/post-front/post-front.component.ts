@@ -29,7 +29,6 @@ export class PostFrontComponent implements OnInit {
     this.postService.getAllPosts()
       .subscribe((response: Post[]) => {
         console.log('All posts:', response);
-        
         this.posts = response;
         this.posts.forEach(post => {
           const postId = post.postId;

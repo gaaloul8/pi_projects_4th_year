@@ -1,80 +1,63 @@
-  <div class="grid">
+<div class="grid">
     <div class="col-12">
         <div class="card px-6 py-6">
             <p-toolbar styleClass="mb-4">
                 <ng-template pTemplate="left">
-                    <div class="my-2">
-                        <button pButton pRipple label="Resreveation" icon="pi pi-plus" class="p-button-success mr-2" ></button>
+                    <div class="flex mb-4">
+                        <input type="text" [(ngModel)]="filterText" placeholder="Search by User Identifiant" class="form-control" />
+                        <button class="btn btn-primary ml-2" >Search</button>
                     </div>
                 </ng-template>
-
-
             </p-toolbar>
-            <p-table [value]="reservations">
+            <p-table [value]="reservations | filter: filterText">
                 <ng-template pTemplate="caption">
                     <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
                         <h5 class="m-0">Manage Reservation</h5>
                     </div>
                 </ng-template>
-               
-                  
-    
                 <ng-template pTemplate="header">
                     <tr>
                         <th style="width: 3rem">
                             <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
                         </th>
                         <th>Event Name</th>
-                        <th>Event Type</th>
                         <th>Date</th>
-                        <th>Location</th>
-                        <th>Description</th>
-                        <th>Event Status</th>
-                       
-                        <th></th>
+                        <th>User First Name</th>
+                        <th>User Last Name</th>
+                        <th>Identifiant</th>
+                        <th>iduser</th>
+                        <th>Actions</th> <!-- Add this header for the actions column -->
                     </tr>
                 </ng-template>
-             
                 <ng-template pTemplate="body" let-reservation>
                     <tr>
                         <td>
                             <p-tableCheckbox [value]="reservation"></p-tableCheckbox>
                         </td>
                         <td>{{ reservation.evenementR.eventName }}</td>
-                        <td>{{ reservation.evenementR.eventType }}</td>
                         <td>{{ reservation.evenementR.datetime | date: 'yyyy-MM-dd HH:mm:ss' }}</td>
-                        <td>{{ reservation.evenementR.location }}</td>
-                        <td>{{ reservation.evenementR.description }}</td>
-                        <td>{{ reservation.evenementR.status }}</td>
-                        
+                        <td>{{ reservation.user.lastName }}</td>
+                        <td>{{ reservation.user.firstName }}</td>
+                        <td>{{ reservation.user.identifiant }}</td>
+                        <td>{{ reservation.user.id_user }}</td>
                         <td>
                             <div class="flex">
-                                <button pButton pRipple icon="pi pi-comment" class="p-button-rounded p-button-success mr-2" (click)="showDialog(reservation)"></button>
-                                <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning" (click)="confirmDelete(reservation.idR)"></button>  
-                                  </div>
+                                <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning" (click)="confirmDelete(reservation.idR)"></button>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="flex">
+                                <!-- Bouton pour affecter les jetons -->
+                                <button pButton pRipple icon="pi pi-plus" class="p-button-rounded p-button-success"
+                                    (click)="assignTokens(reservation.evenementR.idEvent, reservation.user.id_user)">
+                                    Assign Tokens
+                                </button>
+                            </div>
                         </td>
                     </tr>
                 </ng-template>
             </p-table>
         </div>
-        
-   
-        <p-dialog [(visible)]="displayDialog" header="Ajouter un Feedback" [modal]="true" [responsive]="true">
-            <div>
-              <textarea [(ngModel)]="feedbackContent" rows="5" cols="30" placeholder="Entrez votre feedback ici..."></textarea>
-              <div style="margin-top: 10px;">
-                <p-rating [(ngModel)]="rating"></p-rating>
-              </div>
-            </div>
-            <p-footer>
-              <button pButton pRipple icon="pi pi-times" class="p-button-text" label="Annuler" (click)="displayDialog = false"></button>
-              <button pButton pRipple icon="pi pi-comment" class="p-button-success" label="Envoyer" 
-                      [disabled]="!feedbackContent || !rating" (click)="addFeedback(reservation.evenementR.idEvent)">
-              </button>
-            </p-footer>
-          </p-dialog>
-          
-
 
         <p-dialog [(visible)]="deleteRDialog" header="Confirm" [modal]="true" [style]="{width:'450px'}">
             <div class="flex align-items-center justify-content-center">
@@ -82,12 +65,10 @@
                 <span>Are you sure you want to delete this reservation?</span>
             </div>
             <ng-template pTemplate="footer">
-
                 <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No" (click)="deleteRDialog = false"></button>
                 <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Yes" (click)="confirmDeleteReservation(selectedRId)"></button>
             </ng-template>
         </p-dialog>
     </div>
-  </div>
-  
-  
+</div>
+<p-toast></p-toast>
