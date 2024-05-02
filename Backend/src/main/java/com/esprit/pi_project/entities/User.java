@@ -1,9 +1,6 @@
 package com.esprit.pi_project.entities;
 import com.esprit.pi_project.serviceImpl.CustomAuthorityDeserializer;
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.fasterxml.jackson.annotation.*;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import jakarta.persistence.*;
@@ -74,9 +71,15 @@ public class User implements UserDetails, Serializable {
 
     @OneToMany(cascade = CascadeType.ALL,mappedBy = "createdBy")
     private List<Reclamation> reclamationList;
-
-    @OneToOne(cascade = CascadeType.ALL)
+    @JsonBackReference
+    @OneToOne(mappedBy = "user")
     private Club club;
+    @JsonIgnore
+    @OneToMany(mappedBy = "user")
+    private List<Comment> comments;
+    @JsonIgnore
+    @OneToMany(mappedBy = "user")
+    private List<Post> posts ;
 
     @OneToMany(cascade = CascadeType.ALL,mappedBy = "User")
     @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class , property = "idFeedback")

@@ -4,6 +4,7 @@ import com.esprit.pi_project.dao.CommentDao;
 import com.esprit.pi_project.entities.Club;
 import com.esprit.pi_project.entities.Comment;
 import com.esprit.pi_project.entities.Post;
+import com.esprit.pi_project.entities.User;
 import com.esprit.pi_project.services.CommentService;
 import com.esprit.pi_project.services.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +28,9 @@ public class CommentServiceImp implements CommentService {
     private PostService postService;
     @Override
 
-    public Comment addComment(Comment comment, Long idPost) throws ParseException {
+    public Comment addComment(Comment comment, Long idPost, User user) throws ParseException {
+
+        comment.setUser(user);
         Date currentDateTime = new Date();
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
         String formattedDate = dateFormat.format(currentDateTime);
@@ -40,11 +43,15 @@ public class CommentServiceImp implements CommentService {
         return commentDao.save(comment);
     }
 @Override
-    public Comment updateComment(Comment comment) {
-       return commentDao.save(comment);
+    public Comment updateComment(Comment comment,User user) {
+        comment.setUser(user);
+
+        return commentDao.save(comment);
     }
 @Override
     public void  deleteComment(Long idComment) {
+
+
         commentDao.deleteById(idComment);
     }
 @Override
@@ -55,4 +62,10 @@ public class CommentServiceImp implements CommentService {
 @Override
     public List<Comment> findAllComments() {
         return commentDao.findAll();
-    }}
+    }
+
+    @Override
+    public List<Comment> findbyPost(Long postId) {
+        return commentDao.findAllByPostPostId(postId);
+    }
+}
