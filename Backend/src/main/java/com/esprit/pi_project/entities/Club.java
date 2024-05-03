@@ -24,12 +24,12 @@ public class Club implements Serializable {
     @Lob
     @Column(nullable = true, length = 10000000)
     private String image;
-   
+
     private Integer membershipCount;
     @Enumerated(EnumType.STRING)
     private Tag tag;
     @JsonManagedReference
-   @OneToOne
+    @OneToOne
     private User user;
 
 

@@ -67,6 +67,8 @@ import { CommentComponent } from './components/comment/comment.component';
 
 
 
+
+
 @NgModule({
     imports: [
         BrowserModule ,
@@ -117,6 +119,7 @@ import { CommentComponent } from './components/comment/comment.component';
                             { path: 'transactions', component: TransactionhistoryComponent },
                             { path: 'statistics', component: StatisticsComponent },
                             { path: 'rewardusers', component: RewardusersComponent },
+                            {path: 'reclamation', loadChildren: () => import('./components/reclamations/reclamations.module').then(m => m.ReclamationsModule)},
 
 
                 ],

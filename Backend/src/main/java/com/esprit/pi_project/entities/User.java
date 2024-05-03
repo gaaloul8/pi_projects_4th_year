@@ -1,12 +1,17 @@
 package com.esprit.pi_project.entities;
+
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
+
 import com.esprit.pi_project.serviceImpl.CustomAuthorityDeserializer;
 import com.fasterxml.jackson.annotation.*;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+        import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import jakarta.persistence.*;
-import lombok.*;
+        import lombok.*;
 
-import java.io.Serializable;
+        import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Date;
@@ -78,6 +83,7 @@ public class User implements UserDetails, Serializable {
 //    private List<Forum> forumlist;
 
     @OneToMany(cascade = CascadeType.ALL,mappedBy = "createdBy")
+    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class , property = "reclamationId")
     private List<Reclamation> reclamationList;
 
     @Column(name = "failed_login_attempts")
