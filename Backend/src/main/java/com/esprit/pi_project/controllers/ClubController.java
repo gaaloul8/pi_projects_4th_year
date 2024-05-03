@@ -1,4 +1,3 @@
-
 package com.esprit.pi_project.controllers;
 
 import com.esprit.pi_project.entities.Club;
@@ -93,4 +92,3 @@ public ResponseEntity<Map<Tag, Long>> getClubTagStatistics() {
 
 
 }
-

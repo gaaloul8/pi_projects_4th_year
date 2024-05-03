@@ -1,6 +1,7 @@
 package com.esprit.pi_project.entities;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -31,12 +32,12 @@ public class Reclamation implements Serializable {
     private ReclamationStatus status;
 
     @ManyToOne
-    @JoinColumn(name = "created_by_user_id", nullable = false)
-    @JsonBackReference
+    @JoinColumn(name = "created_by_id", nullable = false)
     private User createdBy;
 
     @Column(nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
+
     private Date createdAt = new Date();
 
     @Column(name = "is_archived", nullable = false)
@@ -46,12 +47,11 @@ public class Reclamation implements Serializable {
     private String imageUrl;
 
     @Column(name = "club_name")
-    private String clubName; // This field holds the name of the club associated with the reclamation.
+    private String clubName;
 
     @ManyToOne
-    @JoinColumn(name = "submitted_to_id")
-    private User submittedTo; // This field references the manager to whom the reclamation is assigned.
-
-
-
+    @JoinColumn(name = "submitted_to_id_user")
+    @JsonBackReference
+    private User submittedTo;
 }
+

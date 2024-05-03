@@ -1,8 +1,8 @@
-import {User} from "./user.model";
+import {UserModel} from "./userModel";
 
 export interface Reclamation {
     clubName: string;
-    submittedTo: User;
+    submittedTo: UserModel;
     reclamationId: number;
     title: string;
     description: string;

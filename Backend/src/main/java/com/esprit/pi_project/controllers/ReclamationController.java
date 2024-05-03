@@ -1,21 +1,25 @@
 package com.esprit.pi_project.controllers;
 
 
+import com.esprit.pi_project.dao.ReclamationDao;
 import com.esprit.pi_project.entities.ReclamationStatus;
 import com.esprit.pi_project.entities.Role;
 import com.esprit.pi_project.entities.User;
-import com.esprit.pi_project.repositories.ReclamationRepository;
+import com.esprit.pi_project.serviceImpl.ReclamationService;
+import com.esprit.pi_project.services.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import com.esprit.pi_project.entities.Reclamation;
-import com.esprit.pi_project.services.ReclamationService;
 import org.springframework.web.multipart.MultipartFile;
 
+import jakarta.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/reclamations")
@@ -25,13 +29,15 @@ public class ReclamationController {
 
 
     private ReclamationService reclamationService;
-    private ReclamationRepository reclamationRepository;
+    private ReclamationDao reclamationRepository;
+    @Autowired
+    private UserService userService;
 
     // Create a new reclamation
     @PostMapping
     public Reclamation createReclamation(@RequestPart("reclamation") Reclamation reclamation,
-                                         @RequestPart("image") MultipartFile image) throws IOException {
-        return reclamationService.createReclamation(reclamation, image);
+                                         @RequestPart("image") MultipartFile image ,  HttpServletRequest request) throws IOException {
+        return reclamationService.createReclamation(reclamation, image,request);
     }
 
     // Get all reclamations
@@ -77,7 +83,7 @@ public class ReclamationController {
     //Archive a reclamation
     @PatchMapping("/{id}/archive")
     public void archiveReclamation(@PathVariable int id) {
-         reclamationService.archiveReclamation(id);
+        reclamationService.archiveReclamation(id);
     }
 
 
@@ -118,7 +124,7 @@ public class ReclamationController {
     }
 
     // Endpoint to get reclamations assigned to a specific user
-        @GetMapping("/assigned-to/{userId}")
+    @GetMapping("/assigned-to/{userId}")
     public List<Reclamation> getReclamationsAssignedToUser(@PathVariable int userId) {
         return reclamationService.getReclamationsAssignedToUser(userId);
     }
@@ -131,10 +137,14 @@ public class ReclamationController {
     public Reclamation inprogressReclamation(@PathVariable int id) {
         return reclamationService.inProgressReclamation(id);
     }
-
+    @GetMapping("/getconnecteduser")
+    public Optional<User> getconnecteduser(HttpServletRequest request){
+        return this.userService.getUserFromJwt(request);
+    }
     @GetMapping("/weekly-count")
     public List<String> getWeeklyReclamationsCount() {
         return reclamationService.getUpcomingEventMessages();
     }
 
 }
+

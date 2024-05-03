@@ -14,6 +14,9 @@
                         </div>
                         <div *ngIf="resetErrorMessage" class="error-message">{{ resetErrorMessage }}</div>
 
+                        <!-- Display success or error message -->
+                        <div *ngIf="Message" class="message">{{ Message }}</div>
+
                         <div class="button-container">
                             <button type="submit" class="login-button" style="width: 100%;">Reset Password</button>
                         </div>

@@ -1,4 +1,3 @@
-
 package com.esprit.pi_project.controllers;
 
 import com.esprit.pi_project.authentification.*;
@@ -33,7 +32,6 @@ import org.springframework.web.multipart.MultipartFile;
 @CrossOrigin("*")
 public class AuthController {
     @Autowired
-
     private final  AuthService Service;
 
 
@@ -84,4 +82,3 @@ public class AuthController {
     }
 
 }
-

@@ -1,4 +1,3 @@
-
 package com.esprit.pi_project.dao;
 
 import com.esprit.pi_project.entities.Forum;
@@ -41,4 +40,3 @@ public interface ForumDao extends JpaRepository<Forum,Integer> {
     List<Object[]> findForumWithQuestionsAndResponses();
 
 }
-

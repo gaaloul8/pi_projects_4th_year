@@ -1,4 +1,3 @@
-
 package com.esprit.pi_project.serviceImpl;
 
 import com.esprit.pi_project.dao.EventDao;
@@ -6,14 +5,27 @@ import com.esprit.pi_project.dao.FeedbackDao;
 import com.esprit.pi_project.entities.Evenement;
 import com.esprit.pi_project.entities.FeedBack;
 import com.esprit.pi_project.entities.StatusFeedback;
+import com.esprit.pi_project.entities.User;
 import com.esprit.pi_project.services.EventService;
 import com.esprit.pi_project.services.FeedBackService;
+import edu.stanford.nlp.pipeline.StanfordCoreNLP;
+import edu.stanford.nlp.trees.Tree;
 import jakarta.annotation.Resource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Optional;
+import edu.stanford.nlp.pipeline.*;
+import edu.stanford.nlp.ling.*;
+import edu.stanford.nlp.util.*;
+import edu.stanford.nlp.sentiment.*;
+
+import java.io.IOException;
+import java.util.*;
+
+import edu.stanford.nlp.neural.rnn.RNNCoreAnnotations;
+
+import javax.management.Query;
+
 
 @Service
 public class FeedBackServiceImp implements FeedBackService {
@@ -27,14 +39,15 @@ public class FeedBackServiceImp implements FeedBackService {
 
     @Autowired
     private EventDao eventDao;
-    @Override
-    public FeedBack addFeedBack(Integer idEvent, FeedBack feedBack) {
-        Optional<Evenement> evenementOptional = eventDao.findById(idEvent);
-        feedBack.setStatus(StatusFeedback.Unprocessed);
 
+    @Override
+    public FeedBack addFeedBack(Integer idEvent, FeedBack feedBack,User user) {
+        Optional<Evenement> evenementOptional = eventDao.findById(idEvent);
+       // feedBack.setStatus(StatusFeedback.Unprocessed);
         if (evenementOptional.isPresent()) {
             Evenement evenement = evenementOptional.get();
             feedBack.setEvenement(evenement);
+            feedBack.setUser(user);
             // Autres traitements si nécessaire
             return feedbackDao.save(feedBack);
         } else {
@@ -60,26 +73,87 @@ public class FeedBackServiceImp implements FeedBackService {
     public void deleteFeedBackByidFeedback(Integer idFeedback) {
         FeedBack feedback = feedbackDao.findById(idFeedback)
                 .orElseThrow(() -> new IllegalArgumentException("Feedback not found with specified ID."));
-        if (feedback.getStatus() == StatusFeedback.Processed) {
+
             feedbackDao.deleteById(idFeedback);
-        } else {
-            throw new IllegalStateException("You can only delete a processed feedback.");
-        }
+
     }
 
     @Override
-    public FeedBack UpdateFeedBack(FeedBack feedBack) {
+    public FeedBack UpdateFeedBack(FeedBack feedBack,User user) throws IOException {
+
+        FeedBack feedBack1 = new FeedBack();
+    feedBack1.setEvenement(feedBack.getEvenement());
+    feedBack1.setUser(user);
+
         return feedbackDao.save(feedBack);
     }
 
     @Override
-    public Optional<FeedBack> findByidFeedback(Integer idFeedback) {
-        return feedbackDao.findById(idFeedback);
+    public FeedBack findByidFeedback(Integer idFeedback) {
+        Optional<FeedBack> optionalForum = feedbackDao.findById(idFeedback);
+        return optionalForum.orElse(null);
+
     }
+
 
     @Override
     public List<FeedBack> searchFeedBackByStatus(StatusFeedback statusFeedback) {
         return feedbackDao.findFeedBackByStatus(statusFeedback);
     }
+
+    @Override
+    public Optional<Double> findAverageRatingByEventId(int eventId) {
+        return feedbackDao.findAverageRatingByEventId(eventId);
+    }
+
+    @Override
+    public List<FeedBack> getFeedbacksByEventId(Integer eventId) {
+        return feedbackDao.findByEvenementIdEvent(eventId);
+    }
+
+
+
+    @Override
+    public FeedBack analyzeSentimentAndSetStatus(FeedBack feedBack) {
+        String content = feedBack.getContent();
+        Properties props = new Properties();
+        props.setProperty("annotators", "tokenize, ssplit, parse, sentiment");
+        StanfordCoreNLP pipeline = new StanfordCoreNLP(props);
+        Annotation annotation = new Annotation(content);
+        pipeline.annotate(annotation);
+        List<CoreMap> sentences = annotation.get(CoreAnnotations.SentencesAnnotation.class);
+        int totalSentences = sentences.size();
+        int totalSentiments = 0;
+        for (CoreMap sentence : sentences) {
+            String sentiment = sentence.get(SentimentCoreAnnotations.SentimentClass.class);
+            if (sentiment.equals("Positive") || sentiment.equals("Negative")) {
+                totalSentiments++;
+            }
+        }
+        double sentimentPercentage = (double) totalSentiments / totalSentences;
+        if (sentimentPercentage >= 0.5) {
+            feedBack.setStatus(StatusFeedback.Positive);
+        } else {
+            feedBack.setStatus(StatusFeedback.Negative);
+        }
+
+        System.out.println("Sentiment of feedback: " + feedBack.getStatus());
+        return feedBack;
+    }
+
+    @Override
+    public Map<String, Long> getFeedbackStatistics() {
+        Map<String, Long> statistics = new HashMap<>();
+        statistics.put("Positive", feedbackDao.countByStatus(StatusFeedback.Positive));
+        statistics.put("Negative", feedbackDao.countByStatus(StatusFeedback.Negative));
+        return statistics;
+    }
+
+
 }
+
+
+
+
+
 

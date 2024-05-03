@@ -1,9 +1,9 @@
-
 package com.esprit.pi_project.entities;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.transaction.Transactional;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -11,6 +11,7 @@ import java.io.Serializable;
 @Entity
 @Table(name="options")
 @Data
+@Transactional
 public class QuizOption implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,6 +20,6 @@ public class QuizOption implements Serializable {
     private Boolean correct;
 
     @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
+    @ManyToOne()
     QuizQuestion question;
 }

@@ -1,4 +1,3 @@
-
 package com.esprit.pi_project.entities;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
@@ -23,9 +22,8 @@ public class FeedBack implements Serializable {
     @Enumerated(EnumType.STRING)
     @Column(name = "status")
     private StatusFeedback status;
-
     private int rating;
-
+    //private String sentiment;
     @ManyToOne
     @JoinColumn(name = "idEvent")
     Evenement evenement;

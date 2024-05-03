@@ -1,4 +1,3 @@
-
 package com.esprit.pi_project.controllers;
 
 import com.esprit.pi_project.entities.Comment;
@@ -51,4 +50,3 @@ public class CommentController {
     }
 
 }
-

@@ -1,4 +1,3 @@
-
 package com.esprit.pi_project.controllers;
 
 import com.esprit.pi_project.entities.Forum;
@@ -100,4 +99,3 @@ public class ResponseController {
     }
 
 }
-

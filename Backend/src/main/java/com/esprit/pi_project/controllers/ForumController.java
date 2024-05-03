@@ -1,4 +1,3 @@
-
 package com.esprit.pi_project.controllers;
 
 import com.esprit.pi_project.dao.ForumDao;
@@ -166,4 +165,3 @@ String pictureUrl = "https://www.drhakandoganay.com/wp-content/uploads/2020/06/h
         return new ResponseEntity<>(detectedLanguage, HttpStatus.OK);
     }
 }
-

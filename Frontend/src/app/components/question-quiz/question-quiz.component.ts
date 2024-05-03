@@ -1,9 +1,16 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {FormBuilder, FormGroup, FormsModule, NgForm} from "@angular/forms";
-import {NgForOf} from "@angular/common";
+import {NgForOf, NgIf} from "@angular/common";
 import {PaginatorModule} from "primeng/paginator";
 import {ActivatedRoute, RouterLink} from "@angular/router";
 import {QuestionQuizService} from "../../services/question-quiz/question-quiz.service";
+import {ButtonModule} from "primeng/button";
+import {InputTextModule} from "primeng/inputtext";
+import {RippleModule} from "primeng/ripple";
+import {TableModule} from "primeng/table";
+import {ToastModule} from "primeng/toast";
+import {ToolbarModule} from "primeng/toolbar";
+import {InputTextareaModule} from "primeng/inputtextarea";
 
 
     interface QuizOption {
@@ -20,7 +27,15 @@ import {QuestionQuizService} from "../../services/question-quiz/question-quiz.se
         FormsModule,
         NgForOf,
         PaginatorModule,
-        RouterLink
+        RouterLink,
+        ButtonModule,
+        InputTextModule,
+        NgIf,
+        RippleModule,
+        TableModule,
+        ToastModule,
+        ToolbarModule,
+        InputTextareaModule
     ],
   templateUrl: './question-quiz.component.html',
   styleUrl: './question-quiz.component.scss'
@@ -28,11 +43,12 @@ import {QuestionQuizService} from "../../services/question-quiz/question-quiz.se
 export class QuestionQuizComponent implements OnInit{
     questions: any[] = [];
     selectedQuestion: any = {};
+    selectedQuestion1: any = {};
     isNewQuestion: boolean = true;
     quiForm: FormGroup;
     quizId:number;
-
-    options: QuizOption[]
+    filteredQuestions: any[];
+    options: QuizOption[];
 
     @ViewChild('addForm') addForm!: NgForm;
     @ViewChild('updateForm') updateForm!: NgForm;
@@ -45,6 +61,8 @@ export class QuestionQuizComponent implements OnInit{
             this.quizId = +params['idQuiz'];
             console.log(this.quizId);
             this.loadQuestions(this.quizId);
+
+
         });
 
         // Initialiser le formulaire
@@ -59,7 +77,7 @@ export class QuestionQuizComponent implements OnInit{
         this.questionQuizService.getQuestionsByQuizId(quizId).subscribe(
             (questions: any[]) => {
                 this.questions = questions;
-                console.log(questions);
+                console.log(this.questions);
             },
             (error) => {
                 console.error('Une erreur s\'est produite lors du chargement des questions : ', error);
@@ -75,7 +93,21 @@ export class QuestionQuizComponent implements OnInit{
 
     selectQuiz(question: any): void {
         this.selectedQuestion = question;
+        const optionsD = [];
         this.isNewQuestion = false;
+
+        question.options.forEach(option => {
+            optionsD.push({
+                content: option.content,
+                correct: option.correct // Assurez-vous d'inclure toutes les propriétés nécessaires pour chaque option
+            });
+        });
+
+        this.selectedQuestion1 = {
+            idQuestion :question.idQuestion,
+            content: question.content,
+            options: optionsD
+        };
     }
 
     /*addNewQuiz(): void {
@@ -94,6 +126,9 @@ export class QuestionQuizComponent implements OnInit{
         };
         this.options.push(newOption);
 
+    }
+    addOption1(): void {
+        this.selectedQuestion.options.push({ content: '', correct: false });
     }
     dialogOpen: boolean = false;
     dialogData: any = {
@@ -148,8 +183,25 @@ export class QuestionQuizComponent implements OnInit{
                 );
             }
             else {
-                const quizData = this.updateForm.value;
-                console.log(this.updateForm.value)
+                this.selectedQuestion.options.forEach((option, index) => {
+                    option.content = this.updateForm.value['option' + index];
+                    console.log(option.content);
+                });
+                const quizData = {
+                    idQuestion: this.updateForm.value.idQuestion,
+                    content: this.updateForm.value.content,
+                    options: this.selectedQuestion.options // Utilisez selectedQuestion.options directement
+
+                };
+              console.log(quizData.options);
+
+
+               // console.log(quizData.options[0].content);
+
+                //const quizData = this.updateForm.value;
+               // console.log(this.updateForm.value);
+               // console.log(quizData.options[0].content);
+
                 // Si ce n'est pas un nouveau quiz, mettez à jour les valeurs du formulaire
                 this.questionQuizService.updateQuestion(quizData).subscribe(
                     (response) => {
@@ -210,4 +262,31 @@ export class QuestionQuizComponent implements OnInit{
         buttom.click();
     }
 */
+
+    searchTerm: string = '';
+
+    // Tableau de questions filtrées
+
+
+
+
+    // Méthode pour filtrer les questions en fonction du terme de recherche
+    filterQuestions() {
+        if (this.searchTerm.trim() === '') {
+            // Si le terme de recherche est vide, afficher toutes les questions
+            this.filteredQuestions = this.questions;
+        } else {
+
+            // Sinon, filtrer les questions en fonction du terme de recherche
+            this.filteredQuestions = this.questions.filter(question =>
+                question.content.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+                question.options.some(option =>
+                    option.content.toLowerCase().includes(this.searchTerm.toLowerCase())
+
+                )
+            );
+            console.log(this.filteredQuestions);
+        }
+    }
+
 }

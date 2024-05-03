@@ -1,4 +1,3 @@
-
 package com.esprit.pi_project.dao;
 
 import com.esprit.pi_project.entities.Club;
@@ -21,4 +20,3 @@ public interface ClubDao extends JpaRepository<Club,Long> {
 //    Map<Tag, Long> countClubsByTag();
 
 }
-

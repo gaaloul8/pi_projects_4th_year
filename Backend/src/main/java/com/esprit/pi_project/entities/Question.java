@@ -1,8 +1,11 @@
-
 package com.esprit.pi_project.entities;
 
 import jakarta.persistence.*;
+
+import jakarta.transaction.Transactional;
+
 import jakarta.validation.constraints.Size;
+
 import lombok.Data;
 
 import java.io.Serializable;
@@ -14,6 +17,7 @@ import jakarta.validation.constraints.NotBlank;
 
 @Data
 @Entity
+
 public class Question implements Serializable {
 
     @Id

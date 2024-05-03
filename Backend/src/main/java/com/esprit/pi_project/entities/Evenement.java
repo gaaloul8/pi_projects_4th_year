@@ -1,4 +1,3 @@
-
 package com.esprit.pi_project.entities;
 
 import com.fasterxml.jackson.annotation.*;
@@ -28,6 +27,9 @@ public class Evenement implements Serializable {
     private Date datetime;
     private String location;
     private String description;
+
+    @Lob
+    @Column(length = 200000000)
     private String image;
     private int nbplacesMax;
     private int nbPlacesReservees;

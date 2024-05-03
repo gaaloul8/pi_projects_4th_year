@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import { Observable } from 'rxjs';
 import {Reclamation, ReclamationStatus} from '../../models/reclamation.model';
-import {User} from "../../models/user.model";
+import {UserModel} from "../../models/userModel";
 
 @Injectable({
     providedIn: 'root'
@@ -10,91 +10,161 @@ import {User} from "../../models/user.model";
 export class ReclamationService {
 
     private baseUrl = 'http://localhost:8081/api/reclamations';
+    private token =  localStorage.getItem('jwtAccessToken');
+
 
     constructor(private http: HttpClient) { }
 
     getReclamations(): Observable<Reclamation[]> {
-        return this.http.get<Reclamation[]>(this.baseUrl);
+        const headers = new HttpHeaders({
+            'Authorization': 'Bearer ' + this.token
+          });
+        return this.http.get<Reclamation[]>(this.baseUrl,{headers:headers});
     }
 
     getReclamationById(id: number): Observable<Reclamation> {
-        return this.http.get<Reclamation>(`${this.baseUrl}/${id}`);
+        const headers = new HttpHeaders({
+            'Authorization': 'Bearer ' + this.token
+          });
+        return this.http.get<Reclamation>(`${this.baseUrl}/${id}`,{headers:headers});
     }
 
 
 
     createReclamation(reclamation: Reclamation, image: File): Observable<Reclamation> {
+        const headers = new HttpHeaders({
+            'Authorization': 'Bearer ' + this.token
+          });
         const formData = new FormData();
         formData.append('reclamation', new Blob([JSON.stringify(reclamation)], {
             type: 'application/json'
         }));
         formData.append('image', image);
 
-        return this.http.post<Reclamation>(this.baseUrl, formData);
+        return this.http.post<Reclamation>(this.baseUrl, formData , {headers:headers});
     }
 
     updateReclamation(id: number, reclamation: Reclamation): Observable<Object> {
-        return this.http.put(`${this.baseUrl}/${id}`, reclamation);
+        const headers = new HttpHeaders({
+            'Authorization': 'Bearer ' + this.token,
+            'Content-Type': 'application/json'
+          });
+        return this.http.put(`${this.baseUrl}/${id}`, reclamation,{headers:headers});
     }
 
     deleteReclamation(id: number): Observable<Object> {
-        return this.http.delete(`${this.baseUrl}/${id}`);
+        const headers = new HttpHeaders({
+            'Authorization': 'Bearer ' + this.token
+          });
+        return this.http.delete(`${this.baseUrl}/${id}`,{headers:headers});
     }
 
     archiveReclamation(reclamationId: number): Observable<any> {
-        return this.http.patch(`${this.baseUrl}/${reclamationId}/archive`, null);
+        const headers = new HttpHeaders({
+            'Authorization': 'Bearer ' + this.token,
+            'Content-Type': 'application/json'
+          });
+        return this.http.patch(`${this.baseUrl}/${reclamationId}/archive`, null,{headers:headers});
     }
     getArchivedReclamations(): Observable<Reclamation[]> {
-        return this.http.get<Reclamation[]>(`${this.baseUrl}/archived`);
+        const headers = new HttpHeaders({
+            'Authorization': 'Bearer ' + this.token
+          });
+        return this.http.get<Reclamation[]>(`${this.baseUrl}/archived`,{headers:headers});
     }
 
-    updateReclamationStatus(reclamationId: number, newStatus: ReclamationStatus): Observable<any> {
-        const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-        return this.http.post(`${this.baseUrl}/${reclamationId}/status`, `"${newStatus}"`, { headers });
+    updateReclamationStatus(reclamationId: number, newStatus: ReclamationStatus): Observable<Reclamation> {
+        const headers = new HttpHeaders({
+            'Authorization': 'Bearer ' + this.token,
+            'Content-Type': 'application/json'
+          });
+        return this.http.post<Reclamation>(`${this.baseUrl}/${reclamationId}/status`, `"${newStatus}"`, { headers:headers });
     }
 
     getOldestReclamations(): Observable<Reclamation[]> {
-        return this.http.get<Reclamation[]>(`${this.baseUrl}/oldest`);
+        const headers = new HttpHeaders({
+            'Authorization': 'Bearer ' + this.token
+          });
+        return this.http.get<Reclamation[]>(`${this.baseUrl}/oldest`,{headers:headers});
     }
 
     getNewestReclamations(): Observable<Reclamation[]> {
-        return this.http.get<Reclamation[]>(`${this.baseUrl}/newest`);
+        const headers = new HttpHeaders({
+            'Authorization': 'Bearer ' + this.token
+          });
+        return this.http.get<Reclamation[]>(`${this.baseUrl}/newest`,{headers:headers});
     }
 
     searchReclamationsByTitle(title: string): Observable<Reclamation[]> {
-        return this.http.get<Reclamation[]>(`${this.baseUrl}/search`, { params: { title } });
+        const headers = new HttpHeaders({
+            'Authorization': 'Bearer ' + this.token
+          });
+        return this.http.get<Reclamation[]>(`${this.baseUrl}/search`, { params: { title } ,headers:headers});
     }
 
     getReclamationsByUserId(userId: number): Observable<Reclamation[]> {
-        return this.http.get<Reclamation[]>(`${this.baseUrl}/user/${userId}`);
+        const headers = new HttpHeaders({
+            'Authorization': 'Bearer ' + this.token
+          });
+        return this.http.get<Reclamation[]>(`${this.baseUrl}/user/${userId}`,{headers:headers});
     }
 
     getReclamationsStatistics(): Observable<any> {
-        return this.http.get(`${this.baseUrl}/statistics`);
+        const headers = new HttpHeaders({
+            'Authorization': 'Bearer ' + this.token
+          });
+        return this.http.get(`${this.baseUrl}/statistics`,{headers:headers});
     }
 
-    getAllManagers(): Observable<User[]> {
-        return this.http.get<User[]>(`${this.baseUrl}/managers`);
+    getAllManagers(): Observable<UserModel[]> {
+        const headers = new HttpHeaders({
+            'Authorization': 'Bearer ' + this.token
+          });
+        return this.http.get<UserModel[]>(`${this.baseUrl}/managers`,{headers:headers});
     }
 
     assignReclamationToManager(reclamationId: number, managerId: number): Observable<Reclamation> {
-        return this.http.post<Reclamation>(`${this.baseUrl}/${reclamationId}/assign-manager/${managerId}`, null);
+        const headers = new HttpHeaders({
+            'Authorization': 'Bearer ' + this.token,
+            'Content-Type': 'application/json'
+          });
+        return this.http.post<Reclamation>(`${this.baseUrl}/${reclamationId}/assign-manager/${managerId}`, null,{headers:headers});
     }
 
 
     getReclamationsAssignedToUser(userId: number): Observable<Reclamation[]> {
-        return this.http.get<Reclamation[]>(`${this.baseUrl}/assigned-to/${userId}`);
+        const headers = new HttpHeaders({
+            'Authorization': 'Bearer ' + this.token,
+          });
+        return this.http.get<Reclamation[]>(`${this.baseUrl}/assigned-to/${userId}`,{headers:headers});
+    }
+    getCurrentUser(): Observable<UserModel> {
+        const headers = new HttpHeaders({
+            'Authorization': 'Bearer ' + this.token,
+          });
+        return this.http.get<UserModel>(`${this.baseUrl}/getconnecteduser`,{headers:headers});
     }
     resolveReclamation(reclamationId: number): Observable<Reclamation> {
-        return this.http.post<Reclamation>(`${this.baseUrl}/${reclamationId}/resolve`, {});
+        const headers = new HttpHeaders({
+            'Authorization': 'Bearer ' + this.token,
+            'Content-Type': 'application/json'
+          });
+        return this.http.post<Reclamation>(`${this.baseUrl}/${reclamationId}/resolve`, null,{headers: headers});
     }
 
     inProgressReclamation(reclamationId: number): Observable<any> {
-        return this.http.post(`${this.baseUrl}/${reclamationId}/progress`, {});
+        const headers = new HttpHeaders({
+            'Authorization': 'Bearer ' + this.token,
+            'Content-Type': 'application/json'
+          });
+        return this.http.post(`${this.baseUrl}/${reclamationId}/progress`,null, {headers:headers});
     }
 
     getWeeklyReclamationsCount(): Observable<number> {
-        return this.http.get<number>(`${this.baseUrl}/weekly-count`);
+        const headers = new HttpHeaders({
+            'Authorization': 'Bearer ' + this.token
+          });
+        return this.http.get<number>(`${this.baseUrl}/weekly-count`,{headers:headers});
     }
 
 

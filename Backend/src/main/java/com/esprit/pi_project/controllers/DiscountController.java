@@ -1,4 +1,3 @@
-
 package com.esprit.pi_project.controllers;
 
 import com.esprit.pi_project.dto.DiscountDTO;
@@ -82,4 +81,3 @@ public class DiscountController {
     }
 
 }
-

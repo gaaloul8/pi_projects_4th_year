@@ -1,5 +1,8 @@
-
 package com.esprit.pi_project.services;
+
+import com.esprit.pi_project.entities.Reservation;
+
+import com.esprit.pi_project.authentification.UserUpdateRequest;
 
 import com.esprit.pi_project.entities.Tag;
 import com.esprit.pi_project.entities.User;
@@ -7,6 +10,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -24,5 +28,8 @@ public interface UserService {
     User CompletePorofile(Integer userId, List<Tag> tags, MultipartFile profilePicture,String niveau,String Identifiant) throws IOException;
     String getJwtFromRequest(HttpServletRequest request);
     Optional<User> getUserFromJwt(HttpServletRequest request);
+
+   public void lockUserAccount(User user, LocalDateTime lockTime);
+    public User updateUser(Integer userId, UserUpdateRequest updateRequest) throws IOException;
 
 }

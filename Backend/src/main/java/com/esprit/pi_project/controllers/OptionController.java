@@ -1,4 +1,3 @@
-
 package com.esprit.pi_project.controllers;
 
 
@@ -20,4 +19,3 @@ public class OptionController {
         optionService.removeOption(option);
     }
 }
-

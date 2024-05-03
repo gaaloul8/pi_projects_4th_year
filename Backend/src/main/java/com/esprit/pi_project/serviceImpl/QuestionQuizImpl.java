@@ -1,4 +1,3 @@
-
 package com.esprit.pi_project.serviceImpl;
 
 import com.esprit.pi_project.dao.QuestionQuizDao;
@@ -60,10 +59,19 @@ public class QuestionQuizImpl implements QuestionQuizService {
             for (QuizOption option : question.getOptions()) {
                 // Vérifier si l'option existe déjà en base de données
                 if (option.getIdOption() != null) {
+                    System.out.println("hi");
                     QuizOption persistentOption = quizOptionDao.findById(option.getIdOption())
                             .orElseThrow(() -> new IllegalArgumentException("Option not found with ID: " + option.getIdOption()));
-                    updatedOptions.add(persistentOption);
+                    if(persistentOption!= null){
+                        persistentOption.setContent(option.getContent());
+                        updatedOptions.add(persistentOption);
+                        System.out.println("hello11");
+                    }
+
+
+
                 } else {
+                    System.out.println("hello");
                     // Si l'option n'existe pas en base de données, utiliser l'instance fournie
                     updatedOptions.add(option);
                 }

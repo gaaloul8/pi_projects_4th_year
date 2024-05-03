@@ -1,4 +1,3 @@
-
 package com.esprit.pi_project;
 
 import org.springframework.boot.SpringApplication;
@@ -14,6 +13,7 @@ import org.springframework.context.annotation.Configuration;
 @EnableAspectJAutoProxy
 @EnableScheduling
 @Configuration
+
 public class PiProjectApplication {
 
     public static void main(String[] args) {

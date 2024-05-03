@@ -1,0 +1,30 @@
+<div class="assigned-reclamations-container">
+    <h2>Assigned Reclamations</h2>
+    <div *ngIf="reclamations.length > 0; else noReclamations">
+        <div class="reclamation-card" *ngFor="let reclamation of reclamations">
+            <h3>{{ reclamation.title }}</h3>
+            <p>{{ reclamation.description }}</p>
+            <div class="reclamation-details">
+                <span>Created At: {{ reclamation.createdAt | date: 'medium' }}</span>
+                <span>Club Name: {{ reclamation.clubName }}</span>
+            </div>
+            <div class="reclamation-status-container">
+                <div [ngClass]="getStatusClass(reclamation.status)" class="reclamation-status">
+                    {{ reclamation.status }}
+                </div>
+                <label class="status-checkbox">
+                    <input type="checkbox" [checked]="reclamation.status === 'RESOLVED'"
+                           (change)="toggleReclamationStatus(reclamation.reclamationId, $event.target.checked)">
+                    <span class="checkmark"></span>
+                </label>
+            </div>
+            <img *ngIf="reclamation.imageUrl" [src]="reclamation.imageUrl" alt="Reclamation Image" class="reclamation-image"/>
+        </div>
+    </div>
+</div>
+
+<ng-template #noReclamations>
+    <div class="no-reclamations">
+        <p>No reclamations assigned to this user.</p>
+    </div>
+</ng-template>

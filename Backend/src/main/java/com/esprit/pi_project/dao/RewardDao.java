@@ -1,4 +1,3 @@
-
 package com.esprit.pi_project.dao;
 
 import com.esprit.pi_project.entities.Reward;
@@ -16,3 +15,4 @@ public interface RewardDao extends JpaRepository<Reward,Integer> {
     Reward findRewardByName(String name);
 
 }
+

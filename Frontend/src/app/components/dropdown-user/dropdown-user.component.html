@@ -1,0 +1,7 @@
+<div class="dropdown" (click)="toggleDropdown()">
+    <img class="profile-picture" [src]="'data:image/png;base64,' + user.profilePicture" alt="Profile Picture">
+    <div *ngIf="isDropdownOpen" class="dropdown-content">
+        <a  class="dropdown-item" (click)="navigateToProfileUpdate()">Settings</a>
+        <a  class="dropdown-item" (click)="logout()">Logout</a>
+    </div>
+</div>

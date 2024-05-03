@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup,Validators } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { Feedback } from 'src/app/interfaces/feedback';
 import { Reservation } from 'src/app/interfaces/reservation';
@@ -17,11 +18,19 @@ export class FeedbackComponent implements OnInit {
   selectedFeedbackId: number;
   feedbackDialog: boolean = false;
   submitted: boolean = false;
-  constructor(private feedbackservice: FeedbackService,private messageService: MessageService){}
+  feedbackForm: FormGroup;
+  feedbackToUpdate: Feedback;
+
+  constructor(private feedbackservice: FeedbackService,private messageService: MessageService,private formBuilder: FormBuilder){
+  
+  }
 
   ngOnInit(): void {
     this.getAllFeedBacksForCurrentUser();
-  }
+    this.feedbackForm = this.formBuilder.group({
+        content: ['', Validators.required]
+    });
+}
 
   getAllFeedBacksForCurrentUser() {
    // const  = 1; // Remplacez ceci par l'ID de l'utilisateur connecté
@@ -36,39 +45,39 @@ export class FeedbackComponent implements OnInit {
         }
       );
   }
-
-
-  confirmDeleteFeedBack(idFeedback: number) {
+  confirmDeleteFeedback(idFeedback: number) {
     this.feedbackservice.deleteFeedBack(idFeedback)
       .subscribe(
         () => {
+          // La suppression de l'événement a réussi
+          console.log('Event deleted with ID:', idFeedback);
           this.getAllFeedBacksForCurrentUser(); // Mettez à jour les données si nécessaire
-          this.deleteRDialog = false; // Fermer la boîte de dialogue après la suppression
+          this.deleteRDialog = false// Fermer la boîte de dialogue après la suppression
         },
         error => {
-          console.error('Error deleting feedback:', error);
+          // Gestion des erreurs
+          console.error('Error deleting event:', error);
         }
       );
   }
   
+
   confirmDelete(idFeedback: number){
     this.selectedFeedbackId = idFeedback;
     this.deleteRDialog = true;
   }
-
-  updateFeedBack(feedbacktoupdate: Feedback) {
-    this.feedbackservice.updateFeedback(feedbacktoupdate).subscribe(
-      updatedEvent => {
-        console.log('Event updated:', updatedEvent);
-        this.feedbackDialog = false;
-        window.location.reload();
-      },
-      error => {
-        console.error('Error updating event:', error);
-      }
-    );
-  }
   
+  updateFeedback(idFeedback: number): void {
+    this.submitted = true;
+    try {
+      this.feedbackservice.updateFeedback(idFeedback, this.feedbackForm.value).toPromise();
+      this.messageService.add({severity:'success', summary:'Success', detail:'Feedback updated successfully!'});
+      console.log("Feedback updated Successfully");
+      window.location.reload();
+    } catch (error) {
+      console.error(error);    
+    }
+  }
   
   editFeedBack(feedbackEdit : Feedback) {
     this.feedback = { ...feedbackEdit };

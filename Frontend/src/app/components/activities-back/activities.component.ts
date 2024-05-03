@@ -55,6 +55,7 @@ export class ActivitiesComponent implements OnInit{
     previewImageUrl: string | null = null;
     image: File | null = null;
     imageMin: File | null = null;
+    filteredActivities: any[];
 
     @ViewChild('addForm') addForm!: NgForm;
     @ViewChild('updateForm') updateForm!: NgForm;
@@ -202,6 +203,20 @@ export class ActivitiesComponent implements OnInit{
         }
     }
 
+    searchTerm: string = '';
+    filterActivity() {
+        if (this.searchTerm.trim() === '') {
+            // Si le terme de recherche est vide, afficher toutes les questions
+            this.filteredActivities= this.activities;
+        } else {
 
-
+            // Sinon, filtrer les questions en fonction du terme de recherche
+            this.filteredActivities = this.activities.filter(activity =>
+                activity.title.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+                activity.type.toLowerCase().includes(this.searchTerm.toLowerCase())||
+                activity.content.toLowerCase().includes(this.searchTerm.toLowerCase())
+            );
+            console.log(this.filteredActivities);
+        }
+    }
 }

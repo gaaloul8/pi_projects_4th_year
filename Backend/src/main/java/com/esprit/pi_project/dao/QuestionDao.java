@@ -1,4 +1,3 @@
-
 package com.esprit.pi_project.dao;
 
 import com.esprit.pi_project.entities.Question;
@@ -17,4 +16,3 @@ public interface QuestionDao extends JpaRepository<Question,Integer> {
     List<Question> findByForumId(@Param("forumId") Integer forumId);
 
 }
-    

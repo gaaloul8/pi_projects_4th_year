@@ -1,21 +1,21 @@
 import { Pipe, PipeTransform } from '@angular/core';
+import { Reservation } from './interfaces/reservation';
 
 @Pipe({
   name: 'filter',
   standalone: true
 })
 export class FilterPipe implements PipeTransform {
-
-  transform(value: any,args?: any): any {
-    if(!value)
-    return null;
-  if(!args) 
-    return value;
-
-  args=args.toLowerCase();
-  return value.filter(function(event:any){
-    return JSON.stringify(event).toLowerCase().includes(args);
-  })
-  }
+  transform(reservations: Reservation[], filterText: string) {
+    console.log('Filter pipe called!');
+    if(reservations.length === 0 || filterText === ''){
+        return reservations;
+    } else {
+        return reservations.filter((reservation) => 
+        { 
+            return reservation.user.identifiant.toLowerCase() === filterText.toLowerCase()
+        })
+    }
+}
 
 }

@@ -1,4 +1,3 @@
-
 package com.esprit.pi_project.authentification;
 
 import com.esprit.pi_project.entities.Role;
@@ -21,8 +20,10 @@ public class SignupRequest {
     private Date Registration;
     private Date lastLogin;
     private String Identifiant;
+    private String passwordHint;
     private Role role;
     private boolean FirstLogin;
+    private boolean accountNonLocked;
 
 
     public Date setRegistration() {

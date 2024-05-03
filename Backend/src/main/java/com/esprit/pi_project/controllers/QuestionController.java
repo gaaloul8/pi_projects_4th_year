@@ -1,4 +1,3 @@
-
 package com.esprit.pi_project.controllers;
 
 import com.esprit.pi_project.entities.Question;
@@ -84,4 +83,3 @@ public class QuestionController {
         return ResponseEntity.ok("\"" + sentiment + "\"");
     }
 }
-

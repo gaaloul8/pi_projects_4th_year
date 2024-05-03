@@ -1,4 +1,3 @@
-
 package com.esprit.pi_project.entities;
 import java.io.Serializable;
 import java.util.ArrayList;

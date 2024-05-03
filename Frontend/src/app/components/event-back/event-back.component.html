@@ -6,6 +6,9 @@
                     <div class="my-2">
                         <button pButton pRipple label="Add new Event" icon="pi pi-plus" class="p-button-success mr-2" (click)="openNew()"></button>
                     </div>
+
+                    
+                 
                 </ng-template>
 
 
@@ -21,9 +24,8 @@
                         <p-calendar id="date" [(ngModel)]="event.datetime" [touchUI]="true" [showIcon]="true" [showTime]="true" [showSeconds]="true" [readonlyInput]="true" (ngModelChange)="filterEventsByDate($event)"></p-calendar>
                     </span>
                    
-                     
-                    <p-dropdown [options]="eventTypes"  [(ngModel)]="event.eventType" placeholder="Select type event" [showClear]="true" (onChange)="filterEventsByType($event)"></p-dropdown>
-                        <span class="block mt-10 md:mt-0 p-input-icon-left">
+                    <p-dropdown [options]="eventTypes" [(ngModel)]="event.eventType" placeholder="Select type event" [showClear]="true" (onChange)="filterEventsByType($event.value)"></p-dropdown>
+                    <span class="block mt-10 md:mt-0 p-input-icon-left">
                         <ng-template let-type pTemplate="item">
                                 {{ type }}
                             </ng-template>
@@ -65,9 +67,13 @@
                     <td>{{ event.status }}</td>
                     <td>{{ event.nbplacesMax }}</td>
                     <td>{{ event.nbPlacesReservees }}</td>
-                    <td>{{event.image}}</td>
+                    <td> <img [src]="event.image ? 'data:image/png;base64,' + event.image : ''" alt="Event Image" width="150" class="mt-2"></td>
                     <td>
                         <div class="flex">
+                            <td>
+                                <button pButton pRipple icon="pi pi-qrcode" class="p-button-rounded p-button-info mr-2" ></button>
+                                <!-- Autres boutons -->
+                            </td>
                             <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" (click)="editEvent(event,event.idEvent)"></button>
                             <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning" (click)="confirmDelete(event.idEvent)"></button>                        </div>
                     </td>
@@ -76,67 +82,68 @@
         </p-table>
       </div>
       <p-dialog [(visible)]="eventDialog" [style]="{width: '450px'}" header="Event Details" [modal]="true" class="p-fluid">
-        <ng-template pTemplate="content">        
+        <ng-template pTemplate="content"> 
+            <form [formGroup]="eventForm" enctype="multipart/form-data"> 
+            
             <div class="field">
-               
+                <label for="image">Image</label>
+                <input type="file" (change)="onImageSelected($event)" accept="image/*" id="imageInput">
+                <img *ngIf="selectedImage" [src]="selectedImage" alt="Selected Image" width="150" class="mt-2">
+            </div>
+
+            <div class="field">
                 <label for="name">Event Name</label>
-                <input type="text" pInputText id="name" [(ngModel)]="event.eventName" required autofocus [ngClass]="{'ng-invalid ng-dirty' : submitted && !event.eventName}"/>
-                <small class="ng-dirty ng-invalid" *ngIf="submitted && !event.eventName">Name is required.</small>
+                <input type="text" pInputText id="name"  formControlName="eventName" [(ngModel)]="event.eventName" required autofocus />
             </div>
           
             
 
             <div class="field">
                 <label for="date">Date</label>
-                <p-calendar id="date" [(ngModel)]="event.datetime"  [showIcon]="true" [showTime]="true" [showSeconds]="true" [readonlyInput]="true"  ></p-calendar> 
+                <p-calendar id="date" [(ngModel)]="event.datetime" formControlName="datetime" [showIcon]="true" [showTime]="true" [showSeconds]="true" [readonlyInput]="true"  ></p-calendar> 
             </div>
             
             
             <div class="field">
                 <label for="description">Description</label>
-                <textarea id="description" pInputTextarea [(ngModel)]="event.description" required rows="3" cols="20"></textarea>
-                <small class="ng-dirty ng-invalid" *ngIf="submitted && !event.description">description is required.</small>
+                <textarea id="description" pInputTextarea formControlName="description"[(ngModel)]="event.description" required rows="3" cols="20"></textarea>
             </div>
             <div class="field">
                 <label for="name">Location</label>
-                <input type="text" pInputText id="name" [(ngModel)]="event.location" required autofocus [ngClass]="{'ng-invalid ng-dirty' : submitted && !event.location}"/>
-                <small class="ng-dirty ng-invalid" *ngIf="submitted && !event.location">Location is required.</small>
+                <input type="text" pInputText id="name" formControlName="location" [(ngModel)]="event.location" required autofocus/>
             </div>
             
             
             <div class="formgrid grid">  
                 <div class="field col">
                     <label for="nbplacesMax">Maximum number of places</label>
-                    <p-inputNumber id="nbplacesMax" [(ngModel)]="event.nbplacesMax"></p-inputNumber>
-                    <small class="ng-dirty ng-invalid" *ngIf="submitted && !event.nbplacesMax">Maximum places are required.</small>
+                    <p-inputNumber id="nbplacesMax"   formControlName="nbplacesMax" [(ngModel)]="event.nbplacesMax"></p-inputNumber>
                 </div>
             
                
                 <div class="field col">
                     <label for="tokenvalue">Number of token</label>
-                    <p-inputNumber id="tokenvalue" [(ngModel)]="event.tokenvalue"></p-inputNumber>
-                    <small class="ng-dirty ng-invalid" *ngIf="submitted && !event.tokenvalue">Tokens are required.</small>
+                    <p-inputNumber id="tokenvalue"  formControlName="tokenvalue"  [(ngModel)]="event.tokenvalue"></p-inputNumber>
+                   
                 </div>
               
             </div>
             
             <div class="field">
                 <label for="eventType">Event Type</label>
-                <p-dropdown id="eventType" [(ngModel)]="event.eventType" [options]="eventTypes" placeholder="Select" [required]="true">
+                <p-dropdown id="eventType"  formControlName="eventType" [(ngModel)]="event.eventType" [options]="eventTypes" placeholder="Select" [required]="true">
                     <ng-template let-type pTemplate="item">
                         {{ type }}
                     </ng-template>
                 </p-dropdown>
             </div>
             
-            
+            </form>
         </ng-template>
         <ng-template pTemplate="footer">
             <button pButton pRipple label="Cancel" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
-            <!-- Afficher le bouton "Add" lorsque vous ajoutez un nouvel événement -->
-          <!---->  <button *ngIf="!event.idEvent" pButton pRipple label="Add" icon="pi pi-plus" class="p-button-text" (click)="addEvent()"></button>
-            <!-- Afficher le bouton "Update" lorsque vous éditez un événement existant -->
-            <button *ngIf="event.idEvent" pButton pRipple label="Update" icon="pi pi-check" class="p-button-text" (click)="updateEvent(event)"></button>
+          <button *ngIf="!event.idEvent" pButton pRipple label="Add" icon="pi pi-plus" class="p-button-text" (click)="addEvent()"></button>
+            <button *ngIf="event.idEvent" pButton pRipple label="Update" icon="pi pi-check" class="p-button-text" (click)="updateEvent(event.idEvent)"></button>
         </ng-template>
         
     </p-dialog>
@@ -153,4 +160,5 @@
     </p-dialog>
     </div>
 </div>
+<p-toast></p-toast>
 
