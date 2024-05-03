@@ -26,6 +26,8 @@ import { FeedbackComponent } from '../components/feedback/feedback.component';
 import { ArchivedReclamationsComponent } from '../components/reclamations/archived-reclamations/archived-reclamations.component';
 import { AddReclamationComponent } from '../components/reclamations/add-reclamation/add-reclamation.component';
 import { MyReclamationsComponent } from '../components/reclamations/my-reclamations/my-reclamations.component';
+import { PostFrontComponent } from '../components/post-front/post-front.component';
+import { CommentComponent } from '../components/comment/comment.component';
 
 const routes: Routes = [
 
@@ -51,6 +53,9 @@ const routes: Routes = [
     { path: 'activity-frontend/:idQuiz', component: ActivityFrontendComponent },
     { path: 'reclamation/add', component: AddReclamationComponent},
     { path: 'reclamation/my', component: MyReclamationsComponent},
+    {path:'comment',component:CommentComponent},
+    {path:'front-post',component:PostFrontComponent},
+
 
 
 

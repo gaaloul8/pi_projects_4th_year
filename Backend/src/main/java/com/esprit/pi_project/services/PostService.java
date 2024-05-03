@@ -2,6 +2,7 @@ package com.esprit.pi_project.services;
 
 import com.esprit.pi_project.entities.Comment;
 import com.esprit.pi_project.entities.Post;
+import com.esprit.pi_project.entities.User;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.multipart.MultipartFile;
@@ -14,13 +15,15 @@ import java.util.Map;
 
 public interface PostService {
     //Post addPost(Post post, MultipartFile imageFile);
-    Post addPost(String content, MultipartFile imageFile) throws IOException, ParseException;
-    Post updatePost(Post post);
+    Post addPost(String content, MultipartFile imageFile, User user) throws IOException, ParseException;
+
 
     void deletePost(Long idPost);
     Post findPostById(Long idPost);
     List<Post> findAllPost();
     List<Post> findByPostDate(Date postDate);
     Map<Integer, Long> countTransactionsByMonth();
-    Post updatePost(Long postId,  String content, MultipartFile image) throws IOException;
+    Post updatePost(Long postId,  String content, MultipartFile image,User user) throws IOException;
+    Post likePost(Long postId);
+    Post dislikePost(Long postId);
 }

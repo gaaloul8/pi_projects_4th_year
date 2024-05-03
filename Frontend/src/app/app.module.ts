@@ -70,8 +70,6 @@ import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { PageEventComponent } from './components/page-event/page-event.component';
 import { ListReservationFrontComponent } from './components/list-reservation-front/list-reservation-front.component';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-
-import { PostFrontComponent } from './components/post-front/post-front.component';
 import { MatNativeDateModule } from '@angular/material/core';
 import { StatisticsComponent } from './components/statistics/statistics.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -82,15 +80,18 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
-
+import { PostFrontComponent } from './components/post-front/post-front.component';
+import { CommentComponent } from './components/comment/comment.component';
+import { CommentService } from './services/comment.service';
+import { ModalModule } from 'ngx-bootstrap/modal';
 
 
 
 @NgModule({
     declarations: [AppComponent, FeedbackComponent,ChartEventComponent,NotfoundComponent , ListfeedbackClubManagerComponent,ListReservationEventComponent,ForumComponent,ForumDetailComponent ,
-
-    LandingHomeComponent ,SidebarComponent, HomeComponent ,EventBackComponent , EventfrontComponent,PostFrontComponent,QuestionDetailComponent,
-    ClubsComponent,PostComponent,PageEventComponent,ListReservationFrontComponent],
+        PostFrontComponent,
+    LandingHomeComponent ,SidebarComponent, HomeComponent ,EventBackComponent , EventfrontComponent,QuestionDetailComponent,
+    ClubsComponent,PostComponent,PageEventComponent,ListReservationFrontComponent,CommentComponent],
 
     imports: [AppRoutingModule,
          AppLayoutModule,
@@ -153,11 +154,12 @@ import { MatSelectModule } from '@angular/material/select';
         MatTableModule,
         MatSnackBarModule,
         OverlayModule,
+        ModalModule.forRoot(),
         ],
         providers: [
             { provide: LocationStrategy, useClass: PathLocationStrategy },
             CountryService, CustomerService, IconService, NodeService,
-            PhotoService, ProductService,RewardService,DiscountService,EventService, MessageService,DatePipe,HttpClient,QuizService,StatisticsComponent
+            PhotoService, ProductService,RewardService,DiscountService,EventService, MessageService,DatePipe,HttpClient,QuizService,CommentService
         ],
         bootstrap: [AppComponent]
     })

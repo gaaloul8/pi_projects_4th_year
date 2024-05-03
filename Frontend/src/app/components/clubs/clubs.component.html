@@ -1,104 +1,114 @@
 <div class="grid">
-    <div class="col-12">
-      <div class="card px-6 py-6">
-        <p-toolbar styleClass="mb-4">
-          <ng-template pTemplate="left">
-            <div class="my-2">
-              <button pButton pRipple label="Add new Club" icon="pi pi-plus" class="p-button-success mr-2" (click)="openNew()"></button>
+  <div class="col-12">
+    <div class="card px-6 py-6">
+      <p-toolbar styleClass="mb-4">
+        <ng-template pTemplate="right">
+          <div style="flex: 1;">
+            <input type="text" placeholder="Search Clubs" class="p-inputtext p-component p-filled" [(ngModel)]="searchQuery" (input)="emitSearchQuery()">
+          </div>
+
+        </ng-template>
+        <ng-template pTemplate="left">
+          
+          <div class="my-2">
+            <button pButton pRipple label="Add new Club" icon="pi pi-plus" class="p-button-success mr-2" (click)="openNew()"></button>
+          </div>
+          <div class="my-2">
+            <button pButton pRipple label="Generate PDF" icon="pi pi-file-pdf" class="p-button-secondary ml-2" (click)="generatePDF()"></button>
+          </div>
+        </ng-template>
+      </p-toolbar>
+
+      <p-table [value]="clubs">
+        <ng-template pTemplate="header">
+          <tr>
+            <th style="width: 3rem">
+              <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+            </th>
+            <th>Image</th>
+            <th>Club Name</th>
+            <th>Club Description</th>
+            <th>Membership Number</th>
+            <th>Tag</th>
+            <th></th>
+          </tr>
+        </ng-template>
+
+        <ng-template pTemplate="body" let-club>
+          <tr>
+            <td>
+              <p-tableCheckbox [value]="club"></p-tableCheckbox>
+            </td>
+            <td>
+              <img [src]="club.image ? 'data:image/png;base64,' + club.image : ''" alt="Club Image" width="150" class="mt-2">
+            </td>
+            <td>{{ club.clubName }}</td>
+            <td>{{ club.description }}</td>
+            <td>{{ club.membershipCount }}</td>
+            <td>{{ club.tag }}</td>
+
+            <td>
+              <div class="flex">
+                <button *ngIf="club.user.id_user === user.id_user" pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" (click)="editClub(club)"></button>
+                <button *ngIf="club.user.id_user === user.id_user" pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning" (click)="confirmDelete(club.clubId)"></button>
+              </div>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+
+      <p-dialog [(visible)]="clubDialog" [style]="{width: '450px'}" header="Club Details" [modal]="true" class="p-fluid">
+        <ng-template pTemplate="content">
+          <form [formGroup]="clubForm" enctype="multipart/form-data">
+            <div class="field">
+              <label for="clubName">Club Name</label>
+              <input type="text" id="clubName" pInputText formControlName="clubName" required autofocus>
             </div>
-          </ng-template>
-        </p-toolbar>
-  
-        <p-table [value]="clubs">
-          <ng-template pTemplate="header">
-            <tr>
-              <th style="width: 3rem">
-                <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
-              </th>
-              <th>Image</th>
-              <th>Club Name</th>
-              <th>Club Description</th>
-              <th>Membership Number</th>
-              <th>Tag</th>
-              <th></th>
-            </tr>
-          </ng-template>
-  
-          <ng-template pTemplate="body" let-club>
-            <tr>
-              <td>
-                <p-tableCheckbox [value]="club"></p-tableCheckbox>
-              </td>
-              <td>
-                <img [src]="club.image ? 'data:image/png;base64,' + club.image : ''" alt="Club Image" width="150" class="mt-2">
-              </td>
-              <td>{{ club.clubName }}</td>
-              <td>{{ club.description }}</td>
-              <td>{{ club.membershipCount }}</td>
-              <td>{{ club.tag }}</td>
-  
-              <td>
-                <div class="flex">
-                  <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" (click)="editClub(club)"></button>
-                  <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning" (click)="confirmDelete(club.clubId)"></button>
-                </div>
-              </td>
-            </tr>
-          </ng-template>
-        </p-table>
-  
-        <p-dialog [(visible)]="clubDialog" [style]="{width: '450px'}" header="Club Details" [modal]="true" class="p-fluid">
-          <ng-template pTemplate="content">
-            <form [formGroup]="clubForm" enctype="multipart/form-data">
-              <div class="field">
-                <label for="clubName">Club Name</label>
-                <input type="text" id="clubName" pInputText formControlName="clubName" required autofocus>
-              </div>
-              <div class="field">
-                <label for="description">Description</label>
-                <textarea id="description" pInputTextarea formControlName="description" required rows="3" cols="20"></textarea>
-              </div>
-              <div class="field">
-                <label for="membershipCount">Membership Number</label>
-                <input type="number" id="membershipCount" pInputText formControlName="membershipCount" required autofocus>
-              </div>
-              <div class="formgrid grid">
-                <div class="field col">
-                  <label for="tag">Tag</label>
-                  <select class="form-select form-select-lg mb-3" [(ngModel)]="club.tag" formControlName="tag">
-                    <option *ngFor="let tag of tagValues" [value]="tag">{{ tag }}</option>
-                  </select>
-                </div>
-              </div>
-              <div class="field">
-                <label for="image">Image</label>
-                <input type="file" (change)="onImageSelected($event)" accept="image/*" id="imageInput">
-                <img *ngIf="selectedImage" [src]="selectedImage" alt="Selected Image" width="150" class="mt-2">
+            <div class="field">
+              <label for="description">Description</label>
+              <textarea id="description" pInputTextarea formControlName="description" required rows="3" cols="20"></textarea>
+            </div>
+            <div class="field">
+              <label for="membershipCount">Membership Number</label>
+              <input type="number" id="membershipCount" pInputText formControlName="membershipCount" required autofocus>
+            </div>
+            <div class="filed">
+             
+                <label for="tag">Tag</label>
+                <select class="form-select" [(ngModel)]="club.tag" formControlName="tag">
+                  <option *ngFor="let tag of tagValues" [value]="tag">{{ tag }}</option>
+                </select>
+              
+            </div>
+            <hr>
+            <div class="field">
+              <label for="image">Image</label>
+              <input type="file" (change)="onImageSelected($event)" accept="image/*" id="imageInput">
+              <img *ngIf="selectedImage" [src]="selectedImage" alt="Selected Image" width="150" class="mt-2">
             </div>
             
-            </form>
-          </ng-template>
-  
-          <ng-template pTemplate="footer">
-            <button pButton pRipple label="Cancel" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
-            <!-- Add button -->
-            <button *ngIf="!selectedClub" pButton pRipple label="Add" icon="pi pi-plus" class="p-button-text" (click)="addClub()"></button>
-            <!-- Update button -->
-            <button *ngIf="selectedClub" pButton pRipple label="Update" icon="pi pi-check" class="p-button-text" (click)="updateClub(club)"></button>
-          </ng-template>
-        </p-dialog>
-  
-        <p-dialog [(visible)]="deleteClubDialog" header="Confirm" [modal]="true" [style]="{width:'450px'}">
-          <div class="flex align-items-center justify-content-center">
-            <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
-            <span>Are you sure you want to delete this club?</span>
-          </div>
-          <ng-template pTemplate="footer">
-            <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No" (click)="deleteClubDialog = false"></button>
-            <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Yes" (click)="deleteClub(selectedClubId)"></button>
-          </ng-template>
-        </p-dialog>
-      </div>
+          </form>
+        </ng-template>
+
+        <ng-template pTemplate="footer">
+          <button pButton pRipple label="Cancel" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
+          <!-- Add button -->
+          <button *ngIf="!selectedClub" pButton pRipple label="Add" icon="pi pi-plus" class="p-button-text" (click)="addClub()"></button>
+          <!-- Update button -->
+          <button *ngIf="selectedClub"  pButton pRipple label="Update" icon="pi pi-check" class="p-button-text" (click)="updateClub(selectedClub.clubId)"></button>
+        </ng-template>
+      </p-dialog>
+
+      <p-dialog [(visible)]="deleteClubDialog" header="Confirm" [modal]="true" [style]="{width:'450px'}">
+        <div class="flex align-items-center justify-content-center">
+          <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
+          <span>Are you sure you want to delete this club?</span>
+        </div>
+        <ng-template pTemplate="footer">
+          <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No" (click)="deleteClubDialog = false"></button>
+          <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Yes" (click)="deleteClub()"></button>
+        </ng-template>
+      </p-dialog>
     </div>
   </div>
-  
+</div>

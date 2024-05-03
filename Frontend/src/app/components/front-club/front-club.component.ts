@@ -13,6 +13,9 @@ import {DialogModule} from "primeng/dialog";
 import {InputTextModule} from "primeng/inputtext";
 import {InputTextareaModule} from "primeng/inputtextarea";
 import {RippleModule} from "primeng/ripple";
+import { Subject, debounceTime, distinctUntilChanged } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { UserModel } from 'src/app/models/userModel';
 @Component({
   selector: 'app-front-club',
   standalone: true,
@@ -39,11 +42,30 @@ import {RippleModule} from "primeng/ripple";
 
 export class FrontClubComponent implements OnInit{
   clubs: Club[] = [];
-  constructor(private clubService:ClubService,private formbuilder:FormBuilder,private renderer:Renderer2) {}
+  selectedClubId:number;
+  deleteForumDialog:boolean;
+  searchQuery: string = '';
+  clubDialog: boolean = false;
+  submitted: boolean = false;
+  club: Club = {};
+  user: UserModel;
+  
+  private searchSubject: Subject<string> = new Subject<string>();
+  constructor(private clubService:ClubService,private formbuilder:FormBuilder,private renderer:Renderer2,private http:HttpClient) {
+    this.searchSubject.pipe(
+      debounceTime(300), // Wait for 300ms after the last keystroke
+      distinctUntilChanged() // Only emit distinct search queries
+    ).subscribe(() => {
+      this.searchClubs();
+    });
+  }
   ngOnInit(): void {
     this.onGetAllClubs();
+    this.getUser();
     this.loadJsFiles();
+    
   }
+  
   public loadJsFile(url: string) {
     const body = <HTMLDivElement>document.body;
     const script = document.createElement('script');
@@ -56,6 +78,16 @@ export class FrontClubComponent implements OnInit{
         console.error('Failed to load script:', error);
     };
     this.renderer.appendChild(document.body, script);
+}
+getUser(): void {
+  this.clubService.getUser().subscribe(
+    (response: UserModel) => {
+      this.user = response;
+    },
+    error => {
+      console.error('Error fetching user:', error);
+    }
+  );
 }
 
 loadJsFiles(): void {
@@ -71,6 +103,35 @@ onGetAllClubs(): void {
     }, error => {
       console.error('Error fetching clubs:', error);
     });
+}
+confirmDelete(forumId: number){
+  this.selectedClubId = forumId;
+  this.deleteForumDialog = true;
+}
+openNew() {
+  this.club = {};
+  this.submitted = false;
+  this.clubDialog = true;
+}
+searchClubs(): void {
+  if (this.searchQuery.trim() !== '') {
+    this.http.get<Club[]>('http://localhost:8081/clubs/search', { params: { query: this.searchQuery.trim() } })
+      .subscribe((response: Club[]) => {
+        console.log('Searched clubs:', response);
+        this.clubs = response;
+      }, error => {
+        console.error('Error searching clubs:', error);
+        this.clubs = []; // Clear clubs array in case of error
+      });
+  } else {
+    // If search query is empty, fetch all clubs
+    this.onGetAllClubs();
+  }
+}
+
+
+emitSearchQuery(): void {
+  this.searchSubject.next(this.searchQuery); // Pass the search query to next method
 }
 
 

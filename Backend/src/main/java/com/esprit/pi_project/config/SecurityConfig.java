@@ -34,18 +34,18 @@ public class SecurityConfig {
                         authorizeRequests
                                 .requestMatchers("/auth/**","/profile/","/auth/reset-password/").permitAll()
 
-                                .requestMatchers("/event/**","/reservation/**","/feedback/**").permitAll()
+                                .requestMatchers("/event/**","/reservation/**","/feedback/**","/discount/**","/reward/sendSMS").permitAll()
 
 
 
 
-                          //      .requestMatchers("/quiz/**","/passerQuiz/**","/questionq/**","/activity/**","/option/**").permitAll()
+                                //      .requestMatchers("/quiz/**","/passerQuiz/**","/questionq/**","/activity/**","/option/**").permitAll()
 
 
 
-                             //   .requestMatchers("/feedback/**").hasAnyRole(User.name())
-                             //   .requestMatchers("/auth/**").hasAnyRole(Admin.name())
-                               // .requestMatchers(HttpMethod.GET,"/auth/admin").hasAnyAuthority(ADMIN_READ.name())
+                                //   .requestMatchers("/feedback/**").hasAnyRole(User.name())
+                                //   .requestMatchers("/auth/**").hasAnyRole(Admin.name())
+                                // .requestMatchers(HttpMethod.GET,"/auth/admin").hasAnyAuthority(ADMIN_READ.name())
                                 .anyRequest().authenticated()
                 )
                 .sessionManagement(sessionManagement ->
