@@ -20,6 +20,7 @@ import { NotfoundComponent } from '../demo/components/notfound/notfound.componen
 import { FrontClubComponent } from '../components/front-club/front-club.component';
 import {ScrapingDataComponent} from "../components/scraping-data/scraping-data.component";
 import {ActivityFrontendComponent} from "../components/activity-frontend/activity-frontend.component";
+import {UpdateUserAccountComponent} from "../components/update-user-account/update-user-account.component";
 import { PageEventComponent } from '../components/page-event/page-event.component';
 import { ListReservationFrontComponent } from '../components/list-reservation-front/list-reservation-front.component';
 import { FeedbackComponent } from '../components/feedback/feedback.component';
@@ -30,6 +31,7 @@ import { PostFrontComponent } from '../components/post-front/post-front.componen
 import { CommentComponent } from '../components/comment/comment.component';
 
 const routes: Routes = [
+    {path:'profile/update',component: UpdateUserAccountComponent},
 
 { path: 'forum',component:ForumComponent},
 { path: 'home',component:HomeComponent},
