@@ -27,29 +27,24 @@ public class SmsController {
     @Autowired
     UserService userService;
     // Hard-coded Twilio credentials
-    public static final String ACCOUNT_SID = "AC2dfad6d935e79825c66b24df8a2d9e1a";
-    public static final String AUTH_TOKEN = "4580ae8756b6a3850b4da744bbeaaea3";
+    public static final String ACCOUNT_SID = "ACd683caf1e8421436c76bd0e110fa4c9a";
+    public static final String AUTH_TOKEN = "41df0fcacde0c384ca308ba66cba5281";
 
     @GetMapping(value = "/reward/sendSMS")
     public ResponseEntity<String> sendSMS(HttpServletRequest request, @RequestParam("rewardName") String rewardName, @RequestParam("cost") float cost,@RequestParam("NbDispo") int NbDispo) throws IOException {
-        Optional<User> optionalUser = userService.getUserFromJwt(request);
-        if (optionalUser.isPresent()) {
-            User user = optionalUser.get();
+
             // Process user data
-            System.out.println(user);
             Twilio.init(ACCOUNT_SID, AUTH_TOKEN);
 
             // Send message
-            Message.creator(new PhoneNumber("+21625704316"), new PhoneNumber("+14053344110"), "Hello from EspritClaim 📞 the user " + user.getLastName() + " "+user.getFirstName()+" had buyed the reward " + rewardName + "with the price " + cost + " il vous reste " + NbDispo +" article dans cette reward").create();
+            Message.creator(new PhoneNumber("+21625704316"), new PhoneNumber("+12569801290"), "Hello from EspritClaim 📞 the user  had buyed the reward " + rewardName + "with the price " + cost + " il vous reste " + NbDispo +" article dans cette reward").create();
 
             return new ResponseEntity<String>("Message sent successfully", HttpStatus.OK);
 
-        } else {
-            // Handle the case where the Optional<User> is empty
-            System.out.println("User not found");
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to update reward");
 
-        }
+            // Handle the case where the Optional<User> is empty
+
+
 
     }
 
