@@ -130,7 +130,6 @@ import { FrontClubComponent } from './components/front-club/front-club.component
             {path:'registerWithcard',component:RegisterWithCardComponent},
             {path:'takeimage',component:TakeimageComponent},
             {path:'Registerwitcard2',component:Registercard2Component},
-            {path:'profile/update',component: UpdateUserAccountComponent},
 
             { path: 'login', component: LoginComponent },
             { path: 'forget', component: ForgetComponent },

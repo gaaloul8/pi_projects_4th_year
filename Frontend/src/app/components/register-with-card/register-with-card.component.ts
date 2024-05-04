@@ -86,11 +86,9 @@ export class RegisterWithCardComponent {
                 response => {
                     if (response) {
                         if (response.message) {
-                            // Faces match, retrieve password hint
                             this.passwordHint = response.message;
                             console.log('Password Hint:', this.passwordHint);
                         } else if (response.values) {
-                            // Faces don't match, extract lock time and account locked status
                             const valuesString = response.values;
                             const [lockTimeString, isAccountNonLockedString] = valuesString.split('|');
                             const dateTimePart = lockTimeString.substring(0, lockTimeString.lastIndexOf('false') - 1);
@@ -100,11 +98,9 @@ export class RegisterWithCardComponent {
                             console.log('Lock Time:', lockTime);
                             console.log('Is Account Non Locked:', isAccountNonLocked);
 
-                            // Store lock time in localStorage
                             localStorage.setItem('LockTime', dateTimePart);
                             localStorage.setItem('isAccountNonLocked', String(isAccountNonLocked));
 
-                            // Redirect based on account locked status
                             if (isAccountNonLocked === false) {
                                 console.log('Account is locked');
                                 this.router.navigate(['/accountLocked']);

@@ -27,7 +27,10 @@
                         </re-captcha>
                         <div class="button-container">
                             <button type="submit" [disabled]="!captchaResolved"  pButton label="Login"></button>
-                            <span class="not-member-text">Forget your password? <a routerLink="/forget" class="login-link">Reset password</a></span>
+                            <span class="not-member-text"> <a routerLink="/register" class="login-link">Not a member?</a></span>
+
+                            <span class="not-member-text"> <a routerLink="/forget" class="login-link">Forget your password?</a></span>
+
                         </div>
                     </form>
                 </div>

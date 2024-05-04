@@ -170,7 +170,7 @@ public class UserServiceIMPL implements UserService {
         System.out.println(updateRequest.getProfilePicture());
         if (updateRequest.getProfilePicture() != null) {
             System.out.println(updateRequest.getProfilePicture());
-            byte[] imageData = updateRequest.getProfilePicture().getBytes(); // Read image data
+            byte[] imageData = updateRequest.getProfilePicture().getBytes();
 
             String base64Image = Base64.getEncoder().encodeToString(imageData);
             user.setProfilePicture(base64Image);

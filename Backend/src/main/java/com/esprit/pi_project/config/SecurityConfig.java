@@ -16,6 +16,7 @@ import org.springframework.security.web.authentication.logout.LogoutHandler;
 
 import static com.esprit.pi_project.entities.Permission.ADMIN_READ;
 import static com.esprit.pi_project.entities.Role.Admin;
+import static com.esprit.pi_project.entities.Role.ClubManager;
 
 @Configuration
 @EnableWebSecurity
@@ -36,7 +37,12 @@ public class SecurityConfig {
                               //  .requestMatchers("/quiz/**","/passerQuiz/**","/questionq/**","/activity/**").permitAll()
                                 .requestMatchers("/reward/**","/discount/**","/forums/**").permitAll()
                                 //.requestMatchers("/getUsers").hasRole("Admin")
-                                .requestMatchers("/getUsers").hasAuthority(Admin.name())
+                                //.requestMatchers("/getUsers").hasAuthority(Admin.name())
+                                .requestMatchers("/getUsers").hasAnyAuthority(Admin.name(),ClubManager.name())
+                              //  .requestMatchers("/getUsers").hasAuthority(ClubManager.name())
+
+                                // .requestMatchers("/deleteuser/{id}").hasAuthority(Admin.name())
+
                                 // .requestMatchers(HttpMethod.GET,"/auth/admin").hasAnyAuthority(ADMIN_READ.name())
                                 .requestMatchers("/reward/**","/discount/**","/sendSMS").permitAll()
                                 .requestMatchers("/event/**","/reservation/**","/feedback/**").permitAll()

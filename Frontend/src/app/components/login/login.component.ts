@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {ButtonModule} from "primeng/button";
 import {CheckboxModule} from "primeng/checkbox";
 import {InputTextModule} from "primeng/inputtext";
@@ -47,7 +47,7 @@ import {
   styleUrl: './login.component.scss'
 })
 
-export class LoginComponent {
+export class LoginComponent implements  OnInit {
     loginRequest :  LoginRequest={};
     authResponse: AuthResponse = {};
     errorMessage: string;
@@ -66,6 +66,11 @@ export class LoginComponent {
 ) {
 
     }
+
+    ngOnInit(): void {
+        throw new Error('Method not implemented.');
+    }
+
     loginFormSubmit() {
         this.errorMessage = ''; // Reset error message on each form submission
         this.formSubmitted = true; // Set the formSubmitted flag when the form is submitted
@@ -106,7 +111,10 @@ export class LoginComponent {
                     this.authResponse = response;
                     localStorage.setItem('jwtAccessToken', this.authResponse.jwtaccestoken);
                         console.log(this.authResponse.userLocked);
+                    console.log(this.authResponse.role);
+
                     if (this.authResponse.role === 'Admin' || this.authResponse.role=== 'ClubManager') {
+
                         this.router.navigate(['/users']);
                     } else {
                         this.router.navigate(['/main/home']);

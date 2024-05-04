@@ -20,8 +20,10 @@ import { NotfoundComponent } from '../demo/components/notfound/notfound.componen
 import { FrontClubComponent } from '../components/front-club/front-club.component';
 import {ScrapingDataComponent} from "../components/scraping-data/scraping-data.component";
 import {ActivityFrontendComponent} from "../components/activity-frontend/activity-frontend.component";
+import {UpdateUserAccountComponent} from "../components/update-user-account/update-user-account.component";
 
 const routes: Routes = [
+    {path:'profile/update',component: UpdateUserAccountComponent},
 
 { path: 'forum',component:ForumComponent},
 { path: 'home',component:HomeComponent},
