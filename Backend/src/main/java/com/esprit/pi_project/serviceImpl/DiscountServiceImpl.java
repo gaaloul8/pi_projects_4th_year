@@ -111,7 +111,7 @@ public class DiscountServiceImpl implements DiscountService {
         }
     }
 
-    @Scheduled(fixedRate =20000)
+    @Scheduled(fixedRate =90000)
     public void checkDiscountsValidity() {
         // Get the current local date
         LocalDate currentDate = LocalDate.now();

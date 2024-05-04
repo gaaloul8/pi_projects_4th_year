@@ -107,7 +107,7 @@ export class LoginComponent {
                     localStorage.setItem('jwtAccessToken', this.authResponse.jwtaccestoken);
                         console.log(this.authResponse.userLocked);
                     if (this.authResponse.role === 'Admin' || this.authResponse.role=== 'ClubManager') {
-                        this.router.navigate(['/users']);
+                        this.router.navigate(['/reward']);
                     } else {
                         this.router.navigate(['/main/home']);
                     }
