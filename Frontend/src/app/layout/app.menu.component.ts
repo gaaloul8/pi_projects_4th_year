@@ -1,6 +1,7 @@
 import { OnInit } from '@angular/core';
 import { Component } from '@angular/core';
 import { LayoutService } from './service/app.layout.service';
+import { RouterLink } from '@angular/router';
 
 @Component({
     selector: 'app-menu',
@@ -27,8 +28,26 @@ export class AppMenuComponent implements OnInit {
 
                     { label: 'Forum Statistics', icon: 'pi pi-fw pi-chart-bar', routerLink: ['/forumstat'] },
                     { label: 'Forum', icon: 'pi pi-fw pi-id-card', routerLink: ['/forumback'] },
+                    { label: 'Reward', icon: 'pi pi-fw pi-id-card', routerLink: ['/reward'] },
+                    { label: 'Discount', icon: 'pi pi-fw pi-id-card', routerLink: ['/discounts'] },
+                    { label: 'Transaction', icon: 'pi pi-fw pi-id-card', routerLink: ['/transactions'] },
+                    { label: 'StatTransaction', icon: 'pi pi-fw pi-id-card', routerLink: ['/stattransaction'] },
+                    { label: 'StatUsers', icon: 'pi pi-fw pi-id-card', routerLink: ['/statistics'] },
+                    { label: 'Club Statistics', icon: 'pi pi-fw pi-chart-bar', routerLink: ['/stat-club'] },
+                    { label: 'Post Statistics', icon: 'pi pi-fw pi-chart-bar', routerLink: ['/stat-post'] },
+                    { label: 'All posts', icon: 'pi pi-fw pi-id-card', routerLink: ['/post'] },
+                    { label: 'All clubs', icon: 'pi pi-fw pi-id-card', routerLink: ['/club'] },
                     { label: 'Quiz', icon: 'pi pi-fw pi-list', routerLink: ['/quiz-back'] },
                     { label: 'Quiz Chart',icon: 'pi pi-fw pi-chart-bar', routerLink: ['/quiz-chart'] },
+                    { label: 'Event Statistics',icon: 'pi pi-fw pi-chart-bar', routerLink: ['/staticEventByFeedback'] },
+                    { label: 'Event', icon: 'pi pi-fw pi-list', routerLink: ['/eventBack'] },
+                    { label: 'Reservation', icon: 'pi pi-fw pi-list', routerLink: ['/listReservationEvent'] },
+                    { label: 'FeedBack', icon: 'pi pi-fw pi-list', routerLink: ['/listFeedBackClubManager'] },
+                    { label: 'Reclamation Stats',icon: 'pi pi-fw pi-chart-bar', routerLink: ['/reclamation/statistics']},
+                    { label: 'All Reclamation',icon: 'pi pi-fw pi-list', routerLink: ['/reclamation']},
+                    { label: 'Assigned Reclamation',icon: 'pi pi-fw pi-list', routerLink: ['/reclamation/assigned']},
+                    { label: 'Archived Reclamation',icon: 'pi pi-fw pi-list', routerLink: ['/reclamation/archived']},
+                    
 
                    /* { label: 'Form Layout', icon: 'pi pi-fw pi-id-card', routerLink: ['/uikit/formlayout'] },
                     { label: 'Input', icon: 'pi pi-fw pi-check-square', routerLink: ['/uikit/input'] },

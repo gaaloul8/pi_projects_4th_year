@@ -8,6 +8,7 @@ import { User } from "../../interfaces/user";
 import { Event } from "../../interfaces/event";
 
 import { DatePipe} from '@angular/common';
+import { FormBuilder, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-event-back',
@@ -15,7 +16,7 @@ import { DatePipe} from '@angular/common';
   styleUrl: './event-back.component.scss'
 })
 export class EventBackComponent implements OnInit {
-
+  eventForm:FormGroup;
   events: Event[] = [];
   eventDialog: boolean = false;
   submitted: boolean = false;
@@ -23,17 +24,29 @@ export class EventBackComponent implements OnInit {
   deleteEventDialog: boolean = false;
   selectedEventId: number;
   eventTypes: string[] = Object.values(TypeEvent);
+ 
   eventStatus: string[] = Object.values(Status);
-  selectedImage: File | null = null;
-  selectedFile: File | null = null;
+  selectedImage: any;
+  selectedFile: File ;
   imagesToUpload: File[] = [];
-  constructor(private eventService : EventService,private messageService: MessageService,private datePipe: DatePipe){}
+
+  constructor(private eventService : EventService,private messageService: MessageService,private datePipe: DatePipe,private formBuilder: FormBuilder){}
 
   ngOnInit(): void {
     this.getEvent();
-  }
+    this.eventForm=this.formBuilder.group({
+        image:['', ],
+        description:['', ],
+        eventName:['',],
+        eventType:['',],
+        datetime:['',],
+        location:['',],
+        nbplacesMax:['',],
+        tokenvalue:['',]
 
-
+     
+    });
+}
 
 onFileChange(event) {
     this.imagesToUpload = event.target.files;
@@ -51,20 +64,6 @@ onFileChange(event) {
     );
   }
 
-  addEvent() {
-    this.submitted = true;
-    //this.event.eventOwner = { id_user: 1}; 
-    try {
-        console.log(this.event);
-        this.eventService.addNewEvent(this.event).toPromise();
-        console.log("event created");
-
-        this.eventDialog = false;
-        window.location.reload();
-    } catch(error) {
-        console.error(error);
-    }
-}
 
   openNew() {
     this.event = {};
@@ -82,14 +81,12 @@ confirmDeleteEvent(idEvent: number) {
       () => {
         // La suppression de l'événement a réussi
         console.log('Event deleted with ID:', idEvent);
-        this.messageService.add({severity:'success', summary:'Success', detail:'Event deleted successfully!'});
         this.getEvent(); // Mettez à jour les données si nécessaire
         this.deleteEventDialog = false; // Fermer la boîte de dialogue après la suppression
       },
       error => {
         // Gestion des erreurs
         console.error('Error deleting event:', error);
-        this.messageService.add({severity:'error', summary:'Error', detail:'Error deleting event.'});
       }
     );
 }
@@ -102,36 +99,23 @@ confirmDelete(idEvent: number){
 
 
 // Angular Component
-updateEvent(eventToUpdate: Event) {
-  this.eventService.updateEvent(eventToUpdate).subscribe(
-    updatedEvent => {
-      console.log('Event updated:', updatedEvent);
-      this.eventDialog = false;
+updateEvent(idEvent : number): void {
+  this.submitted = true;
+  try {
+      this.eventService.updateEvent(idEvent, this.eventForm.value, this.selectedImage).toPromise();
+      console.log("event updated Successfully");
       window.location.reload();
-    },
-    error => {
-      console.error('Error updating event:', error);
-    }
-  );
+  } catch (error) {
+      console.error(error);
+  }
+
 }
-
-
+ 
 editEvent(eventEdit : Event) {
   this.event = { ...eventEdit };
   this.eventDialog = true;
 }
 
-filterEventsByType(event) {
-  const selectedType = event.value;
-  this.eventService.searchEventByType(selectedType).subscribe(
-    (events) => {
-      this.events = events;
-    },
-    (error) => {
-      console.log('Error fetching events:', error);
-    }
-  );
-}
 filterEventsByDate(date : Date){
  // const selectedType = event.value;
   this.eventService.searchEventByDate(date).subscribe(
@@ -144,5 +128,45 @@ filterEventsByDate(date : Date){
   );
 }
 
+
+onImageSelected(event: any) {
+  this.selectedImage=event.target.files[0];}
+
+
+  addEvent(): void {
+    this.submitted = true;
+    try {
+        this.eventService.addNewEvent(this.eventForm.value , this.selectedImage).toPromise();
+                console.log("Reward created Successfully");
+                this.eventDialog= false;
+                window.location.reload();
+    }catch (error){
+        console.error(error)
+    }
+
+
+    }
+    filterEventsByType(eventType: string): void {
+      // Si aucun type n'est sélectionné, afficher tous les événements
+      if (!eventType) {
+        this.getEvent();
+        return;
+      }
+  
+      // Filtrer les événements par type
+      this.eventService.searchEventByType(eventType)
+        .subscribe(
+          events => {
+            this.events = events;
+            console.log('Filtered events by type:', events);
+          },
+          error => {
+            console.error('Error filtering events by type:', error);
+          }
+        );
+    }
+
+
+    
 }
 

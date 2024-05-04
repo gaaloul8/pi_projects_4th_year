@@ -1,0 +1,122 @@
+.user-reclamations-container {
+    margin: 2rem;
+    h3 {
+        color: #0C4B65;
+        margin-bottom: 1rem;
+    }
+}
+
+.reclamations-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.reclamation-card {
+    background: #F7F5EF;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 1rem;
+    transition: transform 0.3s ease;
+
+    &:hover {
+        transform: translateY(-5px);
+    }
+
+    .reclamation-title {
+        color: #333;
+        margin-top: 0;
+    }
+
+    .reclamation-description {
+        color: #666;
+        font-size: 0.9rem;
+    }
+
+    .reclamation-status {
+        display: inline-block;
+        padding: 0.2rem 0.5rem;
+        border-radius: 1rem;
+        font-size: 0.8rem;
+        margin-top: 0.5rem;
+        &.status-resolved {
+            background-color: #d4edda;
+            color: #155724;
+        }
+    }
+}
+
+.no-reclamations {
+    text-align: center;
+    color: #999;
+    margin-top: 2rem;
+}
+.user-reclamations-container {
+    .reclamations-list {
+        .reclamation-card {
+            .reclamation-image {
+                width: 100%;
+                max-height: 200px;
+                object-fit: cover;
+                border-radius: 8px 8px 0 0;
+            }
+
+            .reclamation-status {
+                &::before {
+                    content: '';
+                    display: inline-block;
+                    width: 8px;
+                    height: 8px;
+                    border-radius: 50%;
+                    margin-right: 5px;
+                }
+
+                &.status-submitted::before { background: #ffc107; }
+                &.status-in-progress::before { background: #17a2b8; }
+                &.status-resolved::before { background: #28a745; }
+            }
+        }
+    }
+    .archive-button {
+        position: absolute; // Place the button at a specific position
+        top: 10px; // Adjust as per the design
+        right: 10px; // Adjust as per the design
+        background-color: #dc3545; // Bootstrap's danger color for example
+        color: white;
+        border: none;
+        border-radius: 4px;
+        padding: 0.5rem 1rem;
+        cursor: pointer;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+        &:hover {
+            background-color: #c82333; // Slightly darker shade on hover
+        }
+    }
+
+    .no-reclamations {
+        font-style: italic;
+        color: #6c757d;
+    }
+}
+
+.reclamation-image-container {
+    margin-bottom: 1rem;
+    text-align: center;
+
+    .reclamation-image {
+        max-width: 100%;
+        border-radius: 8px;
+        height: auto;
+    }
+}
+.search-container {
+    margin-bottom: 1rem;
+
+    .search-input {
+        width: 100%;
+        padding: 0.5rem;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+    }
+}

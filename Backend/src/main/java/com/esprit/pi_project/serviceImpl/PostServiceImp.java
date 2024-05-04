@@ -2,7 +2,9 @@ package com.esprit.pi_project.serviceImpl;
 
 import com.esprit.pi_project.dao.PostDao;
 import com.esprit.pi_project.entities.Comment;
+import com.esprit.pi_project.entities.Forum;
 import com.esprit.pi_project.entities.Post;
+import com.esprit.pi_project.entities.User;
 import com.esprit.pi_project.services.PostService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +28,7 @@ public class PostServiceImp implements PostService {
     @Autowired
     private BadWordService badWordService;
     @Override
-    public Post addPost( String content, MultipartFile imageFile) throws IOException, ParseException {
+    public Post addPost(String content, MultipartFile imageFile, User user) throws IOException, ParseException {
         Date currentDateTime = new Date();
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
         String formattedDate = dateFormat.format(currentDateTime);
@@ -34,11 +36,13 @@ public class PostServiceImp implements PostService {
         byte[] imageData = imageFile.getBytes(); // Read image data
 
         String base64Image = Base64.getEncoder().encodeToString(imageData);
-        System.out.println(base64Image);
+
         Post post = new Post();
+        post.setUser(user);
         post.setImage(base64Image);
         post.setPostDate(parsedDate);
         post.setContent(content);
+        post.setLikes(0);
 
 
 
@@ -57,40 +61,35 @@ public class PostServiceImp implements PostService {
 
     }
     @Override
-    public Post updatePost(Long postId,  String content, MultipartFile image) throws IOException {
+    public Post updatePost(Long postId,  String content, MultipartFile image,User user) throws IOException {
         Optional<Post> optionalReward = postDao.findById(postId);
 
-        if (!optionalReward.isPresent()) {
-            // Handle the case where the reward with the specified ID is not found
-            return null; // Or throw a custom exception
-        }
 
-        Post existingReward = optionalReward.get();
+
+        Post existingPost = optionalReward.get();
 
         // Check if image is provided
         if (image != null && !image.isEmpty()) {
             byte[] imageData = image.getBytes(); // Read image data
             String base64Image = Base64.getEncoder().encodeToString(imageData);
-            existingReward.setImage(base64Image);
+            existingPost.setImage(base64Image);
+            existingPost.setUser(user);
         }
 
         // Update other fields if provided
         if (content != null) {
-            existingReward.setContent(content);
+            existingPost.setContent(content);
         }
 
 
 
         // Save and return updated reward
-        return postDao.save(existingReward);
+        return postDao.save(existingPost);
     }
 
 
 
-    @Override
-    public Post updatePost(Post post) {
-        return postDao.save(post);
-    }
+
 
     @Override
     public void deletePost(Long idPost) {
@@ -132,7 +131,25 @@ public class PostServiceImp implements PostService {
 
         return monthlyPosts;
     }
+    @Override
+    public Post likePost(Long postId) {
+        Post post = postDao.findById(postId).orElse(null);
+        if (post != null) {
+            post.setLikes(post.getLikes() + 1);
+            return postDao.save(post);
+        }
+        return null;
+    }
 
+    @Override
+    public Post dislikePost(Long postId) {
+        Post post = postDao.findById(postId).orElse(null);
+        if (post != null) {
+            post.setLikes(post.getLikes() - 1);
+            return postDao.save(post);
+        }
+        return null;
+    }
 
 
 }

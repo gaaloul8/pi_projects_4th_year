@@ -17,6 +17,7 @@ import org.springframework.security.web.authentication.logout.LogoutHandler;
 import static com.esprit.pi_project.entities.Permission.ADMIN_READ;
 import static com.esprit.pi_project.entities.Role.Admin;
 import static com.esprit.pi_project.entities.Role.ClubManager;
+import static com.esprit.pi_project.entities.Role.User;
 
 @Configuration
 @EnableWebSecurity
@@ -43,19 +44,20 @@ public class SecurityConfig {
 
                                 // .requestMatchers("/deleteuser/{id}").hasAuthority(Admin.name())
 
+
+
+                                .requestMatchers("/event/**","/reservation/**","/feedback/**","/discount/**","/reward/sendSMS").permitAll()
+
+
+
+
+                                //      .requestMatchers("/quiz/**","/passerQuiz/**","/questionq/**","/activity/**","/option/**").permitAll()
+
+
+
+                                //   .requestMatchers("/feedback/**").hasAnyRole(User.name())
+                                //   .requestMatchers("/auth/**").hasAnyRole(Admin.name())
                                 // .requestMatchers(HttpMethod.GET,"/auth/admin").hasAnyAuthority(ADMIN_READ.name())
-                                .requestMatchers("/reward/**","/discount/**","/sendSMS").permitAll()
-                                .requestMatchers("/event/**","/reservation/**","/feedback/**").permitAll()
-
-
-
-                          //      .requestMatchers("/quiz/**","/passerQuiz/**","/questionq/**","/activity/**","/option/**").permitAll()
-
-
-
-
-                             //   .requestMatchers("/auth/admin").hasAnyRole(Admin.name())
-                               // .requestMatchers(HttpMethod.GET,"/auth/admin").hasAnyAuthority(ADMIN_READ.name())
                                 .anyRequest().authenticated()
                 )
                 .sessionManagement(sessionManagement ->

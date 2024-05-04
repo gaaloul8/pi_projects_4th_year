@@ -8,6 +8,7 @@ import { FeedbackService } from 'src/app/services/feedback.service';
 import { Feedback } from 'src/app/interfaces/feedback';
 import { Router } from '@angular/router';
 import { RatingChangeEvent } from 'angular-star-rating';
+import { HttpErrorResponse } from '@angular/common/http';
 @Component({
   selector: 'app-list-reservation-event',
   templateUrl: './list-reservation-event.component.html',
@@ -15,23 +16,44 @@ import { RatingChangeEvent } from 'angular-star-rating';
 })
 export class ListReservationEventComponent  implements OnInit {
   events: Event[] = [];
-  reservations: Reservation[] = [];
+ // reservations: Reservation[] = [];
   reservation: Reservation;
-  deleteRDialog: boolean = false;
-  selectedRId: number;
+ // deleteRDialog: boolean = false;
+  //selectedRId: number;
   displayDialog: boolean = false;
   feedbackContent: string = '';
   selectedEventId: number;
   rating: number = 0;
+  //userIdentifiant: string;
+  searchIdentifiant: string = ''; // Propriété pour stocker la valeur de recherche
+  //filteredReservations: any[] = [];
+
+  reservations: Reservation[] = [];
+  deleteRDialog: boolean = false;
+  selectedRId: number;
+  userIdentifiant: string;
+  filteredReservations: Reservation[] = [];
+  _filterText: string = '';
+
+  get filterText(){
+    return this._filterText;
+  }
+
+  set filterText(value: string){
+      this._filterText=value;
+      this.filteredReservations = this.filterByIdentifiant(value);
+  }
+
   constructor(private reservationService: ReservationService,
     private messageService: MessageService,
     private feedbackService : FeedbackService,
-    private router: Router){}
+    private router: Router,
+    private eventService : EventService){}
 
   ngOnInit(): void {
     this.getReservationsForCurrentUser();
+    this.filteredReservations = this.reservations;
   }
-
   getReservationsForCurrentUser() {
    // const userId = 1; // Remplacez ceci par l'ID de l'utilisateur connecté
     this.reservationService.getAllReservationsForUser()
@@ -46,8 +68,17 @@ export class ListReservationEventComponent  implements OnInit {
       );
   }
 
-
-
+  filterReservations(): void {
+    // Filtrer uniquement si la barre de recherche n'est pas vide
+    if (this.searchIdentifiant.trim() !== '') {
+      this.filteredReservations = this.reservations.filter((reservation) =>
+        reservation.user.identifiant.toLowerCase().includes(this.searchIdentifiant.toLowerCase())
+      );
+    } else {
+      // Si la barre de recherche est vide, afficher la liste complète
+      this.filteredReservations = this.reservations;
+    }
+}
   
   confirmDeleteReservation(idR: number) {
     this.reservationService.deleteReservation(idR)
@@ -55,13 +86,13 @@ export class ListReservationEventComponent  implements OnInit {
         () => {
           // La suppression de l'événement a réussi
           console.log('reservation deleted with ID:', idR);
-          this.messageService.add({severity:'success', summary:'Success', detail:'Event deleted successfully!'});
+          this.messageService.add({severity:'success', summary:'Success', detail:'Reservation deleted successfully!'});
           this.getReservationsForCurrentUser(); // Mettez à jour les données si nécessaire
           this.deleteRDialog = false; // Fermer la boîte de dialogue après la suppression
         },
         error => {
           // Gestion des erreurs
-          console.error('Error deleting event:', error);
+          console.error('Error deleting  Reservation:', error);
           this.messageService.add({severity:'error', summary:'Error', detail:'Error deleting reservation.'});
         }
       );
@@ -84,30 +115,31 @@ onRatingUpdated(event: RatingChangeEvent): void {
   this.rating = event.rating;
 }
 
-addFeedback(eventId: number) {
-  const feedback: Feedback = {
-    content: this.feedbackContent,
-    rating:this.rating
-   // user: this.reservation.user // Ajouter l'utilisateur au feedback
-  };
-
-  this.feedbackService.addFeedback(eventId, feedback)
-    .subscribe(
-      (response) => {
-        console.log('Feedback ajouté avec succès pour l\'événement avec ID :', eventId);
-        // Réinitialiser le contenu du feedback après l'ajout réussi
-        this.feedbackContent = '';
-        this.displayDialog = false;
-        // Rediriger l'utilisateur vers la liste des feedbacks
-        this.router.navigate(['/listFeedBack']);
-      },
-      (error) => {
-        console.error('Erreur lors de l\'ajout du feedback :', error);
-      }
-    );
+assignTokens(eventId: number, userId: number) {
+  this.eventService.assignTokens(eventId, userId).subscribe(
+    (response) => {
+      console.log('Tokens assigned successfully:', response);
+      this.messageService.add({severity:'success', summary:'Success', detail:'Token added successfully!'});
+     
+    },
+    (error) => {
+      console.error('Failed to assign tokens:', error);
+      this.messageService.add({severity:'success', summary:'Success', detail:'Token added successfully!'});
+      
+    }
+  );
 }
 
+filterByIdentifiant(filterterme: string){
+  if(this.reservations.length === 0 || this.filterText === ''){
+    return this.reservations;
+} else {
+    return this.reservations.filter((reservation) => 
+    { 
+        return reservation.user.identifiant.toLowerCase() === filterterme.toLowerCase()
+    })
+}
 
-
+}
 
 }

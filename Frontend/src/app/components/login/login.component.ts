@@ -116,6 +116,7 @@ export class LoginComponent implements  OnInit {
                     if (this.authResponse.role === 'Admin' || this.authResponse.role=== 'ClubManager') {
 
                         this.router.navigate(['/users']);
+
                     } else {
                         this.router.navigate(['/main/home']);
                     }

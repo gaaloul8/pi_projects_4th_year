@@ -44,6 +44,10 @@ import {CompleteprofileComponent} from "./components/completeprofile/completepro
 import {TakeimageComponent} from "./components/takeimage/takeimage.component";
 import {RegisterWithCardComponent} from "./components/register-with-card/register-with-card.component";
 import {UserBackComponent} from "./components/user-back/user-back.component";
+
+import { PageEventComponent } from './components/page-event/page-event.component';
+import { ListReservationFrontComponent } from './components/list-reservation-front/list-reservation-front.component';
+
 import {Registercard2Component} from "./components/registercard2/registercard2.component";
 import {AccountlockedComponent} from "./components/accountlocked/accountlocked.component";
 import {DropdownUserComponent} from "./components/dropdown-user/dropdown-user.component";
@@ -56,6 +60,10 @@ import { PostFrontComponent } from './components/post-front/post-front.component
 import { PostStatComponent } from './components/post-stat/post-stat.component';
 import { ClubStatComponent } from './components/club-stat/club-stat.component';
 import { FrontClubComponent } from './components/front-club/front-club.component';
+import { CommentComponent } from './components/comment/comment.component';
+
+
+
 
 
 
@@ -89,7 +97,6 @@ import { FrontClubComponent } from './components/front-club/front-club.component
                     {path:'stat-post',component:PostStatComponent},
                     {path:'eventBack',component : EventBackComponent },
                     {path:'listReservationEvent',component : ListReservationEventComponent},
-                    {path: 'listFeedBack', component: FeedbackComponent},
                     {path: 'staticEventByFeedback' , component:ChartEventComponent},
                     {path: 'listFeedBackClubManager' , component:ListfeedbackClubManagerComponent},
                     {path:'club',component:ClubsComponent},
@@ -97,7 +104,6 @@ import { FrontClubComponent } from './components/front-club/front-club.component
                     {path:'users',component:UserBackComponent},
                             { path: 'quiz', component: QuizComponent},
                             { path: 'question-quiz', component: QuestionQuizComponent},
-
                             { path: 'question-quiz/:idQuiz', component: QuestionQuizComponent },
                     { path: 'quiz-back', component: QuizComponent},
                     { path: 'quiz-chart', component: QuizChartComponent},
@@ -113,6 +119,8 @@ import { FrontClubComponent } from './components/front-club/front-club.component
                             { path: 'transactions', component: TransactionhistoryComponent },
                             { path: 'statistics', component: StatisticsComponent },
                             { path: 'rewardusers', component: RewardusersComponent },
+                            {path: 'reclamation', loadChildren: () => import('./components/reclamations/reclamations.module').then(m => m.ReclamationsModule)},
+
 
                 ],
             },
@@ -135,13 +143,7 @@ import { FrontClubComponent } from './components/front-club/front-club.component
             { path: 'forget', component: ForgetComponent },
             { path: 'question/:id', component: QuestionDetailComponent },
             { path: 'notfound', component: NotfoundComponent },
-
-           // { path: 'reward', component: RewardComponent },
-          //  { path: 'statistics', component: StatisticsComponent },
-
-           // { path: 'discounts', component: DiscountsComponent },
-          //  { path: 'transactions', component: TransactionhistoryComponent },
-          //  { path: 'rewardusers', component: RewardusersComponent },
+          
 
 
 

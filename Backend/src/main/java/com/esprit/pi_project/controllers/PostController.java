@@ -1,8 +1,11 @@
 package com.esprit.pi_project.controllers;
 
+import com.esprit.pi_project.entities.Forum;
 import com.esprit.pi_project.entities.Post;
+import com.esprit.pi_project.entities.User;
 import com.esprit.pi_project.serviceImpl.BadWordService;
 import com.esprit.pi_project.services.PostService;
+import com.esprit.pi_project.services.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -16,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/posts")
@@ -27,29 +31,26 @@ public class PostController {
     private PostService postService;
     @Autowired
     private BadWordService badWordService;
+    @Autowired
+    private UserService userService;
     @PostMapping("/add")
-    public ResponseEntity<String> addPost(@RequestParam("content") String content, @RequestParam("image") MultipartFile imageFile, HttpServletRequest request) {
-        if (badWordService.containsBadWords(content)) {
-            return ResponseEntity.badRequest().body("Hate speech alert. Please modify your description before posting.");
-        }
+    public ResponseEntity<Post> addPost(@RequestParam("content") String content, @RequestParam("image") MultipartFile imageFile, HttpServletRequest request) {
+
 
         try {
             // Add the image file to the post and save it
             //postService.addPost(post, imageFile);
-            postService.addPost(content, imageFile);
+            Optional<User> optionalUser = userService.getUserFromJwt(request);
+            User user1 = optionalUser.get();
 
-            return new ResponseEntity<>("Post added successfully", HttpStatus.CREATED);
+
+            return new ResponseEntity<>(postService.addPost(content, imageFile,user1), HttpStatus.CREATED);
         } catch (Exception e) {
             e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to add post");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
-    @PutMapping("/update")
-    public ResponseEntity<String> updatePost(@RequestBody Post post){
-         postService.updatePost(post);
-        return new ResponseEntity<>("Post updated successfully"
-                ,HttpStatus.OK);
-    }
+
     @GetMapping("/getall")
     public ResponseEntity<List<Post>> getAllPosts(){
         return new ResponseEntity<>(postService.findAllPost(),HttpStatus.OK) ;
@@ -73,21 +74,43 @@ public class PostController {
     }
 
     @PutMapping("/updatepost/{postId}")
-    public ResponseEntity<String> update(@PathVariable("postId") Long postId,@RequestParam("content") String content, @RequestParam("image") MultipartFile image, HttpServletRequest request) {
-        if (badWordService.containsBadWords(content)) {
-            return ResponseEntity.badRequest().body("Hate speech alert. Please modify your description before posting.");
-        }
+    public ResponseEntity<Post> update(@PathVariable("postId") Long postId,@RequestParam("content") String content, @RequestParam("image") MultipartFile image, HttpServletRequest request) {
+
 
         try {
-            Post updatedReward = postService.updatePost(postId,content,image);
-            if (updatedReward != null) {
-                return new ResponseEntity<>("Reward updated successfully", HttpStatus.OK);
+            Optional<User> optionalUser = userService.getUserFromJwt(request);
+            User user1 = optionalUser.get();
+            Post updatedPost = postService.updatePost(postId,content,image,user1);
+            if (updatedPost != null) {
+                return new ResponseEntity<>(updatedPost, HttpStatus.OK);
             } else {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Reward not found");
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
             }
         } catch (Exception e) {
             e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to update reward");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
+    }
+    @PutMapping("/like/{postId}")
+    public ResponseEntity<Post> likePost(@PathVariable Long postId) {
+        Post likedPost = postService.likePost(postId);
+        if (likedPost != null) {
+            return new ResponseEntity<>(likedPost, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+    @PutMapping("/dislike/{postId}")
+    public ResponseEntity<Post> dislikePost(@PathVariable Long postId) {
+        Post dislikedPost = postService.dislikePost(postId);
+        if (dislikedPost != null) {
+            return new ResponseEntity<>(dislikedPost, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+    @GetMapping("/getconnecteduser")
+    public Optional<User> getconnecteduser(HttpServletRequest request){
+        return this.userService.getUserFromJwt(request);
     }
 }

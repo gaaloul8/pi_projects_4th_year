@@ -9,7 +9,7 @@ import {Transaction_history} from "../interfaces/Transaction_history";
 })
 export class RewardService {
     private baseUrl = 'http://localhost:8081/reward'; // Base URL of your Spring backend
-    private token = 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzYWRvay5zYXNzaUBlc3ByaXQudG4iLCJpYXQiOjE3MTQzOTA0MTksImV4cCI6MTcxNDQ3NjgxOX0.POloBnqze7G3YMS2ddkYw9qKZCI5kVVVLa5krlHhB5I'
+    private token =  localStorage.getItem('jwtAccessToken');
     constructor(private http: HttpClient) { }
 
     getAllRewards(): Observable<Reward[]> {
@@ -32,11 +32,14 @@ export class RewardService {
         const headers = new HttpHeaders({
             'Authorization': 'Bearer ' + this.token
         });
-        return this.http.get<any>(url, { headers });
+        return this.http.get<any>(url);
     }
 
     getRewardById(id: number): Observable<any> {
-        return this.http.get<any>(`${this.baseUrl}/findrewardbyid/${id}`);
+        const headers = new HttpHeaders({
+            'Authorization': 'Bearer ' + this.token
+        });
+        return this.http.get<any>(`${this.baseUrl}/findrewardbyid/${id}`,{ headers: headers });
     }
 
     findrewardbyname(name: String): Observable<any> {
@@ -90,22 +93,33 @@ export class RewardService {
 
 
     getStatistics(): Observable<any> {
-        return this.http.get<any>(`${this.baseUrl}/statstics`);
+        const headers = new HttpHeaders({
+            'Authorization': 'Bearer ' + this.token
+        });
+        return this.http.get<any>(`${this.baseUrl}/statstics`,{ headers: headers });
     }
 
     getRewardsWithDiscount(): Observable<any[]> {
-        return this.http.get<any[]>(`${this.baseUrl}/withdiscount`);
+        const headers = new HttpHeaders({
+            'Authorization': 'Bearer ' + this.token
+        });
+
+        return this.http.get<any[]>(`${this.baseUrl}/withdiscount`,{ headers: headers });
     }
 
     getRewardsWithoutDiscount(): Observable<any[]> {
-        return this.http.get<any[]>(`${this.baseUrl}/withnodiscount`);
+        const headers = new HttpHeaders({
+            'Authorization': 'Bearer ' + this.token
+        });
+
+        return this.http.get<any[]>(`${this.baseUrl}/withnodiscount`,{ headers: headers });
     }
 
     deleteReward(Rewardid: number): Observable<void> {
         const headers = new HttpHeaders({
             'Authorization': 'Bearer ' + this.token
         });
-        return this.http.delete<void>(`${this.baseUrl}/deletreward/${Rewardid}`, {headers: headers});
+        return this.http.delete<void>(`${this.baseUrl}/delet/${Rewardid}`, {headers: headers});
 
     }
 
@@ -118,7 +132,10 @@ export class RewardService {
 
 
     getMonthlyTransactionCounts(): Observable<any> {
-        return this.http.get<any>(`${this.baseUrl}/monthly-count`);
+        const headers = new HttpHeaders({
+            'Authorization': 'Bearer ' + this.token
+        });
+        return this.http.get<any>(`${this.baseUrl}/monthly-count`,{ headers: headers });
     }
 
 

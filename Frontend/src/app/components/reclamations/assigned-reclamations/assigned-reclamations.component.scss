@@ -1,0 +1,118 @@
+.assigned-reclamations-container {
+    padding: 1rem;
+    h2 {
+        margin-bottom: 1rem;
+    }
+}
+
+.reclamation-card {
+    background-color: #F7F5EF;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    h3 {
+        margin-top: 0;
+    }
+    .reclamation-details {
+        font-size: 0.9rem;
+        span {
+            display: block;
+            margin: 0.5rem 0;
+        }
+    }
+    .reclamation-image {
+        width: 100%;
+        max-height: 300px;
+        object-fit: cover;
+        border-radius: 4px;
+        margin-top: 1rem;
+    }
+}
+
+.no-reclamations {
+    text-align: center;
+    color: #666;
+    margin-top: 2rem;
+}
+.reclamation-status-container {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Adjust as needed */
+}
+
+.reclamation-status {
+    padding: 0.25rem 0.5rem;
+    color: white;
+    border-radius: 12px;
+    text-align: center;
+    font-weight: bold;
+    margin: 0.5rem 0;
+}
+
+.status-checkbox {
+    display: block;
+    position: relative;
+    padding-left: 35px;
+    cursor: pointer;
+    user-select: none;
+}
+
+.status-checkbox input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
+
+.checkmark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 20px;
+    width: 20px;
+    background-color: #D0EAFF;
+    border-radius: 4px;
+}
+
+.status-checkbox:hover input ~ .checkmark {
+    background-color: #ccc;
+}
+
+.status-checkbox input:checked ~ .checkmark {
+    background-color: #28a745;
+}
+
+.checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+}
+
+.status-checkbox input:checked ~ .checkmark:after {
+    display: block;
+}
+
+.checkmark:after {
+    left: 7px;
+    top: 3px;
+    width: 5px;
+    height: 10px;
+    border: solid white;
+    border-width: 0 3px 3px 0;
+    transform: rotate(45deg);
+}
+
+/* Adjust colors based on status */
+.status-submitted {
+    background-color: #ffc107; /* Amber */
+}
+
+.status-in-progress {
+    background-color: #17a2b8; /* Sky Blue */
+}
+
+.status-resolved {
+    background-color: #28a745; /* Green */
+}

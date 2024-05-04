@@ -12,5 +12,5 @@ export interface Feedback {
 
 export enum StatusFeedback {
     Processed,
-    Unprocessed
+    Unprocessed,Positive,Negative
 }

@@ -66,20 +66,41 @@ import { ChartModule } from 'primeng/chart';
 import { ChartEventComponent } from './components/chart-event/chart-event.component';
 import { ListfeedbackClubManagerComponent } from './components/listfeedback-club-manager/listfeedback-club-manager.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
+
+import { PageEventComponent } from './components/page-event/page-event.component';
+import { ListReservationFrontComponent } from './components/list-reservation-front/list-reservation-front.component';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
+import { StatisticsComponent } from './components/statistics/statistics.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatTableModule } from '@angular/material/table';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import {OverlayModule} from "@angular/cdk/overlay";
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
 import { PostFrontComponent } from './components/post-front/post-front.component';
+import { CommentComponent } from './components/comment/comment.component';
+import { CommentService } from './services/comment.service';
+import { ModalModule } from 'ngx-bootstrap/modal';
 
 
 
 @NgModule({
     declarations: [AppComponent, FeedbackComponent,ChartEventComponent,NotfoundComponent , ListfeedbackClubManagerComponent,ListReservationEventComponent,ForumComponent,ForumDetailComponent ,
-    LandingHomeComponent ,SidebarComponent, HomeComponent ,EventBackComponent , EventfrontComponent,PostFrontComponent,QuestionDetailComponent,
-    ClubsComponent,PostComponent],
+        PostFrontComponent,
+    LandingHomeComponent ,SidebarComponent, HomeComponent ,EventBackComponent , EventfrontComponent,QuestionDetailComponent,
+    ClubsComponent,PostComponent,PageEventComponent,ListReservationFrontComponent,CommentComponent],
+
     imports: [AppRoutingModule,
          AppLayoutModule,
          ReactiveFormsModule, 
          FormsModule,
           BrowserModule,
           ToolbarModule,
+          MatDatepickerModule,
+          MatNativeDateModule,
           ChartModule,
           MultiSelectModule,
           FilterPipe,
@@ -128,12 +149,17 @@ import { PostFrontComponent } from './components/post-front/post-front.component
         RegisterComponent,
         CompleteprofileComponent,
         TakeimageComponent,
-        CardModule
+        CardModule,
+        BrowserAnimationsModule,
+        MatTableModule,
+        MatSnackBarModule,
+        OverlayModule,
+        ModalModule.forRoot(),
         ],
         providers: [
             { provide: LocationStrategy, useClass: PathLocationStrategy },
             CountryService, CustomerService, IconService, NodeService,
-            PhotoService, ProductService,RewardService,DiscountService,EventService, MessageService,DatePipe,HttpClient,QuizService
+            PhotoService, ProductService,RewardService,DiscountService,EventService, MessageService,DatePipe,HttpClient,QuizService,CommentService
         ],
         bootstrap: [AppComponent]
     })

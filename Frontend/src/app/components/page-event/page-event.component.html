@@ -1,0 +1,62 @@
+<div class="grid p-fluid">
+    <div class="col-12" *ngIf="event">
+        <div class="card">
+            <h5>Carousel</h5>
+            <div class="border-round m-2 text-center p-2" style="border: 3px solid var(--surface-d); background-color: #eee6e6; padding: 5px;">
+                <div class="my-5">
+                    <img [src]="event.image ? 'data:image/png;base64,' + event.image : ''" [alt]="event.eventName" class="shadow-4" width="10%">
+                </div>
+                <div>
+                    <h2>{{ event.eventName }}</h2>
+                    <p>Type: {{ event.eventType }}</p>
+                    <p>Description: {{ event.description }}</p>
+                    <div class="my-5">
+                        <button pButton pRipple icon="pi pi-search" class="mr-2 p-button-rounded"></button>
+                        <button pButton pRipple icon="pi pi-star-fill" class="mr-2 p-button-rounded p-button-success"></button>
+                        <button pButton pRipple icon="pi pi-cog" class="p-button-rounded p-button-info"></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    
+    <div class="col-12">
+        <div class="card">
+            <h5>Feedbacks</h5>
+            <p-carousel [value]="feedbacks" [numVisible]="1" [circular]="true" [responsiveOptions]="carouselResponsiveOptions">
+                <ng-template let-feedback pTemplate="item">
+                    <div style="text-align: center;">
+                        <p>{{ feedback.content }}</p>
+                        <div>
+                            <span *ngFor="let star of getStarsArray(feedback.rating)">
+                                <i class="pi pi-star" style="color: red;"></i>
+                            </span>
+                        </div>
+                    </div>
+                </ng-template>
+            </p-carousel>
+        </div>
+    </div>
+    
+    <div class="col-12">
+        <div class="card">
+            <h5>Event Pictures</h5>
+            <p-galleria [value]="images" [responsiveOptions]="galleriaResponsiveOptions"
+                        [containerStyle]="{'max-width': '800px', 'margin':'auto'}" [numVisible]="6" [circular]="true">
+                <ng-template pTemplate="item" let-item>
+                    <img [src]="item.itemImageSrc" style="width: 100%; display: block;"/>
+                </ng-template>
+                <ng-template pTemplate="thumbnail" let-item>
+                    <div class="grid nogutter justify-center">
+                        <img [src]="item.thumbnailImageSrc" style="display: block;"/>
+                    </div>
+                </ng-template>
+            </p-galleria>
+        </div>
+    </div>
+    
+    
+    
+
+</div>
