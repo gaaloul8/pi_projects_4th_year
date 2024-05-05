@@ -119,7 +119,7 @@ export class RewardService {
         const headers = new HttpHeaders({
             'Authorization': 'Bearer ' + this.token
         });
-        return this.http.delete<void>(`${this.baseUrl}/delet/${Rewardid}`, {headers: headers});
+        return this.http.delete<void>(`${this.baseUrl}/deletreward/${Rewardid}`, {headers: headers});
 
     }
 
