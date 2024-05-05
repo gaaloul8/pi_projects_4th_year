@@ -23,7 +23,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -55,6 +57,8 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public AuthResponse Register(SignupRequest newuser) {
+        String rawPassword = newuser.getPassword();
+        String passwordHint = rawPassword.substring(0, Math.min(rawPassword.length(), 3)); // Extract first three letters
         String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@esprit\\.tn$";
         if (!newuser.getEmail().matches(emailRegex)) {
             throw new IllegalArgumentException("Invalid email format or domain.");
@@ -69,68 +73,88 @@ public class AuthServiceImpl implements AuthService {
         }
 
         var user= User.builder()
-              .firstName(newuser.getFirstName())
-              .lastName(newuser.getLastName())
-              .email(newuser.getEmail())
-              .password(passwordEncoder.encode(newuser.getPassword()))
-              .registrationDate(newuser.setRegistration())
-              .lastLogin(newuser.setLastLogin())
-              .role(Role.User)
+                .firstName(newuser.getFirstName())
+                .lastName(newuser.getLastName())
+                .email(newuser.getEmail())
+                .passwordHint(passwordHint)
+                .password(passwordEncoder.encode(newuser.getPassword()))
+                .registrationDate(newuser.setRegistration())
+                .lastLogin(newuser.setLastLogin())
+                .role(Role.User)
                 .FirstLogin(true)
+                .accountNonLocked(true)
                 .Identifiant(newuser.getIdentifiant())
-              .build();
+                .build();
 
 
-        System.out.println("Before printing firstName");
-        System.out.println(newuser.getEmail());
-        System.out.println(newuser.getLastName());
-        System.out.println(newuser.getPassword());
-
-
-        System.out.println("After printing firstName");
-    var currUser=  userDao.save(user);
-      var jwtToken= jwtService.issueToken(currUser);
-      var refreshToken = jwtService.issueRefreshToken(user);
-        RevokeTokens(user);
-        saveUserToken(user, jwtToken);
-
-
-
-
-        return AuthResponse.builder()
-        .jwtaccestoken(jwtToken)
-                .jwtRefreshtoken(refreshToken)
-
-        .build();
-    }
-
-    @Override
-    public AuthResponse login(SignInRequest user1) {
-        authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        user1.getEmail(),
-                        user1.getPassword()
-                )
-        );
-
-        var user=userDao.findByEmail(user1.getEmail())
-                .orElseThrow();
-      //  System.out.print(user);
-        //System.out.println(user.getEmail());
-        var jwtToken= jwtService.issueToken(user);
+//        System.out.println("Before printing firstName");
+//        System.out.println(newuser.getEmail());
+//        System.out.println(newuser.getLastName());
+//        System.out.println(newuser.getPassword());
+//
+//
+//        System.out.println("After printing firstName");
+        var currUser=  userDao.save(user);
+        var jwtToken= jwtService.issueToken(currUser);
         var refreshToken = jwtService.issueRefreshToken(user);
-        var FirstLogin= user.isFirstLogin();
-
         RevokeTokens(user);
         saveUserToken(user, jwtToken);
+
 
 
 
         return AuthResponse.builder()
                 .jwtaccestoken(jwtToken)
                 .jwtRefreshtoken(refreshToken)
-                .FirstLogin(FirstLogin)
+
                 .build();
+    }
+
+    @Override
+    public AuthResponse login(SignInRequest user1) {
+        try {
+            // Authenticate the user
+            authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(
+                            user1.getEmail(),
+                            user1.getPassword()
+                    )
+            );
+
+            var user = userDao.findByEmail(user1.getEmail())
+                    .orElseThrow();
+
+            var jwtToken = jwtService.issueToken(user);
+            var refreshToken = jwtService.issueRefreshToken(user);
+            var firstLogin = user.isFirstLogin();
+            var failedloginAttempts =user.getFailedLoginAttempts();
+            var Rolee= user.getRole();
+            var isUserLocked= user.isAccountNonLocked();
+            var LockTime= user.getLockTime();
+            user.setAccountNonLocked(true);
+            System.out.println(Rolee);
+            userDao.save(user);
+            user.setFailedLoginAttempts(0);
+            RevokeTokens(user);
+            saveUserToken(user, jwtToken);
+            System.out.println(user.isAccountNonLocked());
+            return AuthResponse.builder()
+                    .jwtaccestoken(jwtToken)
+                    .jwtRefreshtoken(refreshToken)
+                    .FirstLogin(firstLogin)
+                    .failedLoginAttempts(failedloginAttempts)
+                    .isUserLocked(isUserLocked)
+                    .Role(String.valueOf(Rolee))
+                    .build();
+        } catch (AuthenticationException e) {
+            System.out.println(user1.getEmail());
+            var user = userDao.findByEmail(user1.getEmail())
+                    .orElseThrow();
+            user.setFailedLoginAttempts(user.getFailedLoginAttempts()+1);
+            userDao.save(user);
+            System.out.print(e);
+            throw new BadCredentialsException("Invalid email or password");
+        }
     }
 
     @Override
@@ -237,10 +261,9 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public void ResetPw(String password, String resetToken) {
-        System.out.println(resetToken +"ahwa");
 
         Optional<User> userOptional = userDao.findByResetToken(resetToken);
-       // System.out.println(userOptional);
+        // System.out.println(userOptional);
         if (userOptional.isPresent()) {
             User user = userOptional.get();
             user.setPassword(passwordEncoder.encode(password));

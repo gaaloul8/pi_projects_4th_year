@@ -12,7 +12,9 @@
                             </div>
                             <div *ngIf="formSubmitted && email.invalid" class="error-message">Please input Email</div>
                         </div>
-                        <div *ngIf="Message" class="error-message">{{ Message }}</div>
+                        <div *ngIf="Message" class="message" [ngClass]="{'success': Message === 'Reset Url has been sent to your email', 'error': Message !== 'Reset Url has been sent to your email'}">
+                            {{ Message }}
+                        </div>
 
                         <div class="button-container">
                             <button type="submit" pButton label="Submit"></button>

@@ -1,9 +1,14 @@
+import { UserModel } from "../models/userModel";
 import { Post } from "./post";
+;
 
 export interface Comment {
     commentId?: number;
-    //date?: Date;
+    date?: Date;
     content?: string;
-    post?: Post; // Assuming you have a Post model
+    user?: UserModel;
+    post?: Post;
+    isEditing?: boolean; 
+
   }
   

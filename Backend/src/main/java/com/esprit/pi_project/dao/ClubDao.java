@@ -16,7 +16,7 @@ import java.util.Map;
 public interface ClubDao extends JpaRepository<Club,Long> {
     List<Club> findAllByTag(Tag tag);
     List<Club> findAllByClubName(String clubName);
-//    @Query("SELECT c.tag, COUNT(c) FROM Club c GROUP BY c.tag")
-//    Map<Tag, Long> countClubsByTag();
+    List<Club> findAllByClubNameContainingIgnoreCase(String clubName);
+
 
 }

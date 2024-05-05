@@ -7,7 +7,9 @@ export interface User {
         resetToken?: string;
         email?: string;
         role?: string;
+        identifiant?: string;
         tokenSolde?: number;
+
 
 
 }

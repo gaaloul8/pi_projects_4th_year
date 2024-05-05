@@ -1,0 +1,28 @@
+<div *ngIf="managers.length > 0" class="assign-manager-container">
+    <h2 class="title">Assign Manager</h2>
+    <div *ngIf="reclamation" class="reclamation-detail-container">
+        <h2>Reclamation Details</h2>
+        <div><strong>Title:</strong> {{ reclamation.title }}</div>
+        <div><strong>Description:</strong> {{ reclamation.description }}</div>
+        <div><strong>Status:</strong> {{ reclamation.status }}</div>
+        <div><strong>Created At:</strong> {{ reclamation.createdAt | date:'medium' }}</div>
+        <div><strong>Club Name:</strong> {{ reclamation.clubName }}</div>
+        <div *ngIf="reclamation.submittedTo">
+            <strong>Submitted To:</strong> {{ reclamation.submittedTo.firstName }} {{ reclamation.submittedTo.lastName }}
+        </div>
+        <div><strong>Is Archived:</strong> {{ reclamation.isArchived ? 'Yes' : 'No' }}</div>
+        <img *ngIf="reclamation.imageUrl" [src]="reclamation.imageUrl" alt="Reclamation Image" class="reclamation-image"/>
+    </div>
+
+    <form (ngSubmit)="assignManager()" class="assign-manager-form">
+        <div class="form-group">
+            <label for="manager" class="form-label">Select Manager:</label>
+            <select id="manager" [(ngModel)]="selectedManagerId" name="manager" class="form-control">
+                <option *ngFor="let manager of managers" [value]="manager.id">
+                    {{ manager.firstName }} {{ manager.lastName }}
+                </option>
+            </select>
+        </div>
+        <button type="submit" class="assign-button">Assign</button>
+    </form>
+</div>

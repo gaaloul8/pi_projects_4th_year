@@ -9,25 +9,25 @@ import { Post } from '../interfaces/post'; // Assuming you have a Post model
 export class PostService {
 
   private baseUrl = 'http://localhost:8081/posts'; // Assuming this is your backend base URL
-  private token = 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzYWRva0Blc3ByaXQudG4iLCJpYXQiOjE3MTQyMjE4NjgsImV4cCI6MTcxNDMwODI2OH0.xOZBqJt88F2WFkfqPeFJr7Q59PpKwfnk3Ounsy0J9vQ'; // Assuming you have authentication
+  private token = localStorage.getItem('jwtAccessToken');
 
   constructor(private http: HttpClient) { }
 
 
-  addPost(content: string, image: File): Observable<any> {
+  addPost(content: string, image: File): Observable<Post> {
     const formData = new FormData();
     formData.append('content', content);
     formData.append('image', image);
     const headers = new HttpHeaders({
       'Authorization': 'Bearer ' + this.token
     });
-    return this.http.post(`${this.baseUrl}/add`, formData, { headers: headers });
+    return this.http.post<Post>(`${this.baseUrl}/add`, formData, { headers: headers });
   }
 
-  updateReward(postId: number, post: Post, image: File): Observable<any> {
+  updateReward(postId: number, content: string, image: File): Observable<any> {
     const formData = new FormData();
     formData.append('image', image);
-    formData.append('content', post.content);
+    formData.append('content', content);
 
     const headers = new HttpHeaders({
         'Authorization': 'Bearer ' + this.token
@@ -45,11 +45,20 @@ export class PostService {
   }
 
   getAllPosts() {
-    return this.http.get(`${this.baseUrl}/getall`);
+  
+    const headers = new HttpHeaders({
+      'Authorization': 'Bearer ' + this.token
+  });
+    localStorage
+    return this.http.get(`${this.baseUrl}/getall`,{ headers: headers });
   }
 
   getPostById(id: number): Observable<Post> {
-    return this.http.get<Post>(`${this.baseUrl}/${id}`);
+    
+    const headers = new HttpHeaders({
+      'Authorization': 'Bearer ' + this.token
+  });
+    return this.http.get<Post>(`${this.baseUrl}/${id}`, { headers : headers });
   }
 
   deletePost(id: number): Observable<void> {
@@ -60,10 +69,34 @@ export class PostService {
   }
 
   getPostsByDate(postDate: Date): Observable<Post[]> {
-    return this.http.get<Post[]>(`${this.baseUrl}/getByDate/${postDate}`);
+    
+    const headers = new HttpHeaders({
+      'Authorization': 'Bearer ' + this.token
+  });
+    return this.http.get<Post[]>(`${this.baseUrl}/getByDate/${postDate}`, { headers: headers });
   }
   getMonthlyPostsCounts(): Observable<any> {
-    return this.http.get<any>(`${this.baseUrl}/monthly-count`);
+    
+    const headers = new HttpHeaders({
+      'Authorization': 'Bearer ' + this.token
+  });
+    return this.http.get<any>(`${this.baseUrl}/monthly-count`, { headers: headers });
+}
+likePost(postId: number): Observable<Post> {
+  
+  const headers = new HttpHeaders({
+    'Authorization': 'Bearer ' + this.token
+  });
+  return this.http.put<Post>(`${this.baseUrl}/like/${postId}`,null, { headers: headers});
+}
+
+// Add a method to dislike a post
+dislikePost(postId: number): Observable<Post> {
+  
+  const headers = new HttpHeaders({
+    'Authorization': 'Bearer ' + this.token
+  });
+  return this.http.put<Post>(`${this.baseUrl}/dislike/${postId}`,null, {headers: headers});
 }
 
 

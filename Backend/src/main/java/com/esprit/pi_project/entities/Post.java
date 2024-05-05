@@ -27,10 +27,14 @@ public class Post implements Serializable {
     private String image;
     private Date postDate;
     private String content;
+    
+    private Integer likes;
 
 
     @OneToMany(mappedBy = "post" ,cascade = CascadeType.ALL)
 
     private List<Comment> comments;
+    @ManyToOne
+    private User user;
 
 }

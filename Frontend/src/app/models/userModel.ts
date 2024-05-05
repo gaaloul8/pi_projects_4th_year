@@ -13,4 +13,5 @@ export interface UserModel {
     profilePicture?: string;
     identifiant?: string;
     niveau?: string;
+    tokenSolde?:number;
 }

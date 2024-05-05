@@ -17,6 +17,7 @@ import {Router} from "@angular/router";
 export class TakeimageComponent {
     selectedFile: File;
     recognizedText: any;
+    errorMessage:String;
 
     constructor(private http: HttpClient,
                 private router: Router
@@ -39,29 +40,26 @@ export class TakeimageComponent {
             'Authorization': 'Bearer ' + token
         });
 
-        this.http.post<any>('http://localhost:8081/profile/upload', formData, { headers: headers })
+        this.http.post<any>('http://localhost:8081/profile/upload', formData, {headers: headers})
             .subscribe(
                 response => {
-
-                    console.log('Text recognized:', response);
-                    this.router.navigate(['/main/home']); // Navigate to the login component after successful registration
-
-                    this.handleResponse(response);
-
+                    if (response === true) {
+                        this.router.navigate(['/login']); // Navigate to the login component after successful registration
+                    } else {
+                        this.errorMessage = "Please input the right identifier.";
+                    }
                 },
                 error => {
                     console.error('Error occurred:', error);
                     this.router.navigate(['/notfound']); // Navigate to the login component after successful registration
-
                 }
             );
-    }
-    handleResponse(response: boolean) {
-        if (!response) {
-            localStorage.removeItem('jwtAccessToken');
-            console.log('Access restricted. JWT token removed from local storage.');
-        }
-    }
+
+        // handleResponse(response: boolean) {
+        //     if (!response) {
+        //         localStorage.removeItem('jwtAccessToken');
+        //         console.log('Access restricted. JWT token removed from local storage.');
+        //     }
 
 
-}
+    }}
