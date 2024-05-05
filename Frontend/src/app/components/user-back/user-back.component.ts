@@ -13,6 +13,8 @@ import {ChartData} from "chart.js";
 import {ChartModule} from "primeng/chart";
 import {FormsModule} from "@angular/forms";
 import {InputTextModule} from "primeng/inputtext";
+import {Router} from "@angular/router";
+import {catchError, throwError} from "rxjs";
 
 @Component({
 
@@ -56,7 +58,7 @@ export class UserBackComponent implements  OnInit{
     user: UserModel = {};
 
 
-    constructor(private userService: UserServiceService ,private sanitizer: DomSanitizer) {
+    constructor(private userService: UserServiceService ,private sanitizer: DomSanitizer,private router: Router,) {
     }
 
     ngOnInit(): void {
@@ -91,17 +93,27 @@ export class UserBackComponent implements  OnInit{
     }
 
     getAllUsers(): void {
-        this.userService.getAllUsers().subscribe(users => {
-            this.users = users;
-            if (this.users) {
-                this.users.forEach(user => {
-                    console.log(user.profilePicture);
-                });
-            } else {
-                console.log("Users array is empty or undefined.");
-            }
-            console.log(users); // Log users array to inspect profilePicture field
-        });
+        this.userService.getAllUsers()
+            .pipe(
+                catchError((error) => {
+                    if (error.status === 403) {
+                        console.log(error);
+                        this.router.navigate(['/auth/access']);
+                    }
+                    return throwError(error);
+                })
+            )
+            .subscribe(users => {
+                this.users = users;
+                if (this.users) {
+                    this.users.forEach(user => {
+                        console.log(user.profilePicture);
+                    });
+                } else {
+                    console.log("Users array is empty or undefined.");
+                }
+                console.log(users); // Log users array to inspect profilePicture field
+            });
     }
 
     DeleteUser(id_user: number) {
@@ -138,7 +150,7 @@ export class UserBackComponent implements  OnInit{
                 console.log('Updated user:', user);
             },
             error => {
-                console.error('User updating event:', error);
+                console.error('User updating :', error);
                 console.log(user.role);
                 console.log(Role.ClubManager);
 

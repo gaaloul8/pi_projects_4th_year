@@ -1,6 +1,6 @@
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
 
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+<!--<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <a class="navbar-brand" style="color:white;">Quiz Manager</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor02" aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -52,7 +52,7 @@
         </div>
 
     </div>
-</div>
+</div>-->
 
 <!-- Add Question Modal -->
 <div class="modal fade" id="addQuestionModal" tabindex="-1" role="dialog" aria-labelledby="addQuestionModal" aria-hidden="true">
@@ -76,17 +76,14 @@
                             <label for="option{{ i }}">Option {{ i + 1 }}</label>
 
                             <input type="text" [(ngModel)]="options[i].content" name="option{{ i }}" class="form-control" [id]="'option' + i" [placeholder]="'Option ' + (i + 1)" required>
-                            <div class="form-check mt-2">
-                                <input class="form-check-input" type="checkbox" [(ngModel)]="options[i].correct" name="correct{{ i }}" [id]="'correct' + i">
-                                <label class="form-check-label" for="correct{{ i }}">Correct</label>
-                            </div>
+
                         </div>
                         <button type="button" class="btn btn-secondary" (click)="addOption()">Add Option</button>
 
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button [disabled]="addForm.invalid" type="submit" class="btn btn-primary">Save Question</button>
+                        <button [disabled]="addForm.invalid" type="submit" class="btn btn-primary" data-bs-dismiss="modal">Save Question</button>
                     </div>
 
 
@@ -118,7 +115,124 @@
 
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button  type="submit" (click)="deleteQuestion()" class="btn btn-primary" >yes</button>
+                        <button  type="submit" (click)="deleteQuestion()" class="btn btn-primary"data-bs-dismiss="modal" >yes</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="grid">
+    <div class="col-12">
+        <div class="card px-6 py-6">
+            <p-toast></p-toast>
+            <p-toolbar styleClass="mb-4">
+                <ng-template pTemplate="left">
+                    <div class="my-2">
+                        <button pButton pRipple label="New" icon="pi pi-plus" class="p-button-success mr-2" data-bs-toggle="modal" style="border-radius: 10px;" data-bs-target="#addQuestionModal" ></button>
+
+                    </div>
+                </ng-template>
+
+
+            </p-toolbar>
+
+            <!--<p-table #dt responsiveLayout="scroll" [value]="quizzes" selectionMode="single" dataKey="idQuiz">-->
+            <!--<p-table #dt [value]="quizzes" responsiveLayout="scroll" [rows]="10" [globalFilterFields]="['title','description','type']" [paginator]="true" [rowsPerPageOptions]="[10,20,30]" [showCurrentPageReport]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [(selection)]="selectQuiz(quiz)" selectionMode="multiple" [rowHover]="true" dataKey="id">-->
+            <p-table #dt [value]="searchTerm.trim() ? filteredQuestions : questions"  responsiveLayout="scroll" [rows]="10" [globalFilterFields]="['content','option']" [paginator]="true" [rowsPerPageOptions]="[10,20,30]" [showCurrentPageReport]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [rowHover]="true" dataKey="idQuestion">
+
+                <ng-template pTemplate="caption">
+                    <div class="flex flex-row md:justify-between items-center">
+                        <h5 class="m-0">Manage Questions</h5>
+                        <span class="block ml-auto md:ml-0 p-input-icon-left">
+        <i class="pi pi-search"></i>
+        <input pInputText type="text" placeholder="Search..." class="w-full sm:w-auto"  [(ngModel)]="searchTerm" (ngModelChange)="filterQuestions()" />
+    </span>
+                    </div>
+
+
+
+                </ng-template>
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th style="width: 3rem">
+                            <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                        </th>
+
+
+                        <th pSortableColumn="content">Question <p-sortIcon field="content"></p-sortIcon></th>
+
+                        <th pSortableColumn="option">Options<p-sortIcon field="option"></p-sortIcon></th>
+
+                        <th></th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-question>
+                    <tr (click)="selectQuiz(question)">
+
+                        <td>
+                            <p-tableCheckbox [value]="question"></p-tableCheckbox>
+                        </td>
+
+                        <td>{{question.content}}</td>
+
+
+                        <td>
+                            <ul>
+                                <li *ngFor="let option of question.options">
+                                    {{ option.content}}
+
+                                </li>
+                            </ul>
+                        </td>
+                        <td>
+
+                            <div class="flex">
+                                <!-- <button pButton pRipple icon="pi pi-pencil"  class="p-button-rounded p-button-success mr-2" data-bs-toggle="modal" data-bs-target="#updateActivityModal" style="border-radius: 20px;"   ></button>-->
+                                <button pButton pRipple icon="pi pi-pencil"  class="p-button-rounded p-button-success mr-2" data-bs-toggle="modal" data-bs-target="#updateQuestionModal" style="border-radius: 20px;"   ></button>
+                                <button pButton pRipple icon="pi pi-trash" data-bs-toggle="modal" data-bs-target="#deleteQuestionModal" style="border-radius: 20px; margin-right: 10px;"></button>
+
+
+                            </div>
+                        </td>
+                    </tr>
+                </ng-template>
+            </p-table>
+
+        </div>
+
+
+
+
+    </div>
+</div>
+<!--Update Question-->
+<div class="modal fade" id="updateQuestionModal" tabindex="-1" role="dialog" aria-labelledby="updateQuestionModal" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="updateQuestionModalLabel">Update Question</h5>
+
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <form #updateForm="ngForm" (ngSubmit)="saveQuestion()">
+                    <input type="hidden" [(ngModel)]="selectedQuestion.idQuestion" name="idQuestion">
+                    <div class="form-group">
+                        <label for="content1">Question</label>
+                        <input type="text" [(ngModel)]="selectedQuestion.content" name="content" class="form-control" id="content1" placeholder="Question" required>
+                    </div>
+                    <div class="form-group" *ngFor="let option of selectedQuestion.options; let i = index">
+                        <label for="option{{ i }}">Option {{ i + 1 }}</label>
+                        <input type="text" [(ngModel)]="option.content" name="option{{ i }}" class="form-control" [id]="'option' + i" [placeholder]="'Option ' + (i + 1)" required>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button pButton pRipple label="Save" icon="pi pi-check" class="p-button-text" [disabled]="updateForm.invalid" type="submit" data-bs-dismiss="modal"></button>
                     </div>
                 </form>
             </div>

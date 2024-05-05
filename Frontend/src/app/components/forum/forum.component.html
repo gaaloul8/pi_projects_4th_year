@@ -38,7 +38,7 @@
                 <div class="columns is-multiline">
                     <!--Forum-->
                     <div class="column is-3" *ngFor="let forum of filteredForums" >
-                                     <article class="group-box">
+                                     <article class="group-box" *ngIf="forum.status=='ACCEPTED'">
 
                                       <div class="box-info-hover">
                                         <div class="like-wrapper"  *ngIf="!forum.closed">

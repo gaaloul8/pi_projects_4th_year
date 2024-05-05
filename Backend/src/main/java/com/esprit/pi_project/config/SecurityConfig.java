@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -15,10 +16,13 @@ import org.springframework.security.web.authentication.logout.LogoutHandler;
 
 import static com.esprit.pi_project.entities.Permission.ADMIN_READ;
 import static com.esprit.pi_project.entities.Role.Admin;
+import static com.esprit.pi_project.entities.Role.ClubManager;
+import static com.esprit.pi_project.entities.Role.User;
 
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig {
     private final JwtAuthentifcationFilter jwtFilter;
     private final AuthenticationProvider authenticationProvider;
@@ -29,21 +33,40 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .authorizeRequests(authorizeRequests ->
                         authorizeRequests
-                                .requestMatchers("/auth/**","/profile/","/auth/reset-password/").permitAll()
-                                .requestMatchers("/reward/**","/discount/**","/sendSMS").permitAll()
-                                .requestMatchers("/event/**","/reservation/**","/feedback/**").permitAll()
-
+                                .requestMatchers("/auth/**","/profile/**","/auth/reset-password/").permitAll()
                                 .requestMatchers("/clubs/**","/comments/**","/posts/**").permitAll()
 
 
-                                .requestMatchers("/quiz/**","/passerQuiz/**","/questionq/**","/activity/**").permitAll()
+
+                          //      .requestMatchers("/quiz/**","/passerQuiz/**","/questionq/**","/activity/**","/option/**").permitAll()
+                            //    .requestMatchers("/activity/upload/").permitAll()
+
+
+                              //  .requestMatchers("/quiz/**","/passerQuiz/**","/questionq/**","/activity/**").permitAll()
 
                                 .requestMatchers("/reward/**","/discount/**","/forums/**").permitAll()
+                                //.requestMatchers("/getUsers").hasRole("Admin")
+                                //.requestMatchers("/getUsers").hasAuthority(Admin.name())
+                                .requestMatchers("/getUsers").hasAnyAuthority(Admin.name(),ClubManager.name())
+                                //.requestMatchers("/getUsers").hasAuthority(Admin.name())
+                               .requestMatchers("/quiz/**").hasAnyAuthority(Admin.name(),User.name())
+
+                                // .requestMatchers("/deleteuser/{id}").hasAuthority(Admin.name())
 
 
 
-                             //   .requestMatchers("/auth/admin").hasAnyRole(Admin.name())
-                               // .requestMatchers(HttpMethod.GET,"/auth/admin").hasAnyAuthority(ADMIN_READ.name())
+                                .requestMatchers("/event/**","/reservation/**","/feedback/**","/discount/**","/reward/sendSMS").permitAll()
+
+
+
+
+                                //      .requestMatchers("/quiz/**","/passerQuiz/**","/questionq/**","/activity/**","/option/**").permitAll()
+
+
+
+                                //   .requestMatchers("/feedback/**").hasAnyRole(User.name())
+                                //   .requestMatchers("/auth/**").hasAnyRole(Admin.name())
+                                // .requestMatchers(HttpMethod.GET,"/auth/admin").hasAnyAuthority(ADMIN_READ.name())
                                 .anyRequest().authenticated()
                 )
                 .sessionManagement(sessionManagement ->
@@ -58,4 +81,5 @@ public class SecurityConfig {
 
         return http.build();
     }
+
 }

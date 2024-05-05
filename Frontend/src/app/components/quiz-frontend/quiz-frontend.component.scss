@@ -108,4 +108,102 @@ a {
 }
 
 /* Add animations here */
+.modal-content.pinterest-style {
+    display: flex;
+    flex-direction: row;
+}
+
+.image-container {
+    flex: 1;
+    margin-right: 30px; /* Ajoute de l'espace entre l'image et le texte */
+}
+
+.text-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.box-img {
+    width: 300px;
+    height: 500px;
+    background-size: cover;
+    background-position: center;
+    margin-right: 30px;
+    border-radius: 10px; /* Ajout d'un cadre arrondi pour l'image */
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); /* Ajout d'une ombre */
+    opacity: 0; /* Initialisation de l'opacité */
+    transform: translateY(20px); /* Initialisation de la position */
+    animation: fadeInUpImage 1s ease forwards; /* Animation pour l'image */
+}
+
+.activity-info h2,
+.activity-info p {
+    opacity: 0; /* Initialisation de l'opacité */
+    transform: translateY(20px); /* Initialisation de la position */
+}
+
+.activity-info p.type {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 12px; /* Taille de police plus petite pour le type */
+    margin-bottom: 5px;
+    margin-top: 10px;
+    margin-right: 10px;
+    color: #666; /* Couleur du texte */
+    animation: fadeInUpText 1s ease forwards; /* Animation pour le type */
+    border-bottom: 1px solid #ddd; /* Ajout d'une bordure inférieure */
+    padding-bottom: 5px; /* Espacement en bas */
+}
+
+.activity-info h2 {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 19px; /* Taille de police plus grande pour le titre */
+    font-weight: bold;
+    margin-bottom: 20px;
+    margin-right: 10px;
+    color: #333; /* Couleur du texte */
+    animation: fadeInUpText 1s ease forwards; /* Animation pour le titre */
+}
+
+.activity-info p.content {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 16px; /* Taille de police normale pour le contenu */
+    margin-bottom: 10px;
+    margin-right: 10px;
+    color: #444; /* Couleur du texte */
+    animation: fadeInUpText 1s ease forwards; /* Animation pour le contenu */
+    line-height: 1.6; /* Espacement entre les lignes */
+}
+
+.activity-info p.type::before {
+    content: "\2022"; /* Ajout d'un petit cercle avant le type */
+    color: #666;
+    display: inline-block;
+    width: 8px;
+    margin-right: 6px;
+    font-size: 12px;
+    line-height: 1;
+}
+
+@keyframes fadeInUpImage {
+    0% {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeInUpText {
+    0% {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
 

@@ -15,7 +15,8 @@
                         <div class="p-field">
                             <div class="input-with-icon">
                                 <i class="pi pi-lock"></i>
-                                <input id="password" type="password" pPassword [(ngModel)]="loginRequest.password" name="password" placeholder="Password" required>
+
+                                <input id="password" type="password"  [(ngModel)]="loginRequest.password" name="password" placeholder="Password" required>
                             </div>
                             <div *ngIf="loginForm.submitted && loginForm.controls['password'].errors?.required" class="error-message">Password is required</div>
                         </div>
@@ -27,7 +28,10 @@
                         </re-captcha>
                         <div class="button-container">
                             <button type="submit" [disabled]="!captchaResolved"  pButton label="Login"></button>
-                            <span class="not-member-text">Forget your password? <a routerLink="/forget" class="login-link">Reset password</a></span>
+                            <span class="not-member-text"> <a routerLink="/register" class="login-link">Not a member?</a></span>
+
+                            <span class="not-member-text"> <a routerLink="/forget" class="login-link">Forget your password?</a></span>
+
                         </div>
                     </form>
                 </div>

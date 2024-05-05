@@ -10,13 +10,13 @@ export class CommentService {
 
   constructor(private http: HttpClient) { }
   private baseUrl = 'http://localhost:8081/comments'; 
-  private token = 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzYWRva0Blc3ByaXQudG4iLCJpYXQiOjE3MTQyMjE4NjgsImV4cCI6MTcxNDMwODI2OH0.xOZBqJt88F2WFkfqPeFJr7Q59PpKwfnk3Ounsy0J9vQ'; 
-  addComment(content: string, postId: number): Observable<any> {
+  private token = localStorage.getItem('jwtAccessToken');
+  addComment(content: string, postId: number): Observable<Comment> {
     const headers = new HttpHeaders({
       'Authorization': 'Bearer ' + this.token,
       'Content-Type': 'application/json'
     });
-    return this.http.post(`${this.baseUrl}/add/${postId}`, { content }, { headers });
+    return this.http.post<Comment>(`${this.baseUrl}/add/${postId}`,{content} , { headers: headers });
   }
 
   updateComment(comment: Comment): Observable<Comment> {
@@ -24,23 +24,39 @@ export class CommentService {
       'Authorization': 'Bearer ' + this.token,
       'Content-Type': 'application/json'
     });
-    return this.http.put<Comment>(`${this.baseUrl}/update`, comment, { headers });
+    return this.http.put<Comment>(`${this.baseUrl}/update`, comment, { headers: headers  });
   }
 
   getAllComments(): Observable<Comment[]> {
-    return this.http.get<Comment[]>(`${this.baseUrl}/getall`);
+    const headers = new HttpHeaders({
+      'Authorization': 'Bearer ' + this.token,
+      'Content-Type': 'application/json'
+    });
+    return this.http.get<Comment[]>(`${this.baseUrl}/getall`,{ headers: headers  });
   }
 
   getCommentById(id: number): Observable<Comment> {
-    return this.http.get<Comment>(`${this.baseUrl}/${id}`);
+    
+    const headers = new HttpHeaders({
+      'Authorization': 'Bearer ' + this.token
+  });
+    return this.http.get<Comment>(`${this.baseUrl}/${id}`, { headers: headers  });
   }
 
-  deleteComment(id: number): Observable<void> {
+  deleteComment(id: number): Observable<Comment> {
     const headers = new HttpHeaders({
       'Authorization': 'Bearer ' + this.token
     });
-    return this.http.delete<void>(`${this.baseUrl}/${id}`, { headers });
+    return this.http.delete<Comment>(`${this.baseUrl}/${id}`, { headers: headers  });
   }
+  getCommentsForPost(postId: number): Observable<Comment[]> {
+    const headers = new HttpHeaders({
+      'Authorization': 'Bearer ' + this.token,
+      'Content-Type': 'application/json'
+    });
+    return this.http.get<Comment[]>(`${this.baseUrl}/findbyPost/${postId}`, { headers: headers  });
+  }
+  
   
 }
 export { Comment };

@@ -1,6 +1,7 @@
 import { OnInit } from '@angular/core';
 import { Component } from '@angular/core';
 import { LayoutService } from './service/app.layout.service';
+import { RouterLink } from '@angular/router';
 
 @Component({
     selector: 'app-menu',
@@ -21,11 +22,34 @@ export class AppMenuComponent implements OnInit {
                 ]
             },
             {
-                label: 'UI Components',
+                label: 'Services',
                 items: [
+                    { label: 'Users', icon: 'pi pi-fw pi-id-card', routerLink: ['/users'] },
+
                     { label: 'Forum Statistics', icon: 'pi pi-fw pi-chart-bar', routerLink: ['/forumstat'] },
                     { label: 'Forum', icon: 'pi pi-fw pi-id-card', routerLink: ['/forumback'] },
-                    { label: 'Form Layout', icon: 'pi pi-fw pi-id-card', routerLink: ['/uikit/formlayout'] },
+                    { label: 'Reward', icon: 'pi pi-fw pi-id-card', routerLink: ['/reward'] },
+                    { label: 'Discount', icon: 'pi pi-fw pi-id-card', routerLink: ['/discounts'] },
+                    { label: 'Transaction', icon: 'pi pi-fw pi-id-card', routerLink: ['/transactions'] },
+                    { label: 'StatTransaction', icon: 'pi pi-fw pi-id-card', routerLink: ['/stattransaction'] },
+                    { label: 'StatUsers', icon: 'pi pi-fw pi-id-card', routerLink: ['/statistics'] },
+                    { label: 'Club Statistics', icon: 'pi pi-fw pi-chart-bar', routerLink: ['/stat-club'] },
+                    { label: 'Post Statistics', icon: 'pi pi-fw pi-chart-bar', routerLink: ['/stat-post'] },
+                    { label: 'All posts', icon: 'pi pi-fw pi-id-card', routerLink: ['/post'] },
+                    { label: 'All clubs', icon: 'pi pi-fw pi-id-card', routerLink: ['/club'] },
+                    { label: 'Quiz', icon: 'pi pi-fw pi-list', routerLink: ['/quiz-back'] },
+                    { label: 'Quiz Chart',icon: 'pi pi-fw pi-chart-bar', routerLink: ['/quiz-chart'] },
+                    { label: 'Event Statistics',icon: 'pi pi-fw pi-chart-bar', routerLink: ['/staticEventByFeedback'] },
+                    { label: 'Event', icon: 'pi pi-fw pi-list', routerLink: ['/eventBack'] },
+                    { label: 'Reservation', icon: 'pi pi-fw pi-list', routerLink: ['/listReservationEvent'] },
+                    { label: 'FeedBack', icon: 'pi pi-fw pi-list', routerLink: ['/listFeedBackClubManager'] },
+                    { label: 'Reclamation Stats',icon: 'pi pi-fw pi-chart-bar', routerLink: ['/reclamation/statistics']},
+                    { label: 'All Reclamation',icon: 'pi pi-fw pi-list', routerLink: ['/reclamation']},
+                    { label: 'Assigned Reclamation',icon: 'pi pi-fw pi-list', routerLink: ['/reclamation/assigned']},
+                    { label: 'Archived Reclamation',icon: 'pi pi-fw pi-list', routerLink: ['/reclamation/archived']},
+
+
+                   /* { label: 'Form Layout', icon: 'pi pi-fw pi-id-card', routerLink: ['/uikit/formlayout'] },
                     { label: 'Input', icon: 'pi pi-fw pi-check-square', routerLink: ['/uikit/input'] },
                     { label: 'Float Label', icon: 'pi pi-fw pi-bookmark', routerLink: ['/uikit/floatlabel'] },
                     { label: 'Invalid State', icon: 'pi pi-fw pi-exclamation-circle', routerLink: ['/uikit/invalidstate'] },
@@ -40,24 +64,26 @@ export class AppMenuComponent implements OnInit {
                     { label: 'Message', icon: 'pi pi-fw pi-comment', routerLink: ['/uikit/message'] },
                     { label: 'File', icon: 'pi pi-fw pi-file', routerLink: ['/uikit/file'] },
                     { label: 'Chart', icon: 'pi pi-fw pi-chart-bar', routerLink: ['/uikit/charts'] },
-                    { label: 'Misc', icon: 'pi pi-fw pi-circle', routerLink: ['/uikit/misc'] }
+                    { label: 'Misc', icon: 'pi pi-fw pi-circle', routerLink: ['/uikit/misc'] }*/
                 ]
-            },
-            {
+            }
+            ,
+
+            /*{
                 label: 'Prime Blocks',
                 items: [
                     { label: 'Free Blocks', icon: 'pi pi-fw pi-eye', routerLink: ['/blocks'], badge: 'NEW' },
                     { label: 'All Blocks', icon: 'pi pi-fw pi-globe', url: ['https://www.primefaces.org/primeblocks-ng'], target: '_blank' },
                 ]
-            },
-            {
+            },*/
+           /* {
                 label: 'Utilities',
                 items: [
                     { label: 'PrimeIcons', icon: 'pi pi-fw pi-prime', routerLink: ['/utilities/icons'] },
                     { label: 'PrimeFlex', icon: 'pi pi-fw pi-desktop', url: ['https://www.primefaces.org/primeflex/'], target: '_blank' },
                 ]
-            },
-            {
+            },*/
+            /*{
                 label: 'Pages',
                 icon: 'pi pi-fw pi-briefcase',
                 items: [
@@ -108,8 +134,8 @@ export class AppMenuComponent implements OnInit {
                         routerLink: ['/pages/empty']
                     },
                 ]
-            },
-            {
+            },*/
+            /*{
                 label: 'Hierarchy',
                 items: [
                     {
@@ -150,8 +176,8 @@ export class AppMenuComponent implements OnInit {
                         ]
                     }
                 ]
-            },
-            {
+            },*/
+          /*  {
                 label: 'Get Started',
                 items: [
                     {
@@ -161,7 +187,7 @@ export class AppMenuComponent implements OnInit {
                         label: 'View Source', icon: 'pi pi-fw pi-search', url: ['https://github.com/primefaces/sakai-ng'], target: '_blank'
                     }
                 ]
-            }
+            }*/
         ];
     }
 }

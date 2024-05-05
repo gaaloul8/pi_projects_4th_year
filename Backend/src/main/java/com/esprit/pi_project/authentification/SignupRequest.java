@@ -20,8 +20,10 @@ public class SignupRequest {
     private Date Registration;
     private Date lastLogin;
     private String Identifiant;
+    private String passwordHint;
     private Role role;
     private boolean FirstLogin;
+    private boolean accountNonLocked;
 
 
     public Date setRegistration() {

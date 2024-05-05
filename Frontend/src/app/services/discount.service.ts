@@ -8,11 +8,15 @@ import {Discount} from "../interfaces/discount";
 })
 export class DiscountService {
     private apiUrl = 'http://localhost:8081/discount';
+    private token =  localStorage.getItem('jwtAccessToken');
 
     constructor(private http: HttpClient) { }
 
     getAllDiscounts(): Observable<Discount[]> {
-        return this.http.get<Discount[]>(`${this.apiUrl}/getalldiscounts`);
+        const headers = new HttpHeaders({
+            'Authorization': 'Bearer ' + this.token
+        });
+        return this.http.get<Discount[]>(`${this.apiUrl}/getalldiscounts`, { headers: headers });
     }
 
     getDiscountById(id: number): Observable<any> {
@@ -20,6 +24,9 @@ export class DiscountService {
     }
 
     addDiscount(discount: Discount): Observable<any> {
+        const headers = new HttpHeaders({
+            'Authorization': 'Bearer ' + this.token
+        });
         const httpOptions = {
             headers: new HttpHeaders({
                 'Content-Type': 'application/json'
@@ -30,7 +37,7 @@ export class DiscountService {
             endDiscount: discount.endDiscount,
             discountValue: discount.discountValue,
             rewardId: discount.rewardId
-        }, httpOptions);
+        }, httpOptions,);
     }
 
     deleteDiscount(id: number): Observable<void> {

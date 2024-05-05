@@ -2,19 +2,23 @@ package com.esprit.pi_project.serviceImpl;
 
 import com.esprit.pi_project.dao.QuizDao;
 import com.esprit.pi_project.dao.QuizUserDao;
+
 import com.esprit.pi_project.entities.Quiz;
 
 
 import com.esprit.pi_project.entities.QuizQuestion;
 import com.esprit.pi_project.entities.QuizUser;
+import com.esprit.pi_project.entities.User;
 import com.esprit.pi_project.services.QuizUserService;
-import com.esprit.pi_project.utilities.OpenAiServiceImpl;
+import com.esprit.pi_project.services.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
+import java.util.HashMap;
 
 import static com.esprit.pi_project.utilities.OpenAiServiceImpl.chatGPT;
 @Service
@@ -22,6 +26,8 @@ import static com.esprit.pi_project.utilities.OpenAiServiceImpl.chatGPT;
 public class QuizUserServiceImpl implements QuizUserService {
     QuizUserDao quizUserDao;
     QuizDao quizDao;
+
+    UserService userService;
 
     @Override
     public QuizUser ajouterQuizAUser(QuizUser quizUser, Integer idQuiz) {
@@ -35,26 +41,20 @@ public class QuizUserServiceImpl implements QuizUserService {
         List<String> questions = new ArrayList<>();
         for(QuizQuestion question:quiz.getQuestions())
             questions.add(question.getContent());
-        // Ajout des questions à la liste
-       // questions.add("Comment vous sentez-vous généralement sur une échelle de 1 à 10, où 1 est très mal et 10 est très bien ?");
-       // questions.add("Avez-vous récemment ressenti une tristesse, une nervosité ou une anxiété persistante ?");
-        //questions.add("Avez-vous des difficultés à entretenir des relations avec votre famille, vos amis ou vos collègues ?");
-      //  questions.add("Avez-vous des pensées négatives ou des sentiments d'insécurité à propos de vous-même ou de votre avenir ?");
 
         List<String> reponses = new ArrayList<>();
         reponses=quizUser.getReponses();
-        //reponses.add("Je me sens à 7 aujourd'hui.");
-       // reponses.add("Oui, je me sens souvent anxieux ces derniers temps.");
-      //  reponses.add("Oui, j'ai du mal à entretenir des relations avec ma famille.");
-       // reponses.add("Oui, je lutte souvent avec des pensées négatives à propos de moi-même.");
-
+       
         String msg = chatGPT("je vais te fournir une liste de question "+questions.toString()+"et de reponse "+reponses.toString()+
-                " je veux que tu fais l'interpretation de l'etat psychologique et repns comme si tu repdons à la personne qui a passe le questionnaire en 2 phrases  ");
-
+                " je veux que tu fais l'interpretation de l'etat psychologique et repns comme si tu repdons à la personne qui a passe le questionnaire en 3 phrases en anglais");
+        String scoreStress = chatGPT("à partir les questions "+questions.toString()+"et les reponses "+ reponses.toString()+"donne moi un pourcentage pour le niveau , de stress , anxiete , depression etc , ecris comme cette  exemple anxiete:%,stress:% etc et il sont separé pa vergule dans la meme ligne et en anglais");
+        System.out.println(scoreStress);
+        quizUser.setScore(scoreStress);
         quizUser.setDescription(msg);
         System.out.println(msg);
         QuizUser savedQuizUser= quizUserDao.save(quizUser);
         quiz.getQuizUsers().add(savedQuizUser);
+
         quizDao.save(quiz);
 
         return savedQuizUser;
@@ -69,4 +69,50 @@ public class QuizUserServiceImpl implements QuizUserService {
     public List<Object[]> getQuizUserParticipationDatesAndCounts() {
         return quizUserDao.getQuizUserParticipationDatesAndCounts();
     }
+
+  @Override
+    public QuizUser getALLPartication(Integer idQuiz , User user) {
+
+
+        return   quizUserDao.findAllByQuizIdAndUser(idQuiz,user);
+
+    }
+
+
+    public Map<String, Double> calculateAverageScores() {
+        // Définir un HashMap pour stocker les totaux des scores et les comptages pour chaque mot-clé
+        Map<String, Double> totalScores = new HashMap<>();
+        Map<String, Integer> counts = new HashMap<>();
+
+        // Récupérer les données de la base de données
+        List<String> scoresList = quizUserDao.findAllScores();
+
+        // Parcourir chaque score extrait de la base de données
+        for (String scoreStr : scoresList) {
+            // Séparer les mots-clés et les scores
+            String[] keywordAndScorePairs = scoreStr.split(", ");
+            for (String pair : keywordAndScorePairs) {
+                // Séparer le mot-clé et le score
+                String[] parts = pair.split(": ");
+                String keyword = parts[0].trim();
+                int score = Integer.parseInt(parts[1].replace("%", "").trim());
+
+                // Mettre à jour le total des scores et le comptage pour ce mot-clé
+                totalScores.put(keyword, totalScores.getOrDefault(keyword, 0.0) + score);
+                counts.put(keyword, counts.getOrDefault(keyword, 0) + 1);
+            }
+        }
+
+        // Calculer les moyennes des scores pour chaque mot-clé
+        Map<String, Double> averageScores = new HashMap<>();
+        for (String keyword : totalScores.keySet()) {
+            double totalScore = totalScores.get(keyword);
+            int count = counts.get(keyword);
+            double averageScore = totalScore / count;
+            averageScores.put(keyword, averageScore);
+        }
+
+        return averageScores;
+    }
+
 }

@@ -1,1 +1,58 @@
-<p>comment works!</p>
+<!-- post-comments-modal.component.html -->
+<div class="modal-header futuristic-header">
+    <h4 class="modal-title">Comments</h4>
+    <button type="button" class="close futuristic-close-button" style="margin-left: 70%;" aria-label="Close" (click)="closeModal()">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<div class="modal-body futuristic-body">
+    <div *ngIf="comments.length === 0; else commentLoop" class="no-comments-message futuristic-message">
+        <p>No comments available.</p>
+    </div>
+    <ng-template #commentLoop>
+        <div class="comment-container">
+            <div *ngFor="let comment of comments" class="comment futuristic-comment">
+                <div class="comment-box futuristic-comment-box">
+                    <div class="user-photo-container futuristic-user-photo">
+                        <img [src]="'data:image/png;base64,' + comment.user?.profilePicture" alt="User Photo" class="user-photo" />
+                    </div>
+                    <div class="comment-details futuristic-comment-details">
+                        <div class="user-info">
+                            <p class="user-name futuristic-user-name">{{ comment.user?.firstName }} {{ comment.user?.lastName }}</p>
+                            <p class="comment-time futuristic-comment-time">{{ calculateTimeAgo(comment.date) }}</p>
+                        </div>
+                        <div class="comment-actions">
+                            <span class="edit-icon" *ngIf="!comment.isEditing" (click)="editComment(comment)">
+                                <i class="bi bi-pencil"></i>
+                            </span>
+                            
+                            <span class="delete-icon" (click)="deleteComment(comment.commentId)">
+                                <i class="bi bi-trash"></i>
+                            </span>
+                        </div>
+                        <div *ngIf="comment.isEditing">
+                            <input type="text" [(ngModel)]="editedComments[comment.commentId]" class="form-control">
+                            <button (click)="saveEditedComment(comment)">Save</button>
+                        </div>
+                        <ng-container *ngIf="!comment.isEditing">
+                            <p class="comment-text futuristic-comment-text">{{ comment.content }}</p>
+                        </ng-container>
+                        <ng-template #commentText>
+                            <p class="comment-text futuristic-comment-text">{{ comment.content }}</p>
+                        </ng-template>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ng-template>
+    <div class="add-comment-container futuristic-add-comment-container">
+        <div class="input-group futuristic-input-group">
+            <input type="text" class="form-control comment-input futuristic-comment-input" [(ngModel)]="comment.content" placeholder="Add a comment...">
+            <div class="input-group-append">
+                <button class="btn btn-primary add-comment-button futuristic-add-comment-button" type="button" (click)="addComment()">
+                    <i class="bi bi-arrow-right"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

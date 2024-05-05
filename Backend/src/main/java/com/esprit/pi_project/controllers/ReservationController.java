@@ -1,14 +1,18 @@
 package com.esprit.pi_project.controllers;
 
-import com.esprit.pi_project.entities.FeedBack;
 import com.esprit.pi_project.entities.Reservation;
+import com.esprit.pi_project.entities.User;
 import com.esprit.pi_project.services.ReservationService;
+import com.esprit.pi_project.services.UserService;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/reservation")
@@ -17,16 +21,20 @@ public class ReservationController {
 
     @Autowired
     private ReservationService reservationService;
+    @Autowired
+    private UserService userService;
 
     @PostMapping("/addReservation/{idEvent}")
-    public ResponseEntity<Reservation> addReservation(@PathVariable Integer idEvent, @RequestBody Reservation reservation)
-    {   try {
-        Reservation addedreservation = reservationService.addReservation(idEvent, reservation);
-        return ResponseEntity.ok(addedreservation);
-    } catch (IllegalStateException e) {
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-    }
-    }
+    public ResponseEntity<Reservation> addReservation(@PathVariable Integer idEvent,
+                                                      @RequestBody Reservation reservation,
+                                                      HttpServletRequest request)throws IOException {
+
+        Optional<User> optionalUser = userService.getUserFromJwt(request);
+        User user= optionalUser.get();
+
+        Reservation addedreservation = reservationService.addReservation(idEvent,reservation,user);
+            return new ResponseEntity<>(addedreservation, HttpStatus.CREATED);}
+
 
     @DeleteMapping("/deleteReservation/{idR}")
     public void deleteReservationById(@PathVariable Integer idR){
@@ -36,4 +44,11 @@ public class ReservationController {
     public List<Reservation> getAllReservation(){
         return reservationService.findAll();
     }
+
+    @GetMapping("/getReservationByIdEvent/{idEvent}")
+    public Reservation getReservationByIdEvent(@PathVariable Integer idEvent){
+        return reservationService.getReservationByEventId(idEvent);
+    }
+
+
 }
