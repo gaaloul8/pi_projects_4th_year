@@ -19,6 +19,12 @@ export class ForumService {
     });
     return this.http.get<Forum[]>(`${this.baseUrl}/getAllForums`, { headers: headers });
   }
+  getUser(): Observable<User> {
+    const headers = new HttpHeaders({
+      'Authorization': 'Bearer ' + this.token
+    });
+    return this.http.get<User>(`${this.baseUrl}/getuser`, { headers: headers });
+  }
   createForum(forum: Forum): Observable<Forum> {
     const headers = new HttpHeaders({
       'Authorization': 'Bearer ' + this.token,
@@ -97,6 +103,7 @@ export interface Forum {
   closed?: boolean;
   isLiked?: boolean;
   status?: ForumStatus;
+  numQuestions?: number;
 }
 
 export enum ForumStatus {
@@ -126,6 +133,7 @@ export interface Question {
   closed?: boolean;
   author?: User;
   upvotes?:number;
+  downvotes?:number;
   forum?:Forum;
 }
 export interface Response {
@@ -137,6 +145,7 @@ export interface Response {
   reported?: boolean;
   upvotes?: number;
   question?: Question;
+  editing?: boolean;
 }
 export interface QuestionWithTags {
   question: Question;

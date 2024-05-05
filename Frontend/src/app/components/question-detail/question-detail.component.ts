@@ -1,7 +1,7 @@
 import { AfterViewInit, Component, ElementRef, OnInit, Renderer2 ,ViewChild} from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { FacebookService } from 'src/app/services/facebook.service';
-import { Forum, ForumService, Question , Response } from 'src/app/services/forum.service';
+import { Forum, ForumService, Question , Response, User } from 'src/app/services/forum.service';
 import { QuestionsService } from 'src/app/services/questions.service';
 import { ResponsesService } from 'src/app/services/responses.service';
 
@@ -27,6 +27,9 @@ export class QuestionDetailComponent implements AfterViewInit{
   response:any = {};
   responses: Response[] = [];
   sentimentResult: string = '';
+  forumId:number;
+  user:User;
+  deleteResponseDialog: boolean = false;
   activeButtons = {
     like: false,
     dislike: false,
@@ -40,6 +43,8 @@ export class QuestionDetailComponent implements AfterViewInit{
     }, 100);
     this.getQuestionDetails();
     this.fetchResponses();
+    this.GetUser();
+    this.initModals();
     const bestAnswerId = parseInt(localStorage.getItem('bestAnswerId'));
     if (bestAnswerId) {
       console.log('Best answer ID from localStorage:', bestAnswerId);
@@ -55,7 +60,35 @@ export class QuestionDetailComponent implements AfterViewInit{
     this.loadJsFile("../../../../assets/js/global.js");
     this.loadJsFile("../../../../assets/js/main.js");
   }
+  saveEditedResponse(response: Response) {
+    // Call your backend API to update the response content
+    // For example:
+    this.responseService.updateResonse(response.responseId,response).subscribe(updatedResponse => {
+      response.content = updatedResponse.content;
+      response.editing = false;
+    });
+    
+    // For demonstration purposes, we'll just toggle editing back to false
+    response.editing = false;
+  }
 
+  toggleEditing(response: Response) {
+    response.editing = !response.editing;
+  }
+  confirmDelete(){
+    this.deleteResponseDialog = true;
+  }
+  deleteResponse(response: Response) {
+    // Call your backend API to delete the response
+    // For example:
+    this.responseService.deleteResponse(response.responseId).subscribe(() => {
+      this.responses = this.responses.filter(item => item !== response);
+    });
+    
+    // For demonstration purposes, we'll just remove the response from the array
+    this.responses = this.responses.filter(item => item !== response);
+    this.deleteResponseDialog = false;
+  }
   public loadJsFile(url: string) {
     const body = <HTMLDivElement>document.body;
     const script = document.createElement('script');
@@ -69,6 +102,21 @@ export class QuestionDetailComponent implements AfterViewInit{
     }; 
     this.renderer.appendChild(document.body, script);
   }
+  GetUser(){
+    this.forumService.getUser().subscribe(
+      (user: User) => {
+        this.user = user;
+      },
+      (error) => {
+        console.log('Error fetching user:', error);
+      }
+    );
+  }
+  cancelEdit(response: any) {
+    response.editing = false;
+}
+
+
   publishToFacebook() {
     const message = `
     [Forum Title]: ${this.forum.topic}
@@ -86,9 +134,10 @@ export class QuestionDetailComponent implements AfterViewInit{
     this.questionsService.getQuestionById(questionId).subscribe(
       (question:Question) => {
         this.question = question;
-        const forumId = +this.question.forum.forumId;
+        this.forumId = +this.question.forum.forumId;
+        
     
-    this.forumService.getForumById(forumId).subscribe(
+    this.forumService.getForumById(this.forumId).subscribe(
       (forum: Forum) => {
         this.forum = forum;
         console.log('Forum details:', this.forum);
@@ -135,6 +184,28 @@ export class QuestionDetailComponent implements AfterViewInit{
     // Add the 'is-active' class to the modal to show it
     modal.classList.add('is-active');
 }
+initModals(): void {
+  const modalTriggers = document.querySelectorAll('.modal-trigger');
+  modalTriggers.forEach(trigger => {
+    trigger.addEventListener('click', () => {
+      const modalID = trigger.getAttribute('data-modal');
+      const modal = document.getElementById(modalID);
+      if (modal) {
+        modal.classList.toggle('is-active');
+      }
+    });
+  });
+
+  const modalCloseTriggers = document.querySelectorAll('.modal-close, .close-modal');
+  modalCloseTriggers.forEach(closeTrigger => {
+    closeTrigger.addEventListener('click', () => {
+      const activeModals = document.querySelectorAll('.modal.is-active');
+      activeModals.forEach(modal => {
+        modal.classList.remove('is-active');
+      });
+    });
+  });
+}
 openReplyModal() {
   // Get a reference to the modal element
   var modal = document.getElementById('reply-modal');
@@ -144,11 +215,11 @@ openReplyModal() {
 }
 async submitResponse() {
   this.response.accepted=true;
-  this.response.createdAt = new Date();
+  // this.response.createdAt = new Date();
   this.response.question = {questionId : this.route.snapshot.paramMap.get('id')};
   this.response.reported=false;
   this.response.upvotes=0;
-  this.response.author = { id_user: 1, role: "User" };
+  // this.response.author = { id_user: 1, role: "User" };
   try {
     const newResponse = await this.responseService.createResponse(this.response).toPromise();
     console.log('New Response created:', newResponse);
@@ -163,6 +234,40 @@ async submitResponse() {
     console.error('Error creating question:', error);
   }
 }
+calculateTimeAgo(createdAt: Date): string {
+  // Calculate time difference in milliseconds
+  const now = new Date().getTime();
+  const created = new Date(createdAt).getTime();
+  let difference = Math.abs(now - created);
+
+  const days = Math.floor(difference / (1000 * 60 * 60 * 24)); // Calculate days
+  difference -= days * (1000 * 60 * 60 * 24); // Update difference
+
+  const hours = Math.floor(difference / (1000 * 60 * 60));
+  difference -= hours * (1000 * 60 * 60);
+  
+  const minutes = Math.floor(difference / (1000 * 60));
+  difference -= minutes * (1000 * 60);
+  
+  const seconds = Math.floor(difference / 1000);
+
+  let timeAgo = '';
+
+  if (days > 0) {
+    timeAgo += `${days} day${days > 1 ? 's' : ''} `;
+  }
+  if (hours > 0) {
+    timeAgo += `${hours} hour${hours > 1 ? 's' : ''} `;
+  }
+  if (minutes > 0) {
+    timeAgo += `${minutes} minute${minutes > 1 ? 's' : ''} `;
+  }
+  if (days === 0 && hours === 0 && minutes === 0) {
+    timeAgo += `${seconds} second${seconds > 1 ? 's' : ''} `;
+  }
+
+  return timeAgo + 'ago';
+}
 fetchResponses(): void {
   const questionId = +this.route.snapshot.paramMap.get('id');
   // Fetch questions for the current forum ID
@@ -170,8 +275,10 @@ fetchResponses(): void {
     (responses: Response[]) => {
       this.responses = responses;
       responses.forEach(response => {
-        if (!this.bestAnswer || response.upvotes > this.bestAnswer.upvotes) {
+        if (!this.bestAnswer || response.upvotes > this.bestAnswer.upvotes )  {
+          if(response.upvotes > 0){
           this.bestAnswer = response;
+          }
     }});
       
       console.log('Responses :', this.responses);

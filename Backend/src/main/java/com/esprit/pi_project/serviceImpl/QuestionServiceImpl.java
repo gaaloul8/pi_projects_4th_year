@@ -16,6 +16,8 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Service
@@ -28,7 +30,12 @@ public class QuestionServiceImpl implements QuestionService {
     }
 
     @Override
-    public Question saveQuestion(Question question) {
+    public Question saveQuestion(Question question) throws ParseException {
+        Date currentDateTime = new Date();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+        String formattedDate = dateFormat.format(currentDateTime);
+        Date parsedDate = dateFormat.parse(formattedDate);
+        question.setCreatedAt(parsedDate);
         return questionDao.save(question);
     }
 
@@ -63,6 +70,9 @@ public class QuestionServiceImpl implements QuestionService {
         Question question = questionDao.findById(questionId).orElse(null);
         if (question != null) {
             question.setUpvotes(question.getUpvotes() + 1);
+            if(question.getDownvotes() != 0){
+                question.setDownvotes(question.getDownvotes()-1);
+            }
             return questionDao.save(question);
         }
         return null;
@@ -72,7 +82,10 @@ public class QuestionServiceImpl implements QuestionService {
     public Question downvoteQuestion(Integer questionId) {
         Question question = questionDao.findById(questionId).orElse(null);
         if (question != null) {
-            question.setUpvotes(question.getUpvotes() - 1);
+            if(question.getUpvotes() != 0) {
+                question.setUpvotes(question.getUpvotes() - 1);
+            }
+            question.setDownvotes(question.getDownvotes()+1);
             return questionDao.save(question);
         }
         return null;    }

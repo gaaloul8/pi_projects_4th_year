@@ -52,6 +52,19 @@ export class QuestionsService {
     });
     return this.http.post<string>(`${this.baseUrl}/analyzeSentiment`, questionContent, { headers: headers  });
   }
+  upvoteQuestion(QuestionId: number): Observable<Question> {
+    const headers = new HttpHeaders({
+      'Authorization': 'Bearer ' + this.token
+    });
+    return this.http.put<Forum>(`${this.baseUrl}/upvote/${QuestionId}`, null, { headers: headers });
+  }
+
+  downvoteQuestion(QuestionId: number): Observable<Question> {
+    const headers = new HttpHeaders({
+      'Authorization': 'Bearer ' + this.token
+    });
+    return this.http.put<Forum>(`${this.baseUrl}/downvote/${QuestionId}`, null, { headers: headers });
+  }
 
   
 }
