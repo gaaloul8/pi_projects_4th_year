@@ -29,4 +29,8 @@ export class HeaderComponent implements OnInit{
       });
     });
   }
+
+    isActive(url: string): boolean {
+        return this.router.url === url;
+    }
 }

@@ -29,6 +29,8 @@ export class DropdownUserComponent implements OnInit {
             (user: UserModel) => {
                 this.user = user;
                 console.log(this.user.firstName);
+                console.log(this.user);
+
             },
             (error) => {
                 console.error('Error fetching user profile:', error);
