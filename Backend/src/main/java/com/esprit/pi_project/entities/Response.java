@@ -23,7 +23,6 @@ public class Response implements Serializable {
     @Temporal(TemporalType.DATE)
     private Date createdAt;
 
-    @NotBlank(message = "Content is required")
     private String content;
 
     private Boolean accepted;

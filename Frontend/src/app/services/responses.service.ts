@@ -44,4 +44,17 @@ export class ResponsesService {
     });
     return this.http.put<Forum>(`${this.baseUrl}/downvote/${responseId}`, null, { headers: headers });
   }
+  updateResonse(id:number,response: Response): Observable<Response> {
+    const headers = new HttpHeaders({
+      'Authorization': 'Bearer ' + this.token,
+      'Content-Type': 'application/json'
+    });
+    return this.http.put(`${this.baseUrl}/${id}`, response, { headers: headers });
+  }
+  deleteResponse(responseid: number): Observable<void> {
+    const headers = new HttpHeaders({
+      'Authorization': 'Bearer ' + this.token
+    });
+    return this.http.delete<void>(`${this.baseUrl}/${responseid}`, { headers: headers });
+  }
 }

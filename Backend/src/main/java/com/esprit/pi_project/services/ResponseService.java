@@ -3,11 +3,12 @@ package com.esprit.pi_project.services;
 import com.esprit.pi_project.entities.Response;
 
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
 
 public interface ResponseService {
-    Response saveResponse(Response response);
+    Response saveResponse(Response response) throws ParseException;
 
     Response updateResponse(Response response);
 

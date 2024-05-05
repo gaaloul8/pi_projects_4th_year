@@ -18,11 +18,11 @@ export class HomeComponent implements AfterViewInit , OnInit {
   loadJsFiles(): void {
     // this.loadJsFile("../../../../assets/js/common.js");
     // this.loadJsFile("../../../../assets/js/global.js");
-    this.loadExternalScript("../../../assets/vendor/bootstrap/js/bootstrap.bundle.min.js");
-    this.loadExternalScript("../../../assets/vendor/glightbox/js/glightbox.min.js");
-    this.loadExternalScript("../../../assets/vendor/purecounter/purecounter_vanilla.js");
-    this.loadExternalScript("../../../assets/vendor/imagesloaded/imagesloaded.pkgd.min.js");
-    this.loadExternalScript("../../../assets/vendor/aos/aos.js");
+    // this.loadExternalScript("../../../assets/vendor/bootstrap/js/bootstrap.bundle.min.js");
+    // this.loadExternalScript("../../../assets/vendor/glightbox/js/glightbox.min.js");
+    // this.loadExternalScript("../../../assets/vendor/purecounter/purecounter_vanilla.js");
+    // this.loadExternalScript("../../../assets/vendor/imagesloaded/imagesloaded.pkgd.min.js");
+    // this.loadExternalScript("../../../assets/vendor/aos/aos.js");
     this.loadExternalScript("../../../../assets/js/main/main.js");
     
 
