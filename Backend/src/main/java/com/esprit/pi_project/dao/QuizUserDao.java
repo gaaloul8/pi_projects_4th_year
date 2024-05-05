@@ -16,4 +16,7 @@ public interface QuizUserDao extends JpaRepository <QuizUser,Integer> {
 
   @Query("SELECT qu FROM QuizUser qu WHERE qu.quiz.idQuiz = :idQuiz AND qu.QuizUser = :user ORDER BY qu.idQuizUser DESC LIMIT 1")
    QuizUser findAllByQuizIdAndUser( Integer idQuiz,  User user);
+    @Query("SELECT q.score FROM QuizUser q")
+    List<String> findAllScores();
+
 }

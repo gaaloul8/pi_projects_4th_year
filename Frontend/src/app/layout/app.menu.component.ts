@@ -22,7 +22,7 @@ export class AppMenuComponent implements OnInit {
                 ]
             },
             {
-                label: 'UI Components',
+                label: 'Services',
                 items: [
                     { label: 'Users', icon: 'pi pi-fw pi-id-card', routerLink: ['/users'] },
 
@@ -47,7 +47,7 @@ export class AppMenuComponent implements OnInit {
                     { label: 'All Reclamation',icon: 'pi pi-fw pi-list', routerLink: ['/reclamation']},
                     { label: 'Assigned Reclamation',icon: 'pi pi-fw pi-list', routerLink: ['/reclamation/assigned']},
                     { label: 'Archived Reclamation',icon: 'pi pi-fw pi-list', routerLink: ['/reclamation/archived']},
-                    
+
 
                    /* { label: 'Form Layout', icon: 'pi pi-fw pi-id-card', routerLink: ['/uikit/formlayout'] },
                     { label: 'Input', icon: 'pi pi-fw pi-check-square', routerLink: ['/uikit/input'] },
@@ -68,6 +68,7 @@ export class AppMenuComponent implements OnInit {
                 ]
             }
             ,
+
             /*{
                 label: 'Prime Blocks',
                 items: [

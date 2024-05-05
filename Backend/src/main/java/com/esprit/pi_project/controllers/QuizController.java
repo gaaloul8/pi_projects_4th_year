@@ -28,7 +28,7 @@ public class QuizController {
     public void addQuiz(@RequestBody Quiz quiz, HttpServletRequest request) {
         Optional<User> user = userService.getUserFromJwt(request);
 
-        if (user != null && user.get().getRole().equals(ClubManager)){
+        if (user != null ){
             quiz.setQuizOwner(user.get());
 
         }
