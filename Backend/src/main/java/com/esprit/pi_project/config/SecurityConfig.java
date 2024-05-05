@@ -37,6 +37,7 @@ public class SecurityConfig {
 
 
                           //      .requestMatchers("/quiz/**","/passerQuiz/**","/questionq/**","/activity/**","/option/**").permitAll()
+                            //    .requestMatchers("/activity/upload/").permitAll()
 
                                 .requestMatchers("/reward/**","/discount/**","/forums/**").permitAll()
 
