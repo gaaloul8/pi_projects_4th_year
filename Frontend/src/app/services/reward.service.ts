@@ -3,6 +3,7 @@ import { HttpClient ,HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import {Transaction_history} from "../interfaces/Transaction_history";
+import {an} from "@fullcalendar/core/internal-common";
 
 @Injectable({
     providedIn: 'root'
@@ -129,6 +130,11 @@ export class RewardService {
         });
         return this.http.get<Transaction_history[]>(`${this.baseUrl}/getalltransactions`,{ headers: headers });}
 
+    getrewarbyuser():Observable<any>{
+        const headers = new HttpHeaders({
+            'Authorization': 'Bearer ' + this.token
+        });
+        return this.http.get<Reward[]>(`${this.baseUrl}/getrewarbyuser`,{ headers: headers });}
 
 
     getMonthlyTransactionCounts(): Observable<any> {
@@ -137,6 +143,12 @@ export class RewardService {
         });
         return this.http.get<any>(`${this.baseUrl}/monthly-count`,{ headers: headers });
     }
+    updateRate(idreward:number,rate:number):Observable<any>{
+        const headers = new HttpHeaders({
+            'Authorization': 'Bearer ' + this.token
+        });
+        return this.http.put<any>(`${this.baseUrl}/updateRate/${idreward}/${rate}`,{ headers: headers });}
+
 
 
 

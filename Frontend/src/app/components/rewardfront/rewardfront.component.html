@@ -54,13 +54,26 @@
                                     <img [src]="reward.image ? 'data:image/png;base64,' + reward.image : ''" alt="reward Image" width="150" class="mt-2">
                                     <div class="text-2xl font-bold">{{reward.name}}</div>
                                     <div class="mb-3">{{reward.description}}</div>
-                                    <p-rating [ngModel]="reward.rating" [readonly]="true" [cancel]="false"></p-rating>
 
                                 </div>
                                 <div class="flex align-items-center justify-content-between">
                                     <span class="text-2xl font-semibold">${{reward.cost}}</span>
-                                    <p-button icon="pi pi-shopping-cart clickable" (click)="purchaseReward(reward.idReward)" (click)="sendSMS(reward.name,reward.cost,reward.nbDispo)"></p-button>
                                 </div>
+                                <button pButton type="button" (click)="showDialog(reward)" label="Show Dialog"></button>
+                                <p-dialog [(visible)]="displayDialog" header="Add a Feedback" [modal]="true" [responsive]="true">
+                                    <div>
+                                        <div style="margin-top: 10px;">
+                                            <p-rating [(ngModel)]="rating"></p-rating>
+                                        </div>
+                                    </div>
+                                    <p-footer>
+                                        <button pButton pRipple icon="pi pi-times" class="p-button-text" label="Cancel" (click)="displayDialog = false"></button>
+
+                                            <button pButton pRipple icon="pi pi-comment" class="p-button-success" label="Send" (click)="sendRating()">
+                                        </button>
+                                    </p-footer>
+                                </p-dialog>
+
                             </div>
                         </div>
                     </div>
