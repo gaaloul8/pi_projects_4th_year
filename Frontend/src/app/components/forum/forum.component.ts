@@ -217,6 +217,7 @@ async saveForum() {
     // Fetch forums and close the dialog
     this.forumDialog = false; 
     window.location.reload();
+    this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Forum Successfully added !', life: 3000 });
   } catch (error) {
     console.error('Error creating forum:', error);
   }
