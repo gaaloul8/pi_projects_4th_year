@@ -3,6 +3,7 @@ import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {UserModel} from "../models/userModel";
 import {UserUpdateRequest} from "../models/UserUpdateRequest";
+import {environment} from "../../environments/environment";
 
 @Injectable({
   providedIn: 'root'
@@ -10,8 +11,8 @@ import {UserUpdateRequest} from "../models/UserUpdateRequest";
 
 
 export class UserServiceService {
-
-    private baseUrl = 'http://localhost:8081'
+    private baseUrl = environment.backendUrl;
+    //private baseUrl = 'http://localhost:8081'
   constructor( private http: HttpClient) { }
 
     getTotalUsers() {
