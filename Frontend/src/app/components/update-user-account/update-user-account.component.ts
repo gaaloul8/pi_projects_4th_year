@@ -4,6 +4,7 @@ import {UserServiceService} from "../../services/user-service.service";
 import {FormBuilder, FormGroup, FormsModule, Validators} from "@angular/forms";
 import {UserUpdateRequest} from "../../models/UserUpdateRequest";
 import {NgOptimizedImage} from "@angular/common";
+import {Router} from "@angular/router";
 
 
 @Component({
@@ -24,7 +25,7 @@ export class UpdateUserAccountComponent {
         password: '',
         profilePicture:null
     };
-    constructor(private userService: UserServiceService) {
+    constructor(private userService: UserServiceService, private router: Router) {
 
 
     }
@@ -39,6 +40,7 @@ export class UpdateUserAccountComponent {
         }
 
         this.userService.updateUser(formData).subscribe(updatedUser => {
+            this.router.navigate(['/main/home'])
             console.log('User updated:', updatedUser);
         });
     }

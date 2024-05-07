@@ -2,15 +2,18 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Reservation } from '../interfaces/reservation';
 import { Observable } from 'rxjs';
- 
+import {environment} from "../../environments/environment";
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class ReservationService {
-  private baseUrl = 'http://localhost:8081';
+    private baseUrl = environment.backendUrl;
+
+    // private baseUrl = 'http://localhost:8081';
   //private token = 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhcmlqLm9iYmFAZXNwcml0LnRuIiwiaWF0IjoxNzE0Mzg3MzQ0LCJleHAiOjE3MTQ0NzM3NDR9.Vu543TP1uFEpVzRuyVyXbE8k32CZGamH5Hcd_BJwiLI'
-  
+
   private token =  localStorage.getItem('jwtAccessToken');
   constructor(private http: HttpClient) { }
 
@@ -19,7 +22,7 @@ export class ReservationService {
       'Authorization': 'Bearer ' + this.token
     });
     return this.http.post<Reservation>(`${this.baseUrl}/reservation/addReservation/${idEvent}`,reservation , { headers: headers });
-  } 
+  }
 
 
     getAllReservationsForUser(): Observable<Reservation[]> {
@@ -35,5 +38,5 @@ export class ReservationService {
       });
       return this.http.delete<void>(`${this.baseUrl}/reservation/deleteReservation/${idR}`,{ headers: headers });
     }
-   
+
 }
