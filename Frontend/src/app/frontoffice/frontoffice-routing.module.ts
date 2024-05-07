@@ -29,6 +29,7 @@ import { AddReclamationComponent } from '../components/reclamations/add-reclamat
 import { MyReclamationsComponent } from '../components/reclamations/my-reclamations/my-reclamations.component';
 import { PostFrontComponent } from '../components/post-front/post-front.component';
 import { CommentComponent } from '../components/comment/comment.component';
+import {RewardfrontComponent} from "../components/rewardfront/rewardfront.component";
 
 const routes: Routes = [
     {path:'profile/update',component: UpdateUserAccountComponent},
@@ -41,8 +42,10 @@ const routes: Routes = [
 
 { path: 'transactions', component: TransactionhistoryComponent },
 { path: 'rewardusers', component: RewardusersComponent },
+    { path: 'rewardfront', component: RewardfrontComponent },
 
-{ path: 'discounts', component: DiscountsComponent },
+
+    { path: 'discounts', component: DiscountsComponent },
 { path: 'quiz-frontend', component: QuizFrontendComponent},
 { path: 'eventFront', component : EventfrontComponent},
   {path:'event-details/:idEvent',component : PageEventComponent},

@@ -23,4 +23,6 @@ public interface RewardService {
     Map<Integer, Long> countTransactionsByMonth();
     Reward findRewardByName(String name);
     Reward findById(Integer id);
+     List<Reward> getrewardbyuser(User user);
+     void updateReward(Integer idReward, int rate);
 }
