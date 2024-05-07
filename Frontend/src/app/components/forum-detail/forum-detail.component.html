@@ -218,7 +218,7 @@
                         <!--Related post-->
                         <ng-container *ngFor="let forum of forums">
                             <ng-container *ngIf="forum.forumId !== currentForumId">
-                                <a class="related-post">
+                                <a class="related-post" [routerLink]="['/main/forumdetail', forum.forumId]">
                                     <img class="post-image" src="https://via.placeholder.com/250x250" data-demo-src="assets/forum1.jpg" alt="" />
                                     <div class="meta">
                                         <h3>{{forum.topic}}</h3>
