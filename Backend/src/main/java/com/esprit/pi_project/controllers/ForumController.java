@@ -149,6 +149,10 @@ String pictureUrl = "https://www.drhakandoganay.com/wp-content/uploads/2020/06/h
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
+    @GetMapping("/getuser")
+    public Optional<User> getconnecteduser(HttpServletRequest request){
+        return this.userService.getUserFromJwt(request);
+    }
 
     @PutMapping("/dislike/{forumId}")
     public ResponseEntity<Forum> dislikeForum(@PathVariable Integer forumId) {

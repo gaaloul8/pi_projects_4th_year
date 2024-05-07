@@ -1,0 +1,107 @@
+.comment-stats-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 640px;
+  }
+  
+  .comment-stats-wrap .comment-stats {
+    display: flex;
+  }
+  
+  .comment-stats-wrap .comment-stats .stat {
+    display: flex;
+    align-items: center;
+    padding: 0 4px;
+  }
+  
+  .comment-stats-wrap .comment-stats .stat.is-likes svg {
+    position: relative;
+    top: -2px;
+  }
+  
+  .comment-stats-wrap .comment-stats .stat.is-dislikes svg {
+    position: relative;
+    top: 2px;
+  }
+  
+  .comment-stats-wrap .comment-stats .stat span {
+    display: block;
+    font-size: 0.9rem;
+    color: #999; /* $muted-grey */
+  }
+  
+  .comment-stats-wrap .comment-stats .stat svg {
+    height: 18px;
+    width: 18px;
+    min-width: 20px;
+    stroke: #c8c8c8; /* $placeholder */
+  }
+  
+  .comment-stats-wrap .comment-actions {
+    display: flex;
+    align-items: center;
+    height: 40px;
+    width: 96px;
+  }
+  
+  .comment-stats-wrap .comment-actions .comment-action {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 30px;
+    width: 30px;
+    min-width: 30px;
+    margin: 0 2px;
+    border: 1px solid #e8e8e8; /* $fade-grey */
+    border-radius: 50%;
+    transition: all 0.3s;
+  }
+  
+  .comment-stats-wrap .comment-actions .comment-action:nth-child(2) svg {
+    position: relative;
+    top: 2px;
+  }
+  
+  .comment-stats-wrap .comment-actions .comment-action.is-like:hover {
+    border-color: #1ce589; /* $green */
+  }
+  
+  .comment-stats-wrap .comment-actions .comment-action.is-like:hover svg {
+    stroke: #1ce589; /* $green */
+  }
+  
+  .comment-stats-wrap .comment-actions .comment-action.is-dislike:hover {
+    border-color: #f71416; /* $red */
+  }
+  
+  .comment-stats-wrap .comment-actions .comment-action.is-dislike:hover svg {
+    stroke: #f71416; /* $red */
+  }
+  
+  .comment-stats-wrap .comment-actions .comment-action.is-reply:hover {
+    border-color: #393a4f; /* $dark-text */
+  }
+  
+  .comment-stats-wrap .comment-actions .comment-action.is-reply:hover svg {
+    stroke: #393a4f; /* $dark-text */
+  }
+  
+  .comment-stats-wrap .comment-actions .comment-action svg {
+    height: 14px;
+    width: 14px;
+    stroke: #c8c8c8; /* $placeholder */
+    transition: stroke 0.3s;
+  }
+  .comment-stats-wrap .comment-actions .comment-action.is-like.active svg {
+    stroke: #1ce589; /* $green */
+  }
+  
+  .comment-stats-wrap .comment-actions .comment-action.is-dislike.active svg {
+    stroke: #f71416; /* $red */
+  }
+  
+  .comment-stats-wrap .comment-actions .comment-action.is-reply.active svg {
+    stroke: #393a4f; /* $dark-text */
+  }

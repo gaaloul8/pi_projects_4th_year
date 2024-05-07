@@ -35,12 +35,21 @@ public class SecurityConfig {
                         authorizeRequests
                                 .requestMatchers("/auth/**","/profile/**","/auth/reset-password/").permitAll()
                                 .requestMatchers("/clubs/**","/comments/**","/posts/**").permitAll()
+
+
+
+                          //      .requestMatchers("/quiz/**","/passerQuiz/**","/questionq/**","/activity/**","/option/**").permitAll()
+                            //    .requestMatchers("/activity/upload/").permitAll()
+
+
                               //  .requestMatchers("/quiz/**","/passerQuiz/**","/questionq/**","/activity/**").permitAll()
+
                                 .requestMatchers("/reward/**","/discount/**","/forums/**").permitAll()
                                 //.requestMatchers("/getUsers").hasRole("Admin")
                                 //.requestMatchers("/getUsers").hasAuthority(Admin.name())
                                 .requestMatchers("/getUsers").hasAnyAuthority(Admin.name(),ClubManager.name())
-                              //  .requestMatchers("/getUsers").hasAuthority(ClubManager.name())
+                                //.requestMatchers("/getUsers").hasAuthority(Admin.name())
+                               .requestMatchers("/quiz/**").hasAnyAuthority(Admin.name(),User.name())
 
                                 // .requestMatchers("/deleteuser/{id}").hasAuthority(Admin.name())
 

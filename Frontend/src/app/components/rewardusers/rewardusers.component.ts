@@ -56,7 +56,7 @@ export class RewardusersComponent implements OnInit{
     sortOptions: SelectItem[] = [];
     showDropdown: boolean = false;
     closed?: boolean;
-
+    searchTerm: string = '';
     connectedUser: User;
     constructor(private rewardService: RewardService, private messageService: MessageService,private dialog: MatDialog) { }
 
@@ -162,6 +162,18 @@ export class RewardusersComponent implements OnInit{
                 console.error('Failed to send message:', error);
                 // Handle error, if needed
             }
+        );
+    }
+
+    filterRewards() {
+        if (!this.searchTerm) {
+            this.loadRewards();
+            return;
+        }
+
+        this.rewards = this.rewards.filter(reward =>
+            reward.name.toLowerCase().includes(this.searchTerm.toLowerCase())
+
         );
     }
 }

@@ -1,6 +1,7 @@
 import { Component, OnInit,AfterViewInit, Renderer2 } from '@angular/core';
-import { Forum, ForumService, ForumStatus } from '../../services/forum.service';
+import { Forum, ForumService, ForumStatus, Question, User } from '../../services/forum.service';
 import { MessageService } from 'primeng/api';
+import { QuestionsService } from 'src/app/services/questions.service';
 
 
 
@@ -20,18 +21,21 @@ export class ForumComponent implements AfterViewInit , OnInit {
   submitted: boolean = false;
   checkLang: boolean = false;
   selectedForumId: number;
-  messageService : MessageService;
   showDropdown: boolean = false;
   statuses: any[] = [];
   isLiked: boolean = false;
   detectedLanguage: string;
+  user: User;
+  searchTerm: string = '';
+  filteredForums: Forum[] = [];
 
-
-
-  constructor(private renderer: Renderer2, private forumService: ForumService) { 
+  constructor(private renderer: Renderer2, private forumService: ForumService, private questionsService: QuestionsService,  private messageService: MessageService,
+  ) { 
  }
  ngOnInit(): void {
+  this.GetUser();
   this.fetchForums();
+  this.applySearchFilter(); 
   // this.loadLikedStates();
 }
  ngAfterViewInit(): void {
@@ -40,6 +44,31 @@ export class ForumComponent implements AfterViewInit , OnInit {
     this.setActiveClassOnInit();
   }, 100);
 
+}
+applySearchFilter(): void {
+  if (this.searchTerm.trim() === '') {
+   this.ngAfterViewInit();
+    // If the search term is empty, show all forums
+    this.filteredForums = this.forums.slice();
+  } else {
+    // Otherwise, filter forums based on the search term
+    this.filteredForums = this.forums.filter(forum =>
+      forum.topic.toLowerCase().includes(this.searchTerm.trim().toLowerCase())
+    );
+    this.setActiveClassOnInit();
+    this.loadJsFiles();
+    console.log(this.filteredForums);
+  }
+}
+GetUser(){
+  this.forumService.getUser().subscribe(
+    (user: User) => {
+      this.user = user;
+    },
+    (error) => {
+      console.log('Error fetching user:', error);
+    }
+  );
 }
 
 loadJsFiles(): void {
@@ -99,16 +128,45 @@ onOptionClick(event: Event) {
   event.stopPropagation(); 
 }
 
+  // fetchForums(): void {
+  //   this.forumService.getAllForums().subscribe(
+  //     (forums: Forum[]) => {
+  //       this.forums = forums;
+  //       console.log('Forums:', this.forums);
+  //       this.forums.forEach(forum => {
+  //         const forumId = forum.forumId.toString(); 
+  //         const isLikedString = localStorage.getItem(`forumLiked_${forumId}`);
+  //         forum.isLiked = isLikedString ? JSON.parse(isLikedString) : false; 
+  //         console.log(`Forum ID: ${forumId}, isLiked: ${forum.isLiked}`); 
+  //       });
+  //     },
+  //     (error) => {
+  //       console.log('Error fetching forums:', error);
+  //     }
+  //   );
+  // }
   fetchForums(): void {
     this.forumService.getAllForums().subscribe(
       (forums: Forum[]) => {
         this.forums = forums;
+        this.filteredForums = this.forums.slice();
         console.log('Forums:', this.forums);
         this.forums.forEach(forum => {
+          const forumid = forum.forumId; 
           const forumId = forum.forumId.toString(); 
-          const isLikedString = localStorage.getItem(`forumLiked_${forumId}`);
+          const userId = this.user.id_user.toString();
+          const key = `forumLiked_${forumId}_${userId}`;
+          const isLikedString = localStorage.getItem(key);
           forum.isLiked = isLikedString ? JSON.parse(isLikedString) : false; 
           console.log(`Forum ID: ${forumId}, isLiked: ${forum.isLiked}`); 
+          this.questionsService.getAllQuestionsByForumId(forumid).subscribe(
+            (questions: Question[]) => {
+              forum.numQuestions = questions.length;
+            },
+            (error) => {
+              console.error('Error fetching tags:', error);
+            }
+          );
         });
       },
       (error) => {
@@ -159,6 +217,7 @@ async saveForum() {
     // Fetch forums and close the dialog
     this.forumDialog = false; 
     window.location.reload();
+    this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Forum Successfully added !', life: 3000 });
   } catch (error) {
     console.error('Error creating forum:', error);
   }
@@ -193,11 +252,33 @@ async saveForum() {
     }; 
     this.renderer.appendChild(document.body, script);
   }
+  // toggleLike(forum: Forum): void {
+  //   forum.isLiked = !forum.isLiked; 
+
+  //    const forumId = forum.forumId.toString(); 
+  //   const isLikedString = localStorage.getItem(`forumLiked_${forumId}`);
+  //   let isLiked = isLikedString ? JSON.parse(isLikedString) : false;
+    
+  //   if (!isLiked) {
+  //     this.likeForum(forum);
+  //     console.log("liked");
+  //   } else {
+  //     this.dislikeForum(forum);
+  //     console.log("disliked");
+  //   }
+    
+  
+    
+  //   localStorage.setItem(`forumLiked_${forumId}`, JSON.stringify(forum.isLiked)); 
+  // }
   toggleLike(forum: Forum): void {
     forum.isLiked = !forum.isLiked; 
-
-     const forumId = forum.forumId.toString(); 
-    const isLikedString = localStorage.getItem(`forumLiked_${forumId}`);
+  
+    const forumId = forum.forumId.toString(); 
+    const userId = this.user.id_user.toString();
+  
+    const key = `forumLiked_${forumId}_${userId}`;
+    const isLikedString = localStorage.getItem(key);
     let isLiked = isLikedString ? JSON.parse(isLikedString) : false;
     
     if (!isLiked) {
@@ -208,9 +289,7 @@ async saveForum() {
       console.log("disliked");
     }
     
-  
-    
-    localStorage.setItem(`forumLiked_${forumId}`, JSON.stringify(forum.isLiked)); 
+    localStorage.setItem(key, JSON.stringify(forum.isLiked)); 
   }
   setActiveClassOnInit(): void {
     this.forums.forEach(forum => {

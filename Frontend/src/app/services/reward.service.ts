@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import {Transaction_history} from "../interfaces/Transaction_history";
 import {environment} from "../../environments/environment";
+import {an} from "@fullcalendar/core/internal-common";
 
 @Injectable({
     providedIn: 'root'
@@ -122,7 +123,8 @@ export class RewardService {
         const headers = new HttpHeaders({
             'Authorization': 'Bearer ' + this.token
         });
-        return this.http.delete<void>(`${this.baseUrl}/reward/delet/${Rewardid}`, {headers: headers});
+
+        return this.http.delete<void>(`${this.baseUrl}/reward/deletreward/${Rewardid}`, {headers: headers});
 
     }
 
@@ -132,6 +134,11 @@ export class RewardService {
         });
         return this.http.get<Transaction_history[]>(`${this.baseUrl}/reward/getalltransactions`,{ headers: headers });}
 
+    getrewarbyuser():Observable<any>{
+        const headers = new HttpHeaders({
+            'Authorization': 'Bearer ' + this.token
+        });
+        return this.http.get<Reward[]>(`${this.baseUrl}/reward/getrewarbyuser`,{ headers: headers });}
 
 
     getMonthlyTransactionCounts(): Observable<any> {
@@ -140,6 +147,12 @@ export class RewardService {
         });
         return this.http.get<any>(`${this.baseUrl}/reward/monthly-count`,{ headers: headers });
     }
+    updateRate(idreward:number,rate:number):Observable<any>{
+        const headers = new HttpHeaders({
+            'Authorization': 'Bearer ' + this.token
+        });
+        return this.http.put<any>(`${this.baseUrl}/reward/updateRate/${idreward}/${rate}`,{ headers: headers });}
+
 
 
 

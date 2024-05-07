@@ -9,7 +9,7 @@ import {RippleModule} from "primeng/ripple";
 import {SharedModule} from "primeng/api";
 import {TableModule} from "primeng/table";
 import {ToolbarModule} from "primeng/toolbar";
-import {RouterLink} from "@angular/router";
+import {Router, RouterLink} from "@angular/router";
 import {CalendarModule} from "primeng/calendar";
 import {DialogModule} from "primeng/dialog";
 import {DropdownModule} from "primeng/dropdown";
@@ -37,7 +37,7 @@ export class QuizComponent implements OnInit {
     @ViewChild('addForm') addForm!: NgForm;
     @ViewChild('updateForm') updateForm!: NgForm;
 
-    constructor(private quizService: QuizService, private formBuilder: FormBuilder,) {
+    constructor(private quizService: QuizService, private formBuilder: FormBuilder,private router: Router) {
     }
 
     addQuizDialog: boolean = false;
@@ -73,8 +73,13 @@ export class QuizComponent implements OnInit {
             },
             (error) => {
                 console.error('Une erreur s\'est produite lors du chargement des quizzes : ', error);
+                if (error.status === 403) {
+                    console.log(error);
+                    this.router.navigate(['/auth/access']);
+                }
             }
         );
+
     }
 
 

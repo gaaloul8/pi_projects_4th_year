@@ -76,7 +76,7 @@ export class ActivitiesService {
     uploadImage(file: File, id: number, activityJson: string): Observable<any> {
         const headers = new HttpHeaders({
             'Authorization': 'Bearer ' + this.token,
-            'Content-Type': 'application/json'
+
         });
         const formData: FormData = new FormData();
         formData.append('multipartFile', file, file.name);
