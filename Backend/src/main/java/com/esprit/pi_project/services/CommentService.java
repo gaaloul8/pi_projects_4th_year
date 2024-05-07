@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface CommentService {
     Comment addComment(Comment comment, Long idPost, User user) throws ParseException;
-    Comment updateComment(Comment comment,User user);
+    Comment updateComment(Comment comment);
 
     void deleteComment(Long idComment);
     Comment findCommentById(Long idComment);

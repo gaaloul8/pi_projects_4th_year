@@ -1,6 +1,7 @@
 package com.esprit.pi_project.serviceImpl;
 
 import com.esprit.pi_project.dao.CommentDao;
+import com.esprit.pi_project.dao.PostDao;
 import com.esprit.pi_project.entities.Club;
 import com.esprit.pi_project.entities.Comment;
 import com.esprit.pi_project.entities.Post;
@@ -26,6 +27,8 @@ public class CommentServiceImp implements CommentService {
     private CommentDao commentDao;
     @Autowired
     private PostService postService;
+    @Autowired
+    private PostDao postDao;
     @Override
 
     public Comment addComment(Comment comment, Long idPost, User user) throws ParseException {
@@ -43,8 +46,7 @@ public class CommentServiceImp implements CommentService {
         return commentDao.save(comment);
     }
 @Override
-    public Comment updateComment(Comment comment,User user) {
-        comment.setUser(user);
+    public Comment updateComment(Comment comment) {
 
         return commentDao.save(comment);
     }

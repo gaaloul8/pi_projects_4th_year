@@ -12,7 +12,7 @@
     <ng-template #commentLoop>
         <div class="comment-container">
             <div *ngFor="let comment of comments" class="comment futuristic-comment">
-                <div class="comment-box futuristic-comment-box">
+                <div class="comment-box futuristic-comment-box" style="margin-bottom: 6px;">
                     <div class="user-photo-container futuristic-user-photo">
                         <img [src]="'data:image/png;base64,' + comment.user?.profilePicture" alt="User Photo" class="user-photo" />
                     </div>
@@ -21,15 +21,6 @@
                             <p class="user-name futuristic-user-name">{{ comment.user?.firstName }} {{ comment.user?.lastName }}</p>
                             <p class="comment-time futuristic-comment-time">{{ calculateTimeAgo(comment.date) }}</p>
                         </div>
-                        <div class="comment-actions">
-                            <span class="edit-icon" *ngIf="!comment.isEditing" (click)="editComment(comment)">
-                                <i class="bi bi-pencil"></i>
-                            </span>
-                            
-                            <span class="delete-icon" (click)="deleteComment(comment.commentId)">
-                                <i class="bi bi-trash"></i>
-                            </span>
-                        </div>
                         <div *ngIf="comment.isEditing">
                             <input type="text" [(ngModel)]="editedComments[comment.commentId]" class="form-control">
                             <button (click)="saveEditedComment(comment)">Save</button>
@@ -37,11 +28,20 @@
                         <ng-container *ngIf="!comment.isEditing">
                             <p class="comment-text futuristic-comment-text">{{ comment.content }}</p>
                         </ng-container>
-                        <ng-template #commentText>
-                            <p class="comment-text futuristic-comment-text">{{ comment.content }}</p>
-                        </ng-template>
+
+                        
+                       
+                    </div>
+                    <div class="comment-actions" *ngIf="comment.user.id_user === user.id_user">
+                        <span  class="edit-icon" *ngIf="!comment.isEditing" (click)="editComment(comment)">
+                            <i class="bi bi-pencil"></i>
+                        </span>
+                        <span class="delete-icon" style="margin-left: 6px;" (click)="deleteComment(comment.commentId)">
+                            <i class="bi bi-trash"></i>
+                        </span>
                     </div>
                 </div>
+               
             </div>
         </div>
     </ng-template>

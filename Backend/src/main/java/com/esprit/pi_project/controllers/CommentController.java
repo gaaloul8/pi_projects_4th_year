@@ -35,13 +35,28 @@ public class CommentController {
         return new ResponseEntity<>(commentService.addComment(comment,idPost,user1),
                 HttpStatus.CREATED);
     }
-    @PutMapping("/update")
-        public ResponseEntity<Comment> updateComment(@RequestBody Comment comment, HttpServletRequest request){
-        Optional<User> optionalUser = userService.getUserFromJwt(request);
-        User user1 = optionalUser.get();
-
-        return new ResponseEntity<>(commentService.updateComment(comment,user1)
-                ,HttpStatus.OK);
+//    @PutMapping("/update")
+//        public ResponseEntity<Comment> updateComment(@RequestBody Comment comment, HttpServletRequest request){
+//        Optional<User> optionalUser = userService.getUserFromJwt(request);
+//        User user1 = optionalUser.get();
+//        commentService.updateComment(comment,user1);
+//        return new ResponseEntity<>(commentService.updateComment(comment,user1)
+//                ,HttpStatus.OK);
+//    }
+    @PutMapping("/{commentId}")
+    public ResponseEntity<Comment> updateResponse(@PathVariable Long commentId, @RequestBody Comment commentDetail) {
+        Comment comment = commentService.findCommentById(commentId);
+        if (comment != null) {
+            comment.setContent(commentDetail.getContent());
+//            comment.setPost(commentDetail.getPost());
+//            System.out.println(" post id : "+commentDetail.getPost());
+            comment.setDate(commentDetail.getDate());
+            comment.setUser(commentDetail.getUser());
+            Comment updatedComment = commentService.updateComment(comment);
+            return new ResponseEntity<>(updatedComment, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
     @GetMapping("/getall")
     public ResponseEntity<List<Comment>> getAllcomments(){

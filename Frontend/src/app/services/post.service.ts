@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Post } from '../interfaces/post'; // Assuming you have a Post model
+import { UserModel } from '../models/userModel';
 
 @Injectable({
   providedIn: 'root'
@@ -97,6 +98,12 @@ dislikePost(postId: number): Observable<Post> {
     'Authorization': 'Bearer ' + this.token
   });
   return this.http.put<Post>(`${this.baseUrl}/dislike/${postId}`,null, {headers: headers});
+}
+getUser(): Observable<UserModel> {
+  const headers = new HttpHeaders({
+    'Authorization': 'Bearer ' + this.token
+  });
+  return this.http.get<UserModel>(`${this.baseUrl}/getconnecteduser`, { headers: headers });
 }
 
 

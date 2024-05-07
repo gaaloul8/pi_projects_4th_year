@@ -90,9 +90,7 @@ public class ClubController {
 
 
 }
-    @GetMapping("/getByName/{clubName}")
-    public List<Club> getClubByName(@PathVariable String clubName){
-        return clubDao.findAllByClubName(clubName);}
+   
     @GetMapping("/generate-pdf")
     public void generatePDF(HttpServletResponse response) {
         response.setContentType("application/pdf");

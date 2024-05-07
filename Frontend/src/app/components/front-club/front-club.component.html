@@ -1,54 +1,68 @@
+<br><br><br><br><br>
 <div id="groups" class="container">
-    <div class="groups-grid">
-      <div class="columns is-multiline">
-        <!-- Search Field and Add Button -->
-        <div class="column is-12">
-          <div class="field is-grouped">
-            <!-- Search Field -->
-            <div class="control is-expanded">
-              <input type="text" placeholder="Search Clubs" class="input" [(ngModel)]="searchQuery" (input)="emitSearchQuery()">
-            </div>
-            <!-- Add Button -->
-            <div class="control">
-              <button class="button is-success" (click)="openNew()">Add New Club</button>
-            </div>
-          </div>
-        </div>
-  
-        <!-- Start of *ngFor loop -->
-        <div class="column is-3" *ngFor="let club of clubs">
-          <article class="group-box">
-            <div class="box-info-hover">
-              <!-- Add content for box-info-hover if needed -->
-            </div>
-            <div class="box-img has-background-image" [style.background-image]="'url(' + (club.image ? 'data:image/png;base64,' + club.image : 'https://via.placeholder.com/940x650') + ')'">
-              <!-- Add content for box-img if needed -->
-            </div>
-            <a>
-              <div class="box-img--hover has-background-image" [style.background-image]="'url(' + (club.image ? 'data:image/png;base64,' + club.image : 'https://via.placeholder.com/940x650') + ')'">
-                <!-- Add content for box-img--hover if needed -->
-              </div>
-            </a>
-            <div class="box-info">
-              <span class="box-category">{{club.clubName}}</span><br>
-              <span class="box-category" style="text-transform: lowercase; font-family: Arial, sans-serif;">{{club.description}}</span>
-              <span class="box-members">
-                <a href="#"></a>
-                <div class="members-preview">
-                  <img src="https://via.placeholder.com/150x150" data-demo-src="assets/img/avatars/milly.jpg" data-user-popover="7" alt="">
-                </div>
-                <div *ngIf="club.user.id_user === user.id_user" class="clickable-icon" (click)="editClub(club)">
-                  <i  data-feather="edit" style="cursor: pointer; color: blue;"></i>
-                </div>
-                <div *ngIf="club.user.id_user === user.id_user" class="clickable-icon" (click)="confirmDelete(club.clubId)">
-                  <i data-feather="trash-2" style="cursor: pointer;color: red;"></i>
-                </div>
-              </span>
-            </div>
-          </article>
-        </div>
-        <!-- End of *ngFor loop -->
+  <!-- Search Field -->
+  <div class="field is-grouped">
+    <div class="control" style="margin-left: 9%; width: 300px;">
+      <input type="text" placeholder="Search Clubs" class="input" [(ngModel)]="searchQuery" (input)="emitSearchQuery()">
+    </div>
+   
+  </div>
+  <div class="modal" [class.is-active]="selectedClub">
+    <div class="modal-background"></div>
+    <div class="modal-content pinterest-style">
+      <!-- Modal content -->
+      <div class="activity-details">
+        <div class="box-img has-background-image" [style.background-image]="'url(' + (selectedClub?.image ? 'data:image/png;base64,' + selectedClub?.image : 'https://via.placeholder.com/940x650') + ')'"></div>
+      </div>
+      <div class="club-info">
+        <br>
+        
+        <h2>ClubName:{{ selectedClub?.clubName }}</h2><br>
+        <p class="type">Description:{{selectedClub?.description}}</p><br>
+        <p class="type">Members:{{selectedClub?.membershipCount}}</p><br>
+        <p class="type">Tag:{{selectedClub?.tag}}</p><br>
+        <p class="type">Created By:{{selectedClub?.user?.firstName}} {{selectedClub?.user?.lastName}}</p><br>
+        <p class="type">Email:{{selectedClub?.user?.email}}</p>
+        
+        
+        <!-- Add other club details as needed -->
       </div>
     </div>
+    <button class="modal-close is-large" aria-label="close" (click)="closeModal()"></button>
   </div>
-  
+
+  <!-- Cards -->
+  <div class="groups-grid">
+    <div class="columns is-multiline">
+      <!-- Start of *ngFor loop -->
+      <div class="column is-3" *ngFor="let club of clubs">
+        <article class="group-box" (click)="openModal(club)">
+          <div class="box-info-hover">
+            <!-- Add content for box-info-hover if needed -->
+          </div>
+          <div class="box-img has-background-image" [style.background-image]="'url(' + (club.image ? 'data:image/png;base64,' + club.image : 'https://via.placeholder.com/940x650') + ')'">
+            <!-- Add content for box-img if needed -->
+          </div>
+          <a>
+            <div class="box-img--hover has-background-image" [style.background-image]="'url(' + (club.image ? 'data:image/png;base64,' + club.image : 'https://via.placeholder.com/940x650') + ')'">
+              <!-- Add content for box-img--hover if needed -->
+            </div>
+          </a>
+          <div class="box-info">
+            <span class="box-category">{{club.clubName}}</span><br>
+            <span class="box-category" style="text-transform: lowercase; font-family: Arial, sans-serif;"><b>{{club.tag}}</b></span>
+            <span class="box-members">
+              <a href="#"></a>
+              <div class="members-preview">
+                <img [src]="club.user?.profilePicture ? 'data:image/png;base64,' + club.user.profilePicture : 'https://via.placeholder.com/300x300'" alt="User Photo" class="user-photo" />
+
+              </div>
+              
+            </span>
+          </div>
+        </article>
+      </div>
+      <!-- End of *ngFor loop -->
+    </div>
+  </div>
+</div>
