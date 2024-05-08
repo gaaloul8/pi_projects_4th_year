@@ -139,7 +139,7 @@
                     <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Yes" (click)="confirmDeleteForum()"></button>
                 </ng-template>
             </p-dialog>
-            <div *ngIf="filteredForums.length === 0" class="column is-12">
+            <div *ngIf="filteredForums.length === 0 " class="column is-12">
                 <p>No forums are displayed.</p>
             </div>
                 <!-- Load more groups -->
@@ -168,3 +168,4 @@
             </div>
         </div>
     </div>
+    <p-toast></p-toast>

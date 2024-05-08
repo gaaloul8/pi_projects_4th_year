@@ -2,17 +2,20 @@ import { Injectable } from '@angular/core';
 import { Feedback } from '../interfaces/feedback';
 import { Observable } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import {environment} from "../../environments/environment";
 
 @Injectable({
   providedIn: 'root'
 })
 export class FeedbackService {
-  private baseUrl = 'http://localhost:8081';
-  //token mta3 el clubManager
+  //private baseUrl = 'http://localhost:8081';
+    private baseUrl = environment.backendUrl;
+
+    //token mta3 el clubManager
   private token =  localStorage.getItem('jwtAccessToken');
 
   constructor(private http: HttpClient) { }
-  
+
   addFeedback(eventId: number, feedback: Feedback): Observable<Feedback> {
     const headers = new HttpHeaders({
       'Authorization': 'Bearer ' + this.token
@@ -35,7 +38,7 @@ export class FeedbackService {
     return this.http.get<Feedback[]>(`${this.baseUrl}/feedback/getAllFeedBack`,{ headers: headers });
   }
 
-       
+
   updateFeedback (idfeedback : number, feedback : Feedback): Observable<any> {
     const headers = new HttpHeaders({
       'Authorization': 'Bearer ' + this.token
@@ -56,6 +59,6 @@ getFeedbackStatistics(): Observable<any[]> {
     'Authorization': 'Bearer ' + this.token
   });
   return this.http.get<any[]>(`${this.baseUrl}/feedback/feedback/statistics`,{ headers: headers });
-} 
+}
 
 }

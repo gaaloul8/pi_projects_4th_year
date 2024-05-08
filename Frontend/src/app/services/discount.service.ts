@@ -3,12 +3,15 @@ import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Injectable } from '@angular/core';
 import {Discount} from "../interfaces/discount";
 import {Forum} from "./forum.service";
+import {environment} from "../../environments/environment";
 
 @Injectable({
     providedIn: 'root'
 })
 export class DiscountService {
-    private apiUrl = 'http://localhost:8081/discount';
+    private baseUrl = environment.backendUrl;
+
+   // private apiUrl = 'http://localhost:8081/discount';
     private token =  localStorage.getItem('jwtAccessToken');
 
     constructor(private http: HttpClient) { }
@@ -17,11 +20,11 @@ export class DiscountService {
         const headers = new HttpHeaders({
             'Authorization': 'Bearer ' + this.token
         });
-        return this.http.get<Discount[]>(`${this.apiUrl}/getalldiscounts`, { headers: headers });
+        return this.http.get<Discount[]>(`${this.baseUrl}/discount/getalldiscounts`, { headers: headers });
     }
 
     getDiscountById(id: number): Observable<any> {
-        return this.http.get<any>(`${this.apiUrl}/getDiscountbyid/${id}`);
+        return this.http.get<any>(`${this.baseUrl}/discount/getDiscountbyid/${id}`);
     }
 
     addDiscount(discount: Discount): Observable<any> {
@@ -33,7 +36,7 @@ export class DiscountService {
                 'Content-Type': 'application/json'
             })
         };
-        return this.http.post<Discount>(`${this.apiUrl}/addDiscount`, {
+        return this.http.post<Discount>(`${this.baseUrl}/discount/addDiscount`, {
             createdDiscount: discount.createdDiscount,
             endDiscount: discount.endDiscount,
             discountValue: discount.discountValue,
@@ -42,11 +45,11 @@ export class DiscountService {
     }
 
     deleteDiscount(id: number): Observable<void> {
-        return this.http.delete<void>(`${this.apiUrl}/deleteDiscount/${id}`);
+        return this.http.delete<void>(`${this.baseUrl}/discount/deleteDiscount/${id}`);
     }
 
     calculateNewCost(discount: Discount): Observable<void> {
-        return this.http.put<void>(`${this.apiUrl}/calculnewcost`, {
+        return this.http.put<void>(`${this.baseUrl}/discount/calculnewcost`, {
             idDiscount: discount.idDiscount,
             createdDiscount: discount.createdDiscount,
             endDiscount: discount.endDiscount,
@@ -58,7 +61,7 @@ export class DiscountService {
         const isoDate = date.toISOString();
 
         // Appeler l'endpoint Spring avec la date en tant que paramètre de requête
-        return this.http.get<any[]>(`${this.apiUrl}/searchByDate/${isoDate}`)
+        return this.http.get<any[]>(`${this.baseUrl}/discount/searchByDate/${isoDate}`)
     }
 
     updateDiscount(id:number,discount: Discount): Observable<Discount> {

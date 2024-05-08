@@ -3,13 +3,16 @@ import { HttpClient ,HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import {Transaction_history} from "../interfaces/Transaction_history";
+import {environment} from "../../environments/environment";
 import {an} from "@fullcalendar/core/internal-common";
 
 @Injectable({
     providedIn: 'root'
 })
 export class RewardService {
-    private baseUrl = 'http://localhost:8081/reward'; // Base URL of your Spring backend
+    private baseUrl = environment.backendUrl;
+
+    // private baseUrl = 'http://localhost:8081/reward'; // Base URL of your Spring backend
     private token =  localStorage.getItem('jwtAccessToken');
     constructor(private http: HttpClient) { }
 
@@ -17,7 +20,7 @@ export class RewardService {
         const headers = new HttpHeaders({
             'Authorization': 'Bearer ' + this.token
         });
-        return this.http.get<Reward[]>(`${this.baseUrl}/getallrewards`,{ headers: headers });}
+        return this.http.get<Reward[]>(`${this.baseUrl}/reward/getallrewards`,{ headers: headers });}
 
     purchaseReward(id: number): Observable<any> {
         const headers = new HttpHeaders({
@@ -25,11 +28,11 @@ export class RewardService {
         });
 
         // Pass the headers as the third parameter to the post method
-        return this.http.post<any>(`${this.baseUrl}/buyreward/${id}`, null, { headers });
+        return this.http.post<any>(`${this.baseUrl}/reward/buyreward/${id}`, null, { headers });
     }
 
     sendSMS(rewardName: string, cost: number, NbDispo: number): Observable<any> {
-        const url = `${this.baseUrl}/sendSMS?rewardName=${rewardName}&cost=${cost}&NbDispo=${NbDispo}`;
+        const url = `${this.baseUrl}/reward/sendSMS?rewardName=${rewardName}&cost=${cost}&NbDispo=${NbDispo}`;
         const headers = new HttpHeaders({
             'Authorization': 'Bearer ' + this.token
         });
@@ -40,18 +43,18 @@ export class RewardService {
         const headers = new HttpHeaders({
             'Authorization': 'Bearer ' + this.token
         });
-        return this.http.get<any>(`${this.baseUrl}/findrewardbyid/${id}`,{ headers: headers });
+        return this.http.get<any>(`${this.baseUrl}/reward/findrewardbyid/${id}`,{ headers: headers });
     }
 
     findrewardbyname(name: String): Observable<any> {
-        return this.http.get<any>(`${this.baseUrl}/findrewardbyname/${name}`);
+        return this.http.get<any>(`${this.baseUrl}/reward/findrewardbyname/${name}`);
     }
 
     getConnectedUser(): Observable<any> {
         const headers = new HttpHeaders({
             'Authorization': 'Bearer ' + this.token
         });
-        return this.http.get<any>(`${this.baseUrl}/getconnecteduser`,{ headers: headers });
+        return this.http.get<any>(`${this.baseUrl}/reward/getconnecteduser`,{ headers: headers });
     }
 
     addReward(reward:Reward ,image:File): Observable<any> {
@@ -65,7 +68,7 @@ export class RewardService {
         const headers = new HttpHeaders({
                 'Authorization': 'Bearer ' + this.token
             });
-            return this.http.post<Reward>(`${this.baseUrl}/addreward`, formData, { headers: headers });
+            return this.http.post<Reward>(`${this.baseUrl}/reward/addreward`, formData, { headers: headers });
         }
 
 
@@ -81,12 +84,12 @@ export class RewardService {
             'Authorization': 'Bearer ' + this.token
         });
 
-        return this.http.put<Reward>(`${this.baseUrl}/updatereward/${rewardId}`, formData, { headers: headers });
+        return this.http.put<Reward>(`${this.baseUrl}/reward/updatereward/${rewardId}`, formData, { headers: headers });
     }
 
 
     deleteRewardd(id: number): Observable<void> {
-        return this.http.delete<void>(`${this.baseUrl}/deletereward/${id}`);
+        return this.http.delete<void>(`${this.baseUrl}/reward/deletereward/${id}`);
     }
 
 
@@ -97,7 +100,7 @@ export class RewardService {
         const headers = new HttpHeaders({
             'Authorization': 'Bearer ' + this.token
         });
-        return this.http.get<any>(`${this.baseUrl}/statstics`,{ headers: headers });
+        return this.http.get<any>(`${this.baseUrl}/reward/statstics`,{ headers: headers });
     }
 
     getRewardsWithDiscount(): Observable<any[]> {
@@ -105,7 +108,7 @@ export class RewardService {
             'Authorization': 'Bearer ' + this.token
         });
 
-        return this.http.get<any[]>(`${this.baseUrl}/withdiscount`,{ headers: headers });
+        return this.http.get<any[]>(`${this.baseUrl}/reward/withdiscount`,{ headers: headers });
     }
 
     getRewardsWithoutDiscount(): Observable<any[]> {
@@ -113,14 +116,15 @@ export class RewardService {
             'Authorization': 'Bearer ' + this.token
         });
 
-        return this.http.get<any[]>(`${this.baseUrl}/withnodiscount`,{ headers: headers });
+        return this.http.get<any[]>(`${this.baseUrl}/reward/withnodiscount`,{ headers: headers });
     }
 
     deleteReward(Rewardid: number): Observable<void> {
         const headers = new HttpHeaders({
             'Authorization': 'Bearer ' + this.token
         });
-        return this.http.delete<void>(`${this.baseUrl}/deletreward/${Rewardid}`, {headers: headers});
+
+        return this.http.delete<void>(`${this.baseUrl}/reward/deletreward/${Rewardid}`, {headers: headers});
 
     }
 
@@ -128,26 +132,26 @@ export class RewardService {
         const headers = new HttpHeaders({
             'Authorization': 'Bearer ' + this.token
         });
-        return this.http.get<Transaction_history[]>(`${this.baseUrl}/getalltransactions`,{ headers: headers });}
+        return this.http.get<Transaction_history[]>(`${this.baseUrl}/reward/getalltransactions`,{ headers: headers });}
 
     getrewarbyuser():Observable<any>{
         const headers = new HttpHeaders({
             'Authorization': 'Bearer ' + this.token
         });
-        return this.http.get<Reward[]>(`${this.baseUrl}/getrewarbyuser`,{ headers: headers });}
+        return this.http.get<Reward[]>(`${this.baseUrl}/reward/getrewarbyuser`,{ headers: headers });}
 
 
     getMonthlyTransactionCounts(): Observable<any> {
         const headers = new HttpHeaders({
             'Authorization': 'Bearer ' + this.token
         });
-        return this.http.get<any>(`${this.baseUrl}/monthly-count`,{ headers: headers });
+        return this.http.get<any>(`${this.baseUrl}/reward/monthly-count`,{ headers: headers });
     }
     updateRate(idreward:number,rate:number):Observable<any>{
         const headers = new HttpHeaders({
             'Authorization': 'Bearer ' + this.token
         });
-        return this.http.put<any>(`${this.baseUrl}/updateRate/${idreward}/${rate}`,{ headers: headers });}
+        return this.http.put<any>(`${this.baseUrl}/reward/updateRate/${idreward}/${rate}`,{ headers: headers });}
 
 
 

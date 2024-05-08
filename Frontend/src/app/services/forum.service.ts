@@ -1,12 +1,14 @@
 import { Injectable } from '@angular/core';
 import { HttpClient , HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import {environment} from "../../environments/environment";
 @Injectable({
   providedIn: 'root'
 })
 export class ForumService {
 
-  private baseUrl = 'http://localhost:8081/forums';
+ // private baseUrl = 'http://localhost:8081/forums';
+    private baseUrl = environment.backendUrl;
 
   private token =  localStorage.getItem('jwtAccessToken');
 
@@ -19,78 +21,78 @@ export class ForumService {
     const headers = new HttpHeaders({
       'Authorization': 'Bearer ' + this.token
     });
-    return this.http.get<Forum[]>(`${this.baseUrl}/getAllForums`, { headers: headers });
+    return this.http.get<Forum[]>(`${this.baseUrl}/forums/getAllForums`, { headers: headers });
   }
   getUser(): Observable<User> {
     const headers = new HttpHeaders({
       'Authorization': 'Bearer ' + this.token
     });
-    return this.http.get<User>(`${this.baseUrl}/getuser`, { headers: headers });
+    return this.http.get<User>(`${this.baseUrl}/forums/getuser`, { headers: headers });
   }
   createForum(forum: Forum): Observable<Forum> {
     const headers = new HttpHeaders({
       'Authorization': 'Bearer ' + this.token,
       'Content-Type': 'application/json'
     });
-    return this.http.post<Forum>(`${this.baseUrl}/addForum`, forum, { headers: headers });
+    return this.http.post<Forum>(`${this.baseUrl}/forums/addForum`, forum, { headers: headers });
   }
 
   getForumsWithQuestionsAndResponses(): Observable<Object[]> {
     const headers = new HttpHeaders({
       'Authorization': 'Bearer ' + this.token
     });
-    return this.http.get<Object[]>(`${this.baseUrl}/getForumWithQuestiondAndResponse`,{ headers: headers });
+    return this.http.get<Object[]>(`${this.baseUrl}/forums/getForumWithQuestiondAndResponse`,{ headers: headers });
   }
 
   getForumsWithBestAnswers(): Observable<Object[]> {
     const headers = new HttpHeaders({
       'Authorization': 'Bearer ' + this.token
     });
-    return this.http.get<Object[]>(`${this.baseUrl}/getForumWithBestAnswers`,{ headers: headers });
+    return this.http.get<Object[]>(`${this.baseUrl}/forums/getForumWithBestAnswers`,{ headers: headers });
   }
   updateForum(id:number,forum: Forum): Observable<Forum> {
     const headers = new HttpHeaders({
       'Authorization': 'Bearer ' + this.token,
       'Content-Type': 'application/json'
     });
-    return this.http.put(`${this.baseUrl}/${id}`, forum, { headers: headers });
+    return this.http.put(`${this.baseUrl}/forums/${id}`, forum, { headers: headers });
   }
   deleteForum(forumId: number): Observable<void> {
     const headers = new HttpHeaders({
       'Authorization': 'Bearer ' + this.token
     });
-    return this.http.delete<void>(`${this.baseUrl}/${forumId}`, { headers: headers });
+    return this.http.delete<void>(`${this.baseUrl}/forums/${forumId}`, { headers: headers });
   }
   likeForum(forumId: number): Observable<Forum> {
     const headers = new HttpHeaders({
       'Authorization': 'Bearer ' + this.token
     });
-    return this.http.put<Forum>(`${this.baseUrl}/like/${forumId}`, null, { headers: headers });
+    return this.http.put<Forum>(`${this.baseUrl}/forums/like/${forumId}`, null, { headers: headers });
   }
 
   dislikeForum(forumId: number): Observable<Forum> {
     const headers = new HttpHeaders({
       'Authorization': 'Bearer ' + this.token
     });
-    return this.http.put<Forum>(`${this.baseUrl}/dislike/${forumId}`, null, { headers: headers });
+    return this.http.put<Forum>(`${this.baseUrl}/forums/dislike/${forumId}`, null, { headers: headers });
   }
   searchForumByStatus(status: string){
     const headers = new HttpHeaders({
       'Authorization': 'Bearer ' + this.token
     });
-    return this.http.get<Forum[]>(`${this.baseUrl}/searchByStatus/${status}`, { headers: headers });} 
-  
+    return this.http.get<Forum[]>(`${this.baseUrl}/forums/searchByStatus/${status}`, { headers: headers });}
+
   getForumById(forumId: number): Observable<Forum> {
     const headers = new HttpHeaders({
       'Authorization': 'Bearer ' + this.token
     });
-    return this.http.get<Forum>(`${this.baseUrl}/${forumId}`, { headers: headers });
+    return this.http.get<Forum>(`${this.baseUrl}/forums/${forumId}`, { headers: headers });
   }
   detectLanguage(text: string): Observable<string> {
     const headers = new HttpHeaders({
       'Authorization': 'Bearer ' + this.token
     });
-    return this.http.post<string>(`${this.baseUrl}/detectLanguage`, text, { responseType: 'text' as 'json' });
+    return this.http.post<string>(`${this.baseUrl}/forums/detectLanguage`, text, { responseType: 'text' as 'json' });
   }
 }
 

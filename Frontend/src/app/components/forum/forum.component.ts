@@ -21,7 +21,6 @@ export class ForumComponent implements AfterViewInit , OnInit {
   submitted: boolean = false;
   checkLang: boolean = false;
   selectedForumId: number;
-  messageService : MessageService;
   showDropdown: boolean = false;
   statuses: any[] = [];
   isLiked: boolean = false;
@@ -30,7 +29,8 @@ export class ForumComponent implements AfterViewInit , OnInit {
   searchTerm: string = '';
   filteredForums: Forum[] = [];
 
-  constructor(private renderer: Renderer2, private forumService: ForumService, private questionsService: QuestionsService) { 
+  constructor(private renderer: Renderer2, private forumService: ForumService, private questionsService: QuestionsService,  private messageService: MessageService,
+  ) { 
  }
  ngOnInit(): void {
   this.GetUser();
@@ -217,6 +217,7 @@ async saveForum() {
     // Fetch forums and close the dialog
     this.forumDialog = false; 
     window.location.reload();
+    this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Forum Successfully added !', life: 3000 });
   } catch (error) {
     console.error('Error creating forum:', error);
   }
