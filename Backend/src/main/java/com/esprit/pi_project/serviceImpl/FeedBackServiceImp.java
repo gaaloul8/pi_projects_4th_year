@@ -11,6 +11,7 @@ import com.esprit.pi_project.services.FeedBackService;
 import edu.stanford.nlp.pipeline.StanfordCoreNLP;
 import edu.stanford.nlp.trees.Tree;
 import jakarta.annotation.Resource;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -78,15 +79,22 @@ public class FeedBackServiceImp implements FeedBackService {
 
     }
 
+
     @Override
-    public FeedBack UpdateFeedBack(FeedBack feedBack,User user) throws IOException {
-
-        FeedBack feedBack1 = new FeedBack();
-    feedBack1.setEvenement(feedBack.getEvenement());
-    feedBack1.setUser(user);
-
-        return feedbackDao.save(feedBack);
+    public FeedBack UpdateFeedBack(FeedBack feedBack, User user) {
+        Optional<FeedBack> optionalExistingFeedback = feedbackDao.findById(feedBack.getIdFeedback());
+        if (optionalExistingFeedback.isPresent()) {
+            FeedBack existingFeedback = optionalExistingFeedback.get();
+            existingFeedback.setContent(feedBack.getContent());
+            existingFeedback.setRating(feedBack.getRating());
+            existingFeedback.setUser(user);
+            return feedbackDao.save(existingFeedback);
+        } else {
+            throw new EntityNotFoundException("Feedback not found with ID: " + feedBack.getIdFeedback());
+        }
     }
+
+
 
     @Override
     public FeedBack findByidFeedback(Integer idFeedback) {

@@ -50,10 +50,8 @@ public class SecurityConfig {
 
                           //      .requestMatchers("/quiz/**","/passerQuiz/**","/questionq/**","/activity/**","/option/**").permitAll()
 
-
-
                              //   .requestMatchers("/feedback/**").hasAnyRole(User.name())
-                             //   .requestMatchers("/auth/**").hasAnyRole(Admin.name())
+                             //  .requestMatchers("/auth/**").hasAnyRole(Admin.name())
                                // .requestMatchers(HttpMethod.GET,"/auth/admin").hasAnyAuthority(ADMIN_READ.name())
                                 .anyRequest().authenticated()
                 )

@@ -36,9 +36,10 @@ export class FeedbackService {
   }
 
        
-  updateFeedback (idfeedback : number, feedback : Feedback): Observable<any> {
+  updateFeedback (idfeedback : number, feedback : Feedback): Observable<Feedback> {
     const headers = new HttpHeaders({
-      'Authorization': 'Bearer ' + this.token
+      'Authorization': 'Bearer ' + this.token,
+      'Content-Type': 'application/json'
     });
     return this.http.put(`${this.baseUrl}/feedback/${idfeedback}`,feedback,{ headers: headers });
 }

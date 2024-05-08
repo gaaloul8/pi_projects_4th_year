@@ -9,6 +9,8 @@ import { TypeEvent } from "../../interfaces/type-event";
 import { Subject, debounceTime, distinctUntilChanged, switchMap } from 'rxjs';
 import { Router } from '@angular/router';
 import { EvenementWithRating } from 'src/app/interfaces/evenement-with-rating';
+import { UserModel } from 'src/app/models/userModel';
+
 @Component({
   selector: 'app-eventfront',
   templateUrl: './eventfront.component.html',
@@ -32,6 +34,11 @@ eventTypes: SelectItem[] = Object.keys(TypeEvent).map((key) => ({
 }));
 selectedTypes: string[] = [];
 eventsWithRatings: EvenementWithRating[];
+currentPage: number = 1;
+bookedEvents: number[] = [];
+check: boolean;
+user:UserModel;
+itemsPerPage: number = 2; 
 
 constructor(private eventService : EventService,
   private reservationService: ReservationService,
@@ -43,6 +50,7 @@ constructor(private eventService : EventService,
 
 
 ngOnInit(): void {
+  this.getUser();
   this.getEventsWithRatings();
   setTimeout(() => {
     this.loadJsFiles();
@@ -50,11 +58,16 @@ ngOnInit(): void {
 }, 100);
 }
 
+getUser(){
+  this.reservationService.getUser().subscribe(user=>{this.user=user
+    console.log("userr"+this.user.id_user);
+  });
+}
 getEventsWithRatings(): void {
   this.eventService.getAllEventsWithRatings()
       .subscribe(events => this.eventsWithRatings = events);
 }
-
+/*
 bookEvent(eventId: number): void {
   const reservation: Reservation = {
     //user: { id_user: 1, role: "User" }
@@ -75,6 +88,41 @@ bookEvent(eventId: number): void {
         this.messageService.add({severity:'error', summary:'Error', detail:'Impossible de réserver. Toutes les places sont déjà réservées.'});
       }
     );
+}*/
+
+  async bookEvent(eventId: number): Promise<void> {
+  const reservation: Reservation = {
+    //user: { id_user: 1, role: "User" }
+  };
+
+ this.check= await this.reservationService.checkuser(this.user.id_user,eventId).toPromise();
+console.log(this.check);
+if(this.check){
+  this.messageService.add({severity:'error', summary:'Error', detail:'Impossible de réserver. Vous avez déja réservez.'});
+
+}else{
+  this.reservationService.addReservation(eventId, reservation)
+    .subscribe(
+      () => {
+        // La réservation a été ajoutée avec succès
+        console.log('Réservation ajoutée pour l\'événement avec l\'ID : ', eventId);
+        this.messageService.add({severity:'success', summary:'Success', detail:'Réservation effectuée avec succès!'});
+        // Ajouter l'identifiant de l'événement réservé à la liste des événements réservés par l'utilisateur
+        this.bookedEvents.push(eventId);
+        // Rediriger l'utilisateur vers la liste des réservations
+        this.router.navigate(['/main/listreservationfront']);
+      },
+      error => {
+        // Gérer les erreurs
+        console.error('Impossible de réserver. Toutes les places sont déjà réservées.', error);
+        this.messageService.add({severity:'error', summary:'Error', detail:'Impossible de réserver. Toutes les places sont déjà réservées.'});
+      }
+    );
+  }
+}
+isEventBooked(eventId: number): boolean {
+  // Vérifier si l'événement est présent dans la liste des événements réservés par l'utilisateur
+  return this.bookedEvents.includes(eventId);
 }
 
 
@@ -100,6 +148,12 @@ loadJsFiles(): void {
 navigateToEventDetails(eventId: number) {
   this.router.navigate(['/event-details', eventId]);
 }
- 
+nextPage() {
+  this.currentPage++;
+}
+
+prevPage() {
+  this.currentPage--;
+}
 }
 

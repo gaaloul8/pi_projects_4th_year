@@ -4,6 +4,7 @@ import { PhotoService } from 'src/app/demo/service/photo.service';
 import { EventService } from 'src/app/services/event.service';
 import { Event } from "../../interfaces/event";
 import { Feedback } from '../../interfaces/feedback';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-page-event',
@@ -16,6 +17,9 @@ export class PageEventComponent implements OnInit  {
   feedbacks: Feedback[] = [];
   events!: Event[];
   images!: any[];
+  searchValue: string = '';
+  mapUrl: SafeResourceUrl = '';
+
   
 
   galleriaResponsiveOptions: any[] = [
@@ -55,7 +59,7 @@ carouselResponsiveOptions: any[] = [
     }
 ];
 
-  constructor(private route: ActivatedRoute, private eventService: EventService, private photoService: PhotoService) { }
+  constructor(private route: ActivatedRoute, private eventService: EventService, private photoService: PhotoService,private sanitizer: DomSanitizer) { }
 
   ngOnInit(): void {
     this.route.paramMap.subscribe(params => {
@@ -82,6 +86,11 @@ carouselResponsiveOptions: any[] = [
 
   getStarsArray(rating: number): any[] {
     return Array(rating).fill(0);
+  }
+  updateMapUrl() {
+    const encodedValue = encodeURIComponent(this.searchValue.trim());
+    const url = `https://maps.google.com/maps?q=${encodedValue}&output=embed`;
+    this.mapUrl = this.sanitizer.bypassSecurityTrustResourceUrl(url);
   }
 
 

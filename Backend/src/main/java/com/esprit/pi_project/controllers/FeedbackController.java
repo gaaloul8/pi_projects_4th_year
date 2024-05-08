@@ -25,29 +25,54 @@ public class FeedbackController {
     @Autowired
     private UserService userService;
 
+    @GetMapping("/getuser")
+    public Optional<User> getconnecteduser(HttpServletRequest request){
+        return this.userService.getUserFromJwt(request);
+    }
 
-
-
-    @PutMapping("/{idFeedback}")
-    public ResponseEntity<FeedBack> updateFeedBack(@PathVariable Integer idFeedback, @RequestBody FeedBack feedBack
-                                                ,HttpServletRequest request
-    ) throws IOException {
+    @PostMapping("/addFeedback/{idEvent}")
+    public ResponseEntity<FeedBack> addFeedback(@PathVariable Integer idEvent,
+                                                @RequestBody FeedBack feedBack,
+                                                HttpServletRequest request) throws IOException{
         Optional<User> optionalUser = userService.getUserFromJwt(request);
-        User user = optionalUser.get();
+        User user= optionalUser.get();
+        try {
+            feedBackService.addFeedBack(idEvent,feedBack,user);
+            feedBack = feedBackService.analyzeSentimentAndSetStatus(feedBack); // Analyser le sentiment et définir le statut
+            // Sauvegarder à nouveau le feedback avec le statut mis à jour
+            feedBack = feedBackService.UpdateFeedBack(feedBack,user);
+            return ResponseEntity.ok(feedBack);
+        } catch (IllegalStateException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+    @PutMapping("/{idFeedback}")
+    public ResponseEntity<FeedBack> updateFeedBack(@PathVariable Integer idFeedback,
+                                                   @RequestBody FeedBack feedBack,
+                                                   HttpServletRequest request) throws IOException {
+        Optional<User> optionalUser = userService.getUserFromJwt(request);
+        User user= optionalUser.get();
         FeedBack addedFeedback = feedBackService.findByidFeedback(idFeedback);
+        System.out.println(feedBack.getRating());
         if (addedFeedback != null) {
-            if (feedBack.getStatus() != null) {
-                addedFeedback.setStatus(feedBack.getStatus());
-            }
+
             if (feedBack.getContent() != null) {
                 addedFeedback.setContent(feedBack.getContent());
             }
-            FeedBack updateFeed = feedBackService.UpdateFeedBack(addedFeedback,user);
-            return new ResponseEntity<>(updateFeed, HttpStatus.OK);
+
+            if (feedBack.getRating() != 0) {
+
+                addedFeedback.setRating(feedBack.getRating());
+            }
+            if (feedBack.getUser() != null) {
+                addedFeedback.setUser(user);
+            }
+            FeedBack updatedFeed = feedBackService.UpdateFeedBack(addedFeedback,user);
+            return new ResponseEntity<>(updatedFeed, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        }
+    }
 
 
 
@@ -88,22 +113,7 @@ public class FeedbackController {
     }
 
 
-    @PostMapping("/addFeedback/{idEvent}")
-    public ResponseEntity<FeedBack> addFeedback(@PathVariable Integer idEvent,
-                                                @RequestBody FeedBack feedBack,
-                                                HttpServletRequest request) throws IOException{
-        Optional<User> optionalUser = userService.getUserFromJwt(request);
-        User user= optionalUser.get();
-        try {
-            feedBackService.addFeedBack(idEvent,feedBack,user);
-            feedBack = feedBackService.analyzeSentimentAndSetStatus(feedBack); // Analyser le sentiment et définir le statut
-            // Sauvegarder à nouveau le feedback avec le statut mis à jour
-            feedBack = feedBackService.UpdateFeedBack(feedBack,user);
-            return ResponseEntity.ok(feedBack);
-        } catch (IllegalStateException e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-    }
+
 
     @GetMapping("/feedback/statistics")
     public ResponseEntity<Map<String, Long>> getFeedbackStatistics() {

@@ -4,13 +4,16 @@ import com.esprit.pi_project.dao.EventDao;
 import com.esprit.pi_project.dao.ReservationDao;
 import com.esprit.pi_project.entities.Evenement;
 import com.esprit.pi_project.entities.Reservation;
+import com.esprit.pi_project.entities.StatusEvent;
 import com.esprit.pi_project.entities.User;
 import com.esprit.pi_project.services.EventService;
 import com.esprit.pi_project.services.ReservationService;
 import jakarta.annotation.Resource;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -60,7 +63,7 @@ public class ReservationServiceImp implements ReservationService {
         }
     }
 
-    /*@Scheduled(fixedRate = 60000)
+    @Scheduled(fixedRate = 60000)
     public void updateEventStatus() {
         List<Evenement> events = eventDao.findAll();
         Date currentDate = new Date();
@@ -78,7 +81,7 @@ public class ReservationServiceImp implements ReservationService {
 
         System.out.println("Vérification des statuts des événements terminée.");
     }
-    */
+
 
     public List<Reservation> findAll() {
         return reservationDao.findAll();}

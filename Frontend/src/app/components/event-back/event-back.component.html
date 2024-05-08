@@ -70,10 +70,9 @@
                     <td> <img [src]="event.image ? 'data:image/png;base64,' + event.image : ''" alt="Event Image" width="150" class="mt-2"></td>
                     <td>
                         <div class="flex">
-                            <td>
-                                <button pButton pRipple icon="pi pi-qrcode" class="p-button-rounded p-button-info mr-2" ></button>
-                                <!-- Autres boutons -->
-                            </td>
+                          
+                              
+                              
                             <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" (click)="editEvent(event,event.idEvent)"></button>
                             <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning" (click)="confirmDelete(event.idEvent)"></button>                        </div>
                     </td>

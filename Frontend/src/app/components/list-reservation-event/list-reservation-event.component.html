@@ -5,7 +5,6 @@
                 <ng-template pTemplate="left">
                     <div class="flex mb-4">
                         <input type="text" [(ngModel)]="filterText" placeholder="Search by User Identifiant" class="form-control" />
-                        <button class="btn btn-primary ml-2" >Search</button>
                     </div>
                 </ng-template>
             </p-toolbar>
@@ -25,8 +24,7 @@
                         <th>User First Name</th>
                         <th>User Last Name</th>
                         <th>Identifiant</th>
-                        <th>iduser</th>
-                        <th>Actions</th> <!-- Add this header for the actions column -->
+                        <th>Actions</th> 
                     </tr>
                 </ng-template>
                 <ng-template pTemplate="body" let-reservation>
@@ -39,7 +37,6 @@
                         <td>{{ reservation.user.lastName }}</td>
                         <td>{{ reservation.user.firstName }}</td>
                         <td>{{ reservation.user.identifiant }}</td>
-                        <td>{{ reservation.user.id_user }}</td>
                         <td>
                             <div class="flex">
                                 <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning" (click)="confirmDelete(reservation.idR)"></button>

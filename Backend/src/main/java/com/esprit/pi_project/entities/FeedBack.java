@@ -2,6 +2,7 @@ package com.esprit.pi_project.entities;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -25,10 +26,12 @@ public class FeedBack implements Serializable {
     private int rating;
     //private String sentiment;
     @ManyToOne
+    @JsonIgnoreProperties(value = {"evenement"},allowSetters = true)
     @JoinColumn(name = "idEvent")
     Evenement evenement;
 
     @ManyToOne
+    @JsonIgnoreProperties(value = {"user"},allowSetters = true)
     @JoinColumn(name = "id_user")
-    private User User;
+    private User user;
 }

@@ -1,4 +1,4 @@
-import { HttpErrorResponse } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import {EventService } from '../../services/event.service';
 import { MessageService } from 'primeng/api';
@@ -29,8 +29,9 @@ export class EventBackComponent implements OnInit {
   selectedImage: any;
   selectedFile: File ;
   imagesToUpload: File[] = [];
+  qrCodeImage: any;
 
-  constructor(private eventService : EventService,private messageService: MessageService,private datePipe: DatePipe,private formBuilder: FormBuilder){}
+  constructor(private http: HttpClient,private eventService : EventService,private messageService: MessageService,private datePipe: DatePipe,private formBuilder: FormBuilder){}
 
   ngOnInit(): void {
     this.getEvent();
@@ -46,6 +47,7 @@ export class EventBackComponent implements OnInit {
 
      
     });
+
 }
 
 onFileChange(event) {
@@ -166,7 +168,6 @@ onImageSelected(event: any) {
         );
     }
 
+  
 
-    
 }
-

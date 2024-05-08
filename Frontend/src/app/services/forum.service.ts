@@ -47,6 +47,7 @@ export class ForumService {
     });
     return this.http.put(`${this.baseUrl}/${id}`, forum, { headers: headers });
   }
+  
   deleteForum(forumId: number): Observable<void> {
     const headers = new HttpHeaders({
       'Authorization': 'Bearer ' + this.token

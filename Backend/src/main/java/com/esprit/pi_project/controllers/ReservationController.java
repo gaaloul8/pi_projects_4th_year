@@ -1,5 +1,6 @@
 package com.esprit.pi_project.controllers;
 
+import com.esprit.pi_project.dao.ReservationDao;
 import com.esprit.pi_project.entities.Reservation;
 import com.esprit.pi_project.entities.User;
 import com.esprit.pi_project.services.ReservationService;
@@ -22,7 +23,15 @@ public class ReservationController {
     @Autowired
     private ReservationService reservationService;
     @Autowired
+    private ReservationDao reservationDao;
+    @Autowired
     private UserService userService;
+
+
+    @GetMapping("/getuser")
+    public Optional<User> getconnecteduser(HttpServletRequest request){
+        return this.userService.getUserFromJwt(request);
+    }
 
     @PostMapping("/addReservation/{idEvent}")
     public ResponseEntity<Reservation> addReservation(@PathVariable Integer idEvent,
@@ -48,6 +57,10 @@ public class ReservationController {
     @GetMapping("/getReservationByIdEvent/{idEvent}")
     public Reservation getReservationByIdEvent(@PathVariable Integer idEvent){
         return reservationService.getReservationByEventId(idEvent);
+    }
+    @GetMapping("/getuserandevent/{idEvent}/{idUser}")
+    public Boolean getReservationByIdEvent(@PathVariable Integer idEvent,@PathVariable Integer idUser){
+        return reservationDao.findIfUserExistsInReservation(idUser,idEvent);
     }
 
 

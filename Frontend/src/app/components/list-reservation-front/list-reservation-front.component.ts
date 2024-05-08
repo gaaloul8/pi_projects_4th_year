@@ -2,10 +2,12 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { Feedback } from 'src/app/interfaces/feedback';
+import { Event } from 'src/app/interfaces/event';
 import { Reservation } from 'src/app/interfaces/reservation';
 import { EventService } from 'src/app/services/event.service';
 import { FeedbackService } from 'src/app/services/feedback.service';
 import { ReservationService } from 'src/app/services/reservation.service';
+import { UserModel } from 'src/app/models/userModel';
 
 @Component({
   selector: 'app-list-reservation-front',
@@ -13,7 +15,7 @@ import { ReservationService } from 'src/app/services/reservation.service';
   styleUrl: './list-reservation-front.component.scss'
 })
 export class ListReservationFrontComponent {
-  events: Event[] = [];
+  event: Event[] = [];
   reservations: Reservation[] = [];
   reservation: Reservation;
   deleteRDialog: boolean = false;
@@ -24,6 +26,11 @@ export class ListReservationFrontComponent {
   rating: number = 0;
   userIdentifiant: string;
   uniqueEventIds: number[] = [];
+  searchTerm: string = '';
+  sortBy: string = 'date';
+  check: boolean;
+  user:UserModel;
+  bookedEvents: number[] = [];
 
   constructor(private reservationService: ReservationService,
     private messageService: MessageService,
@@ -34,7 +41,7 @@ export class ListReservationFrontComponent {
   ngOnInit(): void {
     this.getReservationsForCurrentUser();
 
-  }
+  } 
   getReservationsForCurrentUser() {
    // const userId = 1; // Remplacez ceci par l'ID de l'utilisateur connecté
     this.reservationService.getAllReservationsForUser()
@@ -48,24 +55,7 @@ export class ListReservationFrontComponent {
         }
       );
   }
-
-/*
-
-  showDialog(reservation: Reservation) {
-    this.reservation = reservation; // Stocker la réservation sélectionnée
-    const eventDate = new Date(reservation.evenementR.datetime);
-    const currentDate = new Date();
-    if (eventDate < currentDate ) {
-      // Si la date de l'événement est passée, ne pas afficher le dialogue
-      this.messageService.add({severity:'error', summary:'Erreur', detail:'La date de l\'événement est passée. Vous ne pouvez pas ajouter de feedback.'});
-    }
-    
-    else {
-      this.displayDialog = true; // Afficher le dialogue
-    }
-  }
-  */
-
+ 
   showDialog(reservation: Reservation) {
     this.reservation = reservation; // Stocker la réservation sélectionnée
     const eventDate = new Date(reservation.evenementR.datetime);
@@ -80,16 +70,40 @@ export class ListReservationFrontComponent {
       this.messageService.add({severity:'error', summary:'Erreur', detail:'Vous ne pouvez ajouter de feedback que pour un événement qui se déroule aujourd\'hui.'});
     }
   }
-  
-  
 
-  
 
-addFeedback(eventId: number) {
+extractUniqueEventIds() {
+  const uniqueIdsSet = new Set<number>();
+  this.reservations.forEach(reservation => uniqueIdsSet.add(reservation.evenementR.idEvent));
+  this.uniqueEventIds = Array.from(uniqueIdsSet);
+}
+
+filterReservations() {
+  if (!this.searchTerm) {
+    this.getReservationsForCurrentUser();
+    return;
+  }
+
+  this.reservations = this.reservations.filter(reservation =>
+    reservation.evenementR.eventName.toLowerCase().includes(this.searchTerm.toLowerCase())
+  );
+}
+
+
+changeSortBy(sortBy: string) {
+  this.sortBy = sortBy;
+  this.getReservationsForCurrentUser(); // Récupérer les réservations en fonction du nouveau critère de tri
+}
+
+async addFeedback(eventId: number) {
   const feedback: Feedback = {
     content: this.feedbackContent,
     rating:this.rating
   };
+  this.check= await this.reservationService.checkuser(this.user.id_user,eventId).toPromise();
+  console.log(this.check);
+  if(this.check){
+    this.messageService.add({severity:'error', summary:'Error', detail:'Impossible de réserver. Vous avez déja réservez.'});
 
   this.feedbackService.addFeedback(eventId, feedback)
     .subscribe(
@@ -106,9 +120,13 @@ addFeedback(eventId: number) {
       }
     );
 }
-extractUniqueEventIds() {
-  const uniqueIdsSet = new Set<number>();
-  this.reservations.forEach(reservation => uniqueIdsSet.add(reservation.evenementR.idEvent));
-  this.uniqueEventIds = Array.from(uniqueIdsSet);
+
+
 }
+isEventBooked(eventId: number): boolean {
+  // Vérifier si l'événement est présent dans la liste des événements réservés par l'utilisateur
+  return this.bookedEvents.includes(eventId);
+}
+
+
 }

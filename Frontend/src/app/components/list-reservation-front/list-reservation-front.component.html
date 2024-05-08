@@ -13,6 +13,13 @@
   </div>
   <div class="row">
     <div class="col-12">
+      <div class="row mb-4">
+        <div>
+          <input type="text" [(ngModel)]="searchTerm" (input)="filterReservations()" placeholder="Search reservations" class="form-control"  style="width: 200px; height: 30px; font-size: 14px;">
+
+        </div>
+      </div>
+      
       <div *ngIf="reservations.length > 0; else noReservations">
         <p-carousel [value]="reservations" [numVisible]="3" [numScroll]="1">
           <ng-template let-reservation pTemplate="item">
@@ -34,7 +41,7 @@
                     </div>
                     <p-footer>
                       <button pButton pRipple icon="pi pi-times" class="p-button-text" label="Cancel" (click)="displayDialog = false"></button>
-                      <button pButton pRipple icon="pi pi-comment" class="p-button-success" label="Send" [disabled]="!feedbackContent || !rating" (click)="addFeedback(reservation.evenementR.idEvent)">
+                      <button pButton pRipple icon="pi pi-comment" class="p-button-success" label="Send" [disabled]="!feedbackContent || !rating || bookedEvents.includes(reservation.evenementR.idEvent)" (click)="addFeedback(reservation.evenementR.idEvent)">
                       </button>
                     </p-footer>
                   </p-dialog>
@@ -42,6 +49,7 @@
                 </div>
               </div>
             </div>
+           
           </ng-template>
         </p-carousel>
       </div>

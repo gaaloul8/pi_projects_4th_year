@@ -8,10 +8,8 @@
 <div id="groups" class="container">
     <div class="groups-grid">
         <div class="columns is-multiline">
-       <div class="column is-3" *ngFor="let event of eventsWithRatings">
+       <div class="column is-3" *ngFor="let event of eventsWithRatings  | slice: (currentPage - 1) * itemsPerPage : currentPage * itemsPerPage">
                 <article class="group-box" >
-
-                   
                     <div class="box-info-hover"></div>  
                     <div class="box-img has-background-image" [style.background-image]="'url(' + (event.image ? 'data:image/png;base64,' + event.image : 'https://via.placeholder.com/940x650') + ')'" >
                         <img [src]="event.image ? 'data:image/png;base64,' + event.image : ''" alt="Event Image" width="150" class="mt-2">
@@ -21,21 +19,38 @@
                     </a>
                     
                     <div class="box-info">
-                        <span class="box-category">{{event.eventName}}</span>
-                        <span class="box-title">{{event.eventType }}</span>
-                        <span class="box-title"> {{ event.datetime | date }}</span>
-                       
-                        <p-rating [ngModel]="event.averageRating" [readonly]="true" [cancel]="false"></p-rating>
+                        <div>
+                            <span class="box-category">{{event.eventName}}</span>
+                        </div>
+                        <div>
+                            <span class="box-title">{{event.eventType }}</span>
+                        </div>
+                        <div>
+                            <span class="box-title">{{ event.status }}</span>
+                        </div>
+                        <div>
+                            <span class="box-title">{{ event.datetime | date }}</span>
+                        </div>
+                        <div>
+                            <p-rating [ngModel]="event.averageRating" [readonly]="true" [cancel]="false"></p-rating>
+                        </div>
+                        <!-- <div>
+                            <span class="box-category" style="text-transform: lowercase; font-family: Arial, sans-serif;">{{event.description}}</span>
+                        </div> -->
+                        <div class="box-members">
+                            <!--<button [disabled]="event.status == 'Finished'" pButton pRipple label="Book" (click)="bookEvent(event.idEvent)" [routerLink]="['/main/listreservationfront']"></button>
+                            -->
+                            <button [disabled]="bookedEvents.includes(event.idEvent) || event.status === 'Finished'" pButton pRipple label="Book" (click)="bookEvent(event.idEvent)"></button>
 
-                   <!-- <span class="box-category" style="text-transform: lowercase; font-family: Arial, sans-serif;">{{event.description}}</span>-->    
-                     <span class="box-members">
-                        <button [disabled]="event.status == 'Finished'" pButton pRipple label="Book" (click)="bookEvent(event.idEvent)" [routerLink]="['/main/listreservationfront']"></button>
-                     </span>
+                        </div>
+
                     </div>
+                    
                 
                 </article>
             </div>
         </div>
+
 
 
 

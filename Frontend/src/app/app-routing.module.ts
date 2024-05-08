@@ -60,6 +60,7 @@ import { PostFrontComponent } from './components/post-front/post-front.component
 import { PostStatComponent } from './components/post-stat/post-stat.component';
 import { ClubStatComponent } from './components/club-stat/club-stat.component';
 import { FrontClubComponent } from './components/front-club/front-club.component';
+import { CalenderComponent } from './components/calender/calender.component';
 
 
 
@@ -96,6 +97,7 @@ import { FrontClubComponent } from './components/front-club/front-club.component
                     {path:'listReservationEvent',component : ListReservationEventComponent},
                     {path: 'staticEventByFeedback' , component:ChartEventComponent},
                     {path: 'listFeedBackClubManager' , component:ListfeedbackClubManagerComponent},
+                    {path: 'calender' , component:CalenderComponent},
                     {path:'club',component:ClubsComponent},
                     {path:'post',component:PostComponent},
                     {path:'users',component:UserBackComponent},

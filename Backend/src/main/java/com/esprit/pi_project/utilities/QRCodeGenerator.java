@@ -13,7 +13,7 @@ import java.nio.file.Path;
 public class QRCodeGenerator {
 
     public static void generateQRCode(Evenement evenement) throws WriterException, IOException {
-        String qrCodePath = "C:\\Users\\Admin\\Desktop\\newqrcode\\";
+        String qrCodePath = "src\\main\\resources\\newqrcode\\";
         String qrCodeName = qrCodePath + evenement.getEventName() + evenement.getIdEvent() + "-QRCODE.png";
 
         // Modify this line to include the link to the form
@@ -28,11 +28,11 @@ public class QRCodeGenerator {
 
     private static String generateQRCodeContent(Evenement evenement, String formLink) {
         // Customize the QR code content according to your needs
-        return "ID: " + evenement.getIdEvent() + "\n" +
+        return
                 "Event Name: " + evenement.getEventName() + "\n" +
                 "Event Type: " + evenement.getEventType() + "\n" +
-                "Event description: " + evenement.getDescription() + "\n" +
-                "Token value: " + evenement.getTokenvalue() + "\n" +
-                "Form Link: " + formLink;
+                "Event description: " + evenement.getDescription() + "\n" ;
+
+
     }
 }

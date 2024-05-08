@@ -49,7 +49,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { EventBackComponent } from '../app/components/event-back/event-back.component';
 import { EventService } from './services/event.service';
 import { MessageService } from 'primeng/api';
-import { CalendarModule } from 'primeng/calendar';
+
 import { DataViewModule } from 'primeng/dataview';
 import { EventfrontComponent } from './components/eventfront/eventfront.component';
 import { CarouselModule } from 'primeng/carousel';
@@ -71,23 +71,30 @@ import { PageEventComponent } from './components/page-event/page-event.component
 import { ListReservationFrontComponent } from './components/list-reservation-front/list-reservation-front.component';
 
 import { PostFrontComponent } from './components/post-front/post-front.component';
+import { PaginatorModule } from 'primeng/paginator';
+import { CalenderComponent } from './components/calender/calender.component';
 
+import { NgxFullCalendarModule } from 'ngx-fullcalendar';
 
+import { CalendarModule } from 'primeng/calendar';
 
+import { MatPaginatorModule } from '@angular/material/paginator';
 @NgModule({
     declarations: [AppComponent, FeedbackComponent,ChartEventComponent,NotfoundComponent , ListfeedbackClubManagerComponent,ListReservationEventComponent,ForumComponent,ForumDetailComponent ,
 
     LandingHomeComponent ,SidebarComponent, HomeComponent ,EventBackComponent , EventfrontComponent,PostFrontComponent,QuestionDetailComponent,
-    ClubsComponent,PostComponent,PageEventComponent,ListReservationFrontComponent],
+    ClubsComponent,PostComponent,PageEventComponent,ListReservationFrontComponent,  CalenderComponent],
 
     imports: [AppRoutingModule,
+      
+       
          AppLayoutModule,
          ReactiveFormsModule, 
          FormsModule,
           BrowserModule,
           ToolbarModule,
-
-          ChartModule,
+          PaginatorModule,
+           ChartModule,
           MultiSelectModule,
           FilterPipe,
           StarRatingModule,
@@ -120,6 +127,7 @@ import { PostFrontComponent } from './components/post-front/post-front.component
         HttpClientModule,
         CommonModule,
         BrowserModule,
+        MatPaginatorModule,
         CalendarModule,
         ReactiveFormsModule,
         DataViewModule,

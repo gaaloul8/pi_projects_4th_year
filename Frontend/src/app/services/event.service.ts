@@ -5,6 +5,7 @@ import { Event } from '../interfaces/event';
 import { Image } from 'primeng/image';
 import { EvenementWithRating } from '../interfaces/evenement-with-rating';
 import { Feedback } from '../interfaces/feedback';
+import { map } from 'rxjs/operators';
 
 
 @Injectable({
@@ -14,6 +15,11 @@ export class EventService {
  private baseUrl = 'http://localhost:8081'; 
  private token =  localStorage.getItem('jwtAccessToken');
  constructor(private http: HttpClient) { }
+
+ getEvents() {
+  return this.http.get<any[]>('showcase/resources/data/calendarevents.json')
+    .toPromise();
+}
 
   public getAllEvent(): Observable<Event[]> {
     const headers = new HttpHeaders({
@@ -148,7 +154,6 @@ getFeedbackByIdEvent(id: number): Observable<Feedback[]> {
   });
   return this.http.get<Feedback[]>(`${this.baseUrl}/feedback/events/${id}/feedbacks`,{ headers: headers });
 }
-
 
 
   }

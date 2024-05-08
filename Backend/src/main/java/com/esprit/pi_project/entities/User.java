@@ -30,6 +30,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 @Entity
 @Table(name="user")
 
+
 public class User implements UserDetails, Serializable {
 
     @Id
@@ -101,7 +102,7 @@ public class User implements UserDetails, Serializable {
     @OneToOne(cascade = CascadeType.ALL)
     private Club club;
 
-    @OneToMany(cascade = CascadeType.ALL,mappedBy = "User")
+    @OneToMany(cascade = CascadeType.ALL,mappedBy = "user")
     @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class , property = "idFeedback")
     private List<FeedBack> feedBacks;
 
