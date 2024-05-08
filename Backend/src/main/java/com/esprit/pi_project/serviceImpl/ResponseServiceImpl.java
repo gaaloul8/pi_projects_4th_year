@@ -118,7 +118,7 @@ public class ResponseServiceImpl implements ResponseService {
                 documentFrequency++;
             }
         }
-        return Math.log((double) sentences.length / (documentFrequency + 1)); // Add 1 to avoid division by zero
+        return Math.log((double) sentences.length / (documentFrequency + 1));
     }
 
 }

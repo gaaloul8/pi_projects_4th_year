@@ -121,7 +121,7 @@
                                     <textarea id ="publishh" class="textarea" placeholder="type your question" [(ngModel)]="content"></textarea>
                                 </div>
                                 <div class="compose-controls">
-                                    <img class="avatar" [src]="'data:image/png;base64,' + forum.forumOwner.profilePicture" data-user-popover="0" alt="" />
+                                    <img class="avatar" [src]="'data:image/png;base64,' + user.profilePicture" data-user-popover="0" alt="" />
                                     <!-- <img class="avatar" src="https://via.placeholder.com/150x150" data-demo-src="assets/img/avatars/jenna.png" data-user-popover="0" alt="" /> -->
                                     <div class="compose-actions">
                                         <a class="action">
@@ -211,6 +211,7 @@
 
                 <!--Story post sidebar-->
                 <div class="story-post-sidebar">
+                    <br>
                     <div class="header">
                         <h2>You might like</h2>
                     </div>
@@ -220,6 +221,7 @@
                             <ng-container *ngIf="forum.forumId !== currentForumId">
                                 <a class="related-post" [routerLink]="['/main/forumdetail', forum.forumId]">
                                     <img class="post-image" src="https://via.placeholder.com/250x250" data-demo-src="assets/forum1.jpg" alt="" />
+                                    <br>
                                     <div class="meta">
                                         <h3>{{forum.topic}}</h3>
                                         <div class="user-line">

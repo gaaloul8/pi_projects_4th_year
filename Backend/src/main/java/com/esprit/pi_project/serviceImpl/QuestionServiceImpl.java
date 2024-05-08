@@ -36,6 +36,7 @@ public class QuestionServiceImpl implements QuestionService {
         String formattedDate = dateFormat.format(currentDateTime);
         Date parsedDate = dateFormat.parse(formattedDate);
         question.setCreatedAt(parsedDate);
+        question.setDownvotes(0);
         return questionDao.save(question);
     }
 
@@ -139,7 +140,7 @@ public class QuestionServiceImpl implements QuestionService {
             String word = token.get(CoreAnnotations.TextAnnotation.class);
             String pos = token.get(CoreAnnotations.PartOfSpeechAnnotation.class);
 
-            // Filter out words that are too short or not nouns
+            // Not Nouns
             if (word.length() > 2 && pos.startsWith("NN")) {
                 wordFrequency.put(word.toLowerCase(), wordFrequency.getOrDefault(word.toLowerCase(), 0) + 1);
             }

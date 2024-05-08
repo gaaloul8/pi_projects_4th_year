@@ -117,7 +117,7 @@ confirmDelete(forumId: number){
 editForum(forum: Forum) {
   this.showDropdown = true;
   this.forum = { ...forum };
-  console.log(forum);
+  console.log(forum.status);
   this.forumDialog = true;
   this.statuses = [
     { label: 'OPEN', value: false },
@@ -183,18 +183,28 @@ onOptionClick(event: Event) {
 //   this.ngOnInit();
 // }
 
+  async updateForum(){
+  const newForum = await this.forumService.createForum(this.forum).toPromise();
+  console.log(' forum updated:', newForum);
 
+  // Load necessary scripts
+  // Fetch forums and close the dialog
+  this.forumDialog = false; 
+  window.location.reload();
+  this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Forum Successfully updated !', life: 3000 });
+}
 async saveForum() {
   this.submitted = true;
 
   console.log("topic : " + this.forum.topic + " content : " + this.forum.content);
 
   // this.forum.forumOwner = { id_user: 3, role: "ClubManager" }; 
-  if(this.showDropdown = false){
+ // if(this.showDropdown = false){
   this.forum.createdAt = new Date(); 
   this.forum.closed = false;
   this.forum.likes = 0;
-}
+  this.forum.status = ForumStatus.PENDING;
+//}
   this.forumService.detectLanguage(this.forum.content)
     .subscribe(
       async (language: string) => {
@@ -205,10 +215,10 @@ async saveForum() {
         }else{
           this.checkLang = false;
           try {
-            this.forum.createdAt = new Date(); 
-  this.forum.closed = false;
-  this.forum.likes = 0;
-  this.forum.status = ForumStatus.PENDING;
+  //           this.forum.createdAt = new Date(); 
+  // this.forum.closed = false;
+  // this.forum.likes = 0;
+  // this.forum.status = ForumStatus.PENDING;
    
     const newForum = await this.forumService.createForum(this.forum).toPromise();
     console.log('New forum created:', newForum);

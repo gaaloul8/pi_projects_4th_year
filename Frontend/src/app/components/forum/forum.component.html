@@ -126,7 +126,8 @@
 
                   <ng-template pTemplate="footer">
                       <button pButton pRipple label="Cancel" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
-                      <button pButton pRipple label="Save" icon="pi pi-check" class="p-button-text" (click)="saveForum()"></button>
+                      <button *ngIf="showDropdown == false" pButton pRipple label="Save" icon="pi pi-check" class="p-button-text" (click)="saveForum()"></button>
+                      <button *ngIf="showDropdown == true" pButton pRipple label="update" icon="pi pi-check" class="p-button-text" (click)="updateForum()"></button>
                   </ng-template>
               </p-dialog>
               <p-dialog [(visible)]="deleteForumDialog" header="Confirm" [modal]="true" [style]="{width:'450px'}">

@@ -109,6 +109,7 @@ String pictureUrl = "https://www.drhakandoganay.com/wp-content/uploads/2020/06/h
     public ResponseEntity<Forum> updateForum(@PathVariable Integer forumId, @RequestBody Forum forumDetails) {
         Forum forum = forumService.getForumById(forumId);
         if (forum != null) {
+            System.out.println(forumDetails.getStatus());
             if(forumDetails.getTopic() != null) {
                 forum.setTopic(forumDetails.getTopic());
             }

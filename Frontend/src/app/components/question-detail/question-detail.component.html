@@ -12,7 +12,7 @@
             <div class="inner">
                 <div class="container">
                     <div class="question-summary">
-                        <img src="https://via.placeholder.com/150x150" data-demo-src="assets/img/avatars/dan.jpg" data-user-popover="1" alt="" />
+                        <img [src]="'data:image/png;base64,' + question?.author.profilePicture" data-user-popover="1" alt="" />
                         <div class="meta">
                             <h4> {{question?.title}}</h4>
                             <span>{{question?.author.firstName}} {{question?.author.lastName}} | {{calculateTimeAgo(question?.createdAt)}}</span>
