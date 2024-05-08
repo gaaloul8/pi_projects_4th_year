@@ -2,6 +2,7 @@ import { Observable } from "rxjs";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Injectable } from '@angular/core';
 import {Discount} from "../interfaces/discount";
+import {Forum} from "./forum.service";
 import {environment} from "../../environments/environment";
 
 @Injectable({
@@ -63,6 +64,12 @@ export class DiscountService {
         return this.http.get<any[]>(`${this.baseUrl}/discount/searchByDate/${isoDate}`)
     }
 
+    updateDiscount(id:number,discount: Discount): Observable<Discount> {
+        const headers = new HttpHeaders({
+            'Authorization': 'Bearer ' + this.token
+        });
+        return this.http.put<Discount>(`${this.apiUrl}/update/${id}`, discount, { headers: headers });
+    }
 
 }
 
