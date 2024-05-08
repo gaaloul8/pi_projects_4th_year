@@ -50,6 +50,7 @@ export class DiscountsComponent implements OnInit {
     rewards: Reward[] = [];
     selectedReward: Reward | null = null;
     selectedRewardName: string;
+    showDropdown: boolean = false;
 
     constructor(private discountService: DiscountService, private fb: FormBuilder,private rewardService: RewardService) {
     }
@@ -177,5 +178,20 @@ export class DiscountsComponent implements OnInit {
                 console.error('Error occurred while calculating new cost:', error);
             }
         );}
+
+        editDiscount(discount: any) {
+            this.showDropdown = true;
+            this.discount = { ...discount };
+            console.log(discount);
+            this.discountDialog = true;
+        }
+
+        async updateDiscount(discount:Discount){
+
+            const newDiscount = await this.discountService.updateDiscount(discount.idDiscount,discount).toPromise();
+            this.discountDialog = false;
+            window.location.reload();
+            console.log(discount.createdDiscount);
+        }
 }
 

@@ -76,16 +76,7 @@ export class TransactionstatComponent implements OnInit {
     }
 
 
-    getMonthName(month: number): string {
-        // Define month names in the desired language
-        const monthNames = [
-            'January', 'February', 'March', 'April', 'May', 'June',
-            'July', 'August', 'September', 'October', 'November', 'December'
-        ];
 
-        // Adjust month number (e.g., 1 for January) to match array index
-        return monthNames[month - 1];
-    }
     renderChart(): void {
         const canvas = <HTMLCanvasElement>document.getElementById('transactionChart');
         const ctx = canvas.getContext('2d');
@@ -105,4 +96,17 @@ export class TransactionstatComponent implements OnInit {
             options: this.barChartOptions
         });
     }
+
+    /*  getMonthName(month: number): string {
+        // Define month names in the desired language
+        const monthNames = [
+            'January', 'February', 'March', 'April', 'May', 'June',
+            'July', 'August', 'September', 'October', 'November', 'December'
+        ];
+
+        // Adjust month number (e.g., 1 for January) to match array index
+        return monthNames[month - 1];
+    }
+
+   */
 }

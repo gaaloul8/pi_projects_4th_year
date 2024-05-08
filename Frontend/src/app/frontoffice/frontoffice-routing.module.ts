@@ -38,14 +38,11 @@ const routes: Routes = [
 { path: 'home',component:HomeComponent},
 { path: 'forumdetail/:id', component: ForumDetailComponent },
 { path: 'notfound', component: NotfoundComponent },
-{ path: 'reward', component: RewardComponent },
 
-{ path: 'transactions', component: TransactionhistoryComponent },
 { path: 'rewardusers', component: RewardusersComponent },
     { path: 'rewardfront', component: RewardfrontComponent },
 
 
-    { path: 'discounts', component: DiscountsComponent },
 { path: 'quiz-frontend', component: QuizFrontendComponent},
 { path: 'eventFront', component : EventfrontComponent},
   {path:'event-details/:idEvent',component : PageEventComponent},

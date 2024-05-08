@@ -54,6 +54,8 @@
 
                         <td>
                             <div class="flex">
+<!--                                <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" (click)="editDiscount(discount)"></button>-->
+
                                 <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning" (click)="confirmDelete(discount.idDiscount)"></button>                        </div>
                         </td>
                     </tr>
@@ -107,6 +109,8 @@
                 <button pButton pRipple label="Cancel" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
                 <!-- Call calculateNewCost method passing the discount object when adding a new discount -->
                 <button *ngIf="!discount.idDiscount" pButton pRipple label="Add" icon="pi pi-plus" class="p-button-text" (click)="calculateNewCost(discount); addDiscount()"></button>
+                <button *ngIf="discount.idDiscount" pButton pRipple label="Update" icon="pi pi-check" class="p-button-text" (click)="updateDiscount(discount)"></button>
+
             </ng-template>
 
 
