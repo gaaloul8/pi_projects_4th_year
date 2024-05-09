@@ -68,7 +68,7 @@ export class DiscountService {
         const headers = new HttpHeaders({
             'Authorization': 'Bearer ' + this.token
         });
-        return this.http.put<Discount>(`${this.apiUrl}/update/${id}`, discount, { headers: headers });
+        return this.http.put<Discount>(`${this.baseUrl}/update/${id}`, discount, { headers: headers });
     }
 
 }
