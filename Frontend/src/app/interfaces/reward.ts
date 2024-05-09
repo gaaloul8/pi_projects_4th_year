@@ -8,4 +8,5 @@ export interface Reward {
     cost?: number;
     description?: string;
     nbDispo?: number;
+    rating?:number;
 }

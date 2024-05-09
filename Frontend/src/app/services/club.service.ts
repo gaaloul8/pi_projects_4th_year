@@ -4,14 +4,17 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { UserModel } from '../models/userModel';
+import {environment} from "../../environments/environment";
 
 @Injectable({
   providedIn: 'root'
 })
 export class ClubService {
 
-  private baseUrl = 'http://localhost:8081/clubs';
-  private token = localStorage.getItem('jwtAccessToken');
+  //private baseUrl = 'http://localhost:8081/clubs';
+    private baseUrl = environment.backendUrl;
+
+    private token = localStorage.getItem('jwtAccessToken');
 
   constructor(private http: HttpClient) { }
 
@@ -33,7 +36,7 @@ export class ClubService {
     const headers = new HttpHeaders({
       'Authorization': 'Bearer ' + this.token
     });
-    return this.http.post<Club>(`${this.baseUrl}/add`, formData, { headers: headers });
+    return this.http.post<Club>(`${this.baseUrl}/clubs/add`, formData, { headers: headers });
   }
 
   updateClub(clubId:number, club:Club ,image:File): Observable<Club> {
@@ -47,7 +50,7 @@ export class ClubService {
         const headers = new HttpHeaders({
             'Authorization': 'Bearer ' + this.token
         });
-        return this.http.put<Club>(`${this.baseUrl}/updateclub/${clubId}`, formData, { headers: headers });
+        return this.http.put<Club>(`${this.baseUrl}/clubs/updateclub/${clubId}`, formData, { headers: headers });
   }
 
   getAllClubs(): Observable<Club[]> {
@@ -58,11 +61,11 @@ export class ClubService {
   }
 
   getClubById(id: number): Observable<Club> {
-    
+
     const headers = new HttpHeaders({
       'Authorization': 'Bearer ' + this.token
   });
-    return this.http.get<Club>(`${this.baseUrl}/${id}`, { headers: headers });
+    return this.http.get<Club>(`${this.baseUrl}/clubs/${id}`, { headers: headers });
   }
 
   deleteClub(id: number): Observable<void> {
@@ -75,38 +78,37 @@ export class ClubService {
     const headers = new HttpHeaders({
       'Authorization': 'Bearer ' + this.token
     });
-    return this.http.get<UserModel>(`${this.baseUrl}/getconnecteduser`, { headers: headers });
+    return this.http.get<UserModel>(`${this.baseUrl}/clubs/getconnecteduser`, { headers: headers });
   }
   getClubByTag(tag: string): Observable<Club[]> {
-    
+
     const headers = new HttpHeaders({
       'Authorization': 'Bearer ' + this.token
   });
-    return this.http.get<Club[]>(`${this.baseUrl}/getByTag/${tag}`, { headers: headers });
+    return this.http.get<Club[]>(`${this.baseUrl}/clubs/getByTag/${tag}`, { headers: headers });
   }
 
   getClubByName(clubName: string): Observable<Club> {
-    
+
     const headers = new HttpHeaders({
       'Authorization': 'Bearer ' + this.token
   });
-    return this.http.get<Club>(`${this.baseUrl}/getByName/${clubName}`, { headers: headers });
+    return this.http.get<Club>(`${this.baseUrl}/clubs/getByName/${clubName}`, { headers: headers });
   }
-  
-  
+
 
   generatePDF(): Observable<Blob> {
-    
+
     const headers = new HttpHeaders({
       'Authorization': 'Bearer ' + this.token
   });
-     return this.http.get(`${this.baseUrl}/generate-pdf`, { responseType: 'blob' , headers: headers});
+     return this.http.get(`${this.baseUrl}/clubs/generate-pdf`, { responseType: 'blob' , headers: headers});
    }
    getClubTagStatistics(): Observable<Map<string, number>> {
     const headers = new HttpHeaders({
       'Authorization': 'Bearer ' + this.token
     });
-    return this.http.get<Map<string, number>>(`${this.baseUrl}/tag-statistics`, { headers: headers });
+    return this.http.get<Map<string, number>>(`${this.baseUrl}/clubs/tag-statistics`, { headers: headers });
   }
 }
 

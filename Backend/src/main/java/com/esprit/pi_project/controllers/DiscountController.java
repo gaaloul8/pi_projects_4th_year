@@ -1,10 +1,7 @@
 package com.esprit.pi_project.controllers;
 
 import com.esprit.pi_project.dto.DiscountDTO;
-import com.esprit.pi_project.entities.Discount;
-import com.esprit.pi_project.entities.Evenement;
-import com.esprit.pi_project.entities.Reward;
-import com.esprit.pi_project.entities.User;
+import com.esprit.pi_project.entities.*;
 import com.esprit.pi_project.services.DiscountService;
 import com.esprit.pi_project.services.RewardService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -79,5 +76,33 @@ public class DiscountController {
     public void calculnewcost(@RequestBody Discount discount){
         this.discountService.calculcostafterdiscount(discount);
     }
+
+
+
+    @PutMapping("/update/{discountId}")
+    public ResponseEntity<Discount> updateDiscount(@PathVariable Integer discountId, @RequestBody Discount discount) {
+        Discount discount1 = discountService.findById(discountId);
+        if (discount1 != null) {
+            if(discount1.getDiscountValue() != null) {
+                discount.setDiscountValue(discount1.getDiscountValue());
+            }
+            if(discount1.getCreatedDiscount() != null) {
+                discount.setCreatedDiscount(discount1.getCreatedDiscount());
+            }
+            if(discount1.getEndDiscount() != null) {
+                discount.setEndDiscount(discount1.getEndDiscount());
+            }
+            if(discount1.getReward() != null) {
+                discount.setReward(discount1.getReward());
+            }
+
+
+            Discount updated = discountService.updateDiscount(discount);
+            return new ResponseEntity<>(updated, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
 
 }

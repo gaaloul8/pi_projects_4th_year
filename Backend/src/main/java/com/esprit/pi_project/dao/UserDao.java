@@ -16,6 +16,10 @@ public interface UserDao extends JpaRepository<User,Integer> {
     List<Object[]> countUsersByLevel();
     int countByRole(Role role);
 
+    List<User> findByRole(Role role);
+
+
+
 
 
 

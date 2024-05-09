@@ -5,7 +5,7 @@ import {ForgetRequest} from "../../models/ForgetRequest";
 import {FormsModule} from "@angular/forms";
 import {ChipsModule} from "primeng/chips";
 import {ButtonModule} from "primeng/button";
-import {NgIf} from "@angular/common";
+import {NgClass, NgIf} from "@angular/common";
 
 @Component({
   selector: 'app-forget',
@@ -14,7 +14,8 @@ import {NgIf} from "@angular/common";
         FormsModule,
         ChipsModule,
         ButtonModule,
-        NgIf
+        NgIf,
+        NgClass
     ],
   templateUrl: './forget.component.html',
   styleUrl: './forget.component.scss'

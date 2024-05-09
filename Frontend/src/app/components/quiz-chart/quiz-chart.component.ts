@@ -20,6 +20,8 @@ export class QuizChartComponent {
     lineOptions: any;
     barData: any;
     barOptions:any;
+    pieData: any;
+    pieOptions :any;
 
     subscription: Subscription;
 
@@ -29,6 +31,7 @@ export class QuizChartComponent {
     ngOnInit() {
         this.getQuizData();
         this.getQuizUserParticipationData();
+        this.getScore();
     }
 
     getQuizData() {
@@ -43,6 +46,13 @@ export class QuizChartComponent {
             .subscribe(data => {
                 this.initBarChart(data);
             });
+    }
+
+    getScore(){
+        this.passerQuiz.getAverageScores()
+            .subscribe(data=>{
+                this.initPieCharts(data)
+            })
     }
 
     initCharts(quizzes: any[]) {
@@ -216,5 +226,59 @@ export class QuizChartComponent {
             }
         };
     }
+    initPieCharts(data) {
+        const documentStyle = getComputedStyle(document.documentElement);
+        const textColor = documentStyle.getPropertyValue('--text-color');
+        const textColorSecondary = documentStyle.getPropertyValue('--text-color-secondary');
+        const surfaceBorder = documentStyle.getPropertyValue('--surface-border');
 
-}
+        const keys = Object.keys(data);
+        const scoreTotal = Object.values(data);
+
+// Initialiser les scores pour les mots-clés spécifiques
+        let anxietyScore: unknown = 0;
+        let stressScore: unknown = 0;
+        let depressionScore: unknown = 0;
+
+// Parcourir les clés pour vérifier si les mots-clés spécifiques sont présents et extraire les scores correspondants
+        keys.forEach((key, index) => {
+            if (key === 'Anxiety') {
+                anxietyScore = scoreTotal[index];
+            } else if (key === 'Stress') {
+                stressScore = scoreTotal[index];
+            } else if (key === 'Depression') {
+                depressionScore = scoreTotal[index];
+            }
+        });
+        this.pieData = {
+            labels: ['Anxiety %', 'Stress %', 'Depression %'],
+            datasets: [
+                {
+                    data:  [anxietyScore, stressScore, depressionScore],
+                    backgroundColor: [
+                        documentStyle.getPropertyValue('--indigo-500'),
+                        documentStyle.getPropertyValue('--purple-500'),
+                        documentStyle.getPropertyValue('--teal-500')
+                    ],
+                    hoverBackgroundColor: [
+                        documentStyle.getPropertyValue('--indigo-400'),
+                        documentStyle.getPropertyValue('--purple-400'),
+                        documentStyle.getPropertyValue('--teal-400')
+                    ]
+                }]
+        };
+
+        this.pieOptions = {
+            plugins: {
+                legend: {
+                    labels: {
+                        usePointStyle: true,
+                        color: textColor
+                    }
+                }
+            }
+        };
+    }
+
+
+    }

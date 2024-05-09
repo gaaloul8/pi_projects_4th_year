@@ -3,8 +3,11 @@ package com.esprit.pi_project.controllers;
 import com.esprit.pi_project.entities.Forum;
 import com.esprit.pi_project.entities.Question;
 import com.esprit.pi_project.entities.Response;
+import com.esprit.pi_project.entities.User;
 import com.esprit.pi_project.services.ResponseService;
 import com.esprit.pi_project.services.SentimentAnalyzerService;
+import com.esprit.pi_project.services.UserService;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,7 +16,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.List;
+import java.util.Optional;
 
 @RestController()
 @RequestMapping("/responses")
@@ -23,11 +28,18 @@ public class ResponseController {
 
     @Autowired
     private ResponseService responseService;
+    @Autowired
+    private UserService userService;
 
     @PostMapping("/addResponse")
-    public ResponseEntity<Response> createResponse(@RequestBody Response response) {
-        Response createdResponse = responseService.saveResponse(response);
-        return new ResponseEntity<>(createdResponse, HttpStatus.CREATED);
+    public ResponseEntity<Response> createResponse(@RequestBody Response response, HttpServletRequest request
+    ) throws ParseException {
+        Optional<User> user = userService.getUserFromJwt(request);
+        if(user != null) {
+            response.setAuthor(user.get());
+            Response createdResponse = responseService.saveResponse(response);
+            return new ResponseEntity<>(createdResponse, HttpStatus.CREATED);
+        } else return  new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @GetMapping("/{responseId}")

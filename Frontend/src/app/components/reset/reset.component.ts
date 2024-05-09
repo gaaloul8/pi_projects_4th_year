@@ -20,6 +20,7 @@ export class ResetComponent implements  OnInit{
     password: string;
     Message: string ="";
     resetErrorMessage: string;
+    confirmPassword: string;
     newPasswordRequiredMessage: string;
 
 
@@ -30,19 +31,22 @@ export class ResetComponent implements  OnInit{
 
     }
     resetPassword() {
-        const resetRequest = { password: this.password };
-        this.authService.resetPassword(resetRequest, this.resetToken).subscribe(
-            response => {
-                this.Message = "Your password has been Reset";
-                // Redirect to login page
-            },
-            error => {
-                this.Message = "your pass has been reset";
-                this.router.navigate(['/login']);
-
-                // Handle error, if necessary
+            if (this.password !== this.confirmPassword) {
+                // Passwords don't match, show error message
+                this.resetErrorMessage = "Passwords do not match.";
+                return;
             }
-        );
 
-
-}}
+            const resetRequest = { password: this.password };
+            this.authService.resetPassword(resetRequest, this.resetToken).subscribe(
+                response => {
+                    this.Message = "Your password has been Reset";
+                    // Redirect to login page
+                    this.router.navigate(['/login']);
+                },
+                error => {
+                    this.Message = "Your password has been reset.";
+                    // Handle error, if necessary
+                }
+            );
+        }}

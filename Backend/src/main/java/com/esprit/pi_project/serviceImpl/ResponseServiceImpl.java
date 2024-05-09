@@ -10,6 +10,8 @@ import edu.stanford.nlp.ling.CoreLabel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.stream.Collectors;
@@ -19,7 +21,12 @@ public class ResponseServiceImpl implements ResponseService {
     @Autowired
     private ResponseDao responseDao;
     @Override
-    public Response saveResponse(Response response) {
+    public Response saveResponse(Response response) throws ParseException {
+        Date currentDateTime = new Date();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+        String formattedDate = dateFormat.format(currentDateTime);
+        Date parsedDate = dateFormat.parse(formattedDate);
+        response.setCreatedAt(parsedDate);
         return responseDao.save(response);
     }
 

@@ -1,0 +1,30 @@
+<br>
+<br>
+<br>
+<br>
+<br>
+
+<div class="add-reclamation-container">
+    <button class="add-reclamation-button" (click)="addReclamation()">Add Reclamation</button>
+</div>
+
+<div *ngIf="userReclamations.length; else noReclamationsTemplate" class="user-reclamations-container">
+    <h3>My Reclamations</h3>
+    <div class="search-container">
+        <input type="text" [(ngModel)]="searchQuery" (ngModelChange)="filterReclamations(searchQuery)" placeholder="Search by title..." class="search-input">
+    </div>
+    <div class="reclamations-list">
+        <div *ngFor="let reclamation of filteredReclamations" class="reclamation-card">
+            <img *ngIf="reclamation.imageUrl" [src]="reclamation.imageUrl" class="reclamation-image" alt="Reclamation Image"/>
+            <h4 class="reclamation-title">{{ reclamation.title }}</h4>
+            <p class="reclamation-description">{{ reclamation.description }}</p>
+            <span class="reclamation-status" [ngClass]="getStatusClass(reclamation.status)">
+                {{ reclamation.status }}
+            </span>
+            <button *ngIf="reclamation.status === 'RESOLVED'" (click)="archiveReclamation(reclamation.reclamationId)" class="archive-button">Archive</button>
+        </div>
+    </div>
+</div>
+<ng-template #noReclamationsTemplate>
+    <p class="no-reclamations">No reclamations found for this user.</p>
+</ng-template>

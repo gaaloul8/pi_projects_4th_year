@@ -132,6 +132,7 @@ public class AuthServiceImpl implements AuthService {
             var isUserLocked= user.isAccountNonLocked();
             var LockTime= user.getLockTime();
             user.setAccountNonLocked(true);
+            System.out.println(Rolee);
             userDao.save(user);
             user.setFailedLoginAttempts(0);
             RevokeTokens(user);

@@ -69,7 +69,17 @@ import { SidebarComponent } from './components/sidebar/sidebar.component';
 
 import { PageEventComponent } from './components/page-event/page-event.component';
 import { ListReservationFrontComponent } from './components/list-reservation-front/list-reservation-front.component';
-
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
+import { StatisticsComponent } from './components/statistics/statistics.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatTableModule } from '@angular/material/table';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import {OverlayModule} from "@angular/cdk/overlay";
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
 import { PostFrontComponent } from './components/post-front/post-front.component';
 import { CommentComponent } from './components/comment/comment.component';
 import { CommentService } from './services/comment.service';
@@ -89,7 +99,8 @@ import { ModalModule } from 'ngx-bootstrap/modal';
          FormsModule,
           BrowserModule,
           ToolbarModule,
-
+          MatDatepickerModule,
+          MatNativeDateModule,
           ChartModule,
           MultiSelectModule,
           FilterPipe,
@@ -139,6 +150,10 @@ import { ModalModule } from 'ngx-bootstrap/modal';
         CompleteprofileComponent,
         TakeimageComponent,
         CardModule,
+        BrowserAnimationsModule,
+        MatTableModule,
+        MatSnackBarModule,
+        OverlayModule,
         ModalModule.forRoot(),
         ],
         providers: [
