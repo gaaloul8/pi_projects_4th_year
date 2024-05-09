@@ -2,7 +2,11 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Comment } from '../interfaces/comment';
+
+import { UserModel } from '../models/userModel';
+
 import {environment} from "../../environments/environment";
+
 
 @Injectable({
   providedIn: 'root'
@@ -28,6 +32,13 @@ export class CommentService {
       'Content-Type': 'application/json'
     });
     return this.http.put<Comment>(`${this.baseUrl}/comments/update`, comment, { headers: headers  });
+  }
+  newupdateComment(id:number,comment: Comment): Observable<Comment> {
+    const headers = new HttpHeaders({
+      'Authorization': 'Bearer ' + this.token,
+      'Content-Type': 'application/json'
+    });
+    return this.http.put(`${this.baseUrl}/${id}`, comment, { headers: headers });
   }
 
   getAllComments(): Observable<Comment[]> {
@@ -60,6 +71,14 @@ export class CommentService {
     return this.http.get<Comment[]>(`${this.baseUrl}/comments/findbyPost/${postId}`, { headers: headers  });
   }
 
+  getUser(): Observable<UserModel> {
+    const headers = new HttpHeaders({
+      'Authorization': 'Bearer ' + this.token
+    });
+    return this.http.get<UserModel>(`${this.baseUrl}/getconnecteduser`, { headers: headers });
+  }
+  
+  
 
 }
 export { Comment };

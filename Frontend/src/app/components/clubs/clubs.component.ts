@@ -42,6 +42,14 @@ export class ClubsComponent implements OnInit {
     ).subscribe(() => {
       this.searchClubs();
     });
+
+     // Initialize form controls with validators
+     this.clubForm = this.formbuilder.group({
+      image: [''],
+      clubName: ['', [Validators.required, Validators.minLength(3)]], // Adding validators for clubName
+      description: ['', [Validators.required, Validators.minLength(10)]], // Adding validators for description
+      membershipCount: ['', [Validators.required, Validators.min(1)]] // Adding validators for membershipCount
+    });
     
   }
   ngOnInit(): void {
@@ -110,6 +118,9 @@ export class ClubsComponent implements OnInit {
   }
 addClub(): void {
   this.submitted = true;
+  if (this.clubForm.valid) {
+    
+  
   try {
     // Pass the selected file to the addClub method
     this.clubService.addClub(this.clubForm.value, this.selectedImage).toPromise();
@@ -119,6 +130,7 @@ addClub(): void {
   } catch (error) {
     console.error(error);
   }
+}
 }
  onImageSelected(event: any) {
    this.selectedImage=event.target.files[0];
@@ -135,25 +147,7 @@ hideDialog() {
   this.submitted = false;
 }
 
-/*deleteClub(clubId: number): void {
-  this.clubService.deleteClub(clubId).subscribe(
-    () => {
-      if (this.messageService) {
-        this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Club Deleted Successfully', life: 3000 });
-      }
-      // Update the clubs array without reloading the page
-      this.clubs = this.clubs.filter(club => club.clubId !== clubId);
-      this.deleteClubDialog = false;
-    },
-    error => {
-      console.error('Error deleting club:', error);
-      if (this.messageService) {
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Failed to delete club', life: 3000 });
-      }
-      this.deleteClubDialog = false;
-    }
-  );
-}*/
+
 async deleteClub(): Promise<void> {
   try {
 
@@ -226,41 +220,14 @@ editClub(club: Club) {
   this.clubDialog = true; // Open the dialog
 }
 
-/*onImageSelected(event: any) {
-  console.log("Image selected:", event.target.files[0]);
-  const file: File = event.target.files[0];
-  if (file) {
-    const reader = new FileReader();
-    reader.onload = () => {
-      this.selectedImage = reader.result as string;
-    };
-    reader.readAsDataURL(file);
-    this.selectedFile = file; // Store the selected file for uploading
-  }
-}*/
+
 
 
 showDialogToAdd(): void {
   this.clubForm.reset();
   this.clubDialog = true;
 }
-// confirmUpdate(): void {
-//   // Close the confirmation dialog
-//   this.showConfirmation = false;
-//   this.clubDialog = false;
-//   // Call the updateClubService to update the club
-//   this.clubService.updateClub(this.club).subscribe(
-//     updatedClub => {
-//       console.log('Club updated:', updatedClub);
-//       this.clubDialog = false;
-//       // Optionally, perform any other actions upon successful update
-//     },
-//     error => {
-//       console.error('Error updating club:', error);
-//       // Optionally, display an error message or perform any other error handling
-//     }
-//   );
-// }
+
 
 cancelUpdate(): void {
   // Close the confirmation dialog

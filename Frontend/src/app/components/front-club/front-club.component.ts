@@ -14,7 +14,7 @@ import {InputTextModule} from "primeng/inputtext";
 import {InputTextareaModule} from "primeng/inputtextarea";
 import {RippleModule} from "primeng/ripple";
 import { Subject, debounceTime, distinctUntilChanged } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { UserModel } from 'src/app/models/userModel';
 @Component({
   selector: 'app-front-club',
@@ -43,12 +43,15 @@ import { UserModel } from 'src/app/models/userModel';
 export class FrontClubComponent implements OnInit{
   clubs: Club[] = [];
   selectedClubId:number;
+  selectedClub: Club;
   deleteForumDialog:boolean;
   searchQuery: string = '';
   clubDialog: boolean = false;
   submitted: boolean = false;
   club: Club = {};
+  
   user: UserModel;
+  private token = localStorage.getItem('jwtAccessToken');
   
   private searchSubject: Subject<string> = new Subject<string>();
   constructor(private clubService:ClubService,private formbuilder:FormBuilder,private renderer:Renderer2,private http:HttpClient) {
@@ -65,6 +68,16 @@ export class FrontClubComponent implements OnInit{
     this.loadJsFiles();
     
   }
+  //modal club
+  openModal(club: any) {
+    this.selectedClub = club;
+    document.body.classList.add('modal-open'); // Ajoute une classe pour empêcher le défilement de la page en arrière-plan
+}
+
+closeModal() {
+    this.selectedClub = null;
+    document.body.classList.remove('modal-open'); // Retire la classe ajoutée pour permettre le défilement
+}
   
   public loadJsFile(url: string) {
     const body = <HTMLDivElement>document.body;
@@ -115,7 +128,11 @@ openNew() {
 }
 searchClubs(): void {
   if (this.searchQuery.trim() !== '') {
-    this.http.get<Club[]>('http://localhost:8081/clubs/search', { params: { query: this.searchQuery.trim() } })
+    const headers = new HttpHeaders({
+      'Authorization': 'Bearer ' + this.token,
+      'Content-Type': 'application/json'
+    });
+    this.http.get<Club[]>('http://localhost:8081/clubs/search', { params: { query: this.searchQuery.trim() } , headers: headers })
       .subscribe((response: Club[]) => {
         console.log('Searched clubs:', response);
         this.clubs = response;

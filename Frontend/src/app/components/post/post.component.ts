@@ -4,6 +4,7 @@ import { FormGroup, FormBuilder } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { PostService, Post } from 'src/app/services/post.service';
 import BadWordsFilter from 'bad-words'; // Import BadWordsFilter library
+import { UserModel } from 'src/app/models/userModel';
 
 
 
@@ -24,8 +25,12 @@ export class PostComponent implements OnInit {
   showConfirmation: boolean = false;
   selectedImage: any ;
   content: string;
+  deletedPosts: any[] = [];
   //imageUrl:String;
   filter: any;
+
+  user: UserModel;
+  
 
 
   constructor(private postService: PostService, private formbuilder: FormBuilder,private http:HttpClient,) { }
@@ -33,7 +38,7 @@ export class PostComponent implements OnInit {
 
   ngOnInit(): void {
     this.filter = new BadWordsFilter();
-
+this.getUser();
     this.getAllPosts();
     this.postForm = this.formbuilder.group({
       image: [''],
@@ -128,24 +133,36 @@ export class PostComponent implements OnInit {
       }
     );
   }*/
-  deletePost(postId: number): void {
-    this.postService.deletePost(postId).subscribe(
-        () => {
-            if (this.messageService) {
-                this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Event Deleted Successfully', life: 3000 });
-            }
-            this.getAllPosts(); // Refresh rewards after deletion
-            this.deletePostDialog = false; // Move it here
-        },
-        error => {
-            console.error('Error deleting reward:', error);
-            if (this.messageService) {
-                this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Failed to delete event', life: 3000 });
-            }
-            this.deletePostDialog = false; // Move it here too, to handle error case
-        }
-    );
-}
+  async deletePost(postId: number): Promise<void> {
+    try {
+      const deletedPostIndex = this.posts.findIndex(post => post.postId === postId);
+      
+      // If the post exists in the array
+      if (deletedPostIndex !== -1) {
+        const deletedPost = this.posts.splice(deletedPostIndex, 1)[0];
+        this.deletedPosts.push(deletedPost); // Assuming there's a deletedPosts array to store deleted posts
+      }
+      
+      // Close the delete confirmation modal
+      this.deletePostDialog = false;
+  
+      // Delete the post from the server
+      await this.postService.deletePost(postId).toPromise();
+  
+      // Optionally, you can display a success message here
+      if (this.messageService) {
+        this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Post Deleted Successfully', life: 3000 });
+      }
+    } catch (error) {
+      console.error('Error deleting post:', error);
+      
+      // Optionally, you can display an error message here
+      if (this.messageService) {
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Failed to delete post', life: 3000 });
+      }
+    }
+  }
+  
 
   confirmDelete(post: Post) {
     this.selectedPostId = post.postId;
@@ -165,6 +182,18 @@ export class PostComponent implements OnInit {
         console.error(error);
         // Handle error, e.g., show an error message to the user
     }
+}
+getUser(): void {
+  this.postService.getUser().subscribe(
+    (response: UserModel) => {
+      this.user = response;
+      console.log('User:', this.user.id_user);
+      console.log('User:', response);
+    },
+    error => {
+      console.error('Error fetching user:', error);
+    }
+  );
 }
 
 

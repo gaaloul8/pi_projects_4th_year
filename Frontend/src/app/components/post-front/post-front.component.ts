@@ -18,6 +18,7 @@ export class PostFrontComponent implements OnInit {
   likedPosts:number[]=[];
   liked:boolean=false;
 
+
   constructor(private postService: PostService,private commentService:CommentService,private modalService : BsModalService) { }
 
   ngOnInit(): void {
@@ -147,27 +148,29 @@ Toggleliked(post: Post): void {
     const created = new Date(createdAt).getTime();
     let difference = Math.abs(now - created);
 
-    // Calculate hours, minutes, and seconds
-    const hours = Math.floor(difference / 3600000); // 1 hour = 3600000 ms
-    difference -= hours * 3600000;
-    const minutes = Math.floor(difference / 60000); // 1 minute = 60000 ms
-    difference -= minutes * 60000;
-    const seconds = Math.floor(difference / 1000); // 1 second = 1000 ms
+    // Calculate days, hours, minutes, and seconds
+    const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+    difference -= days * (1000 * 60 * 60 * 24);
+    const hours = Math.floor(difference / (1000 * 60 * 60));
+    difference -= hours * (1000 * 60 * 60);
+    const minutes = Math.floor(difference / (1000 * 60));
+    difference -= minutes * (1000 * 60);
+    const seconds = Math.floor(difference / 1000);
 
     // Construct the time ago string
     let timeAgo = '';
-    if (hours > 0) {
+    if (days > 0) {
+      timeAgo += `${days} day${days > 1 ? 's' : ''}`;
+    } else if (hours > 0) {
       timeAgo += `${hours} hour${hours > 1 ? 's' : ''}`;
-    }
-    if (minutes > 0) {
-      timeAgo += ` ${minutes} minute${minutes > 1 ? 's' : ''}`;
-    }
-    if (hours === 0 && minutes === 0) {
-      timeAgo += ` ${seconds} second${seconds > 1 ? 's' : ''}`;
+    } else if (minutes > 0) {
+      timeAgo += `${minutes} minute${minutes > 1 ? 's' : ''}`;
+    } else {
+      timeAgo += `${seconds} second${seconds > 1 ? 's' : ''}`;
     }
 
     return timeAgo + ' ago';
-  }
+}
 
 
   

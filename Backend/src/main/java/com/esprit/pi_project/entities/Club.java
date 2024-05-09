@@ -19,7 +19,7 @@ public class Club implements Serializable {
     //@NotBlank(message = "ClubName cannot be blank")
     private String clubName;
 
-    @Size(min = 1,max = 150)
+
     private String description;
     @Lob
     @Column(nullable = true, length = 10000000)
