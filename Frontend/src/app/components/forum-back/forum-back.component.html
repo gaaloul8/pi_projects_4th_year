@@ -48,7 +48,7 @@
                     <td>{{ forum.createdAt }}</td>
                     <td>{{ forum.likes }}</td>
                     <td>{{ forum.forumOwner.firstName }} {{ forum.forumOwner.lastName }}</td>
-                    <td>{{ forum.closed }}</td>
+                    <td>{{ forum.closed ? 'Closed' : 'Open' }}</td>
                     <td><span [class]="'product-badge status-' + (forum.status === 'PENDING' ? 'lowstock' : (forum.status === 'ACCEPTED' ? 'instock' : 'outofstock'))">{{forum.status}}</span>
                     </td>
                     <td>

@@ -1,9 +1,9 @@
 
 
 
-    <div class="pageloader"></div>
+    <!-- <div class="pageloader"></div>
     <div class="infraloader is-active"></div>
-    <div class="app-overlay"></div>
+    <div class="app-overlay"></div> -->
 
     <div class="view-wrapper">
         <!-- Container -->
@@ -14,18 +14,31 @@
                     <div class="header-inner">
                         <h2>Forums</h2>
                         <div class="header" id="header">
+                              
                             <div class="buttons">
                                 <a (click)="openNew()" class="btn-getstarted">Add new forum</a>
                             </div>
                         </div>
+                        
                     </div>
                 </div>
+                    <div class="container is-fluid">
+                <div class="navbar-menu">
+                <div class="navbar-end">
+                <div class="navbar-item">
+                    <div id="global-search" class="control">
+                        <input id="tipue_drop_input" [(ngModel)]="searchTerm" class="input is-rounded" type="text" placeholder="Search" required (input)="applySearchFilter()"/>
+                       
 
-
+                    </div>
+                </div>
+                </div>
+</div>
+</div>
                 <div class="columns is-multiline">
                     <!--Forum-->
-                    <div class="column is-3" *ngFor="let forum of forums" (click)="forum.closed ? openClosedForumDialog() : null">
-                                     <article class="group-box">
+                    <div class="column is-3" *ngFor="let forum of filteredForums" >
+                                     <article class="group-box" *ngIf="forum.status=='ACCEPTED'">
 
                                       <div class="box-info-hover">
                                         <div class="like-wrapper"  *ngIf="!forum.closed">
@@ -39,14 +52,13 @@
                                         <div class="box-clock-info">
                                             <i *ngIf="!forum.closed" data-feather="message-circle" class="box-clock"></i>
                                             <span class="box-time" [style.color]="forum.closed === true ? 'red' : 'initial'" [style.fontWeight]="forum.closed === true ? 'bold' : 'normal'">
-                                                {{ forum.closed === true ? 'Closed' : '11 new' }}
+                                                {{ forum.closed === true ? 'Closed' :  forum.numQuestions +' new questions' }}
                                             </span>
                                         </div>
                                     </div>
 
-
                             <div  class="box-img has-background-image" data-background="https://via.placeholder.com/940x650" data-demo-background="assets/forum1.jpg"></div>
-                            <a [routerLink]="['/main/forumdetail', forum.forumId]" class="box-link">
+                            <a [routerLink]="forum.closed ? null : ['/main/forumdetail', forum.forumId]" (click)="forum.closed ? openClosedForumDialog() : null" class="box-link">
                                 <div class="box-img--hover has-background-image" data-background="https://via.placeholder.com/940x650" data-demo-background="assets/forum1.jpg"></div>
                             </a>
 
@@ -56,17 +68,22 @@
                                 <span class="box-members">
               <a href="#">{{forum.forumOwner.firstName}} {{forum.forumOwner.lastName}}</a>
               <div class="members-preview">
-                <img
+                <!-- <img
                   src="https://via.placeholder.com/150x150"
-                  [data-demo-src]="'data:image/png;base64,' + forum.forumOwner.profilePicture"
+                  [src]="'data:image/png;base64,' + forum.forumOwner.profilePicture"
                   data-user-popover="7"
                   alt=""
-                />
+                /> -->
+                <img
+                [src]="'data:image/png;base64,' + forum.forumOwner.profilePicture"
+                data-user-popover="7"
+                alt=""
+              />
               </div>
-              <div class="clickable-icon" (click)="editForum(forum)">
+              <div *ngIf="user.id_user == forum.forumOwner.id_user" class="clickable-icon" (click)="editForum(forum)">
                 <i data-feather="edit" style="cursor: pointer; color: blue;"></i>
               </div>
-              <div class="clickable-icon" (click)="confirmDelete(forum.forumId)">
+              <div *ngIf="user.id_user == forum.forumOwner.id_user" class="clickable-icon" (click)="confirmDelete(forum.forumId)">
                 <i data-feather="trash-2" style="cursor: pointer;color: red;"></i>
               </div>
 
@@ -122,6 +139,9 @@
                     <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Yes" (click)="confirmDeleteForum()"></button>
                 </ng-template>
             </p-dialog>
+            <div *ngIf="filteredForums.length === 0 " class="column is-12">
+                <p>No forums are displayed.</p>
+            </div>
                 <!-- Load more groups -->
                 <div class="load-more-wrap narrow-top has-text-centered">
                     <a href="#" class="load-more-button">Load More</a>
@@ -148,3 +168,4 @@
             </div>
         </div>
     </div>
+    <p-toast></p-toast>

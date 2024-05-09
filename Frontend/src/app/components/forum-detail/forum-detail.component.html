@@ -1,11 +1,12 @@
 
  
     <!-- Pageloader -->
-    <div class="pageloader"></div>
+    <!-- <div class="pageloader"></div>
     <div class="infraloader is-active"></div>
 
-    <div class="app-overlay"></div>
-
+    <div class="app-overlay"></div> -->
+<br>
+<br>
     <div class="view-wrapper is-full">
         <div class="stories-wrapper is-home">
 
@@ -82,7 +83,8 @@
                         <div class="post-meta">
                             <div class="post-author">
                                 <div class="story-avatar">
-                                    <img class="avatar" src="https://via.placeholder.com/150x150" data-demo-src="assets/img/avatars/dan.jpg" data-user-popover="2" alt="" />
+                                    <img class="avatar" [src]="'data:image/png;base64,' + forum.forumOwner.profilePicture" data-user-popover="2" alt="" />
+                                    <!-- <img class="avatar" src="https://via.placeholder.com/150x150" data-demo-src="assets/img/avatars/dan.jpg" data-user-popover="2" alt="" /> -->
                                 </div>
                                 <div class="meta">
                                     <span>{{ forum.forumOwner?.firstName }} {{ forum.forumOwner?.lastName }}</span>
@@ -93,7 +95,7 @@
                             <div class="post-stats">
                                 <div class="stat-item">
                                     <i data-feather="heart"></i>
-                                    <span>265</span>
+                                    <span>{{ forum.likes }}</span>
                                 </div>
                                 <div class="stat-item">
                                     <i data-feather="message-circle"></i>
@@ -119,7 +121,8 @@
                                     <textarea id ="publishh" class="textarea" placeholder="type your question" [(ngModel)]="content"></textarea>
                                 </div>
                                 <div class="compose-controls">
-                                    <img class="avatar" src="https://via.placeholder.com/150x150" data-demo-src="assets/img/avatars/jenna.png" data-user-popover="0" alt="" />
+                                    <img class="avatar" [src]="'data:image/png;base64,' + forum.forumOwner.profilePicture" data-user-popover="0" alt="" />
+                                    <!-- <img class="avatar" src="https://via.placeholder.com/150x150" data-demo-src="assets/img/avatars/jenna.png" data-user-popover="0" alt="" /> -->
                                     <div class="compose-actions">
                                         <a class="action">
                                             <i data-feather="at-sign"></i>
@@ -135,24 +138,25 @@
                                 </div>
                             </div>
                             </div>
-
+                            <input type="text" class="input" placeholder="Search by tag" [(ngModel)]="searchTag" (input)="filterQuestions()">
                         <div class="comments-wrap">
                             <div class="comments-count">
-                                <h3>Questions {{questions.length}}</h3>
+                                <h3>Questions {{filteredQuestions.length}}</h3>
                             </div>
 
-                            <div class="media is-comment" *ngFor="let question of questionsWithTags; let i = index">
+                            <div class="media is-comment" *ngFor="let question of filteredQuestions; let i = index">
                                 <div class="media-left">
                                     <div class="avatar-wrap is-smaller">
-                                        <img src="https://via.placeholder.com/150x150" data-demo-src="assets/img/avatars/dan.jpg" data-user-popover="1" alt="" />
-                                        <div class="badge">
+                                        <img  [src]="'data:image/png;base64,' + question.question.author.profilePicture" data-user-popover="1" alt="" />
+                                        <!-- <img src="https://via.placeholder.com/150x150" data-demo-src="assets/img/avatars/dan.jpg" data-user-popover="1" alt="" /> -->
+                                        <div *ngIf="user.id_user == question.question.author.id_user" class="badge">
                                             <i data-feather="check"></i>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="media-content">
                                     <div class="comment-meta">
-                                        <h4><a>{{question.question.author.firstName}} {{question.question.author.lastName}}</a> <small> {{question.question.createdAt || date()}} </small></h4>
+                                        <h4><a>{{question.question.author.firstName}} {{question.question.author.lastName}}</a> <small> {{calculateTimeAgo(question.question.createdAt)}} </small></h4>
                                         <h4> <a [routerLink]="['/question', question.question.questionId]" class="question-title is-link">
                                             {{question.question.title}}
                                         </a></h4>
@@ -163,18 +167,18 @@
                                         <div class="comment-stats">
                                             <div class="stat is-likes">
                                                 <i data-feather="thumbs-up"></i>
-                                                <span>23</span>
+                                                <span>{{question.question.upvotes}}</span>
                                             </div>
                                             <div class="stat is-dislikes">
                                                 <i data-feather="thumbs-down"></i>
-                                                <span>3</span>
+                                                <span>{{question.question.downvotes}}</span>
                                             </div>
                                         </div>
                                         <div class="comment-actions">
-                                            <a class="comment-action is-like">
+                                            <a class="comment-action is-like" (click)="toggleActiveClass('like', $event , question.question)">
                                                 <i data-feather="thumbs-up"></i>
                                             </a>
-                                            <a class="comment-action is-dislike">
+                                            <a class="comment-action is-dislike"(click)="toggleActiveClass('dislike', $event , question.question)">
                                                 <i data-feather="thumbs-down"></i>
                                             </a>
                                             <a class="comment-action is-reply">
@@ -198,7 +202,9 @@
                                     </div> -->
                                 </div>
                             </div>
-
+                            <div *ngIf="filteredQuestions.length === 0" class="column is-12">
+                                <p>No Questions are found .</p>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -212,12 +218,14 @@
                         <!--Related post-->
                         <ng-container *ngFor="let forum of forums">
                             <ng-container *ngIf="forum.forumId !== currentForumId">
-                                <a class="related-post">
+                                <a class="related-post" [routerLink]="['/main/forumdetail', forum.forumId]">
                                     <img class="post-image" src="https://via.placeholder.com/250x250" data-demo-src="assets/forum1.jpg" alt="" />
                                     <div class="meta">
                                         <h3>{{forum.topic}}</h3>
                                         <div class="user-line">
-                                            <img src="https://via.placeholder.com/250x250" data-demo-src="assets/img/avatars/elise.jpg" data-user-popover="6" alt="" />
+                                            <img [src]="'data:image/png;base64,' + forum.forumOwner.profilePicture" data-user-popover="6" alt="" />
+                                            <!-- <img src="https://via.placeholder.com/250x250"                 [src]="'data:image/png;base64,' + forum.forumOwner.profilePicture"
+                                            data-demo-src="assets/img/avatars/elise.jpg" data-user-popover="6" alt="" /> -->
                                             <span>{{ forum.forumOwner?.firstName }} {{ forum.forumOwner?.lastName }}</span>
                                         </div>
                                     </div>

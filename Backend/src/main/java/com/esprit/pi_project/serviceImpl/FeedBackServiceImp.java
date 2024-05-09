@@ -43,7 +43,7 @@ public class FeedBackServiceImp implements FeedBackService {
     @Override
     public FeedBack addFeedBack(Integer idEvent, FeedBack feedBack,User user) {
         Optional<Evenement> evenementOptional = eventDao.findById(idEvent);
-       // feedBack.setStatus(StatusFeedback.Unprocessed);
+        // feedBack.setStatus(StatusFeedback.Unprocessed);
         if (evenementOptional.isPresent()) {
             Evenement evenement = evenementOptional.get();
             feedBack.setEvenement(evenement);
@@ -74,7 +74,7 @@ public class FeedBackServiceImp implements FeedBackService {
         FeedBack feedback = feedbackDao.findById(idFeedback)
                 .orElseThrow(() -> new IllegalArgumentException("Feedback not found with specified ID."));
 
-            feedbackDao.deleteById(idFeedback);
+        feedbackDao.deleteById(idFeedback);
 
     }
 
@@ -82,8 +82,8 @@ public class FeedBackServiceImp implements FeedBackService {
     public FeedBack UpdateFeedBack(FeedBack feedBack,User user) throws IOException {
 
         FeedBack feedBack1 = new FeedBack();
-    feedBack1.setEvenement(feedBack.getEvenement());
-    feedBack1.setUser(user);
+        feedBack1.setEvenement(feedBack.getEvenement());
+        feedBack1.setUser(user);
 
         return feedbackDao.save(feedBack);
     }
@@ -151,7 +151,6 @@ public class FeedBackServiceImp implements FeedBackService {
 
 
 }
-
 
 
 

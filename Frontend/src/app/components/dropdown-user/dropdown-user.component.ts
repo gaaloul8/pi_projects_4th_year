@@ -29,6 +29,8 @@ export class DropdownUserComponent implements OnInit {
             (user: UserModel) => {
                 this.user = user;
                 console.log(this.user.firstName);
+                console.log(this.user);
+
             },
             (error) => {
                 console.error('Error fetching user profile:', error);
@@ -40,7 +42,7 @@ export class DropdownUserComponent implements OnInit {
         this.isDropdownOpen = !this.isDropdownOpen;
     }
     navigateToProfileUpdate(): void {
-        this.router.navigate(['profile/update']);
+        this.router.navigate(['/main/profile/update']);
     }
     logout(): void {
         this.authService.logout();

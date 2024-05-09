@@ -31,13 +31,14 @@ public class Question implements Serializable {
     @JoinColumn(name = "id_user")
     private User author;
 
-    @Temporal(TemporalType.DATE)
     private Date createdAt;
 
     @NotBlank(message = "Content is required")
     private String content;
 
     private Integer upvotes;
+
+    private Integer downvotes;
 
     private Boolean closed;
 

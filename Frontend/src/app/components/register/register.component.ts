@@ -37,15 +37,13 @@ export class RegisterComponent {
     )
     {}
     registerUser() {
-        this.errorMessage = ''; // Reset error message on each form submission
-        this.formSubmitted = true; // Set the formSubmitted flag when the form is submitted
+        this.errorMessage = '';
+        this.formSubmitted = true;
 
-        // Check if any required field is empty, return without submitting if any field is empty
         if (!this.registerRequest.firstName || !this.registerRequest.lastName || !this.registerRequest.email || !this.registerRequest.password) {
             return;
         }
 
-        // Submit the registration request
         this.authService.register(this.registerRequest)
             .subscribe({
                 next: (response) => {

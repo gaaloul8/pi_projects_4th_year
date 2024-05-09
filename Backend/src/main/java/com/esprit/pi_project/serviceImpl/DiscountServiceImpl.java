@@ -73,21 +73,8 @@ public class DiscountServiceImpl implements DiscountService {
 
     @Override
     public Discount updateDiscount(Discount discount) {
-        Optional<Discount> existingDiscount = discountDao.findById(discount.getIdDiscount());
+            return discountDao.save(discount);
 
-        if (existingDiscount.isPresent()) {
-            Discount existingd = existingDiscount.get();
-
-            existingd.setDiscountValue(discount.getDiscountValue());
-            existingd.setCreatedDiscount(discount.getCreatedDiscount());
-            existingd.setEndDiscount(discount.getEndDiscount());
-            existingd.setReward(discount.getReward());
-
-            return discountDao.save(existingd);
-        } else {
-
-            return null;
-        }
     }
 
 
@@ -111,7 +98,7 @@ public class DiscountServiceImpl implements DiscountService {
         }
     }
 
-    @Scheduled(fixedRate =20000)
+    @Scheduled(fixedRate =60000)
     public void checkDiscountsValidity() {
         // Get the current local date
         LocalDate currentDate = LocalDate.now();

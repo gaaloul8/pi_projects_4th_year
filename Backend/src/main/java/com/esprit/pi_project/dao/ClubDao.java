@@ -18,5 +18,4 @@ public interface ClubDao extends JpaRepository<Club,Long> {
     List<Club> findAllByClubName(String clubName);
     List<Club> findAllByClubNameContainingIgnoreCase(String clubName);
 
-
 }

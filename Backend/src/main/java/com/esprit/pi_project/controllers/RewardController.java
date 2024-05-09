@@ -147,4 +147,18 @@ public class RewardController {
         return this.userService.getUserFromJwt(request);
     }
 
+    @GetMapping("/getrewarbyuser")
+    public List<Reward>getrewardbyuser(HttpServletRequest request){
+        Optional<User> u  = this.userService.getUserFromJwt(request);
+        if(u.isPresent()) {
+            return this.rewardService.getrewardbyuser(u.get());
+        }
+        else return null;
+    }
+
+    @PutMapping("/updateRate/{idReward}/{rate}")
+    public void updaterate(@PathVariable Integer idReward,@PathVariable int rate){
+        this.rewardService.updateReward(idReward,rate);
+    }
+
 }

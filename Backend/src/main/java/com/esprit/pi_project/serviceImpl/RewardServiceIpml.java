@@ -248,6 +248,35 @@ public class RewardServiceIpml implements RewardService {
     public Reward findRewardByName(String name) {
         return rewardDao.findRewardByName(name);
     }
+    @Override
+   public List<Reward> getrewardbyuser(User user){
+       List<TransactionHistory>transactionHistories=transactionHistoryDao.findAll();
+
+       List<Reward> rewardList = new ArrayList<>();
+       for (TransactionHistory transactionHistory: transactionHistories){
+          Reward reward= transactionHistory.getReward();
+           System.out.println("aaaaaaaaaaaaaaaaaaaaa"+transactionHistory.getUser().getId_user());
+           System.out.println("bbbbbbbbbbbbbbbbbbbbbbbbb"+user.getId_user());
+
+           System.out.println("rewardwahadha"+reward);
+           if (transactionHistory.getUser().getId_user()==user.getId_user()){
+               System.out.println("----------------------------------------------");
+               rewardList.add(reward);
+               System.out.println("elista"+rewardList);
+           }
+       }
+       return rewardList;
+    }
+
+    @Override
+    public void updateReward(Integer idReward, int rate) {
+        Optional<Reward> reward=rewardDao.findById(idReward);
+        if (reward.isPresent()){
+            reward.get().setRating(rate);
+        }
+        rewardDao.save(reward.get());
+
+    }
 
 
 }

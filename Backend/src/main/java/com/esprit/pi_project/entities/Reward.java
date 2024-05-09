@@ -21,6 +21,7 @@ public class Reward implements Serializable {
     @Column(length = 200000000)
     @Lob
     private String image;
+    private int rating;
 
     @ManyToOne
     @JoinColumn(name = "id_user")

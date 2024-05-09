@@ -4,13 +4,17 @@ import { Observable } from 'rxjs';
 import { Post } from '../interfaces/post'; // Assuming you have a Post model
 import { UserModel } from '../models/userModel';
 
+import {environment} from "../../environments/environment"; // Assuming you have a Post model
+
 @Injectable({
   providedIn: 'root'
 })
 export class PostService {
 
-  private baseUrl = 'http://localhost:8081/posts'; // Assuming this is your backend base URL
-  private token = localStorage.getItem('jwtAccessToken');
+  //private baseUrl = 'http://localhost:8081/posts'; // Assuming this is your backend base URL
+    private baseUrl = environment.backendUrl;
+
+    private token = localStorage.getItem('jwtAccessToken');
 
   constructor(private http: HttpClient) { }
 
@@ -22,7 +26,7 @@ export class PostService {
     const headers = new HttpHeaders({
       'Authorization': 'Bearer ' + this.token
     });
-    return this.http.post<Post>(`${this.baseUrl}/add`, formData, { headers: headers });
+    return this.http.post<Post>(`${this.baseUrl}/posts/add`, formData, { headers: headers });
   }
 
   updateReward(postId: number, content: string, image: File): Observable<any> {
@@ -34,7 +38,7 @@ export class PostService {
         'Authorization': 'Bearer ' + this.token
     });
 
-    return this.http.put<Post>(`${this.baseUrl}/updatepost/${postId}`, formData, { headers: headers });
+    return this.http.put<Post>(`${this.baseUrl}/posts/updatepost/${postId}`, formData, { headers: headers });
 }
 
   updatePost(post: Post): Observable<Post> {
@@ -42,62 +46,62 @@ export class PostService {
       'Authorization': 'Bearer ' + this.token,
       'Content-Type': 'application/json'
     });
-    return this.http.put<Post>(`${this.baseUrl}/update`, post, { headers: headers });
+    return this.http.put<Post>(`${this.baseUrl}/posts/update`, post, { headers: headers });
   }
 
   getAllPosts() {
-  
+
     const headers = new HttpHeaders({
       'Authorization': 'Bearer ' + this.token
   });
     localStorage
-    return this.http.get(`${this.baseUrl}/getall`,{ headers: headers });
+    return this.http.get(`${this.baseUrl}/posts/getall`,{ headers: headers });
   }
 
   getPostById(id: number): Observable<Post> {
-    
+
     const headers = new HttpHeaders({
       'Authorization': 'Bearer ' + this.token
   });
-    return this.http.get<Post>(`${this.baseUrl}/${id}`, { headers : headers });
+    return this.http.get<Post>(`${this.baseUrl}/posts/${id}`, { headers : headers });
   }
 
   deletePost(id: number): Observable<void> {
     const headers = new HttpHeaders({
       'Authorization': 'Bearer ' + this.token
     });
-    return this.http.delete<void>(`${this.baseUrl}/${id}`, { headers: headers });
+    return this.http.delete<void>(`${this.baseUrl}/posts/${id}`, { headers: headers });
   }
 
   getPostsByDate(postDate: Date): Observable<Post[]> {
-    
+
     const headers = new HttpHeaders({
       'Authorization': 'Bearer ' + this.token
   });
-    return this.http.get<Post[]>(`${this.baseUrl}/getByDate/${postDate}`, { headers: headers });
+    return this.http.get<Post[]>(`${this.baseUrl}/posts/getByDate/${postDate}`, { headers: headers });
   }
   getMonthlyPostsCounts(): Observable<any> {
-    
+
     const headers = new HttpHeaders({
       'Authorization': 'Bearer ' + this.token
   });
-    return this.http.get<any>(`${this.baseUrl}/monthly-count`, { headers: headers });
+    return this.http.get<any>(`${this.baseUrl}/posts/monthly-count`, { headers: headers });
 }
 likePost(postId: number): Observable<Post> {
-  
+
   const headers = new HttpHeaders({
     'Authorization': 'Bearer ' + this.token
   });
-  return this.http.put<Post>(`${this.baseUrl}/like/${postId}`,null, { headers: headers});
+  return this.http.put<Post>(`${this.baseUrl}/posts/like/${postId}`,null, { headers: headers});
 }
 
 // Add a method to dislike a post
 dislikePost(postId: number): Observable<Post> {
-  
+
   const headers = new HttpHeaders({
     'Authorization': 'Bearer ' + this.token
   });
-  return this.http.put<Post>(`${this.baseUrl}/dislike/${postId}`,null, {headers: headers});
+  return this.http.put<Post>(`${this.baseUrl}/posts/dislike/${postId}`,null, {headers: headers});
 }
 getUser(): Observable<UserModel> {
   const headers = new HttpHeaders({

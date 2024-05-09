@@ -97,6 +97,7 @@ export class UserBackComponent implements  OnInit{
             .pipe(
                 catchError((error) => {
                     if (error.status === 403) {
+                        console.log(error);
                         this.router.navigate(['/auth/access']);
                     }
                     return throwError(error);

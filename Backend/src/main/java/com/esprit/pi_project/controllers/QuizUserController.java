@@ -7,7 +7,6 @@ import com.esprit.pi_project.services.EmailSender;
 import com.esprit.pi_project.services.LinkedInScrapper;
 import com.esprit.pi_project.services.QuizUserService;
 import com.esprit.pi_project.services.UserService;
-import com.restfb.json.Json;
 import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,7 +48,8 @@ public class QuizUserController {
         QuizUser savedQuizUser = quizUserService.ajouterQuizAUser(quizUser, id);
         String description = savedQuizUser.getDescription();
 
-        String to= "blachyto2000@gmail.com";
+       // String to= "blachyto2000@gmail.com";
+        String to =user.get().getEmail();
         String subject="Quiz Result";
         String content = "Dear student,\n\n" +
                 "Thank you very much for having the courage to take this psychological test! 👏\n" +
@@ -95,5 +95,11 @@ public class QuizUserController {
        String csvData = Files.lines(Paths.get(filePath)).collect(Collectors.joining("\n"));
        return  ResponseEntity.ok().body(Map.of("csvData", csvData));
    }
+
+    @GetMapping("score")
+    public Map<String, Double> retrieveScore () {
+
+        return quizUserService.calculateAverageScores();
+    }
 
 }

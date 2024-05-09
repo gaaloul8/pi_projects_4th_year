@@ -118,3 +118,16 @@ a {
     color: red; /* Optionally, set the color of the error message to red */
 }
 
+
+.message {
+    padding: 10px;
+    margin-top: 10px;
+}
+
+.success {
+    background-color: lightgreen;
+}
+
+.error {
+    background-color: lightcoral;
+}

@@ -1,15 +1,46 @@
 .header .btn-getstarted {
   color: var(--contrast-color);
-  background: var(--accent-color);
+  /* background: var(--accent-color); */
   font-size: 14px;
   padding: 8px 26px;
   /* margin: 100px; */
   margin-left: 130px;
   border-radius: 4px;
-  transition: background 0.3s, color 0.3s;
+  /* transition: background 0.3s, color 0.3s; */
   border: none; /* Remove default button border */
 }
+.btn-save{
+  color: var(--contrast-color);
+  background: var(--accent-color);
+  transition: background 0.3s, color 0.3s;
+  border-radius: 4px;
+  border: none; /* Remove default button border */
+  font-size: 14px;
+  padding: 4px;
+}
+.btn-save span {
+  display: inline-block; /* Ensure span takes the width of its content */
+}
+.btn-save:hover {
+  background: rgba(var(--accent-color-rgb), 0.85);
+}
 
+.save .btn-getstarted{
+  color: var(--contrast-color);
+  background: var(--accent-color);
+  transition: background 0.3s, color 0.3s;
+  border-radius: 4px;
+  border: none; /* Remove default button border */
+  font-size: 14px;
+  padding: 4px;
+
+}
+.save .btn-getstarted span {
+  display: inline-block; /* Ensure span takes the width of its content */
+}
+.save .btn-getstarted:hover {
+  background: rgba(var(--accent-color-rgb), 0.85);
+}
 .header .btn-getstarted span {
   display: inline-block; /* Ensure span takes the width of its content */
 }
@@ -17,6 +48,7 @@
 .header .btn-getstarted:hover {
   background: rgba(var(--accent-color-rgb), 0.85);
 }
+
 .comment-stats-wrap {
     display: flex;
     align-items: center;

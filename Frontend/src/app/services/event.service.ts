@@ -5,14 +5,17 @@ import { Event } from '../interfaces/event';
 import { Image } from 'primeng/image';
 import { EvenementWithRating } from '../interfaces/evenement-with-rating';
 import { Feedback } from '../interfaces/feedback';
+import {environment} from "../../environments/environment";
 
 
 @Injectable({
   providedIn: 'root'
 })
 export class EventService {
- private baseUrl = 'http://localhost:8081'; 
- private token =  localStorage.getItem('jwtAccessToken');
+ //private baseUrl = 'http://localhost:8081';
+    private baseUrl = environment.backendUrl;
+
+    private token =  localStorage.getItem('jwtAccessToken');
  constructor(private http: HttpClient) { }
 
   public getAllEvent(): Observable<Event[]> {
@@ -20,7 +23,7 @@ export class EventService {
       'Authorization': 'Bearer ' + this.token
     });
     return this.http.get<Event[]>(`${this.baseUrl}/event/getAllEvent`,{ headers: headers });
-  } 
+  }
 
 
       deleteEvent(idEvent: number): Observable<void> {
@@ -29,14 +32,14 @@ export class EventService {
         });
         return this.http.delete<void>(`${this.baseUrl}/event/${idEvent}`,{ headers: headers });
       }
-   
+
       searchEventByType(type: string) {
         const headers = new HttpHeaders({
           'Authorization': 'Bearer ' + this.token
         });
         return this.http.get<Event[]>(`${this.baseUrl}/event/searchByType/${type}`,{ headers: headers });
     }
-   
+
     getEventById(idEvent: number): Observable<Event> {
       const headers = new HttpHeaders({
         'Authorization': 'Bearer ' + this.token
@@ -64,7 +67,7 @@ export class EventService {
       return this.http.get<any[]>(`${this.baseUrl}/event/feedbackStatistics`,{ headers: headers });
     }
 
-    
+
     getAllEventsWithRatings(): Observable<EvenementWithRating[]> {
       const headers = new HttpHeaders({
         'Authorization': 'Bearer ' + this.token
@@ -89,7 +92,7 @@ export class EventService {
     return this.http.post<Event>(`${this.baseUrl}/event/addEvent`,formData,{ headers: headers });
 }
 
-   
+
 
 updateEvent(idEvent: number, event: Event, image: File): Observable<any> {
   const headers = new HttpHeaders({
@@ -152,6 +155,6 @@ getFeedbackByIdEvent(id: number): Observable<Feedback[]> {
 
 
   }
-    
+
 
 

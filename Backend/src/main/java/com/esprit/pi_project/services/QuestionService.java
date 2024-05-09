@@ -3,10 +3,11 @@ package com.esprit.pi_project.services;
 import com.esprit.pi_project.entities.Question;
 import org.springframework.http.ResponseEntity;
 
+import java.text.ParseException;
 import java.util.List;
 
 public interface QuestionService {
-    Question saveQuestion(Question question);
+    Question saveQuestion(Question question) throws ParseException;
 
     Question updateQuestion(Question question);
 

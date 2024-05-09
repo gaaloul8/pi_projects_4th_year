@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Router} from "@angular/router";
+import {AuthResponse} from "../../models/auth-response";
 
 @Component({
   selector: 'app-registercard2',
@@ -31,12 +32,14 @@ export class Registercard2Component {
         formData.append('carte', this.selectedFile);
 
 
-        this.http.post<any>('http://localhost:8081/auth/carte', formData, )
+        this.http.post<AuthResponse>('http://localhost:8081/auth/carte', formData, )
             .subscribe(
                 response => {
+                    //console.log(response.jwtaccestoken)
+                    localStorage.setItem('jwtAccessToken', response.jwtaccestoken);
 
                     console.log('Text recognized:', response);
-                    this.router.navigate(['/login']); // Navigate to the login component after successful registration
+                    this.router.navigate(['/complete']); // Navigate to the login component after successful registration
 
 
                 },

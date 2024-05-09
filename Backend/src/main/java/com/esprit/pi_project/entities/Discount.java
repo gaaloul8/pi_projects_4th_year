@@ -1,5 +1,6 @@
 package com.esprit.pi_project.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -23,7 +24,8 @@ public class Discount implements Serializable {
     private String discountValue;
 
     @OneToOne(fetch = FetchType.EAGER)
+    @JsonIgnoreProperties(value="reward", allowSetters = true)
     private Reward reward;
 
-    // Constructors, getters, setters, and other methods
+    // Constructors, getters, setters, and othxer methods
 }

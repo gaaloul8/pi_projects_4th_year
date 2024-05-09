@@ -20,34 +20,41 @@ import { NotfoundComponent } from '../demo/components/notfound/notfound.componen
 import { FrontClubComponent } from '../components/front-club/front-club.component';
 import {ScrapingDataComponent} from "../components/scraping-data/scraping-data.component";
 import {ActivityFrontendComponent} from "../components/activity-frontend/activity-frontend.component";
+import {UpdateUserAccountComponent} from "../components/update-user-account/update-user-account.component";
 import { PageEventComponent } from '../components/page-event/page-event.component';
 import { ListReservationFrontComponent } from '../components/list-reservation-front/list-reservation-front.component';
 import { FeedbackComponent } from '../components/feedback/feedback.component';
+import { ArchivedReclamationsComponent } from '../components/reclamations/archived-reclamations/archived-reclamations.component';
+import { AddReclamationComponent } from '../components/reclamations/add-reclamation/add-reclamation.component';
+import { MyReclamationsComponent } from '../components/reclamations/my-reclamations/my-reclamations.component';
 import { PostFrontComponent } from '../components/post-front/post-front.component';
 import { CommentComponent } from '../components/comment/comment.component';
+import {RewardfrontComponent} from "../components/rewardfront/rewardfront.component";
 
 const routes: Routes = [
+    {path:'profile/update',component: UpdateUserAccountComponent},
 
 { path: 'forum',component:ForumComponent},
 { path: 'home',component:HomeComponent},
 { path: 'forumdetail/:id', component: ForumDetailComponent },
 { path: 'notfound', component: NotfoundComponent },
-{ path: 'reward', component: RewardComponent },
 
-{ path: 'transactions', component: TransactionhistoryComponent },
 { path: 'rewardusers', component: RewardusersComponent },
+    { path: 'rewardfront', component: RewardfrontComponent },
 
-{ path: 'discounts', component: DiscountsComponent },
+
 { path: 'quiz-frontend', component: QuizFrontendComponent},
 { path: 'eventFront', component : EventfrontComponent},
   {path:'event-details/:idEvent',component : PageEventComponent},
   {path:'listreservationfront',component : ListReservationFrontComponent},
   {path: 'listFeedBack', component: FeedbackComponent},
 
-    { path: 'front-club', component: FrontClubComponent },
+{ path: 'front-club', component: FrontClubComponent },
     { path: 'quiz-frontend', component: QuizFrontendComponent},
     { path: 'docteur-frontend', component: ScrapingDataComponent},
     { path: 'activity-frontend/:idQuiz', component: ActivityFrontendComponent },
+    { path: 'reclamation/add', component: AddReclamationComponent},
+    { path: 'reclamation/my', component: MyReclamationsComponent},
     {path:'comment',component:CommentComponent},
     {path:'front-post',component:PostFrontComponent},
 

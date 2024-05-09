@@ -52,4 +52,11 @@ export class QuizUserService {
         });
         return this.http.get<any>(`${this.baseUrl}/doctors`,{ headers: headers });
     }
+
+    getAverageScores(): Observable<any> {
+        const headers = new HttpHeaders({
+            'Authorization': 'Bearer ' + this.token
+        });
+        return this.http.get<any>(`${this.baseUrl}/score`,{ headers: headers });
+    }
 }

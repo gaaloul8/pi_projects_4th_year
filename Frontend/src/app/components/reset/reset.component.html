@@ -12,7 +12,14 @@
                             </div>
                             <div *ngIf="resetForm.submitted && newPassword.invalid && !password" class="error-message">{{ newPasswordRequiredMessage }}</div>
                         </div>
-                        <div *ngIf="resetErrorMessage" class="error-message">{{ resetErrorMessage }}</div>
+                        <div class="p-field">
+                            <div class="input-with-icon">
+                                <i class="pi pi-lock"></i>
+                                <input id="confirmPassword" type="password" [(ngModel)]="confirmPassword" name="confirmPassword" placeholder="Confirm Password" required #confirmPasswordInput="ngModel">
+                            </div>
+                            <div *ngIf="resetForm.submitted && newPassword.invalid && !password" class="error-message">{{ newPasswordRequiredMessage }}</div>
+                        </div>
+                        <div *ngIf="password !== confirmPassword && confirmPasswordInput.dirty && confirmPasswordInput.touched" class="error-message">Passwords do not match.</div>
 
                         <!-- Display success or error message -->
                         <div *ngIf="Message" class="message">{{ Message }}</div>

@@ -32,7 +32,7 @@ export class PostComponent implements OnInit {
   
 
   constructor(private postService: PostService, private formbuilder: FormBuilder,private http:HttpClient,) { }
-  
+
 
   ngOnInit(): void {
     this.filter = new BadWordsFilter();
@@ -67,7 +67,7 @@ this.getUser();
       });
   }
 
-  
+
 //  async addPost(): Promise<void> {
 //     this.submitted = true;
 //     try {
@@ -76,7 +76,7 @@ this.getUser();
 //                 console.log("Post created Successfully");
 //                 this.postDialog = false;
 //                 this.posts.push(newpost);
-                
+
 //                 this.content='';
 //                 //window.location.reload();
 //     }catch (error){
@@ -96,7 +96,7 @@ this.getUser();
       console.error(error);
     }
   }
-  
+
 
   openNew() {
     this.post = {};
@@ -169,7 +169,7 @@ this.getUser();
   updatePost(postId: number,content:string,selectedImage:File): void {
     this.selectedImage=selectedImage;
     this.content=content;
-    
+
     this.submitted = true;
     try {
         this.postService.updateReward(postId, this.content, this.selectedImage).toPromise();
@@ -194,16 +194,16 @@ getUser(): void {
   );
 }
 
-  
+
 
   editPost(postEdit: Post) {
      this.post = { ...postEdit };
     console.log(postEdit.content);
     this.content=postEdit.content;
-   
+
     this.postDialog = true;
   }
-  
+
 
   showDialogToAdd(): void {
     this.postForm.reset();
@@ -212,7 +212,7 @@ getUser(): void {
   cancelUpdate(): void {
     // Close the confirmation dialog
     this.showConfirmation = false;
-    
+
   }
   confirmUpdate(): void {
     // Close the confirmation dialog
@@ -231,5 +231,5 @@ getUser(): void {
       }
     );
   }
- 
+
 }
