@@ -64,26 +64,30 @@
               <label for="clubName">Club Name</label>
               <input type="text" id="clubName" pInputText formControlName="clubName" required autofocus>
               <div *ngIf="clubForm.get('clubName').invalid && (clubForm.get('clubName').dirty || clubForm.get('clubName').touched)">
-                <small class="text-danger" *ngIf="clubForm.get('clubName').errors.required">Club Name is required.</small>
-                <small class="text-danger" *ngIf="clubForm.get('clubName').errors.minlength">Club Name must be at least 3 characters long.</small>
+                <small class="text-danger" *ngIf="clubForm.get('clubName').errors.required" style="display: block;">Club Name is required.</small>
+                <small class="text-danger" *ngIf="clubForm.get('clubName').errors.minlength" style="display: block;">Club Name must be at least 3 characters long.</small>
               </div>
             </div>
-          
+            
             <div class="field">
               <label for="description">Description</label>
               <textarea id="description" pInputTextarea formControlName="description" required rows="3" cols="20"></textarea>
               <div *ngIf="clubForm.get('description').invalid && (clubForm.get('description').dirty || clubForm.get('description').touched)">
-                <small class="text-danger">Description is required.</small>
+                <small class="text-danger" *ngIf="clubForm.get('description').errors.required" style="display: block;">Description is required.</small>
+                <small class="text-danger" *ngIf="clubForm.get('description').errors.minlength" style="display: block;">Description must be at least 10 characters long.</small>
               </div>
             </div>
-          
+            
             <div class="field">
               <label for="membershipCount">Membership Number</label>
               <input type="number" id="membershipCount" pInputText formControlName="membershipCount" required autofocus>
               <div *ngIf="clubForm.get('membershipCount').invalid && (clubForm.get('membershipCount').dirty || clubForm.get('membershipCount').touched)">
-                <small class="text-danger">Membership Number is required.</small>
+                <small class="text-danger" *ngIf="clubForm.get('membershipCount').errors.required" style="display: block;">Membership Number is required.</small>
+                <small class="text-danger" *ngIf="clubForm.get('membershipCount').errors.min" style="display: block;">Membership Number must be greater than 0.</small>
               </div>
             </div>
+            
+            
           
             <div class="field">
               <label for="tag">Tag</label>

@@ -93,6 +93,7 @@ export class ClubService {
     return this.http.get<Club>(`${this.baseUrl}/getByName/${clubName}`, { headers: headers });
   }
   
+  
 
   generatePDF(): Observable<Blob> {
     

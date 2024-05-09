@@ -42,6 +42,14 @@ export class ClubsComponent implements OnInit {
     ).subscribe(() => {
       this.searchClubs();
     });
+
+     // Initialize form controls with validators
+     this.clubForm = this.formbuilder.group({
+      image: [''],
+      clubName: ['', [Validators.required, Validators.minLength(3)]], // Adding validators for clubName
+      description: ['', [Validators.required, Validators.minLength(10)]], // Adding validators for description
+      membershipCount: ['', [Validators.required, Validators.min(1)]] // Adding validators for membershipCount
+    });
     
   }
   ngOnInit(): void {
@@ -110,6 +118,9 @@ export class ClubsComponent implements OnInit {
   }
 addClub(): void {
   this.submitted = true;
+  if (this.clubForm.valid) {
+    
+  
   try {
     // Pass the selected file to the addClub method
     this.clubService.addClub(this.clubForm.value, this.selectedImage).toPromise();
@@ -119,6 +130,7 @@ addClub(): void {
   } catch (error) {
     console.error(error);
   }
+}
 }
  onImageSelected(event: any) {
    this.selectedImage=event.target.files[0];
